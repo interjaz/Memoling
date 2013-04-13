@@ -1,0 +1,124 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:padding="10dp"
+    tools:context=".MemoListActivity" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="right"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="#55000000"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/memolist_btnLibraries"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+            	android:background="@drawable/navigation_button"
+            	android:textSize="15sp"
+            	android:layout_marginRight="5dp"
+            	android:minHeight="40dp"
+                android:text="@string/memolist_goToLibraries" />
+
+            <Button
+                android:id="@+id/memolist_btnOptions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+            	android:textSize="15sp"
+            	android:background="@drawable/navigation_button"
+            	android:minHeight="40dp"
+                android:text="@string/memolist_options" />
+
+            <Button
+                android:id="@+id/memolist_btnTraining"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+            	android:background="@drawable/navigation_button"
+            	android:textSize="15sp"
+            	android:layout_marginLeft="5dp"
+            	android:minHeight="40dp"
+                android:text="@string/memolist_startTraining" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#55000000"
+            android:orientation="vertical"
+            android:padding="10dp" >
+
+            <ListView
+                android:id="@+id/memolist_list"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.0" >
+
+                <AutoCompleteTextView
+                    android:id="@+id/memolist_txtAddMemo"
+                    android:layout_width="0.0dip"
+                    android:layout_height="40.0dip"
+                    android:layout_weight="1.0" />
+
+                <Button
+                    android:id="@+id/memolist_btnSave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40.0dip"
+                    android:text="@string/memolist_btnSave" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5.0dip"
+                android:layout_weight="0.0" >
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/memolist_from" />
+
+                <Spinner
+                    android:id="@+id/memolist_spLanguageFrom"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10.0dip"
+                    android:layout_weight="1.0" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10.0dip"
+                    android:layout_marginRight="10.0dip"
+                    android:text="@string/memolist_to" />
+
+                <Spinner
+                    android:id="@+id/memolist_spLanguageTo"
+                    android:layout_width="0.0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2.0dip"
+            android:text="@string/memolist_listview_lblAdded"
+            android:textSize="12.0dip" />
+
+        <TextView
+            android:id="@+id/memolist_listview_txtAddDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2.0dip"
+            android:text="TextView"
+            android:textSize="12.0dip" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="6.0dip"
+            android:text="@string/memolist_listview_lblLastReview"
+            android:textSize="12.0dip" />
+
+        <TextView
+            android:id="@+id/memolist_listview_lastReview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2.0dip"
+            android:paddingRight="2.0dip"
+            android:text="TextView"
+            android:textSize="12.0dip" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/memolist_listview_txtOriginal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2.0dip"
+            android:paddingRight="6.0dip"
+            android:text="TextView"
+            android:textColor="#ffeeeeee"
+            android:textSize="20.0dip" />
+
+        <TextView
+            android:id="@+id/memolist_listview_txtTranslate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="2.0dip"
+            android:text="TextView"
+            android:textSize="20.0dip" />
+    </LinearLayout>
+
+</LinearLayout>

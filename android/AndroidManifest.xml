@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.interjaz"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="16" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_main"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.interjaz.LoginActivity"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
+        <activity
+            android:name="com.interjaz.ui.activity.MemoListActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_memolist"
+            android:launchMode="singleTask"
+            android:theme="@style/FullscreenTheme"
+            android:windowSoftInputMode="stateHidden" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.interjaz.ui.activity.MemoBaseListActivity"
+            android:label="@string/title_activity_memobaselist"
+            android:theme="@style/FullscreenTheme"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.interjaz.ui.activity.MemoActivity"
+            android:label="@string/title_activity_memo"
+            android:theme="@style/FullscreenTheme"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.interjaz.ui.activity.MemoBaseActivity"
+            android:label="@string/title_activity_memobase"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullscreenTheme"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.interjaz.ui.activity.ReviewActivity"
+            android:label="@string/title_activity_review"
+            android:theme="@style/FullscreenTheme"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.interjaz.ui.activity.SchedulerActivity"
+            android:label="@string/title_activity_scheduler"
+            android:theme="@style/FullscreenTheme"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.interjaz.ui.activity.StatisticsActivity"
+            android:label="@string/title_activity_statistics"
+            android:theme="@style/FullscreenTheme"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.interjaz.ui.activity.AboutActivity"
+            android:label="@string/title_activity_about" 
+            android:theme="@style/FullscreenTheme">
+        </activity>
+
+        <service android:name="com.interjaz.service.SchedulerService" >
+            <intent-filter>
+                <action android:name="com.interjaz.service.SchedulerService" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name="com.interjaz.schedule.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="StartMyServiceAtBootReceiver" >
+        </receiver>
+
+        <activity
+            android:name="com.interjaz.TestActivity"
+            android:label="@string/title_activity_test" >
+        </activity>
+    </application>
+
+</manifest>

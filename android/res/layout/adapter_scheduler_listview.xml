@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+    
+	<TextView
+	    android:id="@+id/textView1"
+	    android:layout_height="match_parent"
+	    android:layout_width="wrap_content" 
+	    android:textSize="45sp"
+	    android:paddingLeft="20dp"
+	    android:paddingRight="20dp"
+	    android:paddingTop="10dp"
+	    android:paddingBottom="5dp"
+	    android:text="20:32"/>
+	
+	<TextView
+	    android:id="@+id/textView2"
+	    android:layout_height="match_parent"
+	    android:layout_width="match_parent" 
+	    android:textSize="18sp"
+	    android:layout_gravity="top"
+	    android:paddingTop="22dp"
+	    android:text="Mo, Tu, We"/>
+    
+	
+	
+</LinearLayout>

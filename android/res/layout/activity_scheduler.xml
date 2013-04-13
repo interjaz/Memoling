@@ -1,0 +1,214 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:padding="10dp"
+    tools:context=".SchedulerActivity" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#55000000"
+        android:padding="10dp" >
+
+        <Button
+            android:id="@+id/scheduler_btnMo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/scheduler_btnTu"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:background="#FF1A1A1A"
+            android:text="M"
+            android:textSize="60sp"
+            android:typeface="normal" />
+
+        <Button
+            android:id="@+id/scheduler_btnTu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/scheduler_btnMo"
+            android:layout_marginBottom="5dp"
+            android:background="#FF1A1A1A"
+            android:text="T"
+            android:textSize="60sp" />
+
+        <Button
+            android:id="@+id/scheduler_btnWe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/scheduler_btnTu"
+            android:layout_marginBottom="5dp"
+            android:background="#FF1A1A1A"
+            android:text="W"
+            android:textSize="60sp" />
+
+        <Button
+            android:id="@+id/scheduler_btnTh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/scheduler_btnWe"
+            android:layout_marginBottom="5dp"
+            android:background="#FF1A1A1A"
+            android:text="T"
+            android:textSize="60sp" />
+
+        <Button
+            android:id="@+id/scheduler_btnFr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/scheduler_btnTh"
+            android:layout_marginBottom="5dp"
+            android:background="#FF1A1A1A"
+            android:text="F"
+            android:textSize="60sp" />
+
+        <Button
+            android:id="@+id/scheduler_btnSa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/scheduler_btnFr"
+            android:layout_marginBottom="5dp"
+            android:background="#FF1A1A1A"
+            android:text="S"
+            android:textSize="60sp" />
+
+        <Button
+            android:id="@+id/scheduler_btnSu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/scheduler_btnSa"
+            android:layout_marginBottom="5dp"
+            android:background="#FF1A1A1A"
+            android:text="S"
+            android:textSize="60sp" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:text="Schedule repetition"
+            android:textSize="29sp" />
+
+        <EditText
+            android:id="@+id/scheduler_txtHours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/textView1"
+            android:layout_below="@id/textView1"
+            android:ems="10"
+            android:inputType="time"
+            android:maxLength="2"
+            android:text="12"
+            android:textSize="96sp"
+            android:width="115dp" >
+        </EditText>
+
+        <TextView
+            android:id="@+id/scheduler_lblColon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/scheduler_txtHours"
+            android:layout_toRightOf="@+id/scheduler_txtHours"
+            android:text=":"
+            android:textSize="98sp" />
+
+        <EditText
+            android:id="@+id/scheduler_txtMinutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/scheduler_txtHours"
+            android:layout_toRightOf="@+id/scheduler_lblColon"
+            android:ems="10"
+            android:inputType="time"
+            android:maxLength="2"
+            android:text="00"
+            android:textSize="98sp"
+            android:width="115dp" >
+        </EditText>
+
+        <Button
+            android:id="@+id/scheduler_btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/scheduler_txtHours"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_toLeftOf="@id/scheduler_btnMo"
+            android:background="#FF1A1A1A"
+            android:text="Submit"
+            android:textSize="25sp" />
+
+        <Button
+            android:id="@+id/scheduler_btnEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/scheduler_txtHours"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="#FF1A1A1A"
+            android:text="Edit"
+            android:textSize="25sp"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/scheduler_btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/scheduler_txtHours"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/scheduler_btnEdit"
+            android:background="#FF1A1A1A"
+            android:text="Delete"
+            android:textSize="25sp"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/scheduler_btnNew"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/scheduler_txtHours"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/scheduler_btnDelete"
+            android:background="#FF1A1A1A"
+            android:text="New"
+            android:textSize="25sp"
+            android:visibility="invisible" />
+
+        <ListView
+            android:id="@+id/schedule_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/scheduler_btnSu"
+            android:layout_alignLeft="@id/scheduler_btnSubmit"
+            android:layout_alignRight="@id/scheduler_btnSubmit"
+            android:layout_below="@id/scheduler_btnSubmit"
+            android:layout_marginTop="5dp"
+            android:background="#FF1A1A1A"
+            android:minHeight="140dp"
+            android:minWidth="240dp" >
+        </ListView>
+    </RelativeLayout>
+
+</FrameLayout>

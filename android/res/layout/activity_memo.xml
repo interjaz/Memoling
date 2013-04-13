@@ -1,0 +1,221 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:padding="10dp"
+    tools:context=".MemoListActivity" >
+	
+	<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WordActivity"
+        android:background="#55000000"
+        android:padding="10dp" > >
+
+    <TextView
+        android:id="@+id/memo_lblTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="memo_lblTitle"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="30sp" />
+    
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/memo_lblTitle"
+        android:layout_alignLeft="@id/memo_lblTitle"
+        android:layout_marginTop="30dp"
+        android:text="@string/memo_lblCreated" />
+
+    <TextView
+        android:id="@+id/memo_lblCreated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/textView3"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:text="memo_lblCreated" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView3"
+        android:layout_alignLeft="@id/textView3"
+        android:layout_marginTop="5dp"
+        android:text="@string/memo_lblLastReviewed" />
+
+    <TextView
+        android:id="@+id/memo_lblLastReviewed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/textView4"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:text="memo_lblLastReviewed" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView4"
+        android:layout_alignLeft="@id/textView4"
+        android:layout_marginTop="5dp"
+        android:text="@string/memo_lblDisplayed" />
+
+    <TextView
+        android:id="@+id/memo_lblDisplayed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/textView5"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:text="memo_lblDisplayed" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView5"
+        android:layout_alignLeft="@id/textView5"
+        android:layout_marginTop="5dp"
+        android:text="@string/memo_lblCorrectAnswered" />
+
+    <TextView
+        android:id="@+id/memo_lblCorrectAnswered"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/textView6"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:text="memo_lblCorrectAnswered" />
+    
+    <TextView
+        android:id="@+id/memo_lblWordA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/memo_lblwordA"
+        android:layout_below="@id/textView6"
+        android:layout_alignLeft="@id/textView6"
+        android:layout_marginTop="30dp"
+        android:textSize="15sp" />
+        
+    <EditText
+        android:id="@+id/memo_txtWordA"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/memo_lblWordA"
+        android:layout_below="@id/memo_lblWordA"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:imeOptions="actionDone" >
+
+    </EditText>
+
+    <Spinner
+        android:id="@+id/memo_spLangA"
+        android:layout_height="wrap_content" 
+        android:layout_width="150dp"
+        android:layout_below="@id/memo_txtWordA"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:textSize="15sp" >
+    </Spinner>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/memo_lblLangA"
+        android:layout_alignTop="@id/memo_spLangA"
+        android:layout_alignLeft="@id/memo_txtWordA"
+        android:layout_marginTop="5dp"/>
+    
+    <TextView
+        android:id="@+id/memo_lblWordB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/memo_lblWordB"
+        android:layout_below="@id/textView1"
+        android:layout_alignLeft="@id/textView1"
+        android:layout_marginTop="15dp"
+        android:textSize="15sp" />
+    
+    <EditText
+        android:id="@+id/memo_txtWordB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/memo_lblWordB"
+        android:layout_below="@id/memo_lblWordB"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:imeOptions="actionDone" />
+
+    <Spinner
+        android:id="@+id/memo_spLangB"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/memo_txtWordB"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="20dp">
+    </Spinner>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/memo_lblLangB"
+        android:layout_alignTop="@id/memo_spLangB"
+        android:layout_alignLeft="@id/memo_txtWordB"
+        android:layout_marginTop="5dp"
+        android:textSize="15sp" />
+
+    <CheckBox
+        android:id="@+id/memo_chbEnabled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView2"
+        android:layout_alignLeft="@id/textView2"
+        android:layout_marginTop="20dp"
+        android:text="@string/memo_lblEnabled" />
+
+    <Button
+        android:id="@+id/memo_btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/memo_chbEnabled"
+        android:layout_below="@+id/memo_chbEnabled"
+        android:layout_marginTop="20dp"
+        android:text="@string/memo_lblSave" />
+
+    <RelativeLayout
+        android:id="@+id/memo_laySaving"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="#55000000"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/memo_lblSaving"
+            android:textColor="#EEEEEE"
+            android:textSize="25sp" />
+
+	</RelativeLayout>
+    
+</RelativeLayout>
+</FrameLayout>
