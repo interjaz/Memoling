@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -23,8 +24,7 @@ import com.interjaz.webrequest.IHttpRequestTaskComplete;
 public class BingTranslator implements IHttpRequestTaskComplete {
 
 	private static String m_token;
-	private static GregorianCalendar m_tokenCreation = new GregorianCalendar(1,
-			1, 1);
+	private static GregorianCalendar m_tokenCreation = new GregorianCalendar(1, 1, 1);
 	private static long m_tokenValidityTime = 9 * 60 * 1000L;
 	private static Boolean m_tokenObtaining = false;
 	private final static String m_defaultEncode = "UTF-8";
@@ -34,8 +34,7 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 	private final static int m_minRating = 1;
 
 	private final static String m_bingTranslateUrl = "http://api.microsofttranslator.com/V2/Ajax.svc/GetTranslations";
-	private final static URI m_bingTokenUri = URI
-			.create("https://datamarket.accesscontrol.windows.net/v2/OAuth2-13/");
+	private final static URI m_bingTokenUri = URI.create("https://datamarket.accesscontrol.windows.net/v2/OAuth2-13/");
 
 	private static String m_clientId = "TranslateMemo";
 	private static String m_clientSecret = "87dfyqGFVxbTVyrqlo2YV+AF2An3gBIH2eOIgI8UPs4=";
@@ -52,29 +51,31 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 	private BingLanguage m_from;
 	private BingLanguage m_to;
 	private ITranslateComplete m_onTranslateComplete;
+	private static int m_timeout = 3000;
 
 	private static ArrayList<BingTranslator> m_pendingTranslations = new ArrayList<BingTranslator>();
 
-	public BingTranslator(Word word, Language from, Language to,
-			ITranslateComplete onTranslatorResult) {
+	public BingTranslator(Word word, Language from, Language to, ITranslateComplete onTranslatorResult) {
 
 		BingLanguage bFrom = BingLanguage.getBingLangauge(from);
 		BingLanguage bTo = BingLanguage.getBingLangauge(to);
-		
-		if(bFrom == BingLanguage.Unsupported || bTo == BingLanguage.Unsupported) {
+
+		if (bFrom == BingLanguage.Unsupported || bTo == BingLanguage.Unsupported) {
 			return;
 		}
-		
+
 		m_word = new Word(word.getWord().trim());
 		m_from = bFrom;
 		m_to = bTo;
 		m_onTranslateComplete = onTranslatorResult;
 
-		synchronized (m_tokenObtaining) {
-			if (!isTokenValid()) {
-				obtainToken();
-				m_pendingTranslations.add(this);
-				return;
+		if (!isTokenValid()) {
+			synchronized (m_tokenObtaining) {
+				if (!isTokenValid()) {
+					obtainToken();
+					m_pendingTranslations.add(this);
+					return;
+				}
 			}
 		}
 
@@ -85,8 +86,7 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 		long diff;
 
 		synchronized (m_tokenObtaining) {
-			diff = new GregorianCalendar().getTimeInMillis()
-					- m_tokenCreation.getTimeInMillis();
+			diff = new GregorianCalendar().getTimeInMillis() - m_tokenCreation.getTimeInMillis();
 		}
 
 		return diff < m_tokenValidityTime;
@@ -113,18 +113,15 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 							String accessToken = null;
 
 							try {
-								JSONObject completeData = new JSONObject(
-										response);
-								accessToken = (String) completeData
-										.get(m_accessTokenName);
+								JSONObject completeData = new JSONObject(response);
+								accessToken = (String) completeData.get(m_accessTokenName);
 
 								if (accessToken != null) {
 									m_token = accessToken;
 									m_tokenCreation = new GregorianCalendar();
 
 									for (int i = m_pendingTranslations.size() - 1; i >= 0; i--) {
-										BingTranslator pending = m_pendingTranslations
-												.remove(i);
+										BingTranslator pending = m_pendingTranslations.remove(i);
 										pending.translate();
 									}
 								}
@@ -138,26 +135,29 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 					}
 				}
 			}
-		}).execute(new BasicNameValuePair("client_id", m_clientId),
-				new BasicNameValuePair("client_secret", m_clientSecret),
-				new BasicNameValuePair("scope", m_scope),
-				new BasicNameValuePair("grant_type", m_grantType));
+
+			@Override
+			public void onHttpRequestTimeout(Exception ex) {
+				// TODO Implement
+				ex.printStackTrace();
+			}
+		}, m_timeout).execute(new BasicNameValuePair("client_id", m_clientId), new BasicNameValuePair("client_secret",
+				m_clientSecret), new BasicNameValuePair("scope", m_scope), new BasicNameValuePair("grant_type",
+				m_grantType));
 	}
 
 	private void translate() {
 		try {
 			StringBuilder url = new StringBuilder(m_bingTranslateUrl);
-			url.append("?appId="
-					+ URLEncoder.encode("Bearer " + m_token, m_defaultEncode));
-			url.append("&text="
-					+ URLEncoder.encode(m_word.getWord(), m_defaultEncode));
+			url.append("?appId=" + URLEncoder.encode("Bearer " + m_token, m_defaultEncode));
+			url.append("&text=" + URLEncoder.encode(m_word.getWord(), m_defaultEncode));
 			url.append("&from=" + m_from.getCode());
 			url.append("&to=" + m_to.getCode());
 			url.append("&maxTranslations=" + m_MaxTranslationsPerRequest);
 
 			URI uri = new URI(url.toString());
 			if (uri != null) {
-				new HttpGetRequestTask(uri, this).execute();
+				new HttpGetRequestTask(uri, this, m_timeout).execute();
 			}
 		} catch (UnsupportedEncodingException ex) {
 		} catch (URISyntaxException ex) {
@@ -178,8 +178,7 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 		ArrayList<Word> words = new ArrayList<Word>();
 
 		try {
-			JSONArray translations = new JSONObject(response)
-					.getJSONArray(m_Translations);
+			JSONArray translations = new JSONObject(response).getJSONArray(m_Translations);
 
 			for (int i = 0; i < translations.length(); i++) {
 
@@ -188,11 +187,11 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 				int rating = translation.getInt(m_Rating);
 
 				if (matchDegree >= m_minMatchDegree && rating >= m_minRating) {
-					
+
 					Word newWord = new Word(translation.getString(m_TranslatedText));
-					
+
 					// Ignore duplicates
-					if(!words.contains(newWord)) {
+					if (!words.contains(newWord)) {
 						words.add(newWord);
 					}
 				}
@@ -207,90 +206,63 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 	}
 
 	public enum BingLanguage {
-		
-		Unsupported("",""),
-		AR("Arabic","ar"), 
-		BG("Bulgarian","bg"), 
-		CA("Catalan","ca"), 
-		ZH("Chinese","zh-CHS"),
-		ZHCHS("Chinese (Simplified)","zh-CHS"),
-		ZHCHT("Chinese (Traditional)","zh-CHT"), 
-		CS("Czech","cs"), 
-		DA("Danish","da"), 
-		NL("Dutch","nl"), 
-		EN("English","en"), 
-		ET("Estonian","et"), 
-		FA("Persian (Farsi)","fa"), 
-		FI("Finnish","fi"), 
-		FR("French","fr"), 
-		DE("German","de"), 
-		EL("Greek","el"), 
-		HT("Haitian Creole","ht"), 
-		HE("Hebrew","he"), 
-		HI("Hindi","hi"), 
-		HU("Hungarian","hu"), 
-		ID("Indonesian","id"), 
-		IT("Italian","it"), 
-		JA("Japanese","ja"), 
-		KO("Korean","ko"), 
-		LV("Latvian","lv"), 
-		LT("Lithuanian","lt"), 
-		MWW("Hmong Daw","mww"),
-		NO("Norwegian","no"),
-		PL("Polish","pl"),
-		PT("Portuguese","pt"),
-		RO("Romanian","ro"),
-		RU("Russian","ru"),
-		SK("Slovak","sk"),
-		SL("Slovenian","sl"),
-		ES("Spanish","es"),
-		SV("Swedish","sv"),
-		TH("Thai","th"),
-		TR("Turkish","tr"),
-		UK("Ukrainian","uk"),
-		VI("Vietnamese","vi");
-		
+
+		Unsupported("", ""), AR("Arabic", "ar"), BG("Bulgarian", "bg"), CA("Catalan", "ca"), ZH("Chinese", "zh-CHS"), ZHCHS(
+				"Chinese (Simplified)", "zh-CHS"), ZHCHT("Chinese (Traditional)", "zh-CHT"), CS("Czech", "cs"), DA(
+				"Danish", "da"), NL("Dutch", "nl"), EN("English", "en"), ET("Estonian", "et"), FA("Persian (Farsi)",
+				"fa"), FI("Finnish", "fi"), FR("French", "fr"), DE("German", "de"), EL("Greek", "el"), HT(
+				"Haitian Creole", "ht"), HE("Hebrew", "he"), HI("Hindi", "hi"), HU("Hungarian", "hu"), ID("Indonesian",
+				"id"), IT("Italian", "it"), JA("Japanese", "ja"), KO("Korean", "ko"), LV("Latvian", "lv"), LT(
+				"Lithuanian", "lt"), MWW("Hmong Daw", "mww"), NO("Norwegian", "no"), PL("Polish", "pl"), PT(
+				"Portuguese", "pt"), RO("Romanian", "ro"), RU("Russian", "ru"), SK("Slovak", "sk"), SL("Slovenian",
+				"sl"), ES("Spanish", "es"), SV("Swedish", "sv"), TH("Thai", "th"), TR("Turkish", "tr"), UK("Ukrainian",
+				"uk"), VI("Vietnamese", "vi");
+
 		private String m_code;
 		private String m_name;
-		
+
 		private BingLanguage(String name, String code) {
 			m_name = name;
 			m_code = code;
 		}
-		
+
 		public String getCode() {
 			return m_code;
 		}
-		
+
 		public String getName() {
 			return m_name;
 		}
-	
-	public Language toLanguage() {
-		
-		Language language = Language.Unsupported;
-		
-		try {
-			language = Language.valueOf(this.getCode().toUpperCase());
+
+		public Language toLanguage() {
+
+			Language language = Language.Unsupported;
+
+			try {
+				language = Language.valueOf(this.getCode().toUpperCase(Locale.US));
+			} catch (Exception ex) {
+
+			}
+
+			return language;
 		}
-		catch(Exception ex) {
-			
+
+		public static BingLanguage getBingLangauge(Language language) {
+
+			BingLanguage bingLanguage = BingLanguage.Unsupported;
+
+			try {
+				bingLanguage = BingLanguage.valueOf(language.getCode().toUpperCase(Locale.US));
+			} catch (Exception ex) {
+			}
+
+			return bingLanguage;
 		}
-		
-		return language;
 	}
-	
-	public static BingLanguage getBingLangauge(Language language) {
-		
-		BingLanguage bingLanguage = BingLanguage.Unsupported;
-		
-		try {
-			bingLanguage = BingLanguage.valueOf(language.getCode().toUpperCase());
-		}
-		catch(Exception ex) {
-		}
-		
-		return bingLanguage;
-	}
+
+	@Override
+	public void onHttpRequestTimeout(Exception ex) {
+		// TODO Auto-generated method stub
+
 	}
 }

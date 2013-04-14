@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -30,6 +29,7 @@ import android.widget.Toast;
 
 import com.interjaz.Language;
 import com.interjaz.R;
+import com.interjaz.WorkerThread;
 import com.interjaz.db.Order;
 import com.interjaz.entity.Memo;
 import com.interjaz.entity.MemoAdapter;
@@ -43,6 +43,8 @@ import com.interjaz.translator.TranslatorResult;
 import com.interjaz.ui.GestureActivity;
 import com.interjaz.ui.ResourceManager;
 import com.interjaz.ui.adapter.ModifiableComplexTextAdapter;
+import com.interjaz.ui.adapter.ScrollableModifiableComplexTextAdapter;
+import com.interjaz.ui.adapter.ScrollableModifiableComplexTextAdapter.OnScrollFinishedListener;
 import com.interjaz.ui.view.LanguageView;
 import com.interjaz.ui.view.MemoView;
 import com.interjaz.ui.view.TranslatedView;
@@ -65,7 +67,7 @@ public class MemoListActivity extends GestureActivity implements ITranslateCompl
 	private AutoCompleteTextView m_txtAdd;
 	private ListView m_lstWords;
 
-	private ModifiableComplexTextAdapter<TranslatedView> m_suggestionAdapter;
+	private ScrollableModifiableComplexTextAdapter<TranslatedView> m_suggestionAdapter;
 	private WordsFinder m_wordsFinder;
 	private TxtAddTextEventHandler m_TxtAddTextEventHandler;
 	private DelayedLookup m_lastLookup;
@@ -94,10 +96,12 @@ public class MemoListActivity extends GestureActivity implements ITranslateCompl
 	private final static int[] m_adapter_language = new int[] { R.id.textView1 };
 
 	private Pair<Language, Language> m_prefferedLanguages;
-
-
+	
 	private boolean m_backPressed;
 	private String m_tapCloseString;
+	
+	private int m_lastSearchLimit = 0;
+	private int m_searchLimit = 10;
 	
 	//
 	// Base class implementation
@@ -145,16 +149,18 @@ public class MemoListActivity extends GestureActivity implements ITranslateCompl
 
 		// AutoCompleteTextView
 		m_txtAdd = (AutoCompleteTextView) findViewById(R.id.memolist_txtAddMemo);
-		m_suggestionAdapter = new ModifiableComplexTextAdapter<TranslatedView>(this,
+		m_TxtAddTextEventHandler = new TxtAddTextEventHandler();
+		m_suggestionAdapter = new ScrollableModifiableComplexTextAdapter<TranslatedView>(this,
 				R.layout.adapter_memolist_suggestion, m_autoitemResources, new Typeface[] { m_resources.getThinFont(),
 						m_resources.getThinFont() });
+		m_suggestionAdapter.setOnScrollListener(m_TxtAddTextEventHandler);
 		m_txtAdd.setAdapter(m_suggestionAdapter);
-		m_TxtAddTextEventHandler = new TxtAddTextEventHandler();
 		m_txtAdd.addTextChangedListener(m_TxtAddTextEventHandler);
 		m_txtAdd.setOnItemClickListener(m_TxtAddTextEventHandler);
 		m_txtAdd.setTypeface(m_resources.getThinFont());
 
 		// List View
+		
 		m_lstWords = (ListView) findViewById(R.id.memolist_list);
 		m_wordsAdapter = new ModifiableComplexTextAdapter<MemoView>(this, R.layout.adapter_memolist_listview,
 				m_adapter_memo_content_listview_resources, new Typeface[] { m_resources.getThinFont(),
@@ -280,27 +286,37 @@ public class MemoListActivity extends GestureActivity implements ITranslateCompl
 
 	@Override
 	public synchronized void onWordsFindComplete(WordsFindResult result) {
+		
 		String currentStr = m_txtAdd.getText().toString();
 
 		if (!currentStr.startsWith(result.Searched.getWord())) {
 			return;
 		}
 
-		m_suggestionAdapter.clear();
+		if(m_lastSearchLimit == m_searchLimit) {
+			// Clear if it is a new word that we are looking for
+			m_suggestionAdapter.clear();
+		}
+		
 
 		Language fromLang = ((LanguageView) m_spLanguageFrom.getSelectedItem()).getLanguage();
 		Language toLang = ((LanguageView) m_spLanguageTo.getSelectedItem()).getLanguage();
 
+		
 		if (result.Result.size() == 0) {
 			new Translator(new Word(currentStr.trim()), fromLang, toLang, this);
 		} else {
+			ArrayList<TranslatedView> tViews = new ArrayList<TranslatedView>(result.Result.size());
 			for (Word word : result.Result) {
-				m_suggestionAdapter.add(new TranslatedView(word));
+				tViews.add(new TranslatedView(word));				
 				new Translator(word, fromLang, toLang, this);
 			}
+			
+			m_suggestionAdapter.addAll(tViews);
 		}
 
 		invalidateTxtAddDropdown();
+		
 	}
 
 	//
@@ -366,7 +382,7 @@ public class MemoListActivity extends GestureActivity implements ITranslateCompl
 
 	}
 
-	private class TxtAddTextEventHandler implements TextWatcher, OnItemClickListener {
+	private class TxtAddTextEventHandler implements TextWatcher, OnItemClickListener, OnScrollFinishedListener {
 		@Override
 		public void afterTextChanged(Editable s) {
 			String entry = s.toString();
@@ -400,6 +416,20 @@ public class MemoListActivity extends GestureActivity implements ITranslateCompl
 			}
 		}
 
+		@Override
+		public void onScrollFinished(float x, float y, int yPosition) {
+			
+			if(yPosition != ScrollableModifiableComplexTextAdapter.Y_BOTTOM) {
+				return;
+			}
+			
+			int minYScrollToLoadNewWords = -10;
+			if(y < minYScrollToLoadNewWords) {
+				m_wordsFinder.findWordsStartingWith(m_lastLookup.getLastWord(),
+						((LanguageView) m_spLanguageFrom.getSelectedItem()).getLanguage(), MemoListActivity.this, m_lastSearchLimit, m_searchLimit);
+				m_lastSearchLimit += m_searchLimit;
+			}	
+		}
 	}
 
 	private class LstWordsEventHandler implements OnItemClickListener {
@@ -495,32 +525,45 @@ public class MemoListActivity extends GestureActivity implements ITranslateCompl
 		m_suggestionAdapter.notifyDataSetChanged();
 
 		// Show dropdown
-		Editable entry = m_txtAdd.getText();
-		m_txtAdd.removeTextChangedListener(m_TxtAddTextEventHandler);
-		m_txtAdd.setText(entry.toString());
-		m_txtAdd.setSelection(m_txtAdd.length());
-		m_txtAdd.addTextChangedListener(m_TxtAddTextEventHandler);
+//		I can't remember why I used this instead
+//		Editable entry = m_txtAdd.getText();
+//		m_txtAdd.removeTextChangedListener(m_TxtAddTextEventHandler);
+//		m_txtAdd.setText(entry.toString());
+//		m_txtAdd.setSelection(m_txtAdd.length());
+//		m_txtAdd.addTextChangedListener(m_TxtAddTextEventHandler);
+		m_txtAdd.showDropDown();
 	}
-
+	
 	//
 	// Internal classes
 	//
 
-	private class DelayedLookup extends AsyncTask<String, Void, Void> {
+	private class DelayedLookup extends WorkerThread<String, Void, Void> {
 
+		private Word m_lastWord;
+		
 		@Override
 		protected Void doInBackground(String... word) {
-
+			Thread.currentThread().setName("DelayedLookup");
+			
+			m_lastSearchLimit = 0;
+			
 			try {
 				Thread.sleep(m_delayedLookupDelay);
 			} catch (InterruptedException e) {
 				return null;
 			}
-
-			m_wordsFinder.findWordsStartingWith(new Word(word[0]),
-					((LanguageView) m_spLanguageFrom.getSelectedItem()).getLanguage(), MemoListActivity.this);
-
+			m_lastWord = new Word(word[0]);
+			
+			m_wordsFinder.findWordsStartingWith(m_lastWord,
+					((LanguageView) m_spLanguageFrom.getSelectedItem()).getLanguage(), MemoListActivity.this, m_lastSearchLimit, m_searchLimit);
+			
+			m_lastSearchLimit += m_searchLimit;
 			return null;
+		}
+
+		public Word getLastWord() {
+			return m_lastWord;
 		}
 
 	}
@@ -534,10 +577,12 @@ public class MemoListActivity extends GestureActivity implements ITranslateCompl
 			m_backPressed = true;
 
 			// Clear m_backPressed after one second
-			new AsyncTask<Void, Void, Boolean>() {
-
+			new WorkerThread<Void, Void, Boolean>() {
+				
 				@Override
 				protected Boolean doInBackground(Void... params) {
+					Thread.currentThread().setName("CloseAppThread");
+					
 					try {
 						Thread.sleep(2000);
 						return Boolean.valueOf(false);

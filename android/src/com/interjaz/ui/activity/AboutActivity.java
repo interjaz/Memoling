@@ -1,12 +1,8 @@
 package com.interjaz.ui.activity;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
-import android.view.SurfaceHolder;
 import android.widget.Button;
 import android.widget.TextView;
 

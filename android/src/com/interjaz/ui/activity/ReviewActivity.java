@@ -3,13 +3,13 @@ package com.interjaz.ui.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.KeyEvent;
@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.interjaz.R;
+import com.interjaz.WorkerThread;
 import com.interjaz.entity.Memo;
 import com.interjaz.entity.MemoAdapter;
 import com.interjaz.entity.Word;
@@ -38,7 +39,7 @@ public class ReviewActivity extends Activity implements OnEditorActionListener {
 	private final static int InvalidNotificationId = -1;
 
 	private static ResourceManager m_resources;
-	
+
 	private TextView m_lblResult;
 	private TextView m_txtMemo1;
 	private EditText m_txtMemo2;
@@ -61,7 +62,7 @@ public class ReviewActivity extends Activity implements OnEditorActionListener {
 		setContentView(R.layout.activity_review);
 
 		m_resources = new ResourceManager(this);
-		
+
 		m_lblResult = (TextView) findViewById(R.id.review_lblResult);
 		m_lblResult.setTypeface(m_resources.getThinFont());
 		m_txtMemo1 = (TextView) findViewById(R.id.review_txtMemo1);
@@ -130,7 +131,7 @@ public class ReviewActivity extends Activity implements OnEditorActionListener {
 		}
 
 		m_origWord = toGuess;
-		
+
 		m_txtMemo1.setText(visible.getWord());
 		m_lblLang1.setText(visible.getLanguage().getName());
 		m_lblLang2.setText(toGuess.getLanguage().getName());
@@ -164,15 +165,15 @@ public class ReviewActivity extends Activity implements OnEditorActionListener {
 		@Override
 		public void onClick(View v) {
 
-			String original = m_origWord.getWord().trim().toLowerCase();
-			String user = m_txtMemo2.getText().toString().trim().toLowerCase();
+			String original = m_origWord.getWord().trim().toLowerCase(Locale.US);
+			String user = m_txtMemo2.getText().toString().trim().toLowerCase(Locale.US);
 
 			boolean match = user.equals(original);
 
 			m_memo.setDisplayed(m_memo.getDisplayed() + 1);
 			m_memo.setLastReviewed(new Date());
 			if (match) {
-				if(m_memo.getWordA().equals(m_origWord)) {
+				if (m_memo.getWordA().equals(m_origWord)) {
 					m_memo.setCorrectAnsweredWordA(m_memo.getCorrectAnsweredWordA() + 1);
 				} else {
 					m_memo.setCorrectAnsweredWordB(m_memo.getCorrectAnsweredWordB() + 1);
@@ -195,7 +196,7 @@ public class ReviewActivity extends Activity implements OnEditorActionListener {
 		new NewMemoAnimation().execute();
 	}
 
-	private class NewMemoAnimation extends AsyncTask<Void, Float, Void> {
+	private class NewMemoAnimation extends WorkerThread<Void, Float, Void> {
 
 		@Override
 		protected Void doInBackground(Void... params) {
@@ -229,7 +230,7 @@ public class ReviewActivity extends Activity implements OnEditorActionListener {
 		new TxtResultAnimation().execute();
 	}
 
-	private class TxtResultAnimation extends AsyncTask<Void, Float, Void> {
+	private class TxtResultAnimation extends WorkerThread<Void, Float, Void> {
 
 		@Override
 		protected void onPostExecute(Void result) {
@@ -285,7 +286,7 @@ public class ReviewActivity extends Activity implements OnEditorActionListener {
 		new TxtVanishAnimation().execute();
 	}
 
-	private class TxtVanishAnimation extends AsyncTask<Void, Float, Void> {
+	private class TxtVanishAnimation extends WorkerThread<Void, Float, Void> {
 
 		@Override
 		protected Void doInBackground(Void... params) {

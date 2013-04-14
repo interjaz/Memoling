@@ -1,12 +1,9 @@
 package com.interjaz.sync;
 
 import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
-
-import org.json.JSONObject;
 
 import android.content.Context;
 

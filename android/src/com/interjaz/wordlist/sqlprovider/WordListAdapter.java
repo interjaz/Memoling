@@ -24,7 +24,7 @@ public class WordListAdapter extends SqliteAdapter {
 		return m_version;
 	}
 
-	public ArrayList<Word> findWord(Word word, Language language) {
+	public ArrayList<Word> findWord(Word word, Language language, int limitFrom, int limitTo) {
 		SQLiteDatabase db = null;
 		ArrayList<Word> suggestions = new ArrayList<Word>();
 		
@@ -47,13 +47,14 @@ public class WordListAdapter extends SqliteAdapter {
 			}
 
 			String query = "SELECT `Word` FROM `WordLists`"
-					+ " WHERE `LanguageIso639` = ? AND `Word` LIKE ? LIMIT 10";
+					+ " WHERE `LanguageIso639` = ? AND `Word` LIKE ? LIMIT ?,?";
 			
 
 			Cursor data = null;
+
 			try {
 				data = db.rawQuery(query,
-						new String[] { dbLanguage, strWord + "%" });
+						new String[] { dbLanguage, strWord + "%", Integer.toString(limitFrom), Integer.toString(limitTo) });
 
 				if (!data.moveToFirst()) {
 					return suggestions;
@@ -70,6 +71,8 @@ public class WordListAdapter extends SqliteAdapter {
 					data.close();
 				}
 			}
+			
+			
 		} finally {
 			if (db != null) {
 				close();

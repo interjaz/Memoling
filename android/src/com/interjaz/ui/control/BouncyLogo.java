@@ -1,25 +1,18 @@
 package com.interjaz.ui.control;
 
-import java.util.Random;
-
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Point;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 
 import com.interjaz.R;
+import com.interjaz.WorkerThread;
 import com.interjaz.helper.Helper;
 
 public class BouncyLogo extends View implements Runnable {
@@ -55,7 +48,7 @@ public class BouncyLogo extends View implements Runnable {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		
-		new AsyncTask<Void,Void,Void>() {
+		new WorkerThread<Void,Void,Void>() {
 
 			private Bitmap m_bmpLogoCopy;
 			

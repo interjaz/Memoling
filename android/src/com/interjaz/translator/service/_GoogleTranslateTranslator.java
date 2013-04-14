@@ -22,6 +22,7 @@ public class _GoogleTranslateTranslator implements IHttpRequestTaskComplete {
 	private Language m_from;
 	private Language m_to;
 	private ITranslateComplete m_onTranslateComplete;
+	private static int m_timeout = 3000;
 
 	public _GoogleTranslateTranslator(Word word, Language from, Language to,
 			ITranslateComplete onTranslateComplete) {
@@ -43,7 +44,7 @@ public class _GoogleTranslateTranslator implements IHttpRequestTaskComplete {
 
 			if (uri != null) {
 				// Make async-callback
-				new HttpGetRequestTask(uri, this).execute();
+				new HttpGetRequestTask(uri, this, m_timeout).execute();
 			}
 		} catch (UnsupportedEncodingException ex) {
 		} catch (URISyntaxException ex) {
@@ -94,6 +95,12 @@ public class _GoogleTranslateTranslator implements IHttpRequestTaskComplete {
 		}
 
 		return words;
+	}
+
+	@Override
+	public void onHttpRequestTimeout(Exception ex) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -8,14 +8,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.interjaz.R;
-import com.interjaz.R.array;
-import com.interjaz.R.id;
-import com.interjaz.R.layout;
 import com.interjaz.entity.StatisticsAdapter;
-import com.interjaz.helper.DateHelper;
 import com.interjaz.ui.ResourceManager;
 import com.interjaz.ui.control.BarGraph;
 

@@ -1,11 +1,5 @@
 package com.interjaz.ui.login;
 
-import com.interjaz.R;
-import com.interjaz.R.id;
-import com.interjaz.R.layout;
-import com.interjaz.R.menu;
-import com.interjaz.R.string;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -20,6 +14,8 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.interjaz.R;
 
 /**
  * Activity which displays a login screen to the user, offering registration as

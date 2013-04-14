@@ -1,7 +1,5 @@
 package com.interjaz.ui.fragment;
 
-import java.util.Calendar;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,8 +19,6 @@ import com.interjaz.ui.ResourceManager;
 public class StatisticsTabCombinedFragment extends Fragment {
 
 	private ResourceManager m_resources;
-
-	private Calendar m_calendar = Calendar.getInstance();
 
 	private StatisticsAdapter m_statisticsAdapter;
 	private Statistics m_statistics;

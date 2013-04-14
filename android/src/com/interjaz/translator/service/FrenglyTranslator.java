@@ -33,6 +33,7 @@ public class FrenglyTranslator implements IHttpRequestTaskComplete {
 	private Language m_from;
 	private Word m_word;
 	private ITranslateComplete m_onTranslatorResult;
+	private static int m_timeout = 3000;
 
 	public FrenglyTranslator(Word word, Language from, Language to,
 			ITranslateComplete onTranslatorResult) {
@@ -52,7 +53,7 @@ public class FrenglyTranslator implements IHttpRequestTaskComplete {
 			url.append("&password="
 					+ URLEncoder.encode(m_password, m_defaultEncode));
 
-			new HttpGetRequestTask(new URI(url.toString()), this).execute();
+			new HttpGetRequestTask(new URI(url.toString()), this, m_timeout).execute();
 
 		} catch (UnsupportedEncodingException ex) {
 		} catch (URISyntaxException ex) {
@@ -98,5 +99,11 @@ public class FrenglyTranslator implements IHttpRequestTaskComplete {
 		}
 
 		return words;
+	}
+
+	@Override
+	public void onHttpRequestTimeout(Exception ex) {
+		// TODO Auto-generated method stub
+		
 	}
 }

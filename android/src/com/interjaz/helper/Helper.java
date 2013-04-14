@@ -12,6 +12,7 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -116,5 +117,22 @@ public class Helper {
 		}
 
 		return output;
+	}
+	
+	public static class Profile {
+		private long start;
+		public void start() {
+			start = System.currentTimeMillis();
+		}
+		
+		public void stop() {
+			long last = System.currentTimeMillis() - start;
+			Log.e(":: PROFILE ::", Integer.toString((int)last));
+		}
+		
+		public void restart() {
+			stop();
+			start();
+		}
 	}
 }
