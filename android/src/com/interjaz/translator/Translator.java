@@ -1,5 +1,7 @@
 package com.interjaz.translator;
 
+import android.util.Log;
+
 import com.interjaz.Language;
 import com.interjaz.WorkerThread;
 import com.interjaz.entity.Word;
@@ -16,8 +18,8 @@ public class Translator implements ITranslateComplete {
 	private final static int MaxCache = 300;
 	private static CacheHelper<Word, TranslatorResult> m_cache = new CacheHelper<Word, TranslatorResult>(MaxCache);
 
-	public Translator(final Word word, final Language from, final Language to,
-			final ITranslateComplete onTranslateComplete) {
+	public Translator(Word word, Language from, Language to,
+			ITranslateComplete onTranslateComplete) {
 
 		m_word = new Word(word.getWord().trim());
 		m_from = from;

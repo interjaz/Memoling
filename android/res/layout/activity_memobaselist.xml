@@ -32,10 +32,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/navigation_button"
-            android:minHeight="40dp"
+            android:enabled="false"
             android:maxWidth="100dp"
+            android:minHeight="40dp"
             android:text="@string/memobaselist_lblSync"
             android:textSize="15sp" />
+
     </LinearLayout>
     
     <ListView

@@ -169,6 +169,8 @@ public class MemoListActivity extends GestureActivity implements ITranslateCompl
 		m_lstWords.setOnItemClickListener(new LstWordsEventHandler());
 		registerForContextMenu(m_lstWords);
 		m_lstWords.setOnTouchListener(this);
+		m_lstWords.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+		m_lstWords.setStackFromBottom(true);
 
 		// Word finder
 		m_wordsFinder = new WordsFinder(this);
@@ -308,11 +310,12 @@ public class MemoListActivity extends GestureActivity implements ITranslateCompl
 		} else {
 			ArrayList<TranslatedView> tViews = new ArrayList<TranslatedView>(result.Result.size());
 			for (Word word : result.Result) {
-				tViews.add(new TranslatedView(word));				
-				new Translator(word, fromLang, toLang, this);
-			}
-			
+				tViews.add(new TranslatedView(word));			
+			}		
 			m_suggestionAdapter.addAll(tViews);
+			for(int i=0;i<result.Result.size();i++) {	
+				new Translator(result.Result.get(i), fromLang, toLang, this);				
+			}
 		}
 
 		invalidateTxtAddDropdown();
@@ -374,7 +377,10 @@ public class MemoListActivity extends GestureActivity implements ITranslateCompl
 
 			if (m_memoAdapter.add(memo) == -1) {
 				Toast.makeText(MemoListActivity.this, m_saveErrorMessage, Toast.LENGTH_SHORT).show();
+				return;
 			}
+			
+			m_txtAdd.setText("");
 
 			m_wordsAdapter.add(new MemoView(memo));
 			m_wordsAdapter.notifyDataSetChanged();

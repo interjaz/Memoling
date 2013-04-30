@@ -13,6 +13,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import android.os.Handler;
 import android.os.Message;
 
+// Unifies thread pool workers on android across different versions
+// Starting from API11+ you can use AsyncTask<?,?,?>.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, params)
 public abstract class WorkerThread<TExecute, TProgress, TResult> {
 
 	private final static WorkerThreadPool s_threadPool;
@@ -21,17 +23,12 @@ public abstract class WorkerThread<TExecute, TProgress, TResult> {
 	private final static int THREAD_FINISHED = 0;
 	private final static int THREAD_PUBLISH = 1;
 
-	private final static Object s_lock;
 	private boolean m_cancelled;
 	private Thread m_workerThread;
 
 	private TExecute[] m_params;
-	private static Object s_result;
-	private static Object s_progress;
-	private static Object s_workerThread;
 
 	static {
-		s_lock = new Object();
 		s_uiHandler = new UiHandler();
 		s_threadPool = new WorkerThreadPool();
 	}
@@ -51,16 +48,8 @@ public abstract class WorkerThread<TExecute, TProgress, TResult> {
 	}
 
 	public void publishProgress(TProgress... progress) {
-		synchronized (s_lock) {
-			s_workerThread = WorkerThread.this;
-			s_progress = progress;
-			s_uiHandler.sendEmptyMessage(THREAD_PUBLISH);
-
-			try {
-				s_lock.wait();
-			} catch (InterruptedException e) {
-			}
-		}
+		Message msg = s_uiHandler.obtainMessage(THREAD_PUBLISH, new WorkerThreadResult<TProgress[]>(WorkerThread.this, progress));
+		msg.sendToTarget();	
 	}
 
 	public void cancel(boolean mayInterruptIfRunning) {
@@ -76,8 +65,8 @@ public abstract class WorkerThread<TExecute, TProgress, TResult> {
 	public boolean isCancelled() {
 		return m_cancelled;
 	}
-	
-	protected void onPreExecute() {	
+
+	protected void onPreExecute() {
 	}
 
 	private static class UiHandler extends Handler {
@@ -85,24 +74,27 @@ public abstract class WorkerThread<TExecute, TProgress, TResult> {
 		@SuppressWarnings("unchecked")
 		@Override
 		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			
+			Object[] progress;
+			Object result;
+			WorkerThread<Object, Object, Object> workerThread;
 
-			synchronized (s_lock) {
-				super.handleMessage(msg);
+			WorkerThreadResult<Object> threadResult = (WorkerThreadResult<Object>)msg.obj;
 
-				switch (msg.what) {
-				case THREAD_PUBLISH:
-					((WorkerThread<Object, Object, Object>) s_workerThread).onProgressUpdate(s_progress);
-					break;
-				case THREAD_FINISHED:
-					((WorkerThread<Object, Object, Object>) s_workerThread).onPostExecute(s_result);
-					break;
-				}
+			workerThread = threadResult.m_thread;
 
-				s_lock.notify();
+			switch (msg.what) {
+			case THREAD_PUBLISH:
+				progress = (Object[])threadResult.m_result;
+				workerThread.onProgressUpdate(progress);
+				break;
+			case THREAD_FINISHED:
+				result = threadResult.m_result;
+				workerThread.onPostExecute(result);
+				break;
 			}
-
 		}
-
 	}
 
 	private class WorkerThreadRunnable implements Runnable {
@@ -113,22 +105,25 @@ public abstract class WorkerThread<TExecute, TProgress, TResult> {
 				return;
 			}
 			m_workerThread = Thread.currentThread();
-			
+
 			TResult result = doInBackground(m_params);
 
-			synchronized (s_lock) {
-				s_workerThread = WorkerThread.this;
-				s_result = result;
-				s_uiHandler.sendEmptyMessage(THREAD_FINISHED);
-				try {
-					s_lock.wait();
-				} catch (InterruptedException e) {
-				}
-			}
+			Message msg = s_uiHandler.obtainMessage(THREAD_FINISHED, new WorkerThreadResult<TResult>(WorkerThread.this, result));
+			msg.sendToTarget();
 		}
 
 	}
 
+	private static class WorkerThreadResult<TResult> {
+		public WorkerThread m_thread;
+		public TResult m_result;
+		
+		public WorkerThreadResult(WorkerThread thread, TResult result) {
+			m_thread = thread;
+			m_result = result;
+		}
+	}
+	
 	private static class WorkerThreadPool extends ThreadPoolExecutor {
 
 		private final static BlockingQueue<Runnable> s_queue;

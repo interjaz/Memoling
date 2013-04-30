@@ -94,6 +94,7 @@
     <string name="memobaselist_lblSync">Sync</string>
     <string name="memobaselist_setting_about">About (Donate)</string>
     <string name="memobaselist_setting_onlineLib">Online libraries</string>
+    <string name="memobaselist_fbFailed">Failed to obtain credentials.</string>
 
     <!-- MemoList Activity -->
     <string name="memolist_btnSave">Save</string>
@@ -130,10 +131,10 @@
     <string name="about_donatePlease">Please donate</string>
     <string name="about_donateReason">Why donate?\n1. So <b>you</b> can use it - covers translations and hosting costs.\n2. Keep application ad-free and up to date.\n3. So <b>I</b> can get filthy rich.</string>
     <string name="about_lblDonate">Donate</string>
-	<string name="about_uselessFacts">Useless facts</string>
-	<string name="about_uselessFactsContent">Device side was developed in Java and C#. Web services in PHP. There is approx. <b>%1$d</b> line of code. Development time took more than 100+ hours. No animals were harmed during software development. You are visiting <b>%2$s</b> time this page, have you considered donation? If you need random numbers: 1, 1, 1, 1 &#8211; your welcome (truly random). The biggest even prime number: 2. While you are reading this text %3$1.4f Americans got injured using toilet. Coconuts kill humans every 2.433333333333 days.</string>
+    <string name="about_uselessFacts">Useless facts</string>
+    <string name="about_uselessFactsContent">Device side was developed in Java and C#. Web services in PHP. There is approx. <b>%1$d</b> line of code. Development time took more than 100+ hours. No animals were harmed during software development. You are visiting <b>%2$s</b> time this page, have you considered donation? If you need random numbers: 1, 1, 1, 1 &#8211; your welcome (truly random). The biggest even prime number: 2. While you are reading this text %3$1.4f Americans got injured using toilet. Coconuts kill humans every 2.433333333333 days.</string>
     <string name="about_lblDonateDelux">Donate DELUX</string>
-	
+
     <!-- General -->
 
     <string name="app_name">Memoling</string>
@@ -167,5 +168,6 @@
     <string name="title_activity_test">TestActivity</string>
     <string name="title_activity_about">AboutActivity</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_fb_login">FbLoginActivity</string>
 
 </resources>

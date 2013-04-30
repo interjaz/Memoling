@@ -197,11 +197,12 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
             android:layout_below="@id/memobase_btnExport"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
+            android:enabled="false"
             android:text="@string/memobase_lblPublish"
             android:textSize="20sp" />
 

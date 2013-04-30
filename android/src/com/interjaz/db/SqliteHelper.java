@@ -95,7 +95,7 @@ public class SqliteHelper {
 		return m_context;
 	}
 
-	public SQLiteDatabase getDatabase() {
+	public synchronized SQLiteDatabase getDatabase() {
 		if (m_database == null) {
 			m_database = SQLiteDatabase.openDatabase(getDatabasePath(), null, SQLiteDatabase.NO_LOCALIZED_COLLATORS
 					| SQLiteDatabase.OPEN_READWRITE);

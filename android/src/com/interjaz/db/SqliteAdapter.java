@@ -6,66 +6,66 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public abstract class SqliteAdapter {
 
 	protected static final String Tag = "SqliteAdapter";
 
-	private SqliteHelper m_sqliteHelper;
-
-	private static Hashtable<String, Integer> m_tableHandle = new Hashtable<String, Integer>();
+	private static Hashtable<String, TableHandle> m_tableHandle = new Hashtable<String, TableHandle>();
 
 	private static AtomicLong m_globalSyncId = new AtomicLong();
 
 	private static long m_localSyncId = 0;
 
-	public SqliteAdapter(Context context, String databaseName, int version) throws IOException {
-		m_sqliteHelper = new SqliteHelper(context, databaseName, version);
+	private String m_databaseName;
 
-		synchronized (m_tableHandle) {
+	public SqliteAdapter(Context context, String databaseName, int version) throws IOException {
+		m_databaseName = databaseName;
+		
+		synchronized (m_tableHandle) {			
 			if (!m_tableHandle.containsKey(databaseName)) {
-				m_tableHandle.put(databaseName, Integer.valueOf(0));
+				TableHandle handle = new TableHandle();
+				handle.ActiveConnections = 0;
+				handle.SqliteHelper = new SqliteHelper(context, databaseName, version);
+				
+				m_tableHandle.put(databaseName, handle);
 			}
 		}
 	}
 
 	protected SQLiteDatabase getDatabase() {
+		TableHandle handle;
 		synchronized (m_tableHandle) {
-			String key = m_sqliteHelper.getDbName();
-
-			Integer opened = m_tableHandle.get(key);
-			m_tableHandle.remove(key);
-			m_tableHandle.put(key, Integer.valueOf(opened.intValue() + 1));
+			handle = m_tableHandle.get(m_databaseName);
+			handle.ActiveConnections += 1;
 		}
 
-		return m_sqliteHelper.getDatabase();
+		return handle.SqliteHelper.getDatabase();
 	}
 
 	protected String getDatabaseName() {
-		return m_sqliteHelper.getDbName();
+		return m_databaseName;
 	}
 
 	protected Context getContext() {
-		return m_sqliteHelper.getContext();
+		return m_tableHandle.get(m_databaseName).SqliteHelper.getContext();
 	}
 
 	public final void close() {
-
 		boolean close = false;
 
 		synchronized (m_tableHandle) {
-			String key = m_sqliteHelper.getDbName();
 
-			Integer opened = m_tableHandle.get(key);
-			m_tableHandle.remove(key);
-			m_tableHandle.put(key, Integer.valueOf(opened.intValue() - 1));
+			TableHandle handle = m_tableHandle.get(m_databaseName);
+			handle.ActiveConnections -= 1;
 
-			if (opened.intValue() == 1) {
+			if (handle.ActiveConnections == 0) {
 				close = true;
 			}
 
 			if (close) {
-				m_sqliteHelper.close();
+				handle.SqliteHelper.close();
 			}
 		}
 	}
@@ -80,6 +80,11 @@ public abstract class SqliteAdapter {
 
 	protected final boolean inSync() {
 		return m_localSyncId == m_globalSyncId.get();
+	}
+	
+	private static class TableHandle {
+		public int ActiveConnections;
+		public SqliteHelper SqliteHelper; 
 	}
 
 }

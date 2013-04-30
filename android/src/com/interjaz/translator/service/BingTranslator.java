@@ -13,6 +13,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.interjaz.Language;
 import com.interjaz.entity.Word;
 import com.interjaz.translator.ITranslateComplete;
@@ -147,7 +149,7 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 	}
 
 	private void translate() {
-		try {
+		try {			
 			StringBuilder url = new StringBuilder(m_bingTranslateUrl);
 			url.append("?appId=" + URLEncoder.encode("Bearer " + m_token, m_defaultEncode));
 			url.append("&text=" + URLEncoder.encode(m_word.getWord(), m_defaultEncode));

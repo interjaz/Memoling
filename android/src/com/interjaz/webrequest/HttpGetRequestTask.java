@@ -59,7 +59,7 @@ public class HttpGetRequestTask extends WorkerThread<Void, Void, String> {
 			HttpClient httpclient = new DefaultHttpClient(httpParameters);
 			HttpGet request = new HttpGet(m_uri);
 			HttpResponse response;
-
+			
 			if (m_headers != null && m_headers.size() > 0) {
 				for (NameValuePair header : m_headers) {
 					request.setHeader(header.getName(), header.getValue());

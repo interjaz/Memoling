@@ -73,8 +73,13 @@
         </activity>
         <activity
             android:name="com.interjaz.ui.activity.AboutActivity"
-            android:label="@string/title_activity_about" 
-            android:theme="@style/FullscreenTheme">
+            android:label="@string/title_activity_about"
+            android:theme="@style/FullscreenTheme" >
+        </activity>
+        <activity
+            android:name="com.interjaz.ui.activity.FbLoginActivity"
+            android:label="@string/title_activity_fb_login" 
+            android:theme="@style/FullscreenTheme" >
         </activity>
 
         <service android:name="com.interjaz.service.SchedulerService" >
