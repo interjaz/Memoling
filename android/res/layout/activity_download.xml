@@ -1,0 +1,134 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp"
+        tools:context=".DownloadActivity" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:background="#55000000" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/download_phrase" />
+
+            <Button
+                android:id="@+id/download_btnSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="40.0dip" 
+                android:layout_alignBaseline="@+id/textView1"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:text="@string/download_search"/>
+
+            <EditText
+                android:id="@+id/download_txtPhrase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/textView1"
+                android:layout_marginLeft="24dp"
+                android:layout_toLeftOf="@id/download_btnSearch"
+                android:layout_marginRight="5dp"
+                android:layout_toRightOf="@+id/textView1"
+                android:ems="10" >
+
+            </EditText>
+
+            <Spinner
+                android:id="@+id/download_cbxGenre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/download_txtPhrase"
+                android:layout_alignLeft="@id/download_txtPhrase"
+                android:layout_alignRight="@+id/download_btnSearch"
+                android:layout_marginTop="10dp"
+                tools:listitem="@layout/adapter_textdropdown" />
+            
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView1"
+                android:layout_alignRight="@+id/textView1"
+                android:layout_alignTop="@id/download_cbxGenre"
+                android:paddingTop="8dp"
+                android:text="@string/download_genre" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/textView1"
+                android:layout_alignRight="@id/download_btnSearch"
+                android:layout_below="@id/textView2"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+					android:paddingTop="8dp"
+                    android:layout_weight="1.5"
+                    android:text="@string/download_langA" />
+
+                <Spinner
+                    android:id="@+id/download_cbxLanguageA"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    tools:listitem="@layout/adapter_textdropdown" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+					android:paddingTop="8dp"
+                    android:layout_weight="1.5"
+                    android:paddingLeft="5dp"
+                    android:text="@string/download_langB" />
+
+                <Spinner
+                    android:id="@+id/download_cbxLanguageB"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    tools:listitem="@layout/adapter_textdropdown" />
+            </LinearLayout>
+                
+            <ListView
+                android:id="@+id/download_lstPublished"
+                android:background="#22000000"
+                android:layout_marginTop="15dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/textView1"
+                android:layout_alignParentBottom="true"
+                android:layout_alignRight="@id/download_btnSearch"
+                android:layout_below="@id/linearLayout1"
+                android:layout_marginBottom="10dp"
+                tools:listitem="@layout/adapter_download_publishedview" >
+
+            </ListView>
+
+        </RelativeLayout>
+    </FrameLayout>
+
+</RelativeLayout>

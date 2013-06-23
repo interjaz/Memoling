@@ -135,7 +135,7 @@
             android:paddingTop="15dp"
             android:text="@string/review_lblCorrect"
             android:textColor="#00000000"
-            android:textSize="40sp" />
+            android:textSize="32sp" />
     </RelativeLayout>
 
 </LinearLayout>

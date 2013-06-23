@@ -1,0 +1,2 @@
+module FacebookLocationHelper
+end

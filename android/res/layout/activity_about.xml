@@ -1,103 +1,98 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
+    android:fillViewport="true"
     android:padding="10dp"
     tools:context=".AboutActivity" >
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="#55000000"
         android:padding="10dp" >
 
-        <RelativeLayout
+        <app.memoling.android.ui.control.BouncyLogo
+            android:id="@+id/about_surface"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/textView1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="100dp"
+            android:gravity="center"
+            android:text="@string/about_donatePlease"
+            android:textSize="40sp" />
 
-            <com.interjaz.ui.control.BouncyLogo
-                android:id="@+id/about_surface"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp" />
-            
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="100dp"
-                android:gravity="center"
-                android:text="@string/about_donatePlease"
-                android:textSize="40sp" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/textView1"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/about_donateReason"
+            android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/textView1"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="@string/about_donateReason"
-                android:textSize="20sp" />
-            
-            <Button 
-                android:id="@+id/about_btnDonate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-				android:layout_centerHorizontal="true"
-                android:layout_below="@id/textView2"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:text="@string/about_lblDonate"
-                android:textSize="18sp" />
-            
-            <Button 
-                android:id="@+id/about_btnDonateDelux"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/about_btnDonate"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:gravity="center"
-                android:text="@string/about_lblDonateDelux"
-                android:background="@drawable/btn_donate"
-                android:textColor="#FF665200"
-                android:textSize="20sp" />
+        <Button
+            android:id="@+id/about_btnDonate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/about_lblDonate"
+            android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/about_btnDonateDelux"
-                android:layout_marginTop="40dp"
-                android:gravity="center"
-                android:text="@string/about_uselessFacts"
-                android:textSize="20sp" />
+        <Button
+            android:id="@+id/about_btnDonateDelux"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/about_btnDonate"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_donate"
+            android:gravity="center"
+            android:text="@string/about_lblDonateDelux"
+            android:textColor="#FF665200"
+            android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/about_lblUselessFactsContent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/textView3"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="@string/about_uselessFactsContent"
-                android:textSize="18sp" />
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/about_btnDonateDelux"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:text="@string/about_uselessFacts"
+            android:textSize="20sp" />
 
-        </RelativeLayout>
-    </ScrollView>
+        <TextView
+            android:id="@+id/about_lblUselessFactsContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/textView3"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/about_uselessFactsContent"
+            android:textSize="18sp" />
+    </RelativeLayout>
 
-</FrameLayout>
+</ScrollView>

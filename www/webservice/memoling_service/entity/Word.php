@@ -1,0 +1,22 @@
+<?php
+require_once("../Init.php");
+
+class Word {
+	public $WordId;
+	public $Word;
+	public $LanguageIso639;	
+
+	public function decode($json) {
+		$obj = is_object($json)?$json:json_decode($json);
+		
+		if($obj == null) {
+			throw new JsonException();
+		}
+		
+		$this->WordId = isset($obj->wordId)?$obj->wordId:null;
+		$this->Word = isset($obj->word)?$obj->word:null;
+		$this->LanguageIso639= isset($obj->languageIso639)?$obj->languageIso639:null;		
+	}
+}
+
+?>

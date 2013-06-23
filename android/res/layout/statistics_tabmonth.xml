@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:padding="10dp" >
 
     <LinearLayout
@@ -16,7 +17,7 @@
             android:textSize="40sp"
             android:text="@string/statisitcs_monthTitle" />
 
-        <com.interjaz.ui.control.BarGraph
+        <app.memoling.android.ui.control.BarGraph
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/statistics_barMonth"
             android:layout_width="match_parent"

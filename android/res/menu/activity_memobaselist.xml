@@ -14,12 +14,12 @@
         android:icon="@drawable/ic_menu_preferences"
         android:title="@string/memobaselist_setting_statistics"/>
     
-    <item
+    <!--  <item
         android:id="@+id/main_menu_settings"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
         android:icon="@drawable/ic_menu_preferences"
-        android:title="@string/memobaselist_setting_settings"/>
+        android:title="@string/memobaselist_setting_settings"/> -->
     <item
         android:id="@+id/main_menu_about"
         android:orderInCategory="100"

@@ -27,7 +27,7 @@ namespace MemolingTools.VariableTranslator
             String str1 = "";
             String str2 = "";
             String str3 = "\tpublic String serialize() throws JSONException {" + System.Environment.NewLine + "\t\tJSONObject json = new JSONObject();" + System.Environment.NewLine+ System.Environment.NewLine;
-            String str4 = "\tpublic static XXX deserialize(String serialized) throws JSONException {" + System.Environment.NewLine + "\t\tJSONObject json = new JSONObject(serialized);" + System.Environment.NewLine +"\t\tXXX object = new XXX();" + System.Environment.NewLine + System.Environment.NewLine;
+            String str4 = "\tpublic XXX deserialize(JSONObject json) throws JSONException {" + System.Environment.NewLine + System.Environment.NewLine;
 
 
             foreach(string line in str.Split(new string[] { System.Environment.NewLine }, StringSplitOptions.None)) {
@@ -82,7 +82,7 @@ namespace MemolingTools.VariableTranslator
                             str2 += System.Environment.NewLine;
 
                             str3 += "\t\tjson.put(\"" + word + "\", " + word + ");" + System.Environment.NewLine;
-                            str4 += "\t\tobject." + word + " = json.get" + varJType + "(\"" + word + "\");" + System.Environment.NewLine;
+                            str4 += "\t\t" + word + " = json.get" + varJType + "(\"" + word + "\");" + System.Environment.NewLine;
 
                             break;
                         }
@@ -94,7 +94,7 @@ namespace MemolingTools.VariableTranslator
 
             }
             str3 += System.Environment.NewLine + "\t\treturn json.toString();" + System.Environment.NewLine + "\t}" + System.Environment.NewLine;
-            str4 += System.Environment.NewLine + "\t\treturn object;" + System.Environment.NewLine + "\t}" + System.Environment.NewLine;
+            str4 += System.Environment.NewLine + "\t\treturn this;" + System.Environment.NewLine + "\t}" + System.Environment.NewLine;
 
 
             return str1 + str2 + str3 +  System.Environment.NewLine + str4;
