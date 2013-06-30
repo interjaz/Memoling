@@ -7,7 +7,7 @@ class MemoBaseAdapter extends DbAdapter {
 		
 		$db = DbAdapter::connect();
 		
-		$stm = $db->prepare("SELECT * FROM MemoBases");
+		$stm = $db->prepare("SELECT * FROM memoling_MemoBases");
 		$stm->execute();
 		
 		$list = array();

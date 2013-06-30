@@ -72,6 +72,7 @@ class Webservice {
 
 		try {
 			$reflectionMethod = new ReflectionMethod($this, $action);
+			Log::save("Method invoked: " . $action, null, Log::PRIO_FLOW);
 		} catch(ReflectionException $ex) {
 			Log::save("Invoking unknown method", $ex);
 			$this->httpResponse(Webservice::RESPONSE_NOT_FOUND);
@@ -81,8 +82,8 @@ class Webservice {
 		$this->httpResponse(Webservice::RESPONSE_OK);
 		try {
 			return $reflectionMethod->invoke($this);
-		} catch(Exception $e) {
-			Log::save("Uncaught Exception", $e);
+		} catch(Exception $ex) {
+			Log::save("Uncaught Exception", $ex, Log::PRIO_HIGH);
 			throw $e;
 		}
 	}

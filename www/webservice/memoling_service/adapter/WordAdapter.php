@@ -7,7 +7,7 @@ class WordAdapter extends DbAdapter {
 		
 		$db = DbAdapter::connect();
 		
-		$stm = $db->prepare("SELECT * FROM Words");
+		$stm = $db->prepare("SELECT * FROM memoling_Words");
 		$stm->execute();
 		
 		$list = array();

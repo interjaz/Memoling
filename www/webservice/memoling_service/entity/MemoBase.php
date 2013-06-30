@@ -39,6 +39,7 @@ class MemoBase {
 		$builder = new JsonBuilder();
 		
 		$builder->put("name", $this->Name);
+		$builder->put("memos", $this->Memos);
 		
 		return $builder->__toString();
 	}

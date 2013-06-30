@@ -17,6 +17,15 @@ class Word {
 		$this->Word = isset($obj->word)?$obj->word:null;
 		$this->LanguageIso639= isset($obj->languageIso639)?$obj->languageIso639:null;		
 	}
+	
+	public function encode() {
+		$builder = new JsonBuilder();
+		
+		$builder->put("word", $this->Word);
+		$builder->put("languageIso639", $this->LanguageIso639);
+		
+		return $builder->__toString();
+	}
 }
 
 ?>

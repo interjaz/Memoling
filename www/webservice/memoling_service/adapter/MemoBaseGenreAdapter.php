@@ -6,7 +6,7 @@ class MemoBaseGenreAdapter extends DbAdapter {
 	public function getAll() {
 		
 		$db = parent::connect();
-		$stm = $db->prepare("SELECT * FROM MemoBaseGenres");
+		$stm = $db->prepare("SELECT * FROM memoling_MemoBaseGenres");
 		$stm->execute();
 		
 		$list = array();

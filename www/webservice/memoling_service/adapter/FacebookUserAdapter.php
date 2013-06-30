@@ -6,7 +6,7 @@ class FacebookUserAdapter extends DbAdapter {
 	public function getAll() {
 		$db = parent::connect();
 		
-		$stm = $db->prepare("SELECT * FROM FacebookUsers");
+		$stm = $db->prepare("SELECT * FROM memoling_FacebookUsers");
 		$result = $stm->execute();
 		
 		$list = array();
@@ -42,7 +42,7 @@ class FacebookUserAdapter extends DbAdapter {
 			$updatedTime = $this->userUpdatedTime($db, $facebookUser);
 		}
 		catch(Exception $ex) {
-			Log::save("Exception", $ex);
+			Log::save("Exception", $ex, Log::PRIO_HIGH);
 			return false;
 		}
 						
@@ -72,7 +72,7 @@ class FacebookUserAdapter extends DbAdapter {
 				
 			} catch(Exception $ex) {
 				$db->rollBack();
-				Log::save("Exception", $ex);
+				Log::save("Exception", $ex, Log::PRIO_HIGH);
 				return false;
 			}
 						
@@ -107,7 +107,7 @@ class FacebookUserAdapter extends DbAdapter {
 					$db->commit();
 				} catch (Exception $ex) {
 					$db->rollBack();
-					Log::save("Exception", $ex);
+					Log::save("Exception", $ex, Log::PRIO_HIGH);
 					return false;
 				}
 			}
@@ -120,7 +120,7 @@ class FacebookUserAdapter extends DbAdapter {
 		$query = "SELECT
 					FacebookLocationId
 				  FROM 
-					FacebookLocations
+					memoling_FacebookLocations
 				  WHERE
 					FacebookLocationId = :FLid
 				";
@@ -137,7 +137,7 @@ class FacebookUserAdapter extends DbAdapter {
 	
 	private function locationCreate($db, $facebookLocation) {
 		$query = "INSERT INTO 
-					FacebookLocations
+					memoling_FacebookLocations
 				  VALUES(:Fid,:Name,CURRENT_TIMESTAMP)";
 		
 		$stm = $db->prepare($query);
@@ -152,7 +152,7 @@ class FacebookUserAdapter extends DbAdapter {
 		$query = "SELECT
 					FacebookUserId, UpdatedTime
 				  FROM
-					FacebookUsers
+					memoling_FacebookUsers
 				  WHERE
 					FacebookUserId = :FacebookUserId";
 		
@@ -174,7 +174,7 @@ class FacebookUserAdapter extends DbAdapter {
 	private function userCreate($db, $facebookUser) {
 
 		$query = "INSERT INTO
-						FacebookUsers
+						memoling_FacebookUsers
 					  VALUES(:Fid,:Name,:FirstName,:LastName,:Link,:Username,:Hid,:Lid,:Gender,:Timezone,:Locale,:Verified,:UpdatedTime,CURRENT_TIMESTAMP)";
 		$stm = $db->prepare($query);
 				
@@ -191,9 +191,7 @@ class FacebookUserAdapter extends DbAdapter {
 		$stm->bindParam(":Locale", $facebookUser->Locale);
 		$stm->bindParam(":Verified", $facebookUser->Verified, PDO::PARAM_BOOL);
 		$stm->bindParam(":UpdatedTime", $facebookUser->UpdatedTime);
-		if(!$stm->execute()) {
-			var_dump($facebookUser);
-			
+		if(!$stm->execute()) {			
 			throw new SqlException("Failed to create FacebookUser", $db);
 		}
 		
@@ -203,7 +201,7 @@ class FacebookUserAdapter extends DbAdapter {
 		
 		// Update user
 		$query = "UPDATE
-					FacebookUsers
+					memoling_FacebookUsers
 				  SET
 					Name = :Name,
 					FirstName = :FirstName,

@@ -1,78 +1,461 @@
-16-06-13 04:55:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","timezone":"1","username":"bartosz.bodzon.5","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","name":"Bartosz Bodzon","locationId":"106076586099038","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04 0000","facebookUserId":"100002530762250"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 04:57:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","timezone":"1","username":"bartosz.bodzon.5","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","name":"Bartosz Bodzon","locationId":"106076586099038","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04 0000","facebookUserId":"100002530762250"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 04:58:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","timezone":"1","username":"bartosz.bodzon.5","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","name":"Bartosz Bodzon","locationId":"106076586099038","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04 0000","facebookUserId":"100002530762250"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 04:58:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","timezone":"1","username":"bartosz.bodzon.5","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","name":"Bartosz Bodzon","locationId":"106076586099038","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04 0000","facebookUserId":"100002530762250"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 05:12:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz體 Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 05:12:00:DefaultSG:ExceptionX:exception 'SqlException' with message 'Failed to create FacebookLocation' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php:147\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php(59): FacebookUserAdapter->locationCreate(Object(PDO), NULL)\n#1 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(31): FacebookUserAdapter->update(Object(FacebookUser))\n#2 [internal function]: FacebookUsers->login()\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(30): ReflectionMethod->invoke(Object(FacebookUsers))\n#4 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(40): Webservice->action()\n#5 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-16-06-13 05:19:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","timezone":"1","username":"bartosz.bodzon.5","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","name":"Bartosz Bodzon","locationId":"106076586099038","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04 0000","facebookUserId":"100002530762250"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 05:19:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz體 Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 05:19:00:DefaultSG:ExceptionX:exception 'SqlException' with message 'Failed to create FacebookLocation' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php:147\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php(59): FacebookUserAdapter->locationCreate(Object(PDO), NULL)\n#1 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(31): FacebookUserAdapter->update(Object(FacebookUser))\n#2 [internal function]: FacebookUsers->login()\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(82): ReflectionMethod->invoke(Object(FacebookUsers))\n#4 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(40): Webservice->action()\n#5 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-16-06-13 05:21:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz體 Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 05:21:00:DefaultSG:ExceptionX:exception 'SqlException' with message 'Failed to create FacebookLocation' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php:147\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php(59): FacebookUserAdapter->locationCreate(Object(PDO), NULL)\n#1 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(31): FacebookUserAdapter->update(Object(FacebookUser))\n#2 [internal function]: FacebookUsers->login()\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(82): ReflectionMethod->invoke(Object(FacebookUsers))\n#4 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(40): Webservice->action()\n#5 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-16-06-13 05:22:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04 0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 05:24:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz體 Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 05:24:00:DefaultSG:ExceptionX:exception 'SqlException' with message 'Failed to create FacebookLocation' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php:147\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php(59): FacebookUserAdapter->locationCreate(Object(PDO), NULL)\n#1 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(31): FacebookUserAdapter->update(Object(FacebookUser))\n#2 [internal function]: FacebookUsers->login()\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(82): ReflectionMethod->invoke(Object(FacebookUsers))\n#4 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(40): Webservice->action()\n#5 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-16-06-13 05:26:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz體 Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 05:26:00:DefaultSG:ExceptionX:exception 'SqlException' with message 'Failed to create FacebookLocation' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php:147\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php(59): FacebookUserAdapter->locationCreate(Object(PDO), NULL)\n#1 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(31): FacebookUserAdapter->update(Object(FacebookUser))\n#2 [internal function]: FacebookUsers->login()\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(84): ReflectionMethod->invoke(Object(FacebookUsers))\n#4 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(40): Webservice->action()\n#5 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-16-06-13 05:27:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz體 Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 05:27:00:DefaultSG:ExceptionX:exception 'SqlException' with message 'Failed to create FacebookLocation' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php:148\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php(59): FacebookUserAdapter->locationCreate(Object(PDO), NULL)\n#1 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(31): FacebookUserAdapter->update(Object(FacebookUser))\n#2 [internal function]: FacebookUsers->login()\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(82): ReflectionMethod->invoke(Object(FacebookUsers))\n#4 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(40): Webservice->action()\n#5 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-16-06-13 05:28:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz體 Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 05:28:00:DefaultSG:ExceptionX:exception 'SqlException' with message 'Failed to create FacebookLocation' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php:148\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php(60): FacebookUserAdapter->locationCreate(Object(PDO), NULL)\n#1 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(31): FacebookUserAdapter->update(Object(FacebookUser))\n#2 [internal function]: FacebookUsers->login()\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(82): ReflectionMethod->invoke(Object(FacebookUsers))\n#4 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(40): Webservice->action()\n#5 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-16-06-13 05:30:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz體 Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 05:30:00:DefaultSG:ExceptionX:exception 'SqlException' with message 'Failed to create FacebookLocation' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php:147\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php(59): FacebookUserAdapter->locationCreate(Object(PDO), NULL)\n#1 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(32): FacebookUserAdapter->update(Object(FacebookUser))\n#2 [internal function]: FacebookUsers->login()\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(82): ReflectionMethod->invoke(Object(FacebookUsers))\n#4 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(41): Webservice->action()\n#5 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-16-06-13 05:31:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz體 Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 05:31:00:DefaultSG:ExceptionX:exception 'SqlException' with message 'Failed to create FacebookLocation' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php:147\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php(59): FacebookUserAdapter->locationCreate(Object(PDO), NULL)\n#1 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(32): FacebookUserAdapter->update(Object(FacebookUser))\n#2 [internal function]: FacebookUsers->login()\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(82): ReflectionMethod->invoke(Object(FacebookUsers))\n#4 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(41): Webservice->action()\n#5 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-16-06-13 05:32:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz體 Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 05:32:00:DefaultSG:ExceptionX:exception 'SqlException' with message 'Failed to create FacebookLocation' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php:147\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php(59): FacebookUserAdapter->locationCreate(Object(PDO), NULL)\n#1 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(31): FacebookUserAdapter->update(Object(FacebookUser))\n#2 [internal function]: FacebookUsers->login()\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(82): ReflectionMethod->invoke(Object(FacebookUsers))\n#4 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(40): Webservice->action()\n#5 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-16-06-13 05:34:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04 0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 05:35:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz锟絯 Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04 0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 05:36:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz锟絯 Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04 0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 05:37:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz锟絯 Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04 0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 05:37:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz體 Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 05:37:00:DefaultSG:ExceptionX:exception 'SqlException' with message 'Failed to create FacebookLocation' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php:147\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php(59): FacebookUserAdapter->locationCreate(Object(PDO), NULL)\n#1 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(31): FacebookUserAdapter->update(Object(FacebookUser))\n#2 [internal function]: FacebookUsers->login()\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(82): ReflectionMethod->invoke(Object(FacebookUsers))\n#4 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(40): Webservice->action()\n#5 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-16-06-13 09:29:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz體 Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 09:29:00:DefaultSG:ExceptionX:exception 'SqlException' with message 'Failed to create FacebookLocation' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php:147\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php(59): FacebookUserAdapter->locationCreate(Object(PDO), NULL)\n#1 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(31): FacebookUserAdapter->update(Object(FacebookUser))\n#2 [internal function]: FacebookUsers->login()\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(82): ReflectionMethod->invoke(Object(FacebookUsers))\n#4 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(40): Webservice->action()\n#5 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-16-06-13 09:31:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 09:36:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 09:37:00:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create MemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:164\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(82): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(44): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-16-06-13 09:43:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 09:46:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-25T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 09:46:00:DefaultSG:ExceptionX:exception 'SqlException' with message 'Failed to update FacebookUser' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php:239\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php(105): FacebookUserAdapter->userUpdate(Object(PDO), Object(FacebookUser))\n#1 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(31): FacebookUserAdapter->update(Object(FacebookUser))\n#2 [internal function]: FacebookUsers->login()\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(82): ReflectionMethod->invoke(Object(FacebookUsers))\n#4 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(40): Webservice->action()\n#5 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-16-06-13 09:52:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-25T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 09:52:00:DefaultSG:ExceptionX:exception 'SqlException' with message 'Failed to update FacebookUser' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php:239\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\FacebookUserAdapter.php(105): FacebookUserAdapter->userUpdate(Object(PDO), Object(FacebookUser))\n#1 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(31): FacebookUserAdapter->update(Object(FacebookUser))\n#2 [internal function]: FacebookUsers->login()\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(82): ReflectionMethod->invoke(Object(FacebookUsers))\n#4 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\FacebookUsers.php(40): Webservice->action()\n#5 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-16-06-13 09:54:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-25T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 09:56:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 09:57:00:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create MemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:164\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(82): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(44): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-16-06-13 09:59:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-16-06-13 09:59:00:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create MemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:164\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(82): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(44): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 21:45:35:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-17-06-13 21:47:00:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz锟絯 Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04 0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-17-06-13 21:48:04:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz锟絯 Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04 0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-17-06-13 21:48:28:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-17-06-13 21:48:35:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create MemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:164\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(44): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 21:49:57:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-17-06-13 21:51:13:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create MemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:164\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(44): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 21:55:50:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create MemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:164\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(45): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 21:56:53:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create MemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:165\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(45): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 21:58:27:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create MemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:165\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(45): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 21:58:49:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create MemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:167\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(45): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 21:59:28:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create MemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:167\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(45): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 21:59:42:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create MemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:167\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(45): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 21:59:50:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create MemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:167\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(45): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 21:59:59:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create MemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:167\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(45): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 22:00:52:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create PublishedMemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:228\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(45): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 22:00:58:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create PublishedMemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:228\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(45): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 22:01:04:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create PublishedMemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:228\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(45): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 22:01:59:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create PublishedMemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:228\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(45): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 22:02:42:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create PublishedMemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:228\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(45): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 22:03:09:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create PublishedMemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:228\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(45): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 22:04:09:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create PublishedMemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:228\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(45): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 22:04:54:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create new Memo' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:211\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(45): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 22:06:35:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create PublishedMemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:228\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(45): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 22:11:09:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-17-06-13 22:11:38:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create PublishedMemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:228\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(45): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 22:12:05:DefaultSG:Failed to upload PublishedMemoBaseX:exception 'SqlException' with message 'Failed to create PublishedMemoBase' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\adapter\PublishedMemoBaseAdapter.php:228\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(38): PublishedMemoBaseAdapter->upload(Object(PublishedMemoBase))\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(45): Webservice->action()\n#4 {main}\nSqlErrorCode:'00000'\nSqlErrorInfo:array (\n  0 => '00000',\n  1 => NULL,\n  2 => NULL,\n)
-17-06-13 22:13:25:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-17-06-13 22:15:05:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-23-06-13 11:26:23:FLOWSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"Gorz贸w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"http:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"1","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-04-24T21:50:04+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)X:
-23-06-13 11:27:17:DefaultSG:Uncaught ExceptionX:exception 'JsonException' in C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\entity\PublishedMemoBase.php:28\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(50): PublishedMemoBase->decode(NULL)\n#1 [internal function]: PublishedLibraries->upload()\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\Webservice.php(83): ReflectionMethod->invoke(Object(PublishedLibraries))\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\webservice\memoling_service\webservice\PublishedLibraries.php(58): Webservice->action()\n#4 {main}\JsonLastError:0\JsonLastErrorMessage:'No errors'
+27-06-13 20:05:25P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:26P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:27P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:28P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:29P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:31P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:32P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:33P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:34P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:35P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:36P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:37P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:38P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:39P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:40P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:41P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:42P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:43P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:44P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:45P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:46P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:47P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:48P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:49P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:50P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:51P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:52P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:53P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:54P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:55P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:56P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:57P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:58P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:05:59P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:00P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:01P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:02P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:03P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:04P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:05P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:06P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:07P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:09P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:10P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:11P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:12P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:13P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:14P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:15P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:16P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:17P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:18P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:19P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:20P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:21P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:22P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:23P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:24P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:25P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:26P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:27P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:28P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:29P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:30P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:31P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:32P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:33P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:34P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:35P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:36P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:37P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:38P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:39P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:40P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:41P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:42P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:43P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:44P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:45P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:46P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:47P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:48P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:50P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:51P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:52P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:53P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:54P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:55P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:56P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:57P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:58P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:06:59P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:00P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:01P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:02P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:03P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:04P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:05P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:06P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:07P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:08P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:09P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:10P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:11P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:12P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:13P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:14P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:15P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:16P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:17P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:18P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:19P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:20P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:21P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:22P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:23P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:24P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:25P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:26P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:27P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:28P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:29P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:30P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:31P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:32P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:33P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:34P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:35P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:36P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:37P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:38P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:39P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:40P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:41P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:43P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:44P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:45P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:46P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:47P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:48P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:49P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:50P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:51P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:52P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:53P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:54P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:55P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:56P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:57P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:58P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:07:59P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:00P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:01P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:02P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:03P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:04P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:05P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:06P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:07P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:08P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:09P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:10P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:11P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:12P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:13P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:14P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:15P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:16P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:17P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:18P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:19P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:20P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:21P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:23P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:24P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:25P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:26P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:27P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:28P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:29P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:30P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:31P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:32P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:33P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:34P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:35P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:36P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:37P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:38P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:39P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:40P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:41P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:42P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:43P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:44P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:45P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:46P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:47P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:48P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:49P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:50P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:51P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:52P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:53P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:54P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:55P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:56P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:57P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:58P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:08:59P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:00P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:01P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:02P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:03P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:04P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:05P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:07P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:07P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:08P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:09P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:10P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:11P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:12P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:13P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:15P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:16P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:17P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:18P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:19P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:20P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:21P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:22P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:23P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:24P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:25P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:26P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:27P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:28P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:29P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:30P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:31P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:32P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:33P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:34P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:35P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:36P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:37P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:38P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:39P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:40P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:41P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:42P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:43P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:44P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:45P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:46P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:47P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:48P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:49P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:50P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:51P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:52P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:53P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:54P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:55P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:56P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:57P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:58P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:09:59P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:00P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:01P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:02P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:03P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:04P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:05P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:06P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:07P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:08P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:10P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:11P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:12P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:13P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:14P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:15P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:16P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:17P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:18P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:19P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:20P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:21P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:22P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:23P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:24P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:25P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:26P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:27P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:28P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:29P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:30P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:31P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:32P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:33P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:34P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:35P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:36P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:37P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:38P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:39P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:40P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:41P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:42P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:43P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:44P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:45P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:46P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:47P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:48P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:50P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:51P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:52P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:53P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:54P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:55P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:56P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:57P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:58P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:10:59P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:00P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:01P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:02P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:03P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:04P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:05P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:06P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:07P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:08P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:09P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:10P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:11P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:12P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:13P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:14P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:15P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:16P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:17P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:18P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:19P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:20P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:21P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:22P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:23P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:24P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:25P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:26P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:27P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:28P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:30P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:31P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:32P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:33P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:34P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:35P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:36P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:37P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:38P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:39P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:40P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:41P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:42P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:43P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:44P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:45P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:46P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:47P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:48P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:49P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:50P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:51P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:52P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:53P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:54P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:55P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:56P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:57P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:58P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:11:59P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:00P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:01P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:02P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:03P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:04P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:06P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:07P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:08P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:09P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:10P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:11P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:12P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:13P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:14P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:15P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:16P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:17P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:18P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:19P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:20P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:21P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:22P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:23P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:24P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:25P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:26P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:27P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:28P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:29P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:30P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:31P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:32P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:33P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:34P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:35P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:36P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:37P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:38P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:39P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:40P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:41P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:42P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:43P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:44P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:45P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:46P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:47P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:48P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:49P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:51P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:52P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:53P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:54P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:55P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:56P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:57P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:58P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:12:59P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:13:00P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:13:01P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:13:02P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:13:03P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:13:04P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:13:05P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:13:06P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:13:07P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:13:08P:127.0.0.1:FLOWSG:Method invoked: searchX:
+27-06-13 20:13:09P:127.0.0.1:FLOWSG:Method invoked: searchX:
+29-06-13 11:29:09P:192.168.1.64:FLOWSG:Method invoked: searchX:
+29-06-13 11:29:15P:192.168.1.64:FLOWSG:Method invoked: searchX:
+29-06-13 11:29:19P:192.168.1.64:FLOWSG:Method invoked: previewX:
+29-06-13 11:29:25P:192.168.1.64:FLOWSG:Method invoked: downloadX:
+29-06-13 12:25:14P:192.168.1.64:FLOWSG:Method invoked: searchX:
+29-06-13 12:25:19P:192.168.1.64:FLOWSG:Method invoked: searchX:
+29-06-13 12:25:28P:192.168.1.64:FLOWSG:Method invoked: searchX:

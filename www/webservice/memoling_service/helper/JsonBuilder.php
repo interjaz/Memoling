@@ -12,7 +12,7 @@ class JsonBuilder {
 		if(is_object($val)) {
 			$this->json .= '"' . $key . '":' . $val->encode()  . ',';
 		} else if(is_array($val)) {
-			$this->json .= arrayToJson($val) . ',';
+			$this->json .= '"' . $key . '":' . $this->arrayToJson($val) . ',';
 		} else if(is_numeric($val)) {
 			$this->json .= '"' . $key . '":' . $val . ',';
 		} else {

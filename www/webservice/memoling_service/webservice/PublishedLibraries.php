@@ -38,12 +38,12 @@ class PublishedLibraries extends WebService {
 	
 	public function preview() {
 		$result = $this->m_pubishedAdapter->getSample($_GET["id"], 10);
-		return json_encode($result);
+		return $result->encode();
 	}
 	
 	public function download() {
 		$result = $this->m_pubishedAdapter->getDownload($_GET["id"]);
-		return json_encode($result);
+		return $result->encode();
 	}
 	
 	public function upload() {
@@ -51,7 +51,7 @@ class PublishedLibraries extends WebService {
 		$published = new PublishedMemoBase();
 		$published->decode($library);
 		$result = $this->m_pubishedAdapter->upload($published);
-		return json_encode($result);
+		return $result->encode();
 	}
 	
 }

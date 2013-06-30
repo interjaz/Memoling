@@ -9,11 +9,11 @@ class PublishedMemoBaseAdapter extends DbAdapter {
 		$query = "SELECT 
 					P.*, Count(M.MemoBaseId) AS Memos
 				  FROM 
-					PublishedMemoBases AS P
+					memoling_PublishedMemoBases AS P
 				  INNER JOIN 
-					MemoBases AS B ON P.MemoBaseId = B.MemoBaseId
+					memoling_MemoBases AS B ON P.MemoBaseId = B.MemoBaseId
 				  INNER JOIN 
-					Memos AS M ON B.MemoBaseId = M.MemoBaseId
+					memoling_Memos AS M ON B.MemoBaseId = M.MemoBaseId
 				  GROUP BY
 					M.MemoBAseId
 				  LIMIT :from,:perPage";
@@ -57,11 +57,11 @@ class PublishedMemoBaseAdapter extends DbAdapter {
 		$query = "SELECT
 					P.*, B.Name, Count(M.MemoBaseId) AS Memos
 				  FROM
-					PublishedMemoBases AS P
+					memoling_PublishedMemoBases AS P
 				  INNER JOIN
-					MemoBases AS B ON P.MemoBaseId = B.MemoBaseId
+					memoling_MemoBases AS B ON P.MemoBaseId = B.MemoBaseId
 				  INNER JOIN
-					Memos AS M ON B.MemoBaseId = M.MemoBaseId
+					memoling_Memos AS M ON B.MemoBaseId = M.MemoBaseId
 				  WHERE
 					(
 						B.Name LIKE :keyword OR
@@ -152,19 +152,37 @@ class PublishedMemoBaseAdapter extends DbAdapter {
 	public function get($id, $limit=null) {
 		
 		$db = parent::connect();
-		
+
 		$base = new MemoBase();
+		$published = new PublishedMemoBase();
+		$published->MemoBase = $base;
 		
 		// Get Header
 		$query = "SELECT 
+					P.PublishedMemoBaseId as P_PublishedMemoBaseId,
 					P.MemoBaseId AS P_MemoBaseId,
+					P.AdminsScore AS P_AdminsScore,
+					P.Created AS P_Created,
+					P.Description AS P_Description,
+					P.Downloads AS P_Downloads,
+					P.FacebookUserId AS P_FacebookUserId,
+					P.MemoBaseGenreId AS P_MemoBaseGenreId,
+					P.MemoBaseId AS P_MemoBaseId,
+					P.UsersScore AS P_UsersScore,
+					P.PrimaryLanguageAIso639 AS P_PrimaryLanguageAIso639,
+					P.PrimaryLanguageBIso639 AS P_PrimaryLanguageBIso639,
+					Count(M.MemoBaseId) AS M_Memos,
 					B.Name AS B_Name
 				  FROM
-					PublishedMemoBases AS P
+					memoling_PublishedMemoBases AS P
 				  INNER JOIN 
-					MemoBases AS B ON P.MemoBaseId = B.MemoBaseId
+					memoling_MemoBases AS B ON P.MemoBaseId = B.MemoBaseId
+				  INNER JOIN
+					memoling_Memos AS M ON B.MemoBaseId = M.MemoBaseId
 				  WHERE 
 					P.PublishedMemoBaseId = :PublishedMemoBaseId
+				  GROUP BY
+					M.MemoBaseId
 				";
 		$stm = $db->prepare($query);
 		$stm->bindParam(":PublishedMemoBaseId", $id);
@@ -175,6 +193,19 @@ class PublishedMemoBaseAdapter extends DbAdapter {
 		}	
 		
 		$row = $stm->fetch();
+		
+		$published->PublishedMemoBaseId = $row["P_PublishedMemoBaseId"];
+		$published->MemosCount = $row["M_Memos"];
+		$published->AdminsScore = $row["P_AdminsScore"];
+		$published->Created = $row["P_Created"];
+		$published->Description = $row["P_Description"];
+		$published->Downloads = $row["P_Downloads"];
+		$published->FacebookUserId = $row["P_FacebookUserId"];
+		$published->MemoBaseGenreId = $row["P_MemoBaseGenreId"];
+		$published->MemoBaseId = $row["P_MemoBaseId"];
+		$published->UsersScore = $row["P_UsersScore"];
+		$published->PrimaryLanguageAIso639 = $row["P_PrimaryLanguageAIso639"];
+		$published->PrimaryLanguageBIso639 = $row["P_PrimaryLanguageBIso639"];
 		
 		$baseId = $row["P_MemoBaseId"];
 		$base->Name = $row["B_Name"];
@@ -188,11 +219,11 @@ class PublishedMemoBaseAdapter extends DbAdapter {
 					WB.Word AS W_WordB,
 					WB.LanguageIso639 AS W_WordBLang
 				  FROM 
-					Memos AS M
+					memoling_Memos AS M
 				  INNER JOIN
-					Words AS WA ON M.WordAId = WA.WordId
+					memoling_Words AS WA ON M.WordAId = WA.WordId
 				  INNER JOIN
-					Words AS WB ON M.WordBId = WB.WordId
+					memoling_Words AS WB ON M.WordBId = WB.WordId
 				  WHERE
 					M.MemoBaseId = :MemoBaseId
 				";
@@ -222,7 +253,7 @@ class PublishedMemoBaseAdapter extends DbAdapter {
 		}
 		$base->Memos = $list;			
 		
-		return $base;		
+		return $published;		
 	}
 	
 	public function updateDownload($id) {
@@ -230,7 +261,7 @@ class PublishedMemoBaseAdapter extends DbAdapter {
 		$db = parent::connect();
 		
 		$query = "UPDATE
-					PublishedMemoBases
+					memoling_PublishedMemoBases
 				  SET
 					Downloads = Downloads+1
 				  WHERE
@@ -257,14 +288,11 @@ class PublishedMemoBaseAdapter extends DbAdapter {
 		
 		$db->beginTransaction();
 		
-		try { 
-			
-			//var_dump($publishedMemoBase->MemoBase->Memos);
-			
+		try { 			
 			// Insert MemoBase
 			$baseId = Helper::newGuid();
 			$query = "INSERT INTO
-						MemoBases
+						memoling_MemoBases
 					  VALUES(:Bid,:Name,CURRENT_TIMESTAMP,0)";
 			$stm = $db->prepare($query);
 			$stm->bindParam(":Bid", $baseId);
@@ -279,8 +307,14 @@ class PublishedMemoBaseAdapter extends DbAdapter {
 				$wordAId = Helper::newGuid();
 				$wordBId = Helper::newGuid();
 				
+				if(strcmp($memo->WordA->LanguageIso639, $memo->WordB->LanguageIso639) > 0) {
+					$tmp = $memo->wordA;
+					$memo->WordA = $memo->WordB;
+					$memo->WordB = tmp;
+				}
+				
 				$query = "INSERT INTO
-							Words
+							memoling_Words
 						   VALUES(:Wid,:Lang,:Word)";
 			    $stm = $db->prepare($query);
 				$stm->bindParam(":Wid", $wordAId);
@@ -292,7 +326,7 @@ class PublishedMemoBaseAdapter extends DbAdapter {
 				}
 				
 				$query = "INSERT INTO
-							Words
+							memoling_Words
 						   VALUES(:Wid,:Lang,:Word)";
 			    $stm = $db->prepare($query);
 				$stm->bindParam(":Wid", $wordBId);
@@ -305,7 +339,7 @@ class PublishedMemoBaseAdapter extends DbAdapter {
 				// Insert Memo
 				$memoId = Helper::newGuid();
 				$query = "INSERT INTO
-							Memos
+							memoling_Memos
 						   VALUES(:Mid,:Bid,:WAid,:WBid,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,0,0,0,0)";
 			    $stm = $db->prepare($query);
 				$stm->bindParam(":Mid", $memoId);
@@ -321,7 +355,7 @@ class PublishedMemoBaseAdapter extends DbAdapter {
 			// Insert PublishedMemoBase
 			$publishedId = Helper::newGuid();
 			$query = "INSERT INTO
-						PublishedMemoBases
+						memoling_PublishedMemoBases
 					  VALUES(:Pid,:Fid,:Bid,:Gid,:Desc,0,0,0,CURRENT_TIMESTAMP,:PrimaryLanguageA,:PrimaryLanguageB)";
 			$stm = $db->prepare($query);
 			$stm->bindParam(":Pid", $publishedId);
@@ -339,7 +373,7 @@ class PublishedMemoBaseAdapter extends DbAdapter {
 			$db->commit();
 		} catch(Exception $ex) {
 			$db->rollBack();
-			Log::save("Failed to upload PublishedMemoBase", $ex);
+			Log::save("Failed to upload PublishedMemoBase", $ex, Log::PRIO_HIGH);
 			return false;
 		}
 		return true;

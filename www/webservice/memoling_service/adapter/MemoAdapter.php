@@ -6,7 +6,7 @@ class MemoAdapter extends DbAdapter {
 	public function getAll() {
 		
 		$db = parent::connect();
-		$stm = $db->prepare("SELECT * FROM Memos");
+		$stm = $db->prepare("SELECT * FROM memoling_Memos");
 		$stm->execute();
 	
 		$list = array();
