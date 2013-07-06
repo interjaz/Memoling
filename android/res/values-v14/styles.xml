@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="DarkButton" parent="@android:style/Widget.Holo.Button">
+        <item name="android:textColor">#BABABA</item>
+        <item name="android:background">@drawable/theme_dark_button</item>
+        <item name="android:minHeight">32dip</item>
+    </style>
+    
+    <style name="DarkTheme" parent="android:Theme.Holo.NoActionBar">
+        <item name="android:buttonStyle">@style/DarkButton</item>
+        
+    </style>
+ 
+</resources>

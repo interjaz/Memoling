@@ -5,7 +5,7 @@ import java.util.Calendar;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import app.memoling.android.Schedule;
+import app.memoling.android.entity.Schedule;
 import app.memoling.android.helper.DateHelper;
 
 public class ScheduleTask {

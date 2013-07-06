@@ -10,7 +10,6 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import app.memoling.android.IGet;
 
 public class ScrollableModifiableComplexTextAdapter<T extends IGet<String>> extends ModifiableComplexTextAdapter<T>
 		implements OnTouchListener {
@@ -90,7 +89,7 @@ public class ScrollableModifiableComplexTextAdapter<T extends IGet<String>> exte
 			ListView lv = (ListView) v;
 	
 			
-			if (lv != null) {
+			if (lv != null && lv.getChildCount() != 0) {
 				if (lv.getLastVisiblePosition() == lv.getAdapter().getCount() - 1
 						&& lv.getChildAt(lv.getChildCount() - 1).getBottom() <= lv.getHeight()) {
 					yPosition = Y_BOTTOM;

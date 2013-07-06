@@ -12,8 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import app.memoling.android.R;
-import app.memoling.android.WorkerThread;
 import app.memoling.android.helper.Helper;
+import app.memoling.android.thread.WorkerThread;
 
 public class BouncyLogo extends View implements Runnable {
 
@@ -62,8 +62,6 @@ public class BouncyLogo extends View implements Runnable {
 		}.execute();
 		return super.onTouchEvent(event);
 	}
-
-
 
 	@Override
 	public void onDraw(Canvas canvas) {

@@ -18,9 +18,8 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
-import android.util.Log;
-
-import app.memoling.android.WorkerThread;
+import app.memoling.android.helper.AppLog;
+import app.memoling.android.thread.WorkerThread;
 
 public class HttpGetRequestTask extends WorkerThread<Void, Void, String> {
 
@@ -28,7 +27,8 @@ public class HttpGetRequestTask extends WorkerThread<Void, Void, String> {
 	private URI m_uri;
 	private ArrayList<NameValuePair> m_headers;
 	private int m_timeout;
-
+	private Exception m_exception;
+	
 	public HttpGetRequestTask(URI uri, IHttpRequestTaskComplete onHttpRequestTaskComplete, int timeout) {
 		this(uri, onHttpRequestTaskComplete, null, timeout);
 	}
@@ -79,11 +79,14 @@ public class HttpGetRequestTask extends WorkerThread<Void, Void, String> {
 				throw new IOException(statusLine.getReasonPhrase());
 			}
 		} catch (ConnectTimeoutException ex) {
-			m_onHttpRequestTaskComplete.onHttpRequestTimeout(ex);
+			m_exception = ex;
+			AppLog.v("ConnectTimeoutException", "GET", ex);
 		} catch (SocketException ex) {
-			m_onHttpRequestTaskComplete.onHttpRequestTimeout(ex);
+			m_exception = ex;
+			AppLog.w("SocketException", "GET", ex);
 		} catch (Exception ex) {
-			Log.e("HttpRequestTaskException", ex.toString());
+			m_exception = ex;
+			AppLog.e("HttpRequestTaskException", "GET", ex);
 		}
 
 		return null;
@@ -91,6 +94,15 @@ public class HttpGetRequestTask extends WorkerThread<Void, Void, String> {
 
 	@Override
 	protected void onPostExecute(String response) {
+		
+		if(m_exception != null) {
+			if(m_exception instanceof ConnectTimeoutException) {
+				m_onHttpRequestTaskComplete.onHttpRequestTimeout(m_exception);				
+			} else if(m_exception instanceof SocketException) {
+				m_onHttpRequestTaskComplete.onHttpRequestTimeout(m_exception);				
+			} 
+		}
+		
 		if (response == null) {
 			return;
 		}

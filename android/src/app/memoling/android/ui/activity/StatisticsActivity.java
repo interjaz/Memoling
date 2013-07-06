@@ -6,14 +6,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
-
 import app.memoling.android.R;
-import app.memoling.android.ui.GestureFragmentActivity;
+import app.memoling.android.ui.GestureFragmentAdActivity;
 import app.memoling.android.ui.fragment.StatisticsTabCombinedFragment;
 import app.memoling.android.ui.fragment.StatisticsTabMonthFragment;
 import app.memoling.android.ui.fragment.StatisticsTabYearFragment;
 
-public class StatisticsActivity extends GestureFragmentActivity {
+public class StatisticsActivity extends GestureFragmentAdActivity {
 
 	private final static String TagsArray = "TagsArray";
 	private final static int TabSize = 3;
@@ -26,6 +25,7 @@ public class StatisticsActivity extends GestureFragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_statistics);
+		onCreate_Ads();
 
 		if (savedInstanceState != null) {
 			m_tags = savedInstanceState.getStringArray(TagsArray);

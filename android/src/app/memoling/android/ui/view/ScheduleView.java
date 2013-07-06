@@ -1,11 +1,14 @@
 package app.memoling.android.ui.view;
 
-import app.memoling.android.IGet;
-import app.memoling.android.Schedule;
+import android.content.Context;
+import app.memoling.android.R;
+import app.memoling.android.entity.Schedule;
+import app.memoling.android.ui.adapter.IGet;
 
 public class ScheduleView implements IGet<String> {
 
 	private Schedule m_schedule;
+	private Context m_context;
 	
 	public Schedule getSchedule() { 
 		return m_schedule;
@@ -25,25 +28,25 @@ public class ScheduleView implements IGet<String> {
 				if(days[i]) {
 					switch(i){
 					case 0:
-						sb.append("Mo, ");
+						sb.append(m_context.getString(R.string.schedule_monday_l2) + ", ");
 						break;
 					case 1:
-						sb.append("Tu, ");
+						sb.append(m_context.getString(R.string.schedule_tuesday_l2) + ", ");
 						break;
 					case 2:
-						sb.append("We, ");
+						sb.append(m_context.getString(R.string.schedule_wednesday_l2) + ", ");
 						break;
 					case 3:
-						sb.append("Th, ");
+						sb.append(m_context.getString(R.string.schedule_thursday_l2) + ", ");
 						break;
 					case 4:
-						sb.append("Fr, ");
+						sb.append(m_context.getString(R.string.schedule_friday_l2) + ", ");
 						break;
 					case 5:
-						sb.append("Sa, ");
+						sb.append(m_context.getString(R.string.schedule_saturday_l2) + ", ");
 						break;
 					case 6:
-						sb.append("Su, ");
+						sb.append(m_context.getString(R.string.schedule_sunday_l2) + ", ");
 						break;
 					}
 				}
@@ -58,8 +61,9 @@ public class ScheduleView implements IGet<String> {
 		
 	}
 	
-	public ScheduleView(Schedule schedule) {
+	public ScheduleView(Schedule schedule, Context context) {
 		m_schedule = schedule;
+		m_context = context;
 	}
 
 }

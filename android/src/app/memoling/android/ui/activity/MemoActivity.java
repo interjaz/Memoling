@@ -1,7 +1,5 @@
 package app.memoling.android.ui.activity;
 
-import java.io.IOException;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -19,17 +17,16 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-
 import app.memoling.android.R;
 import app.memoling.android.adapter.MemoAdapter;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.helper.DateHelper;
-import app.memoling.android.ui.GestureActivity;
+import app.memoling.android.ui.GestureAdActivity;
 import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.adapter.ModifiableComplexTextAdapter;
 import app.memoling.android.ui.view.LanguageView;
 
-public class MemoActivity extends GestureActivity implements OnEditorActionListener {
+public class MemoActivity extends GestureAdActivity implements OnEditorActionListener {
 
 	public final static String MemoId = "MemoId";
 
@@ -57,6 +54,8 @@ public class MemoActivity extends GestureActivity implements OnEditorActionListe
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_memo);
+		onCreate_Ads();
+		
 		m_resources = new ResourceManager(this);
 
 		m_lblTitle = (TextView) findViewById(R.id.memo_lblTitle);
@@ -100,13 +99,8 @@ public class MemoActivity extends GestureActivity implements OnEditorActionListe
 		m_lblCorrectAnswered.setTypeface(m_resources.getThinFont());
 
 		m_laySaving = (RelativeLayout) findViewById(R.id.memo_laySaving);
-
-		try {
-			m_memoAdapter = new MemoAdapter(this);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		m_memoAdapter = new MemoAdapter(this);
 
 		m_resources.setFont(R.id.textView1, m_resources.getCondensedFont());
 		m_resources.setFont(R.id.textView2, m_resources.getCondensedFont());

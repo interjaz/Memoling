@@ -11,6 +11,7 @@ import android.view.Menu;
 
 import app.memoling.android.R;
 import app.memoling.android.adapter.StatisticsAdapter;
+import app.memoling.android.helper.AppLog;
 import app.memoling.android.ui.fragment.StatisticsTabCombinedFragment;
 import app.memoling.android.ui.fragment.StatisticsTabMonthFragment;
 import app.memoling.android.ui.fragment.StatisticsTabYearFragment;
@@ -27,7 +28,7 @@ public class TestActivity extends FragmentActivity {
 		try {
 			m_statisticsAdapter = new StatisticsAdapter(this);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			AppLog.e("TestActivity", "onCreate", ex);
 		}
 
 		MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager(), this);

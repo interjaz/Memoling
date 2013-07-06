@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import android.content.Context;
 
-import app.memoling.android.Language;
+import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Word;
 import app.memoling.android.helper.CacheHelper;
 import app.memoling.android.wordlist.IWordsProvider;

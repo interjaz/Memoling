@@ -9,6 +9,7 @@ import android.support.v4.app.NotificationCompat;
 
 import app.memoling.android.R;
 import app.memoling.android.adapter.MemoBaseAdapter;
+import app.memoling.android.helper.AppLog;
 import app.memoling.android.ui.activity.ReviewActivity;
 
 public class AlarmReceiver extends BroadcastReceiver {
@@ -28,7 +29,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 			}
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			AppLog.e("AlarReceiver", "onReceive", ex);
 		}
 
 	}

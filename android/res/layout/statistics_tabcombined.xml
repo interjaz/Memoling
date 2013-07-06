@@ -15,7 +15,7 @@
             android:id="@+id/textView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Statistics"
+            android:text="@string/statistics_tabcombined_statistics"
             android:textSize="40dp" />
 
         <TableLayout
@@ -32,7 +32,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="Total number of memos:"
+                    android:text="@string/statistics_tabcombined_totalMemos"
                     android:textSize="20sp" />
 
                 <TextView
@@ -55,7 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="Libraries:"
+                    android:text="@string/statistics_tabcombined_libraries"
                     android:textSize="20sp" />
 
                 <TextView
@@ -78,30 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="Most popular language:"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/statistics_lblPopularLanguage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="0"
-                    android:textSize="20sp" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp" >
-
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="Total number of repetitions"
+                    android:text="@string/statistics_tabcombined_totalRepetition"
                     android:textSize="20sp" />
 
                 <TextView
@@ -120,11 +97,11 @@
                 android:padding="5dp" >
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/textView5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="Average performance"
+                    android:text="@string/statistics_tabcombined_avgPerformance"
                     android:textSize="20sp" />
 
                 <TextView
@@ -143,11 +120,11 @@
                 android:padding="5dp" >
 
                 <TextView
-                    android:id="@+id/textView7"
+                    android:id="@+id/textView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="Most repeated word:"
+                    android:text="@string/statistics_tabcombined_mostRepeated"
                     android:textSize="20sp" />
 
                 <TextView
@@ -166,11 +143,11 @@
                 android:padding="5dp" >
 
                 <TextView
-                    android:id="@+id/textView8"
+                    android:id="@+id/textView7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="Most reapeated word repetitons"
+                    android:text="@string/statistics_tabcombined_mostRepatedNo"
                     android:textSize="20sp" />
 
                 <TextView
@@ -189,11 +166,11 @@
                 android:padding="5dp" >
 
                 <TextView
-                    android:id="@+id/textView9"
+                    android:id="@+id/textView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="Least repeated word:"
+                    android:text="@string/statistics_tabcombined_leastRepeated"
                     android:textSize="20sp" />
 
                 <TextView
@@ -212,11 +189,11 @@
                 android:padding="5dp" >
 
                 <TextView
-                    android:id="@+id/textView10"
+                    android:id="@+id/textView9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="Least repeated word repetiton"
+                    android:text="@string/statistics_tabcombined_leastRepeatedNo"
                     android:textSize="20sp" />
 
                 <TextView
@@ -235,11 +212,11 @@
                 android:padding="5dp" >
 
                 <TextView
-                    android:id="@+id/textView11"
+                    android:id="@+id/textView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="Longest word"
+                    android:text="@string/statistics_tabcombined_longestWord"
                     android:textSize="20sp" />
 
                 <TextView
@@ -258,11 +235,11 @@
                 android:padding="5dp" >
 
                 <TextView
-                    android:id="@+id/textView12"
+                    android:id="@+id/textView11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="Shortest word"
+                    android:text="@string/statistics_tabcombined_shortestWord"
                     android:textSize="20sp" />
 
                 <TextView

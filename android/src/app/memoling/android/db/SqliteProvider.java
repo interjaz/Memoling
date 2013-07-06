@@ -9,28 +9,26 @@ import java.io.OutputStream;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.util.Log;
-
 import app.memoling.android.Config;
+import app.memoling.android.helper.AppLog;
 
-public class SqliteHelper {
+public class SqliteProvider {
 
 	private SQLiteDatabase m_database;
 	private Context m_context;
 	private String m_databaseName;
 	private String m_databasePath;
-	private static final String Tag = SqliteHelper.class.toString();
+	private static final String Tag = SqliteProvider.class.toString();
 
-	public SqliteHelper(Context context, String databaseName, int version) throws IOException {
+	public SqliteProvider(Context context, String databaseName, int version) throws IOException {
 
 		m_context = context;
 		m_databaseName = databaseName;
 
-		// TODO development copy always database
-		// copyDatabase();
-
 		if (!databaseExists()) {
-			copyDatabase();
+			copyDatabaseFromAssets();
+		} else {
+			SqliteUpdater.onUpdate(version, getDatabase());
 		}
 	}
 
@@ -56,7 +54,7 @@ public class SqliteHelper {
 		try {
 			database = SQLiteDatabase.openDatabase(getDatabasePath(), null, SQLiteDatabase.NO_LOCALIZED_COLLATORS);
 		} catch (SQLiteException ex) {
-			Log.e(Tag, "DatabaseNotFound " + ex.toString());
+			AppLog.v(Tag, "DatabaseNotFound ", ex);
 		} finally {
 			if (database != null) {
 				database.close();
@@ -66,7 +64,7 @@ public class SqliteHelper {
 		return database != null;
 	}
 
-	private void copyDatabase() throws IOException {
+	private void copyDatabaseFromAssets() throws IOException {
 		InputStream input = m_context.getAssets().open(m_databaseName + ".sqlite");
 		OutputStream output = new FileOutputStream(getDatabasePath());
 		byte[] buffer = new byte[1024];
@@ -83,7 +81,7 @@ public class SqliteHelper {
 		if (m_database != null) {
 			m_database.close();
 			m_database = null;
-			Log.w("DB", "Close");
+			AppLog.w("DB", "Close");
 		}
 	}
 
@@ -97,16 +95,16 @@ public class SqliteHelper {
 	}
 
 	public synchronized SQLiteDatabase getDatabase() {
-		if(m_database != null && !m_database.isOpen()) {
+		if (m_database != null && !m_database.isOpen()) {
 			m_database = null;
 		}
-		
+
 		if (m_database == null) {
 			m_database = SQLiteDatabase.openDatabase(getDatabasePath(), null, SQLiteDatabase.NO_LOCALIZED_COLLATORS
 					| SQLiteDatabase.OPEN_READWRITE);
-			Log.w("DB", "Open");
-		} 
-		
+			AppLog.w("DB", "Open");
+		}
+
 		return m_database;
 	}
 

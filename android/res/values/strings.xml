@@ -1,30 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Login Activity -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in_register"><b>Sign in</b> or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="menu_forgot_password">Recover lost password</string>
-    <string name="login_progress_signing_in">Signing in&#8230;</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
+    <!-- MemoList Activity -->
+    <string name="memolist_btnSave">Save</string>
+    <string name="memolist_listview_lblLearned">Learned:</string>
+    <string name="memolist_listview_lblAdded">Added:</string>
+    <string name="memolist_listview_lblLastReview">Last reviewed:</string>
+    <string name="memolist_listview_lblRepeated">Repeated:</string>
+    <string name="memolist_from">From</string>
+    <string name="memolist_to">To</string>
+    <string name="memolist_saveErrorMessage">Failed to save memo</string>
+    <string name="memolist_ctxmenu_delete">Delete</string>
+    <string name="memolist_ctxmenu_deleteTitle">Warning!</string>
+    <string name="memolist_ctxmenu_deleteQuestion">Are you sure? Once deleted, it will not be possible to recover old memo. Consider deactivating.</string>
+    <string name="memolist_ctxmenu_deleteYes">Yes, I am sure.</string>
+    <string name="memolist_ctxmenu_deleteNo">No, I have changed my mind.</string>
+    <string name="memolist_missingWords">Please provide expressions in correct format. Use \':\' as a separator.</string>
+    <string name="memolist_goToLibraries">Go to libraries</string>
+    <string name="memolist_options">Options</string>
+    <string name="memolist_startTraining">Start training</string>
+    <string name="memolist_whatsNewTitle">What\'s new (v. %s)</string>
+    <string name="memolist_whatsNewContent">This is first version of Memoling!\n\nIf you would like to translate the application please do not hesitate to contact me.</string>
+    <string name="memolist_whatsNewOk">OK</string>
+    <string name="memolist_updateCrash">Failed to update the db!</string>
+
+    <!-- MemoBaseList Activity -->
+    <string name="memobaselist_listview_lblCreated">Created</string>
+    <string name="memobaselist_listview_lblMemos">Memos</string>
+    <string name="memobaselist_tap_close">Please tap again to exit</string>
+    <string name="memobaselist_setting_settings">Settings</string>
+    <string name="memobaselist_setting_newLibrary">New library</string>
+    <string name="memobaselist_ctxmenu_delete">Delete library</string>
+    <string name="memobaselist_ctxmenu_deleteImpossible">You need to have at least one library!</string>
+    <string name="memobaselist_ctxmenu_deleteImpossibleOK">OK</string>
+    <string name="memobaselist_ctxmenu_deleteTitle">Warning!</string>
+    <string name="memobaselist_ctxmenu_deleteQuestion">Are you sure? Once deleted, it will not be possible to recover old library. Consider deactivating.</string>
+    <string name="memobaselist_ctxmenu_deleteYes">Yes, I am sure.</string>
+    <string name="memobaselist_ctxmenu_deleteNo">No, I have changed my mind.</string>
+    <string name="memobaselist_ctxmenu_options">Options</string>
+    <string name="memobaselist_lblNewMemoBase">New library</string>
+    <string name="memobaselist_lblSync">Sync</string>
+    <string name="memobaselist_setting_about">About</string>
+    <string name="memobaselist_setting_onlineLib">Online libraries</string>
+    <string name="memobaselist_fbFailed">Failed to obtain credentials.</string>
+    <string name="memobaselist_setting_statistics">Statistics</string>
 
     <!-- Memo Activity -->
     <string name="memo_lblCreated">Created:</string>
     <string name="memo_lblLastReviewed">Last reviewed:</string>
     <string name="memo_lblDisplayed">Displayed:</string>
-    <string name="memo_lblCorrectAnswered">Correct answered:</string>
+    <string name="memo_lblCorrectAnswered">Correctly answered:</string>
     <string name="memo_lblwordA">First part:</string>
     <string name="memo_lblLangA">First part language:</string>
     <string name="memo_lblWordB">Second part:</string>
     <string name="memo_lblLangB">Second part language:</string>
-    <string name="memo_lblEnabled">Enabled</string>
+    <string name="memo_lblActive">Active</string>
     <string name="memo_lblSave">Save</string>
-    <string name="memo_lblSaving">Saving...</string>
+    <string name="memo_lblSaving">Saving&#8230;</string>
 
     <!-- MemoBase Activity -->
     <string name="memobase_lblStartTraining">Start training</string>
@@ -40,10 +72,10 @@
     <string name="memobase_lblActive">Active</string>
     <string name="memobase_lblName">Library Name</string>
     <string name="memobase_lblSave">Save</string>
-    <string name="memobase_lblProcessing">Processing...</string>
+    <string name="memobase_lblProcessing">Processing&#8230;</string>
     <string name="memobase_getFileError">Failed to load a file</string>
     <string name="memobase_exported">File has been saved at location: </string>
-    <string name="memobase_newMemo">New library</string>
+    <string name="memobase_newMemoBase">New library</string>
     <string name="memobase_inoutTitle">Select format</string>
     <string name="memobase_inoutConfirm">Confirm</string>
     <string name="memobase_importCompleted">Successfully imported %s file</string>
@@ -84,93 +116,82 @@
     <string name="memobase_evernoteNotInstalled">Evernote not found!</string>
     <string name="memobase_evernoteExportSuccess">Exported to Evernote</string>
 
-    <!-- MemoBaseList Activity -->
-    <string name="memobaselist_listview_lblCreated">Created</string>
-    <string name="memobaselist_listview_lblMemos">Memos</string>
-    <string name="memobaselist_tap_close">Please tap againt to exit</string>
-    <string name="memobaselist_setting_settings">Settings</string>
-    <string name="memobaselist_setting_newLibrary">New library</string>
-    <string name="memobaselist_ctxmenu_delete">Delete library</string>
-    <string name="memobaselist_ctxmenu_deleteImpossible">You need at least one library!</string>
-    <string name="memobaselist_ctxmenu_deleteImpossibleOK">OK</string>
-    <string name="memobaselist_ctxmenu_deleteTitle">Warning!</string>
-    <string name="memobaselist_ctxmenu_deleteQuestion">Are you sure? Once deleted, it will not be possible to recover old library. Consider deactiviating.</string>
-    <string name="memobaselist_ctxmenu_deleteYes">Yes, I am sure.</string>
-    <string name="memobaselist_ctxmenu_deleteNo">No, I have changed my mind.</string>
-    <string name="memobaselist_ctxmenu_options">Options</string>
-    <string name="memobaselist_lblNewMemoBase">New library</string>
-    <string name="memobaselist_lblSync">Sync</string>
-    <string name="memobaselist_setting_about">About (Donate)</string>
-    <string name="memobaselist_setting_onlineLib">Online libraries</string>
-    <string name="memobaselist_fbFailed">Failed to obtain credentials.</string>
-
-    <!-- MemoList Activity -->
-    <string name="memolist_btnSave">Save</string>
-    <string name="memolist_listview_lblLearned">Learned:</string>
-    <string name="memolist_listview_lblAdded">Added:</string>
-    <string name="memolist_listview_lblLastReview">Last review:</string>
-    <string name="memolist_listview_lblRepeated">Repeated:</string>
-    <string name="memolist_from">From</string>
-    <string name="memolist_to">To</string>
-    <string name="memolist_saveErrorMessage">Failed to save memo</string>
-    <string name="memolist_ctxmenu_delete">Delete</string>
-    <string name="memolist_ctxmenu_deleteTitle">Warning!</string>
-    <string name="memolist_ctxmenu_deleteQuestion">Are you sure? Once deleted, it will not be possible to recover old memo. Consider deactiviating.</string>
-    <string name="memolist_ctxmenu_deleteYes">Yes, I am sure.</string>
-    <string name="memolist_ctxmenu_deleteNo">No, I have changed my mind.</string>
-    <string name="memolist_missingWords">Please provide words in correct format. Use \':\' as a spearator.</string>
-    <string name="memolist_goToLibraries">Go to libraries</string>
-    <string name="memolist_options">Options</string>
-    <string name="memolist_startTraining">Start training</string>
-
     <!-- Review Activity -->
     <string name="review_lblMemos">Memos:</string>
     <string name="review_lblNext">Next</string>
     <string name="review_lblCorrect">Correct</string>
     <string name="review_lblIncorrect">Incorrect. Answer:\n%s</string>
     <string name="review_lblLanguage">Language</string>
+    <string name="review_noMemos">No memos found</string>
 
     <!-- Statistics Activity -->
-    <string name="memobaselist_setting_statistics">Statistics</string>
     <string name="statisitcs_yearTitle">Memos added in current year</string>
     <string name="statisitcs_monthTitle">Number of revision per month in current year</string>
+    <string name="statistics_tabcombined_statistics">Statistics</string>
+    <string name="statistics_tabcombined_totalMemos">Total number of memos:</string>
+    <string name="statistics_tabcombined_libraries">Libraries:</string>
+    <string name="statistics_tabcombined_totalRepetition">Total number of repetitions:</string>
+    <string name="statistics_tabcombined_avgPerformance">Average performance:</string>
+    <string name="statistics_tabcombined_mostRepeated">Most repeated expr.:</string>
+    <string name="statistics_tabcombined_mostRepatedNo">Most repeated expr. repetitions:</string>
+    <string name="statistics_tabcombined_leastRepeated">Least repeated expr.:</string>
+    <string name="statistics_tabcombined_leastRepeatedNo">Least repeated expr. repetitions:</string>
+    <string name="statistics_tabcombined_longestWord">Longest expr.:</string>
+    <string name="statistics_tabcombined_shortestWord">Shortest expr.:</string>
 
     <!-- About Activity -->
     <string name="about_donatePlease">Please donate</string>
     <string name="about_donateReason">Why donate?\n1. So <b>you</b> can use it - covers translations and hosting costs.\n2. Keep application ad-free and up to date.\n3. So <b>I</b> can get filthy rich.</string>
     <string name="about_lblDonate">Donate</string>
     <string name="about_uselessFacts">Useless facts</string>
-    <string name="about_uselessFactsContent">Device side was developed in Java and C#. Web services in PHP. There is approx. <b>%1$d</b> line of code. Development time took more than 100+ hours. No animals were harmed during software development. You are visiting <b>%2$s</b> time this page, have you considered donation? If you need random numbers: 1, 1, 1, 1 &#8211; your welcome (truly random). The biggest even prime number: 2. While you are reading this text %3$1.4f Americans got injured using toilet. Coconuts kill humans every 2.433333333333 days.</string>
+    <string name="about_uselessFactsContent">Device side was developed in Java and C#. Web services in PHP (tried in ruby though). There is approx. +<b>%1$d</b> line of code. Lookup dictionary contains 246957 words. No animals were harmed during software development. You are visiting <b>%2$s</b> time this page. If you need a set of random numbers: 1, 1, 1, 1 &#8211; your welcome (truly random distribution). The biggest even prime number: 2. While you are reading this text %3$1.4f Americans have got injured using toilet. Coconuts kill a human every 2.433333333333 days. </string>
     <string name="about_lblDonateDelux">Donate DELUX</string>
+    <string name="about_version">Version %s</string>
 
     <!-- Download Activity -->
-	<string name="download_published_genre">Genre</string>
-	<string name="download_published_memos">Memos</string>
-	<string name="download_published_downloads">Downloads</string>
-	<string name="download_published_language">Pri. Lang.</string>
+    <string name="download_published_genre">Genre</string>
+    <string name="download_published_memos">Memos</string>
+    <string name="download_published_downloads">Downloads</string>
+    <string name="download_published_language">Pri. Lang.</string>
+    <string name="download_preview_language">Language</string>
     <string name="download_phrase">Phrase</string>
     <string name="download_genre">Genre</string>
     <string name="download_langA">Language 1</string>
-	<string name="download_langB">Language 2</string>	
-	<string name="download_search">Search</string>
-	<string name="download_search_error">Error occurred</string>
-	<string name="download_search_noMore">No more libraries</string>
-	<string name="download_search_loading">Loading new libraries</string>
-	
-    <!-- General -->
+    <string name="download_langB">Language 2</string>
+    <string name="download_search">Search</string>
+    <string name="download_search_error">Error occurred</string>
+    <string name="download_search_noMore">No more libraries</string>
+    <string name="download_search_loading">Loading new libraries</string>
+    <string name="download_download">Download</string>
+    <string name="download_close">Close</string>
+    <string name="download_preview">Preview</string>
+    <string name="download_preview_download">Downloading preview</string>
+    <string name="download_preview_error">Error</string>
+    <string name="download_download_startDownload">Downloading</string>
+    <string name="download_download_errorDownload">Error</string>
+    <string name="download_download_completedDownload">Download complete</string>
+    <string name="download_download_finished">Successfully added library</string>
 
-    <string name="app_name">Memoling</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="title_activity_memolist">MemoListActivity</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Settings</string>
-    <string name="title_activity_memobaselist">Memoling</string>
-    <string name="title_activity_memo">WordActivity</string>
-    <string name="title_activity_memobase">MemoBaseActivity</string>
-    <string name="title_activity_review">ReviewActivity</string>
-    <string name="title_activity_scheduler">SchedulerActivity</string>
-    <string name="title_activity_statistics">StatisticsActivity</string>
+    <!-- Schedule Activity -->
+    <string name="schedule_repetition">Schedule repetition</string>
+    <string name="schedule_submit">Submit</string>
+    <string name="schedule_edit">Edit</string>
+    <string name="schedule_delete">Delete</string>
+    <string name="schedule_new">New</string>
+    <string name="schedule_monday_l1">M</string>
+    <string name="schedule_tuesday_l1">T</string>
+    <string name="schedule_wednesday_l1">W</string>
+    <string name="schedule_thursday_l1">T</string>
+    <string name="schedule_friday_l1">F</string>
+    <string name="schedule_saturday_l1">S</string>
+    <string name="schedule_sunday_l1">S</string>
+    <string name="schedule_monday_l2">Mo</string>
+    <string name="schedule_tuesday_l2">Tu</string>
+    <string name="schedule_wednesday_l2">We</string>
+    <string name="schedule_thursday_l2">Th</string>
+    <string name="schedule_friday_l2">Fr</string>
+    <string name="schedule_saturday_l2">Sa</string>
+    <string name="schedule_sunday_l2">Su</string>
 
     <string-array name="string_months">
         <item>January</item>
@@ -186,21 +207,37 @@
         <item>November</item>
         <item>December</item>
     </string-array>
-
-    <string name="title_activity_test">TestActivity</string>
-    <string name="title_activity_about">AboutActivity</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_fb_login">FbLoginActivity</string>
-
     <string-array name="memobasegenres">
         <item>Animals</item>
         <item>Nature</item>
+        <item>Plants</item>
         <item>Food</item>
         <item>Unspecified</item>
+        <item>Activities</item>
+        <item>Proverbs</item>
+        <item>Common knowledge</item>
+        <item>Science</item>
         <item>Book</item>
         <item>Clothes</item>
     </string-array>
 
+    <!-- General -->
+    <string name="app_name">Memoling</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="title_activity_memolist">Memoling</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_memobaselist">Memoling</string>
+    <string name="title_activity_memo">WordActivity</string>
+    <string name="title_activity_memobase">MemoBaseActivity</string>
+    <string name="title_activity_review">ReviewActivity</string>
+    <string name="title_activity_scheduler">SchedulerActivity</string>
+    <string name="title_activity_statistics">StatisticsActivity</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_fb_login">FbLoginActivity</string>
     <string name="title_activity_download">DownloadActivity</string>
-    
+
 </resources>

@@ -1,14 +1,14 @@
 package app.memoling.android.webservice.helper;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
 import app.memoling.android.adapter.MemoAdapter;
 import app.memoling.android.adapter.MemoAdapter.Sort;
-import app.memoling.android.db.Order;
+import app.memoling.android.db.DatabaseHelper.Order;
 import app.memoling.android.entity.Memo;
+import app.memoling.android.entity.MemoBase;
 import app.memoling.android.entity.PublishedMemoBase;
 import app.memoling.android.facebook.FacebookBase;
 import app.memoling.android.facebook.FacebookUser;
@@ -18,22 +18,24 @@ import app.memoling.android.webservice.WsFacebookUsers.ILoginComplete;
 import app.memoling.android.webservice.WsPublishedLibraries;
 import app.memoling.android.webservice.WsPublishedLibraries.IUploadComplete;
 
+// TODO: Add translated name, so search engine can find stuff more easily
 public class PublishedMemoBaseUpload extends FacebookBase implements IFacebookUserFound {
 
 	private Activity m_activity;
 	private FacebookUser m_facebookUser;
 	private static PublishedMemoBase m_published;
 	private static IPublishedMemoBaseUpload m_publishedMemoBaseUploadInterface;
-	
+
 	public static class ExceptionReasons {
 		public final static String NoMemosToUpload = "NoMemosToUpload";
 		public final static String WsAuthError = "WsAuthError";
 		public final static String WsUploadError = "WsUploadError";
 		public final static String Generic = "Generic";
 	}
-	
+
 	public static interface IPublishedMemoBaseUpload {
 		void onSuccess();
+
 		void onException(Exception ex);
 	}
 
@@ -64,26 +66,24 @@ public class PublishedMemoBaseUpload extends FacebookBase implements IFacebookUs
 			// Make toast that failed to upload
 			return;
 		}
-		
+
 		m_facebookUser = user;
 		prepareForUpload();
 	}
 
 	private void prepareForUpload() {
-		try {
-			MemoAdapter memoAdapter = new MemoAdapter(m_activity);
-			ArrayList<Memo> memos = memoAdapter.getAll(m_published.getMemoBaseId(), Sort.CreatedDate, Order.ASC);
-			if (memos.size() == 0) {
-				m_publishedMemoBaseUploadInterface.onException(new Exception(ExceptionReasons.NoMemosToUpload));
-				return;
-			}
-			m_published.setMemoBase(memos.get(0).getMemoBase());
-			m_published.setFacebookUserId(m_facebookUser.getId());
 
-			loginWs();
-		} catch (IOException ex) {
-			m_publishedMemoBaseUploadInterface.onException(new Exception(ExceptionReasons.Generic, ex));
+		MemoAdapter memoAdapter = new MemoAdapter(m_activity);
+		ArrayList<Memo> memos = memoAdapter.getAll(m_published.getMemoBaseId(), Sort.CreatedDate, Order.ASC);
+		if (memos.size() == 0) {
+			m_publishedMemoBaseUploadInterface.onException(new Exception(ExceptionReasons.NoMemosToUpload));
+			return;
 		}
+		MemoBase memoBase = memos.get(0).getMemoBase();		
+		m_published.setMemoBase(memoBase);
+		m_published.setFacebookUserId(m_facebookUser.getId());
+
+		loginWs();
 	}
 
 	private void loginWs() {

@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
-import app.memoling.android.Language;
+import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoBase;
 import app.memoling.android.entity.Word;

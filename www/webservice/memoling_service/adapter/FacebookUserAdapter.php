@@ -3,10 +3,15 @@ require_once("../Init.php");
 
 class FacebookUserAdapter extends DbAdapter {
 	
+	protected $db;
+	
+	public function __construct() {
+		$this->db = parent::connect();
+	}
+	
 	public function getAll() {
-		$db = parent::connect();
 		
-		$stm = $db->prepare("SELECT * FROM memoling_FacebookUsers");
+		$stm = $this->db->prepare("SELECT * FROM memoling_FacebookUsers");
 		$result = $stm->execute();
 		
 		$list = array();
@@ -34,12 +39,10 @@ class FacebookUserAdapter extends DbAdapter {
 	}
 	
 	public function update($facebookUser) {
-		
-		$db = parent::connect();
 			
 		$updatedTime = null;
 		try {
-			$updatedTime = $this->userUpdatedTime($db, $facebookUser);
+			$updatedTime = $this->userUpdatedTime($facebookUser);
 		}
 		catch(Exception $ex) {
 			Log::save("Exception", $ex, Log::PRIO_HIGH);
@@ -49,29 +52,29 @@ class FacebookUserAdapter extends DbAdapter {
 		if($updatedTime == null) {
 			// Create user
 			
-			$db->beginTransaction();
+			$this->db->beginTransaction();
 			
 			try {
 
 				// Check if hometown exists
-				if(!$this->locationExists($db, $facebookUser->Hometown)) {
+				if(!$this->locationExists($facebookUser->Hometown)) {
 					// Create hometown
-					$this->locationCreate($db, $facebookUser->Hometown);
+					$this->locationCreate($facebookUser->Hometown);
 				}
 				
 				// Check if location exists
-				if(!$this->locationExists($db, $facebookUser->Location)) {
+				if(!$this->locationExists($facebookUser->Location)) {
 					// Create location
-					$this->locationCreate($db, $facebookUser->Location);
+					$this->locationCreate($facebookUser->Location);
 				}
 				
 				// Create user
-				$this->userCreate($db, $facebookUser);
+				$this->userCreate($facebookUser);
 				
-				$db->commit();
+				$this->db->commit();
 				
 			} catch(Exception $ex) {
-				$db->rollBack();
+				$this->db->rollBack();
 				Log::save("Exception", $ex, Log::PRIO_HIGH);
 				return false;
 			}
@@ -85,28 +88,28 @@ class FacebookUserAdapter extends DbAdapter {
 			if($nowUpdate->diff($lastUpdate)->format('%R') == "-") {
 				// Update user
 				
-				$db->beginTransaction();
+				$this->db->beginTransaction();
 				
 				try {
 
 					// Check if hometown exists
-					if(!$this->locationExists($db, $facebookUser->Hometown)) {
+					if(!$this->locationExists($facebookUser->Hometown)) {
 						// Create hometown
-						$this->locationCreate($db, $facebookUser->Hometown);
+						$this->locationCreate($facebookUser->Hometown);
 					}
 					
 					// Check if location exists
-					if(!$this->locationExists($db, $facebookUser->Location)) {
+					if(!$this->locationExists($facebookUser->Location)) {
 						// Create location
-						$this->locationCreate($db, $facebookUser->Location);
+						$this->locationCreate($facebookUser->Location);
 					}
 					
 					// Update user
-					$this->userUpdate($db, $facebookUser);
+					$this->userUpdate($facebookUser);
 					
-					$db->commit();
+					$this->db->commit();
 				} catch (Exception $ex) {
-					$db->rollBack();
+					$this->db->rollBack();
 					Log::save("Exception", $ex, Log::PRIO_HIGH);
 					return false;
 				}
@@ -116,7 +119,7 @@ class FacebookUserAdapter extends DbAdapter {
 		return true;
 	}
 
-	private function locationExists($db, $facebookLocation) {
+	private function locationExists($facebookLocation) {
 		$query = "SELECT
 					FacebookLocationId
 				  FROM 
@@ -125,30 +128,30 @@ class FacebookUserAdapter extends DbAdapter {
 					FacebookLocationId = :FLid
 				";
 				
-		$stm = $db->prepare($query);
+		$stm = $this->db->prepare($query);
 		$stm->bindParam(":FLid", $facebookLocation->FacebookLocationId);
 		if(!$stm->execute()) {
-			throw new SqlException("Failed to check if FacebookLocation exists", $db);
+			throw new SqlException("Failed to check if FacebookLocation exists", $this->db);
 		}
 		$row = $stm->fetch();		
 				
 		return $row != null;
 	}
 	
-	private function locationCreate($db, $facebookLocation) {
+	private function locationCreate($facebookLocation) {
 		$query = "INSERT INTO 
 					memoling_FacebookLocations
 				  VALUES(:Fid,:Name,CURRENT_TIMESTAMP)";
 		
-		$stm = $db->prepare($query);
+		$stm = $this->db->prepare($query);
 		$stm->bindParam(":Fid", $facebookLocation->FacebookLocationId);
 		$stm->bindParam(":Name", $facebookLocation->Name);
 		if(!$stm->execute()) {			
-			throw new SqlException("Failed to create FacebookLocation", $db);
+			throw new SqlException("Failed to create FacebookLocation", $this->db);
 		}
 	}
 
-	private function userUpdatedTime($db, $facebookUser) {
+	private function userUpdatedTime($facebookUser) {
 		$query = "SELECT
 					FacebookUserId, UpdatedTime
 				  FROM
@@ -156,10 +159,10 @@ class FacebookUserAdapter extends DbAdapter {
 				  WHERE
 					FacebookUserId = :FacebookUserId";
 		
-		$stm = $db->prepare($query);
+		$stm = $this->db->prepare($query);
 		$stm->bindParam(":FacebookUserId", $facebookUser->FacebookUserId);
 		if(!$stm->execute()) {
-			throw new SqlException("Failed to check if FacebookUser exists", $db);
+			throw new SqlException("Failed to check if FacebookUser exists", $this->db);
 		}
 		
 		$row = $stm->fetch();
@@ -171,12 +174,12 @@ class FacebookUserAdapter extends DbAdapter {
 		return $row["UpdatedTime"];
 	}
 	
-	private function userCreate($db, $facebookUser) {
+	private function userCreate($facebookUser) {
 
 		$query = "INSERT INTO
 						memoling_FacebookUsers
 					  VALUES(:Fid,:Name,:FirstName,:LastName,:Link,:Username,:Hid,:Lid,:Gender,:Timezone,:Locale,:Verified,:UpdatedTime,CURRENT_TIMESTAMP)";
-		$stm = $db->prepare($query);
+		$stm = $this->db->prepare($query);
 				
 		$stm->bindParam(":Fid", $facebookUser->FacebookUserId);
 		$stm->bindParam(":Name", $facebookUser->Name);
@@ -192,12 +195,12 @@ class FacebookUserAdapter extends DbAdapter {
 		$stm->bindParam(":Verified", $facebookUser->Verified, PDO::PARAM_BOOL);
 		$stm->bindParam(":UpdatedTime", $facebookUser->UpdatedTime);
 		if(!$stm->execute()) {			
-			throw new SqlException("Failed to create FacebookUser", $db);
+			throw new SqlException("Failed to create FacebookUser", $this->db);
 		}
 		
 	}
 	
-	private function userUpdate($db, $facebookUser) {
+	private function userUpdate($facebookUser) {
 		
 		// Update user
 		$query = "UPDATE
@@ -219,7 +222,7 @@ class FacebookUserAdapter extends DbAdapter {
 					FacebookUserId = :Fid
 				";
 		
-		$stm = $db->prepare($query);
+		$stm = $this->db->prepare($query);
 		$stm->bindParam(":Fid", $facebookUser->FacebookUserId);
 		$stm->bindParam(":Name", $facebookUser->Name);
 		$stm->bindParam(":FirstName", $facebookUser->FirstName);
@@ -234,7 +237,7 @@ class FacebookUserAdapter extends DbAdapter {
 		$stm->bindParam(":Verified", $facebookUser->Verified, PDO::PARAM_BOOL);
 		$stm->bindParam(":UpdatedTime", $facebookUser->UpdatedTime);
 		if(!$stm->execute()) {
-			throw new SqlException("Failed to update FacebookUser", $db);
+			throw new SqlException("Failed to update FacebookUser", $this->db);
 		}
 	}
 }

@@ -2,8 +2,8 @@ package app.memoling.android.ui.view;
 
 import java.util.ArrayList;
 
-import app.memoling.android.IGet;
-import app.memoling.android.Language;
+import app.memoling.android.entity.Language;
+import app.memoling.android.ui.adapter.IGet;
 
 public class LanguageView implements IGet<String> {
 
@@ -18,7 +18,7 @@ public class LanguageView implements IGet<String> {
 	
 	public LanguageView(Language language) {
 		m_language = language;
-		m_name = language.getCode();
+		m_name = language.getName();
 	}
 	
 	@Override

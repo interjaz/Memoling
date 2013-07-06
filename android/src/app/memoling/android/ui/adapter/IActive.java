@@ -1,4 +1,4 @@
-package app.memoling.android;
+package app.memoling.android.ui.adapter;
 
 public interface IActive {
 	boolean isActive();

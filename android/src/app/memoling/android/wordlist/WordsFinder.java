@@ -4,9 +4,10 @@ import java.util.ArrayList;
 
 import android.content.Context;
 
-import app.memoling.android.Language;
-import app.memoling.android.WorkerThread;
+import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Word;
+import app.memoling.android.helper.AppLog;
+import app.memoling.android.thread.WorkerThread;
 import app.memoling.android.wordlist.sqlprovider.SqlWordsProvider;
 
 public class WordsFinder {
@@ -17,8 +18,7 @@ public class WordsFinder {
 		try {
 			m_wordProvider = new SqlWordsProvider(context);
 		} catch (WordsProviderException ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
+			AppLog.e("WordsFinder", "WordsFinder", ex);
 		}
 	}
 

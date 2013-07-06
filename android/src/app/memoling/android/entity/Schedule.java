@@ -1,7 +1,9 @@
-package app.memoling.android;
+package app.memoling.android.entity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import app.memoling.android.helper.AppLog;
 
 public class Schedule {
 
@@ -48,7 +50,7 @@ public class Schedule {
 			json.put("Days", jsonArray);			
 		}
 		catch(Exception ex) {
-			ex.printStackTrace();
+			AppLog.e("Schedule", "serialize", ex);
 		}
 		
 		return json.toString();
@@ -71,7 +73,7 @@ public class Schedule {
 			schedule.setDays(days);
 			
 		} catch(Exception ex) {
-			ex.printStackTrace();
+			AppLog.e("Schedule", "deserialize", ex);
 		}
 		
 		return schedule;

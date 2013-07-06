@@ -8,26 +8,33 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import app.memoling.android.R;
+import app.memoling.android.adapter.MemoBaseAdapter;
 import app.memoling.android.adapter.MemoBaseGenreAdapter;
 import app.memoling.android.entity.PublishedMemoBase;
-import app.memoling.android.ui.GestureActivity;
+import app.memoling.android.ui.GestureAdActivity;
 import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.adapter.ModifiableComplexTextAdapter;
 import app.memoling.android.ui.adapter.ScrollableModifiableComplexTextAdapter;
 import app.memoling.android.ui.adapter.ScrollableModifiableComplexTextAdapter.OnScrollFinishedListener;
 import app.memoling.android.ui.view.LanguageView;
 import app.memoling.android.ui.view.MemoBaseGenreView;
+import app.memoling.android.ui.view.MemoPreviewView;
 import app.memoling.android.ui.view.PublishedSearchView;
 import app.memoling.android.webservice.WsPublishedLibraries;
+import app.memoling.android.webservice.WsPublishedLibraries.IDownloadComplete;
+import app.memoling.android.webservice.WsPublishedLibraries.IPreviewComplete;
 import app.memoling.android.webservice.WsPublishedLibraries.ISearchComplete;
 
-public class DownloadActivity extends GestureActivity implements ISearchComplete, OnScrollFinishedListener {
+public class DownloadActivity extends GestureAdActivity implements ISearchComplete, OnScrollFinishedListener {
 
 	private ResourceManager m_resources;
 
@@ -38,21 +45,33 @@ public class DownloadActivity extends GestureActivity implements ISearchComplete
 	private ListView m_lstPublished;
 	private Button m_btnSearch;
 	
+	private LinearLayout m_layPreview;
+	private ListView m_lstPreview;
+	private Button m_btnClose;
+	private Button m_btnDownload;
+	private TextView m_lblDescription;
+	
 	private ModifiableComplexTextAdapter<MemoBaseGenreView> m_genreAdapter;
 	private ModifiableComplexTextAdapter<LanguageView> m_languageAAdapter;
 	private ModifiableComplexTextAdapter<LanguageView> m_languageBAdapter;
 	private ScrollableModifiableComplexTextAdapter<PublishedSearchView> m_publishedAdapter;
-
+	private ModifiableComplexTextAdapter<MemoPreviewView> m_previewAdapter;
+	
 	private MemoBaseGenreAdapter m_genreDataAdapter;
+	private MemoBaseAdapter m_memoBaseDataAdapter;
 	
 	private WsPublishedLibraries m_wsPublished;
 	
 	private int m_page = 0;
+	private boolean m_noMoreLibraries = false;
+	private String m_lastPreviedPublishedMemoBaseId;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_download);
+		onCreate_Ads();
+		
 		m_resources = new ResourceManager(this);
 		
 		m_txtPhrase = (EditText)findViewById(R.id.download_txtPhrase);
@@ -92,19 +111,48 @@ public class DownloadActivity extends GestureActivity implements ISearchComplete
 		m_publishedAdapter.setOnScrollListener(this);
 		m_lstPublished.setAdapter(m_publishedAdapter);
 		m_lstPublished.setOnTouchListener(this);
+		m_lstPublished.setOnItemClickListener(new LstPublishedEventHandler());
 		
 		m_resources.setFont(R.layout.adapter_download_publishedview, R.id.textView1, m_resources.getCondensedFont());
 		m_resources.setFont(R.layout.adapter_download_publishedview, R.id.textView2, m_resources.getCondensedFont());
 		m_resources.setFont(R.layout.adapter_download_publishedview, R.id.textView3, m_resources.getCondensedFont());
 		m_resources.setFont(R.layout.adapter_download_publishedview, R.id.textView4, m_resources.getCondensedFont());
 		
+		m_layPreview = (LinearLayout)findViewById(R.id.download_layPreview);
+		
+		m_lblDescription = (TextView)findViewById(R.id.download_lblDescription);
+		m_resources.setFont(m_lblDescription, m_resources.getCondensedFont());
+		
+		m_lstPreview = (ListView)findViewById(R.id.download_lstPreview);
+		m_previewAdapter = new ModifiableComplexTextAdapter<MemoPreviewView>(this, 
+				R.layout.adapter_download_previewview, new int[] {
+				R.id.download_preview_lblWordA,
+				R.id.download_preview_lblWordB,
+				R.id.download_preview_lblLanguage }, new Typeface[] {
+				m_resources.getThinFont(), m_resources.getThinFont(),
+				m_resources.getCondensedFont()
+				});
+		m_lstPreview.setAdapter(m_previewAdapter);
+
+		m_btnClose = (Button)findViewById(R.id.download_btnClose);
+		m_btnClose.setOnClickListener(new BtnCloseEventHandler());
+		m_resources.setFont(m_btnClose, m_resources.getThinFont());
+		
+		m_btnDownload = (Button)findViewById(R.id.download_btnDownload);
+		m_btnDownload.setOnClickListener(new BtnDownloadEventHandler());
+		m_resources.setFont(m_btnDownload, m_resources.getThinFont());
+		
+		m_resources.setFont(R.layout.adapter_download_previewview, R.id.textView1, m_resources.getCondensedFont());
+		
 		m_resources.setFont(R.id.textView1, m_resources.getCondensedFont());
 		m_resources.setFont(R.id.textView2, m_resources.getCondensedFont());
 		m_resources.setFont(R.id.textView3, m_resources.getCondensedFont());
 		m_resources.setFont(R.id.textView4, m_resources.getCondensedFont());
+		m_resources.setFont(R.id.textView5, m_resources.getThinFont());
 		
 		m_genreDataAdapter = new MemoBaseGenreAdapter(this);
-		
+		m_memoBaseDataAdapter = new MemoBaseAdapter(this);
+			
 		m_wsPublished = new WsPublishedLibraries();
 		
 		bindData();
@@ -115,6 +163,16 @@ public class DownloadActivity extends GestureActivity implements ISearchComplete
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_download, menu);
 		return true;
+	}
+	
+	@Override
+	public void onBackPressed() {
+		if(m_layPreview.getVisibility() == View.VISIBLE) {
+			m_layPreview.setVisibility(View.GONE);
+			return;
+		}
+		
+		finish();
 	}
 
 	private void bindData() {
@@ -127,13 +185,13 @@ public class DownloadActivity extends GestureActivity implements ISearchComplete
 		
 		m_languageBAdapter.clear();
 		ArrayList<LanguageView> languagesB = LanguageView.getAll();
-		languagesA.set(0, LanguageView.empty());
+		languagesA.add(0, LanguageView.empty());
 		m_languageBAdapter.addAll(languagesB);
 		
 		// Bind genres
 		m_genreAdapter.clear();
 		ArrayList<MemoBaseGenreView> genres = MemoBaseGenreView.getAll(m_genreDataAdapter.getAll());
-		genres.set(0, MemoBaseGenreView.empty());
+		genres.add(0, MemoBaseGenreView.empty());
 		m_genreAdapter.addAll(genres);
 		
 		search();
@@ -145,7 +203,70 @@ public class DownloadActivity extends GestureActivity implements ISearchComplete
 		public void onClick(View view) {
 			m_page = 0;
 			m_publishedAdapter.clear();
+			m_noMoreLibraries = false;
 			search();
+		}
+		
+	}
+	
+	private class BtnCloseEventHandler implements OnClickListener {
+
+		@Override
+		public void onClick(View view) {
+			m_layPreview.setVisibility(View.GONE);
+		}
+		
+	}
+	
+	private class BtnDownloadEventHandler implements OnClickListener {
+
+		@Override
+		public void onClick(View view) {
+			m_layPreview.setVisibility(View.GONE);
+			Toast.makeText(DownloadActivity.this, R.string.download_download_startDownload, Toast.LENGTH_SHORT).show();
+			
+			m_wsPublished.download(m_lastPreviedPublishedMemoBaseId, new IDownloadComplete() {
+				@Override
+				public void onDownloadComplete(PublishedMemoBase published) {
+					if(published == null) {
+						Toast.makeText(DownloadActivity.this, R.string.download_download_errorDownload, Toast.LENGTH_SHORT).show();
+						return;
+					}
+					
+					Toast.makeText(DownloadActivity.this, R.string.download_download_completedDownload, Toast.LENGTH_SHORT).show();
+					
+					m_memoBaseDataAdapter.addDeep(published.getMemoBase());
+
+					Toast.makeText(DownloadActivity.this, R.string.download_download_finished, Toast.LENGTH_SHORT).show();
+				}				
+			});			
+		}
+		
+	}
+	
+	// TODO: Change this to dialog - remove on back press also
+	private class LstPublishedEventHandler implements OnItemClickListener {
+
+		@Override
+		public void onItemClick(AdapterView<?>  parent, View view, int position, long id) {
+			m_previewAdapter.clear();
+			m_layPreview.setVisibility(View.VISIBLE);
+			Toast.makeText(DownloadActivity.this, R.string.download_preview_download, Toast.LENGTH_SHORT).show();
+			
+			m_lastPreviedPublishedMemoBaseId = m_publishedAdapter.getItem(position).getPublishedMemoBase().getPublishedMemoBaseId();
+			m_wsPublished.preview(m_lastPreviedPublishedMemoBaseId, 
+					new IPreviewComplete() {
+				@Override
+				public void onPreviewComplete(PublishedMemoBase preview) {
+					if(preview == null) {
+						Toast.makeText(DownloadActivity.this, R.string.download_preview_error, Toast.LENGTH_SHORT).show();
+						return;
+					}
+					
+					m_lblDescription.setText(preview.getDescription());
+					m_previewAdapter.addAll(MemoPreviewView.getAll(preview.getMemoBase().getMemos()));
+				}
+			});
 		}
 		
 	}
@@ -199,6 +320,7 @@ public class DownloadActivity extends GestureActivity implements ISearchComplete
 		
 		if(headers.size() == 0) {
 			Toast.makeText(this, R.string.download_search_noMore, Toast.LENGTH_SHORT).show();
+			m_noMoreLibraries = true;
 			return;
 		}
 		
@@ -216,6 +338,10 @@ public class DownloadActivity extends GestureActivity implements ISearchComplete
 	@Override
 	public void onScrollFinished(float x, float y, int yPosition) {
 
+		if(m_noMoreLibraries) {
+			return;
+		}
+		
 		if(yPosition == ScrollableModifiableComplexTextAdapter.Y_BOTTOM) {
 			Toast.makeText(DownloadActivity.this, R.string.download_search_loading, Toast.LENGTH_SHORT).show();
 			m_page++;

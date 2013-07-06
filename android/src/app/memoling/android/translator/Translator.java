@@ -1,11 +1,9 @@
 package app.memoling.android.translator;
 
-import android.util.Log;
-
-import app.memoling.android.Language;
-import app.memoling.android.WorkerThread;
+import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Word;
 import app.memoling.android.helper.CacheHelper;
+import app.memoling.android.thread.WorkerThread;
 import app.memoling.android.translator.service.BingTranslator;
 
 public class Translator implements ITranslateComplete {

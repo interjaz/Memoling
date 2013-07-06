@@ -3,11 +3,15 @@ require_once("../Init.php");
 
 class WordAdapter extends DbAdapter {
 
+	protected $db;
+	
+	public function __construct() {
+		$this->db = parent::connect();
+	}
+	
 	public function getAll() {
 		
-		$db = DbAdapter::connect();
-		
-		$stm = $db->prepare("SELECT * FROM memoling_Words");
+		$stm = $this->db->prepare("SELECT * FROM memoling_Words");
 		$stm->execute();
 		
 		$list = array();

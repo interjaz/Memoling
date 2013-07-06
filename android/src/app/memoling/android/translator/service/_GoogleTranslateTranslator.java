@@ -9,8 +9,9 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import app.memoling.android.Language;
+import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Word;
+import app.memoling.android.helper.AppLog;
 import app.memoling.android.translator.ITranslateComplete;
 import app.memoling.android.translator.TranslatorResult;
 import app.memoling.android.webrequest.HttpGetRequestTask;
@@ -89,9 +90,8 @@ public class _GoogleTranslateTranslator implements IHttpRequestTaskComplete {
 				words.add(new Word(entry));
 			}
 
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (JSONException ex) {
+			AppLog.e("_GoogleTranslate", "ParseJson", ex);
 		}
 
 		return words;
@@ -99,8 +99,7 @@ public class _GoogleTranslateTranslator implements IHttpRequestTaskComplete {
 
 	@Override
 	public void onHttpRequestTimeout(Exception ex) {
-		// TODO Auto-generated method stub
-		
+		AppLog.w("GoogleTranslator", "onHttpRequestTimeout", ex);
 	}
 
 }

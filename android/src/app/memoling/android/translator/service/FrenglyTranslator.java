@@ -13,8 +13,9 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import android.util.Xml;
 
-import app.memoling.android.Language;
+import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Word;
+import app.memoling.android.helper.AppLog;
 import app.memoling.android.translator.ITranslateComplete;
 import app.memoling.android.translator.TranslatorResult;
 import app.memoling.android.webrequest.HttpGetRequestTask;
@@ -103,7 +104,6 @@ public class FrenglyTranslator implements IHttpRequestTaskComplete {
 
 	@Override
 	public void onHttpRequestTimeout(Exception ex) {
-		// TODO Auto-generated method stub
-		
+		AppLog.w("FrenglyTranslator", "onHttpRequestTimeout", ex);		
 	}
 }

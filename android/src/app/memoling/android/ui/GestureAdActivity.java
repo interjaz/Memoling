@@ -1,6 +1,5 @@
 package app.memoling.android.ui;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
@@ -8,7 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
-public class GestureActivity extends Activity implements OnGestureListener, OnTouchListener {
+public class GestureAdActivity extends AdActivity implements OnGestureListener, OnTouchListener {
 
 	private static final int SWIPE_MIN_DISTANCE = 120;
 	private static final int SWIPE_MAX_OFF_PATH = 250;

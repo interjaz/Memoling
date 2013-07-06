@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 
+import app.memoling.android.helper.AppLog;
 import app.memoling.android.helper.Preferences;
 
 public class FacebookUser {
@@ -234,8 +235,8 @@ public class FacebookUser {
 		try {
 			Preferences preferences = new Preferences(context);
 			preferences.set(FacebookUser, user.serialize());
-		} catch (JSONException e) {
-			e.printStackTrace();
+		} catch (JSONException ex) {
+			AppLog.e("FacebookUser", "save", ex);
 		}
 	}
 }

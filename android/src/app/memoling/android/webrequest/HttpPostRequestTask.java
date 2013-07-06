@@ -20,7 +20,8 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 
-import app.memoling.android.WorkerThread;
+import app.memoling.android.helper.AppLog;
+import app.memoling.android.thread.WorkerThread;
 
 public class HttpPostRequestTask extends WorkerThread<NameValuePair, Void, String> {
 
@@ -29,6 +30,7 @@ public class HttpPostRequestTask extends WorkerThread<NameValuePair, Void, Strin
 	private ArrayList<NameValuePair> m_headers;
 	private int m_timeout;
 	private String m_encoding;
+	private Exception m_exception;
 
 	public HttpPostRequestTask(URI uri, IHttpRequestTaskComplete onHttpRequestTaskComplete, int timeout) {
 		this(uri, onHttpRequestTaskComplete, null, timeout, null);
@@ -38,13 +40,13 @@ public class HttpPostRequestTask extends WorkerThread<NameValuePair, Void, Strin
 			ArrayList<NameValuePair> headers, int timeout) {
 		this(uri, onHttpRequestTaskComplete, headers, timeout, null);
 	}
-	
+
 	public HttpPostRequestTask(URI uri, IHttpRequestTaskComplete onHttpRequestTaskComplete,
 			ArrayList<NameValuePair> headers, int timeout, String encoding) {
-		if(encoding == null) {
+		if (encoding == null) {
 			encoding = HTTP.DEFAULT_CONTENT_CHARSET;
 		}
-		
+
 		m_uri = uri;
 		m_onHttpRequestTaskComplete = onHttpRequestTaskComplete;
 		m_headers = headers;
@@ -80,7 +82,7 @@ public class HttpPostRequestTask extends WorkerThread<NameValuePair, Void, Strin
 						postArgs.add(param);
 					}
 				}
-				
+
 				request.setEntity(new UrlEncodedFormEntity(postArgs, m_encoding));
 			}
 
@@ -103,11 +105,14 @@ public class HttpPostRequestTask extends WorkerThread<NameValuePair, Void, Strin
 				throw new IOException(statusLine.getReasonPhrase());
 			}
 		} catch (ConnectTimeoutException ex) {
-			m_onHttpRequestTaskComplete.onHttpRequestTimeout(ex);
+			m_exception = ex;
+			AppLog.v("ConnectTimeoutException", "POST", ex);
 		} catch (SocketException ex) {
-			m_onHttpRequestTaskComplete.onHttpRequestTimeout(ex);
+			m_exception = ex;
+			AppLog.w("SocketException", "POST", ex);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			m_exception = ex;
+			AppLog.e("HttpRequestTaskException", "POST", ex);
 		}
 
 		return null;
@@ -115,6 +120,15 @@ public class HttpPostRequestTask extends WorkerThread<NameValuePair, Void, Strin
 
 	@Override
 	protected void onPostExecute(String response) {
+
+		if (m_exception != null) {
+			if (m_exception instanceof ConnectTimeoutException) {
+				m_onHttpRequestTaskComplete.onHttpRequestTimeout(m_exception);
+			} else if (m_exception instanceof SocketException) {
+				m_onHttpRequestTaskComplete.onHttpRequestTimeout(m_exception);
+			}
+		}
+
 		super.onPostExecute(response);
 		m_onHttpRequestTaskComplete.onHttpRequestTaskComplete(response);
 	}

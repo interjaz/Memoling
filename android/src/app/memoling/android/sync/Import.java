@@ -6,32 +6,34 @@ import java.util.Date;
 import java.util.UUID;
 
 import android.content.Context;
-
 import app.memoling.android.adapter.MemoAdapter;
 import app.memoling.android.adapter.MemoAdapter.Sort;
-import app.memoling.android.db.Order;
+import app.memoling.android.db.DatabaseHelper;
+import app.memoling.android.db.DatabaseHelper.Order;
 import app.memoling.android.entity.Memo;
+import app.memoling.android.entity.MemoBase;
 import app.memoling.android.entity.Word;
+import app.memoling.android.helper.AppLog;
 import app.memoling.android.sync.ConflictResolve.OnConflictResolveHaltable;
 import app.memoling.android.sync.SupervisedSync.OnSyncComplete;
 
 public class Import {
 
-	public static void importMemosMemolingFile(final String destinationMemoBaseId, final Context context, final String path,
-			final OnConflictResolveHaltable<Memo> onConflictMemo, final OnSyncComplete onComplete) {
+	public static void importMemosMemolingFile(final String destinationMemoBaseId, final Context context,
+			final String path, final OnConflictResolveHaltable<Memo> onConflictMemo, final OnSyncComplete onComplete) {
 
 		try {
 			MemolingFile memolingFile = MemolingFile.parseFile(path);
-			
+
 			final ArrayList<Memo> externalMemos = new ArrayList<Memo>();
-			for (Library lib : memolingFile.libraries) {
-				ArrayList<Memo> libMemos = lib.memos;
-				for (int i = 0; i < libMemos.size(); i++) {
-					externalMemos.add(libMemos.get(i));
+			for (MemoBase base : memolingFile.getMemoBases()) {
+				ArrayList<Memo> memos = base.getMemos();
+				for (int i = 0; i < memos.size(); i++) {
+					externalMemos.add(memos.get(i));
 				}
 			}
 
-			final MemoAdapter memoAdapter = new MemoAdapter(context);
+			final MemoAdapter memoAdapter = new MemoAdapter(context, true);
 			final ArrayList<Memo> internalMemos = memoAdapter
 					.getAll(destinationMemoBaseId, Sort.CreatedDate, Order.ASC);
 
@@ -52,15 +54,8 @@ public class Import {
 				protected Memo contains(Memo object) throws Exception {
 
 					for (Memo memo : internalMemos) {
-						Word wmA = memo.getWordA();
-						Word wmB = memo.getWordB();
-						Word woA = object.getWordA();
-						Word woB = object.getWordB();
 
-						if (wmA.getWord().equals(woA.getWord())
-								&& wmA.getLanguage().getCode().equals(woA.getLanguage().getCode())
-								&& wmB.getWord().equals(woB.getWord())
-								&& wmB.getLanguage().getCode().equals(woB.getLanguage().getCode())) {
+						if (memo.getMemoId().equals(object.getMemoId())) {
 							return memo;
 						}
 					}
@@ -79,46 +74,48 @@ public class Import {
 
 				@Override
 				protected boolean submitTransaction(ArrayList<Memo> internalToDelete, ArrayList<Memo> externalToAdd) {
-					
-					for(int i=0; i< internalToDelete.size(); i++) {
+
+					for (int i = 0; i < internalToDelete.size(); i++) {
 						Memo toDelete = internalToDelete.get(i);
 						memoAdapter.delete(toDelete.getMemoId());
 					}
-					
+
 					for (int i = 0; i < externalToAdd.size(); i++) {
 						Memo toAdd = externalToAdd.get(i);
-						toAdd.setMemoId(UUID.randomUUID().toString());
-						toAdd.setCreated(new Date());
-						toAdd.setLastReviewed(new Date());
 						toAdd.setMemoBaseId(destinationMemoBaseId);
-						memoAdapter.add(toAdd);
+						if(memoAdapter.add(toAdd) == DatabaseHelper.Error) {
+							return false;
+						}
 					}
-					
+
 					return true;
 				}
 
+				@Override
+				protected void clean() throws Exception {
+					memoAdapter.closePersistant();
+				}
+				
 			};
 
 			syncBase.sync();
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			AppLog.w("Import", "importMemosMemosMemolingFile", ex);
 			onComplete.onComplete(false);
 		}
 	}
-	
-
 
 	public static void importCsvFile(final String destinationMemoBaseId, final Context context, final String path,
 			final OnConflictResolveHaltable<Memo> onConflictMemo, final OnSyncComplete onComplete) {
 
 		try {
-			
+
 			final ArrayList<Memo> externalMemos = CsvParser.parseFile(path);
 			File fInfo = new File(path);
 			final Date externalDate = new Date(fInfo.lastModified());
-			
-			final MemoAdapter memoAdapter = new MemoAdapter(context);
+
+			final MemoAdapter memoAdapter = new MemoAdapter(context, true);
 			final ArrayList<Memo> internalMemos = memoAdapter
 					.getAll(destinationMemoBaseId, Sort.CreatedDate, Order.ASC);
 
@@ -166,12 +163,12 @@ public class Import {
 
 				@Override
 				protected boolean submitTransaction(ArrayList<Memo> internalToDelete, ArrayList<Memo> externalToAdd) {
-					
-					for(int i=0; i< internalToDelete.size(); i++) {
+
+					for (int i = 0; i < internalToDelete.size(); i++) {
 						Memo toDelete = internalToDelete.get(i);
 						memoAdapter.delete(toDelete.getMemoId());
 					}
-					
+
 					for (int i = 0; i < externalToAdd.size(); i++) {
 						Memo toAdd = externalToAdd.get(i);
 						toAdd.setMemoId(UUID.randomUUID().toString());
@@ -180,16 +177,21 @@ public class Import {
 						toAdd.setMemoBaseId(destinationMemoBaseId);
 						memoAdapter.add(toAdd);
 					}
-					
+
 					return true;
 				}
 
+
+				@Override
+				protected void clean() throws Exception {
+					memoAdapter.closePersistant();
+				}
 			};
 
 			syncBase.sync();
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			AppLog.w("Import", "importCsvFile", ex);
 			onComplete.onComplete(false);
 		}
 	}

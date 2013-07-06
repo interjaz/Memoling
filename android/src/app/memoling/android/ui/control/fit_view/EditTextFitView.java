@@ -3,8 +3,6 @@ package app.memoling.android.ui.control.fit_view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.TypedValue;
-import android.widget.Button;
 import android.widget.EditText;
 
 public class EditTextFitView extends EditText {

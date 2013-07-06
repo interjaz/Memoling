@@ -8,13 +8,13 @@ import java.util.Date;
 import java.util.Locale;
 
 import android.content.Context;
-
 import app.memoling.android.adapter.MemoAdapter;
-import app.memoling.android.adapter.MemoBaseAdapter;
 import app.memoling.android.adapter.MemoAdapter.Sort;
-import app.memoling.android.db.Order;
+import app.memoling.android.adapter.MemoBaseAdapter;
+import app.memoling.android.db.DatabaseHelper.Order;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoBase;
+import app.memoling.android.helper.AppLog;
 import app.memoling.android.helper.Helper;
 
 public class Export {
@@ -34,19 +34,19 @@ public class Export {
 			fw = new FileWriter(file);
 
 			MemolingFile memoFile = new MemolingFile();
-			ArrayList<Library> libraries = new ArrayList<Library>();
-			memoFile.libraries = libraries;
+			ArrayList<MemoBase> memoBases = new ArrayList<MemoBase>();
+			memoFile.setMemoBases(memoBases);
 
 			for (String memoBaseId : memoBaseIds) {
-				Library library = new Library(baseAdapter.get(memoBaseId));
-				library.memos = memoAdapter.getAll(memoBaseId, Sort.CreatedDate, Order.ASC);
-				libraries.add(library);
+				MemoBase memoBase = baseAdapter.get(memoBaseId);
+				memoBase.setMemos(memoAdapter.getAll(memoBaseId, Sort.CreatedDate, Order.ASC));
+				memoBases.add(memoBase);
 			}
 
 			fw.write(memoFile.serialize().toString());
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			AppLog.w("Export", "exportMemoling", ex);
 			return null;
 		} finally {
 			try {
@@ -54,7 +54,7 @@ public class Export {
 					fw.close();
 				}
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				AppLog.e("Export", "exportMemoling - close", ex);
 			}
 
 		}
@@ -93,7 +93,7 @@ public class Export {
 			}
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			AppLog.w("Export", "exportCsv", ex);
 			return null;
 		} finally {
 			try {
@@ -101,7 +101,7 @@ public class Export {
 					fw.close();
 				}
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				AppLog.e("Export", "exportCsv - close", ex);
 			}
 		}
 
@@ -136,7 +136,7 @@ public class Export {
 			}
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			AppLog.w("Export", "exportEvernote", ex);
 			return null;
 		}
 

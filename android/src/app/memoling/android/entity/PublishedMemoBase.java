@@ -3,7 +3,6 @@ package app.memoling.android.entity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import app.memoling.android.Language;
 import app.memoling.android.facebook.FacebookUser;
 
 public class PublishedMemoBase {

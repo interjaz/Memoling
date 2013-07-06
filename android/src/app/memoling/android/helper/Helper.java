@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -12,7 +14,6 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -127,12 +128,36 @@ public class Helper {
 		
 		public void stop() {
 			long last = System.currentTimeMillis() - start;
-			Log.e(":: PROFILE ::", Integer.toString((int)last));
+			AppLog.e(":: PROFILE ::", Integer.toString((int)last));
 		}
 		
 		public void restart() {
 			stop();
 			start();
 		}
+	}
+	
+	public static PackageInfo getPackage(Context context) {
+		try {
+			return context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+		} catch (NameNotFoundException e) {
+			// Should not happen
+			return null;
+		}
+	}
+	
+	public static boolean isFirstStart(Context context) {
+		Preferences preferences = new Preferences(context);
+		String lastVersion = preferences.get("VERSION");
+		if(getPackage(context).versionName.equals(lastVersion)) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public static void setFirstStartSuccessful(Context context) {
+		Preferences preferences = new Preferences(context);
+		preferences.set("VERSION", getPackage(context).versionName);		
 	}
 }

@@ -168,8 +168,9 @@ public class Memo {
 
 		if (m_wordA != null) {
 			json.put("m_wordA", m_wordA.serialize());
+		}
+		if (m_wordB != null) {
 			json.put("m_wordB", m_wordB.serialize());
-			json.put("m_memoBase", m_memoBase.serialize());
 		}
 
 		return json;
@@ -188,18 +189,17 @@ public class Memo {
 		m_correctAnsweredWordB = json.getInt("m_correctAnsweredWordB");
 		m_active = json.getBoolean("m_active");
 		m_wordB = new Word().deserialize(json.getJSONObject("m_wordB"));
-		m_memoBase = new MemoBase().deserialize(json.getJSONObject("m_memoBase"));
 
 		JSONObject extra;
 		extra = json.optJSONObject("m_wordA");
 		if (extra != null) {
 			m_wordA = new Word().deserialize(extra);
-			extra = json.optJSONObject("m_wordB");
-			m_wordB = new Word().deserialize(extra);
-			extra = json.optJSONObject("m_memoBase");
-			m_memoBase = new MemoBase().deserialize(extra);
 		}
-		
+		extra = json.optJSONObject("m_wordB");
+		if (extra != null) {
+			m_wordB = new Word().deserialize(extra);
+		}
+
 		return this;
 	}
 

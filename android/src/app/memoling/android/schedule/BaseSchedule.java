@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import app.memoling.android.Schedule;
+import app.memoling.android.entity.Schedule;
+import app.memoling.android.helper.AppLog;
 
 public class BaseSchedule {
 
@@ -52,7 +53,7 @@ public class BaseSchedule {
 			json.put("Schedule", jsonArray);
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			AppLog.e("BaseSchedule", "serialize", ex);
 		}
 
 		return json.toString();
@@ -75,7 +76,7 @@ public class BaseSchedule {
 			base.setSchedule(schedule);
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			AppLog.e("BaseSchedule", "deserialize", ex);
 		}
 
 		return base;
@@ -91,7 +92,7 @@ public class BaseSchedule {
 		try {
 			json.put("List", jsonArray);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			AppLog.e("BaseSchedule", "serializeList", ex);
 		}
 
 		return json.toString();
@@ -108,7 +109,7 @@ public class BaseSchedule {
 				list.add(BaseSchedule.deserialize(jsonArray.getString(i)));
 			}
 		} catch (Exception ex) {
-			ex.toString();
+			AppLog.e("BaseSchedule", "deserializeList", ex);
 		}
 
 		return list;

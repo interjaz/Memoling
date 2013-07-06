@@ -1,6 +1,5 @@
 package app.memoling.android.ui.activity;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -11,26 +10,28 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-
+import android.widget.Toast;
 import app.memoling.android.R;
-import app.memoling.android.WorkerThread;
 import app.memoling.android.adapter.MemoAdapter;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.Word;
+import app.memoling.android.ui.AdActivity;
 import app.memoling.android.ui.ResourceManager;
 
-public class ReviewActivity extends Activity implements OnEditorActionListener {
+public class ReviewActivity extends AdActivity implements OnEditorActionListener {
 
 	public final static String MemoBaseId = "MemoBaseId";
 	public final static String NotificationId = "NotificationId";
@@ -56,10 +57,15 @@ public class ReviewActivity extends Activity implements OnEditorActionListener {
 	private MemoAdapter m_memoAdapter;
 	private int m_currentMemo;
 
+	private Animation m_fadeIn;
+	private Animation m_fadeInAnswer;
+	private Animation m_fadeOutAnswer;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_review);
+		onCreate_Ads();
 
 		m_resources = new ResourceManager(this);
 
@@ -82,17 +88,22 @@ public class ReviewActivity extends Activity implements OnEditorActionListener {
 
 		m_random = new Random();
 
-		try {
-			m_memoAdapter = new MemoAdapter(this);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		m_memoAdapter = new MemoAdapter(this);
 
 		// Set Fonts
 		m_resources.setFont(R.id.textView1, m_resources.getCondensedFont());
 		m_resources.setFont(R.id.textView2, m_resources.getCondensedFont());
 		m_resources.setFont(R.id.textView3, m_resources.getCondensedFont());
+
+		// Set Animations
+		m_fadeIn = new AlphaAnimation(0.0f, 1.0f);
+		m_fadeIn.setDuration(1000);
+		m_fadeInAnswer = new AlphaAnimation(0.0f, 1.0f);
+		m_fadeInAnswer.setDuration(1000);
+		m_fadeInAnswer.setAnimationListener(new FadeInAnswerEventHandler());
+		m_fadeOutAnswer = new AlphaAnimation(1.0f, 0.0f);
+		m_fadeOutAnswer.setDuration(1000);
+		m_fadeOutAnswer.setAnimationListener(new FadeOutAnswerEventHandler());
 	}
 
 	@Override
@@ -113,10 +124,12 @@ public class ReviewActivity extends Activity implements OnEditorActionListener {
 	}
 
 	public void newMemo() {
+		if(m_memos.size() == 0) {
+			return;
+		}
+		
 		Memo memo = m_memos.get(m_currentMemo);
 		m_memo = memo;
-		m_txtMemo1.setTextColor(0x00000000);
-		m_txtMemo2.setTextColor(0x00000000);
 
 		Word visible;
 		Word toGuess;
@@ -132,6 +145,7 @@ public class ReviewActivity extends Activity implements OnEditorActionListener {
 		m_origWord = toGuess;
 
 		m_txtMemo1.setText(visible.getWord());
+		m_txtMemo2.setText("");
 		m_lblLang1.setText(visible.getLanguage().getName());
 		m_lblLang2.setText(toGuess.getLanguage().getName());
 		animateNew();
@@ -156,6 +170,13 @@ public class ReviewActivity extends Activity implements OnEditorActionListener {
 	private void bindData(String memoBaseId) {
 		m_memos = m_memoAdapter.getTrainSet(memoBaseId, DefaultTrainSetSize);
 		m_currentMemo = 0;
+		
+		if(m_memos.size() == 0) {
+			Toast.makeText(this, R.string.review_noMemos, Toast.LENGTH_SHORT).show();
+			finish();
+			return;
+		}
+		
 		updateTotal();
 	}
 
@@ -180,10 +201,58 @@ public class ReviewActivity extends Activity implements OnEditorActionListener {
 			}
 			m_memoAdapter.update(m_memo);
 
-			animateVanish();
 			animateAnswer(match, original);
 		}
 
+	}
+
+	private class FadeInAnswerEventHandler implements AnimationListener {
+
+		@Override
+		public void onAnimationEnd(Animation arg0) {
+			m_fadeOutAnswer.reset();
+			m_fadeOutAnswer.start();
+			m_lblResult.clearAnimation();
+			m_lblResult.setAnimation(m_fadeOutAnswer);
+			m_txtMemo1.clearAnimation();
+			m_txtMemo1.setAnimation(m_fadeOutAnswer);
+			m_lblLang1.clearAnimation();
+			m_lblLang1.setAnimation(m_fadeOutAnswer);
+			m_txtMemo2.clearAnimation();
+			m_txtMemo2.setAnimation(m_fadeOutAnswer);
+			m_lblLang2.clearAnimation();
+			m_lblLang2.setAnimation(m_fadeOutAnswer);
+		}
+
+		@Override
+		public void onAnimationRepeat(Animation arg0) {
+		}
+
+		@Override
+		public void onAnimationStart(Animation arg0) {
+		}
+	}
+
+	private class FadeOutAnswerEventHandler implements AnimationListener {
+		@Override
+		public void onAnimationEnd(Animation animation) {
+			m_currentMemo++;
+			if (m_currentMemo < m_memos.size()) {
+				newMemo();
+				updateTotal();
+			} else {
+				setResult(Activity.RESULT_OK);
+				finish();
+			}
+		}
+
+		@Override
+		public void onAnimationRepeat(Animation animation) {
+		}
+
+		@Override
+		public void onAnimationStart(Animation animation) {
+		}
 	}
 
 	private void updateTotal() {
@@ -192,32 +261,12 @@ public class ReviewActivity extends Activity implements OnEditorActionListener {
 	}
 
 	private void animateNew() {
-		new NewMemoAnimation().execute();
-	}
-
-	private class NewMemoAnimation extends WorkerThread<Void, Float, Void> {
-
-		@Override
-		protected Void doInBackground(Void... params) {
-
-			for (int i = 0; i < 500; i++) {
-				publishProgress(i / 500.0f);
-				SystemClock.sleep(1);
-			}
-
-			return null;
-		}
-
-		@Override
-		protected void onProgressUpdate(Float... values) {
-			super.onProgressUpdate(values);
-			int color = ((int) (0xff * values[0].floatValue())) << (0x18);
-			m_txtMemo1.setTextColor(color + 0x00ffffff);
-			m_lblLang1.setTextColor(color + 0x00ffffff);
-			m_txtMemo2.setTextColor(color + 0x00ffffff);
-			m_lblLang2.setTextColor(color + 0x00ffffff);
-		}
-
+		m_fadeIn.reset();
+		m_fadeIn.start();
+		m_txtMemo1.setAnimation(m_fadeIn);
+		m_lblLang1.setAnimation(m_fadeIn);
+		m_txtMemo2.setAnimation(m_fadeIn);
+		m_lblLang2.setAnimation(m_fadeIn);
 	}
 
 	private void animateAnswer(boolean result, String correct) {
@@ -227,102 +276,9 @@ public class ReviewActivity extends Activity implements OnEditorActionListener {
 			String strResult = String.format(getString(R.string.review_lblIncorrect), correct);
 			m_lblResult.setText(strResult);
 		}
-		new TxtResultAnimation().execute(Boolean.valueOf(result));
-	}
 
-	private class TxtResultAnimation extends WorkerThread<Boolean, Float, Void> {
-
-		@Override
-		protected void onPostExecute(Void result) {
-			super.onPostExecute(result);
-			m_lblResult.setVisibility(View.GONE);
-
-			m_currentMemo++;
-			if (m_currentMemo < m_memos.size()) {
-				newMemo();
-				updateTotal();
-			} else {
-				// TODO: Go back to previous activity, or close activity.
-				setResult(Activity.RESULT_OK);
-				finish();
-			}
-		}
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			m_lblResult.setVisibility(View.VISIBLE);
-		}
-
-		@Override
-		protected Void doInBackground(Boolean... correct) {
-
-			SystemClock.sleep(500);
-			for (int i = 0; i <= 400; i++) {
-				publishProgress(Float.valueOf(i / 400.0f));
-				SystemClock.sleep(1);
-			}
-			
-			// Incorrect display for a longer period of time
-			if(!correct[0]) {
-				SystemClock.sleep(2000);
-			}
-			
-			SystemClock.sleep(200);
-			for (int i = 200; i >= 0; i--) {
-				publishProgress(Float.valueOf(i / 200.0f));
-				SystemClock.sleep(1);
-			}
-
-			return null;
-		}
-
-		@Override
-		protected void onProgressUpdate(Float... values) {
-			super.onProgressUpdate(values);
-			int color = ((int) (0xff * values[0].floatValue())) << (0x18);
-			m_lblResult.setTextColor(color + 0x00FFFFFF);
-			m_lblResult.setBackgroundColor(color + 0x00222222);
-
-		}
-
-	}
-
-	private void animateVanish() {
-		new TxtVanishAnimation().execute();
-	}
-
-	private class TxtVanishAnimation extends WorkerThread<Void, Float, Void> {
-
-		@Override
-		protected Void doInBackground(Void... params) {
-
-			for (int i = 500; i >= 0; i--) {
-				publishProgress(i / 500.0f);
-				SystemClock.sleep(1);
-			}
-
-			return null;
-		}
-
-		@Override
-		protected void onProgressUpdate(Float... values) {
-			super.onProgressUpdate(values);
-			int color = ((int) (0xff * values[0].floatValue())) << (0x18);
-			m_txtMemo1.setTextColor(color + 0x00ffffff);
-			m_lblLang1.setTextColor(color + 0x00ffffff);
-			m_txtMemo2.setTextColor(color + 0x00ffffff);
-			m_lblLang2.setTextColor(color + 0x00ffffff);
-
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-			super.onPostExecute(result);
-			m_txtMemo2.setText("");
-		}
-		
-		
-		
+		m_fadeInAnswer.reset();
+		m_fadeInAnswer.start();
+		m_lblResult.setAnimation(m_fadeInAnswer);
 	}
 }

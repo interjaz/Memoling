@@ -14,6 +14,7 @@ import android.widget.TextView;
 import app.memoling.android.R;
 import app.memoling.android.adapter.StatisticsAdapter;
 import app.memoling.android.entity.Statistics;
+import app.memoling.android.helper.AppLog;
 import app.memoling.android.ui.ResourceManager;
 
 public class StatisticsTabCombinedFragment extends Fragment {
@@ -25,7 +26,6 @@ public class StatisticsTabCombinedFragment extends Fragment {
 
 	private TextView m_lblMemos;
 	private TextView m_lblLibraries;
-	private TextView m_lblPopularLanguage;
 	private TextView m_lblTotalRepetitions;
 	private TextView m_lblAvgPerformance;
 	private TextView m_lblMostRepeated;
@@ -49,8 +49,6 @@ public class StatisticsTabCombinedFragment extends Fragment {
 		m_resources.setFont(m_lblMemos, m_resources.getThinFont());
 		m_lblLibraries = (TextView) contentView.findViewById(R.id.statistics_lblLibraries);
 		m_resources.setFont(m_lblLibraries, m_resources.getThinFont());
-		m_lblPopularLanguage = (TextView) contentView.findViewById(R.id.statistics_lblPopularLanguage);
-		m_resources.setFont(m_lblPopularLanguage, m_resources.getThinFont());
 		m_lblTotalRepetitions = (TextView) contentView.findViewById(R.id.statistics_lblTotalRepetitions);
 		m_resources.setFont(m_lblTotalRepetitions, m_resources.getThinFont());
 		m_lblAvgPerformance = (TextView) contentView.findViewById(R.id.statistics_lblAvgPerformance);
@@ -79,7 +77,6 @@ public class StatisticsTabCombinedFragment extends Fragment {
 		m_resources.setFont(contentView, R.id.textView9, m_resources.getThinFont());
 		m_resources.setFont(contentView, R.id.textView10, m_resources.getThinFont());
 		m_resources.setFont(contentView, R.id.textView11, m_resources.getThinFont());
-		m_resources.setFont(contentView, R.id.textView12, m_resources.getThinFont());
 
 		return contentView;
 	}
@@ -94,7 +91,7 @@ public class StatisticsTabCombinedFragment extends Fragment {
 				try {
 					m_statistics = new Statistics().deserialize(new JSONObject(strStatistics));
 				} catch (JSONException ex) {
-					ex.printStackTrace();
+					AppLog.e("StatisticsTabCombinedFragment", "onActivityCreated", ex);
 				}
 			}
 		}
@@ -104,7 +101,7 @@ public class StatisticsTabCombinedFragment extends Fragment {
 				m_statisticsAdapter = new StatisticsAdapter(this.getActivity());
 				m_statistics = m_statisticsAdapter.getStatitstics();
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				AppLog.e("StatisticsTabCombinedFragment", "onActivityCreated", ex);
 			}
 		}
 
@@ -118,7 +115,7 @@ public class StatisticsTabCombinedFragment extends Fragment {
 			try {
 				outState.putString("m_statistics", m_statistics.serialize().toString());
 			} catch (JSONException ex) {
-				ex.printStackTrace();
+				AppLog.e("StatisticsTabCombinedFragment", "onSaveInstanceState", ex);
 			}
 		}
 	}
@@ -131,8 +128,7 @@ public class StatisticsTabCombinedFragment extends Fragment {
 
 		m_lblMemos.setText(Integer.toString(m_statistics.getTotalMemos()));
 		m_lblLibraries.setText(Integer.toString(m_statistics.getLibrariesCount()));
-		// TODO: make it better II8N
-		// m_lblPopularLanguage.setText()
+
 		m_lblTotalRepetitions.setText(Integer.toString(m_statistics.getTotalRepetitions()));
 		m_lblAvgPerformance.setText(String.format("%2.2f", m_statistics.getAveragePerformance()));
 		m_lblMostRepeated.setText(String.format("%s / %s", m_statistics.getMostRepeatedMemo().getWordA().getWord(),

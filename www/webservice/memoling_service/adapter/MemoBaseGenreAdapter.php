@@ -3,10 +3,15 @@ require_once("../Init.php");
 
 class MemoBaseGenreAdapter extends DbAdapter {
 	
+	protected $db;
+	
+	public function __construct() {
+		$this->db = parent::connect();
+	}
+	
 	public function getAll() {
 		
-		$db = parent::connect();
-		$stm = $db->prepare("SELECT * FROM memoling_MemoBaseGenres");
+		$stm = $this->db->prepare("SELECT * FROM memoling_MemoBaseGenres");
 		$stm->execute();
 		
 		$list = array();

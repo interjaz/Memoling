@@ -1,44 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    -->
-    <style name="AppBaseTheme" parent="android:Theme.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
+    <style name="DarkButton" parent="@android:style/Widget.Button">
+        <item name="android:textColor">#BABABA</item>
+        <item name="android:background">@drawable/theme_dark_button</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:layout_margin">2dp</item>
     </style>
 
-    <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    <style name="DarkEditText" parent="@android:style/Widget.EditText">
+        <item name="android:textColor">#BABABA</item>
+        <item name="android:background">#FF1A1A1A</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:layout_margin">2dp</item>
     </style>
 
-    <style name="LoginFormContainer">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:padding">16dp</item>
+    <style name="DarkAutoCompleteTextView" parent="@android:style/Widget.AutoCompleteTextView">
+        <item name="android:background">#FF1A1A1A</item>
+        <item name="android:textColor">#BABABA</item>
+        <item name="android:popupBackground">#FF1A1A1A</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:layout_margin">2dp</item>
     </style>
 
-    <style name="ButtonBarButton" />
-
-    <style name="ButtonBar">
-        <item name="android:paddingLeft">2dp</item>
-        <item name="android:paddingTop">5dp</item>
-        <item name="android:paddingRight">2dp</item>
-        <item name="android:paddingBottom">0dp</item>
-        <item name="android:background">@android:drawable/bottom_bar</item>
+    <style name="DarkSpinner" parent="@android:style/Widget.Spinner">
+        <item name="android:background">#FF1A1A1A</item>
+        <item name="android:divider">#77EAEAEA</item>
+        <item name="android:spinnerMode">dropdown</item>
+        <item name="android:dropDownVerticalOffset">0dip</item>
+        <item name="android:dropDownHorizontalOffset">0dip</item>
+        <item name="android:dropDownWidth">wrap_content</item>
+        <item name="android:cacheColorHint">#FFFFFF</item>
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:popupBackground">#FF1A1A1A</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="FullscreenTheme" parent="android:Theme.Holo.NoActionBar">
+    <style name="DarkDropDownListViewStyle" parent="@android:style/Widget.ListView.DropDown">
+        <item name="android:background">#FF1F1F1F</item>
+        <item name="android:divider">#77EAEAEA</item>
+        <item name="android:dividerHeight">1px</item>
+        <item name="android:listSelector">@drawable/theme_dark_select</item>
+    </style>
+
+    <style name="DarkListViewStyle" parent="@android:style/Widget.ListView">
+        <item name="android:listSelector">@drawable/theme_dark_select</item>
+        <item name="android:divider">#77EAEAEA</item>
+        <item name="android:dividerHeight">1px</item>
+    </style>
+
+    <style name="DarkThemeLegacy" parent="android:Theme.NoTitleBar">
+        <item name="android:editTextStyle">@style/DarkEditText</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">@null</item>
-        <item name="buttonBarStyle">@style/ButtonBar</item>
-        <item name="buttonBarButtonStyle">@style/ButtonBarButton</item>
+        
+        <item name="android:spinnerStyle">@style/DarkSpinner</item>
+        <item name="android:autoCompleteTextViewStyle">@style/DarkAutoCompleteTextView</item>
+        <item name="android:listViewStyle">@style/DarkListViewStyle</item>
+        <item name="android:dropDownListViewStyle">@style/DarkDropDownListViewStyle</item>
+        
+		<!-- That is horrible! I couldn't find any other solution to make dropdown text color behave normally -->
+        <item name="android:textColor">@color/theme_dark_select_textcolor</item>
+        
+        
     </style>
     
+    <style name="DarkTheme" parent="@style/DarkThemeLegacy" >
+        <item name="android:buttonStyle">@style/DarkButton</item>
+        
+    </style>
+
 </resources>

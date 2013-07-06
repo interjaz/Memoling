@@ -2,7 +2,6 @@ package app.memoling.android.ui.activity;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,16 +15,16 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import app.memoling.android.R;
-import app.memoling.android.Schedule;
+import app.memoling.android.entity.Schedule;
 import app.memoling.android.schedule.BaseSchedule;
 import app.memoling.android.schedule.Scheduler;
+import app.memoling.android.ui.AdActivity;
 import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.adapter.ModifiableComplexTextAdapter;
 import app.memoling.android.ui.view.ScheduleView;
 
-public class SchedulerActivity extends Activity {
+public class SchedulerActivity extends AdActivity {
 
 	public static final String MemoBaseId = "MemoBaseId";
 
@@ -68,6 +67,7 @@ public class SchedulerActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_scheduler);
+		onCreate_Ads();
 
 		m_resources = new ResourceManager(this);
 
@@ -143,7 +143,7 @@ public class SchedulerActivity extends Activity {
 		BaseSchedule base = Scheduler.getSchedule(m_memoBaseId);
 		ArrayList<Schedule> schedule = base.getSchedule();
 		for (int i = 0; i < schedule.size(); i++) {
-			m_lstListAdapter.add(new ScheduleView(schedule.get(i)));
+			m_lstListAdapter.add(new ScheduleView(schedule.get(i), this));
 		}
 	}
 
@@ -360,7 +360,7 @@ public class SchedulerActivity extends Activity {
 					m_btnWeEventHandler.isClicked(), m_btnThEventHandler.isClicked(), m_btnFrEventHandler.isClicked(),
 					m_btnSaEventHandler.isClicked(), m_btnSuEventHandler.isClicked() });
 
-			m_lstListAdapter.add(new ScheduleView(schedule));
+			m_lstListAdapter.add(new ScheduleView(schedule, SchedulerActivity.this));
 			updateSchedules();
 			resetView();
 		}

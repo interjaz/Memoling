@@ -2,9 +2,9 @@ package app.memoling.android.ui.view;
 
 import java.util.ArrayList;
 
-import app.memoling.android.IGet;
 import app.memoling.android.adapter.MemoBaseGenreAdapter;
 import app.memoling.android.entity.PublishedMemoBase;
+import app.memoling.android.ui.adapter.IGet;
 
 public class PublishedSearchView implements IGet<String> {
 
@@ -34,6 +34,10 @@ public class PublishedSearchView implements IGet<String> {
 		return null;
 	}
 
+	public PublishedMemoBase getPublishedMemoBase() {
+		return m_published;
+	}
+	
 	public static ArrayList<PublishedSearchView> getAll(ArrayList<PublishedMemoBase> headers, MemoBaseGenreAdapter adapter) {
 		ArrayList<PublishedSearchView> list = new ArrayList<PublishedSearchView>();
 		

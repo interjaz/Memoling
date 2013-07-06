@@ -2,10 +2,10 @@ package app.memoling.android.ui.view;
 
 import java.util.ArrayList;
 
-import app.memoling.android.IActive;
-import app.memoling.android.IGet;
 import app.memoling.android.entity.MemoBaseInfo;
 import app.memoling.android.helper.DateHelper;
+import app.memoling.android.ui.adapter.IActive;
+import app.memoling.android.ui.adapter.IGet;
 
 public class MemoBaseInfoView implements IGet<String>, IActive {
 

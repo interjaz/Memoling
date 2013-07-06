@@ -58,7 +58,7 @@ public class BarGraph extends LinearLayout {
 
 		int barHeight = (int) ((float) (height - topOffset - bottomOffset - barTopMargin * n - barBottomMargin * n) / n);
 		int barWidth = width - leftOffset - rightOffset - barLeftMargin - barRightMargin;
-		barHeight = Math.max(barHeight, 12);
+		barHeight = Math.max(barHeight, 15);
 
 		TextView lblTitle = new TextView(m_context);
 		lblTitle.setText(m_title);

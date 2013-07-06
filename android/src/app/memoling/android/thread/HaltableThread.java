@@ -1,4 +1,4 @@
-package app.memoling.android.helper;
+package app.memoling.android.thread;
 
 import android.annotation.SuppressLint;
 import android.os.Handler;

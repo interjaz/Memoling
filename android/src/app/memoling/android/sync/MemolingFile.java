@@ -8,42 +8,60 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import app.memoling.android.entity.MemoBase;
+
 public class MemolingFile {
 
-	public String version = "1.0";
+	private String m_version = "1.0";
 
-	public ArrayList<Library> libraries;
+	public String getVersion() {
+		return m_version;
+	}
+
+	public void setVersion(String version) {
+		m_version = version;
+	}
+
+	private ArrayList<MemoBase> m_memoBases;
+
+	public ArrayList<MemoBase> getMemoBases() {
+		return m_memoBases;
+	}
+
+	public void setMemoBases(ArrayList<MemoBase> memoBases) {
+		m_memoBases = memoBases;
+	}
 
 	public JSONObject serialize() throws JSONException {
 		JSONObject json = new JSONObject();
 		JSONArray array = new JSONArray();
 
-		json.put("version", version);
+		json.put("m_version", m_version);
 
-		for (Library lib : libraries) {
+		for (MemoBase lib : m_memoBases) {
 			array.put(lib.serialize());
 		}
 
-		json.put("libraries", array);
+		json.put("m_memoBases", array);
 
 		return json;
 	}
 
 	public MemolingFile deserialize(JSONObject json) throws JSONException {
-		libraries = new ArrayList<Library>();
+		m_memoBases = new ArrayList<MemoBase>();
 
-		version = json.getString("version");
-		JSONArray array = json.getJSONArray("libraries");
+		m_version = json.getString("m_version");
+		JSONArray array = json.getJSONArray("m_memoBases");
 
 		for (int i = 0; i < array.length(); i++) {
-			libraries.add(new Library().deserialize(array.getJSONObject(i)));
+			m_memoBases.add(new MemoBase().deserialize(array.getJSONObject(i)));
 		}
 
 		return this;
 	}
 
 	public static MemolingFile parseFile(String path) throws IOException, JSONException {
-		
+
 		FileReader reader = new FileReader(path);
 		StringBuilder sb = new StringBuilder();
 
@@ -56,7 +74,7 @@ public class MemolingFile {
 		MemolingFile memolingFile = new MemolingFile().deserialize(new JSONObject(sb.toString()));
 
 		reader.close();
-		
+
 		return memolingFile;
 	}
 }

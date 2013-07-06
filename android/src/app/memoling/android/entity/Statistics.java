@@ -3,7 +3,6 @@ package app.memoling.android.entity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import app.memoling.android.Language;
 
 public class Statistics {
 
@@ -23,9 +22,6 @@ public class Statistics {
 
 	public int getLibrariesCount() {  return m_librariesCount; }
 	public void setLibrariesCount(int librariesCount) { m_librariesCount = librariesCount; }
-
-	public Language getMostPopularLanguage() {  return m_mostPopularLanguage; }
-	public void setMostPopularLanguage(Language mostPopularLanguage) { m_mostPopularLanguage = mostPopularLanguage; }
 
 	public int getTotalRepetitions() {  return m_totalRepetitions; }
 	public void setTotalRepetitions(int totalRepetitions) { m_totalRepetitions = totalRepetitions; }

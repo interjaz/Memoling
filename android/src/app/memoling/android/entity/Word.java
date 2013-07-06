@@ -5,7 +5,6 @@ import java.util.UUID;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import app.memoling.android.Language;
 
 public class Word {
 	private String m_wordId;

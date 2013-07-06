@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.Context;
 
+import app.memoling.android.helper.AppLog;
 import app.memoling.android.sync.ConflictResolve.OnConflictResolve;
 
 public abstract class SupervisedSync<T> {
@@ -69,7 +70,7 @@ public abstract class SupervisedSync<T> {
 				
 				// No conflict
 				if(internal == null) {
-					toAdd.add(internal);
+					toAdd.add(external);
 				} else {
 					if(resolve.hasFlag(ConflictResolve.TakeNewer)) {
 						T result = getNewer(internal, external);
@@ -94,13 +95,13 @@ public abstract class SupervisedSync<T> {
 			getOnSyncComplete().onComplete(result);
 			
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			AppLog.e("SupervisedSync", "sync", ex);
 			getOnSyncComplete().onComplete(false);
 		} finally {
 			try {
 				clean();
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				AppLog.e("SupervisedSync", "sync - close", ex);
 			}
 		}
 

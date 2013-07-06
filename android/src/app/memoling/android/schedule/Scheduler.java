@@ -13,7 +13,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import app.memoling.android.Config;
-import app.memoling.android.Schedule;
+import app.memoling.android.entity.Schedule;
+import app.memoling.android.helper.AppLog;
 import app.memoling.android.helper.DateHelper;
 
 public class Scheduler {
@@ -86,7 +87,7 @@ public class Scheduler {
 			AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 			alarmManager.set(AlarmManager.RTC, dueUTC, intent);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			AppLog.e("Scheduler", "updateAlarm", ex);
 		}
 	}
 
@@ -173,14 +174,14 @@ public class Scheduler {
 
 			return BaseSchedule.deserializeList(sb.toString());
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			AppLog.e("Scheduler", "load", ex);
 			return new ArrayList<BaseSchedule>();
 		} finally {
 			if (reader != null) {
 				try {
 					reader.close();
 				} catch (Exception ex) {
-					ex.printStackTrace();
+					AppLog.e("Scheduler", "load - close", ex);
 				}
 			}
 		}
@@ -194,14 +195,14 @@ public class Scheduler {
 			writer = new FileWriter(file);
 			writer.write(BaseSchedule.serializeList(list));
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			AppLog.e("Scheduler", "save", ex);
 			return false;
 		} finally {
 			if (writer != null) {
 				try {
 					writer.close();
 				} catch (Exception ex) {
-					ex.printStackTrace();
+					AppLog.e("Scheduler", "save - close", ex);
 				}
 			}
 		}

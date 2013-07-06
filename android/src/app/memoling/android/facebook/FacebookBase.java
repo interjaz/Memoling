@@ -1,7 +1,5 @@
 package app.memoling.android.facebook;
 
-import java.lang.ref.WeakReference;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;

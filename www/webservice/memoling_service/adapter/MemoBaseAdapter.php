@@ -3,11 +3,17 @@ require_once("../Init.php");
 
 class MemoBaseAdapter extends DbAdapter {
 
+	protected $db;
+	
+	public function __construct() {
+		$this->db = parent::connect();
+	}
+	
 	public function getAll() {
 		
-		$db = DbAdapter::connect();
+		$this->db = DbAdapter::connect();
 		
-		$stm = $db->prepare("SELECT * FROM memoling_MemoBases");
+		$stm = $this->db->prepare("SELECT * FROM memoling_MemoBases");
 		$stm->execute();
 		
 		$list = array();

@@ -12,7 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import app.memoling.android.Config;
-import app.memoling.android.Language;
+import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoBase;
 import app.memoling.android.entity.PublishedMemoBase;
@@ -74,7 +74,7 @@ public class WsPublishedLibraries {
 	public void search(String keyword, String generId, String languageA, String  languageB, int page, final ISearchComplete onComplete) {
 		try {
 
-			String uri = String.format("%s?action=search&keyword=%s&genderId=%s&languageAIso639=%s&languageBIso639=%s&page=%d",
+			String uri = String.format("%s?action=search&keyword=%s&genreId=%s&languageAIso639=%s&languageBIso639=%s&page=%d",
 					WsUrl, keyword, generId, languageA, languageB, page);
 			URI WsUri = new URI(uri);
 			
@@ -119,7 +119,7 @@ public class WsPublishedLibraries {
 
 			URI WsUri = new URI(WsUrl + "?action=preview&id=" + publishedMemoBaseId);
 			
-			new HttpPostRequestTask(WsUri, new IHttpRequestTaskComplete() {
+			new HttpGetRequestTask(WsUri, new IHttpRequestTaskComplete() {
 
 				@Override
 				public void onHttpRequestTaskComplete(String response) {
@@ -156,9 +156,9 @@ public class WsPublishedLibraries {
 
 		try {
 
-			URI WsUri = new URI(WsUrl + "?action=preview&id=" + publishedMemoBaseId);
+			URI WsUri = new URI(WsUrl + "?action=download&id=" + publishedMemoBaseId);
 			
-			new HttpPostRequestTask(WsUri, new IHttpRequestTaskComplete() {
+			new HttpGetRequestTask(WsUri, new IHttpRequestTaskComplete() {
 
 				@Override
 				public void onHttpRequestTaskComplete(String response) {

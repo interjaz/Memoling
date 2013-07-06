@@ -3,10 +3,10 @@ package app.memoling.android.ui.adapter;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import app.memoling.android.helper.AppLog;
 
 public class ModifiableTextAdapter<T> extends ModifiableAdapter<T> {
 
@@ -51,7 +51,7 @@ public class ModifiableTextAdapter<T> extends ModifiableAdapter<T> {
                 text = (TextView) view.findViewById(m_fieldId);
             }
         } catch (ClassCastException e) {
-            Log.e("ModifiableTextAdapter", "You must supply a resource ID for a TextView");
+            AppLog.e("ModifiableTextAdapter", "You must supply a resource ID for a TextView");
             throw new IllegalStateException(
                     "ModifiableTextAdapter requires the resource ID to be a TextView", e);
         }

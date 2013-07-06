@@ -3,10 +3,15 @@ require_once("../Init.php");
 
 class MemoAdapter extends DbAdapter {
 	
+	protected $db;
+	
+	public function __construct() {
+		$this->db = parent::connect();
+	}
+	
 	public function getAll() {
 		
-		$db = parent::connect();
-		$stm = $db->prepare("SELECT * FROM memoling_Memos");
+		$stm = $this->db->prepare("SELECT * FROM memoling_Memos");
 		$stm->execute();
 	
 		$list = array();
@@ -26,10 +31,6 @@ class MemoAdapter extends DbAdapter {
 		}
 		
 		return $list;
-	}
-	
-	public function get($memoId) {
-		
 	}
 	
 }

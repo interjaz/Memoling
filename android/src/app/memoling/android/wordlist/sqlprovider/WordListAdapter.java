@@ -7,21 +7,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import app.memoling.android.Language;
 import app.memoling.android.db.SqliteAdapter;
+import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Word;
 
 public class WordListAdapter extends SqliteAdapter {
 
-	private static final String DatabaseName = "TranslateMemo";
-	private static int m_version = 1;
-
 	public WordListAdapter(Context context) throws IOException {
-		super(context, DatabaseName, getDatabaseVersion());
-	}
-
-	private static int getDatabaseVersion() {
-		return m_version;
+		super(context);
 	}
 
 	public ArrayList<Word> findWord(Word word, Language language, int limitFrom, int limitTo) {
@@ -75,7 +68,7 @@ public class WordListAdapter extends SqliteAdapter {
 			
 		} finally {
 			if (db != null) {
-				close();
+				closeDatabase();
 			}
 		}
 

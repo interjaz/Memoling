@@ -1,4 +1,4 @@
-package app.memoling.android;
+package app.memoling.android.entity;
 
 /**
  * Uses ISO-693-1 notation

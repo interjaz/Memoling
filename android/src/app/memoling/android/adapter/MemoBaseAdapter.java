@@ -1,6 +1,5 @@
 package app.memoling.android.adapter;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -8,21 +7,18 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
 import app.memoling.android.adapter.MemoAdapter.Sort;
-import app.memoling.android.db.Order;
+import app.memoling.android.db.DatabaseHelper;
+import app.memoling.android.db.DatabaseHelper.Order;
 import app.memoling.android.db.SqliteAdapter;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoBase;
 import app.memoling.android.entity.MemoBaseInfo;
 import app.memoling.android.helper.CacheHelper;
-import app.memoling.android.helper.DatabaseHelper;
 import app.memoling.android.helper.DateHelper;
 
 public class MemoBaseAdapter extends SqliteAdapter {
 
-	public final static String DatabaseName = "TranslateMemo";
-	public final static int m_databaseVersion = 1;
 	public final static String TableName = "MemoBases";
 
 	private final static int m_memoBaseCacheSize = 10;
@@ -37,8 +33,12 @@ public class MemoBaseAdapter extends SqliteAdapter {
 	private static CacheHelper<String, ArrayList<MemoBase>> m_memoBaseListCache = new CacheHelper<String, ArrayList<MemoBase>>(
 			m_memoBaseListCacheSize);
 
-	public MemoBaseAdapter(Context context) throws IOException {
-		super(context, DatabaseName, m_databaseVersion);
+	public MemoBaseAdapter(Context context) {
+		super(context);
+	}
+
+	public MemoBaseAdapter(Context context, boolean persistant) {
+		super(context, persistant);
 	}
 
 	public long add(MemoBase memoBase) {
@@ -51,53 +51,103 @@ public class MemoBaseAdapter extends SqliteAdapter {
 			ContentValues values = createValues(memoBase);
 			return db.insert(TableName, null, values);
 		} finally {
-			if (db != null) {
-				close();
+			closeDatabase();
+		}
+	}
+
+	public boolean addDeep(MemoBase memoBase) {
+		SQLiteDatabase db = null;
+		invalidateCache();
+
+		try {
+			db = getDatabase();
+			db.beginTransaction();
+
+			long success = 0;
+
+			ContentValues values = createValues(memoBase);
+			success = db.insert(TableName, null, values);
+
+			if (success != -1) {
+				for (Memo memo : memoBase.getMemos()) {
+					success = MemoAdapter.add(this, db, memo);
+					if (success == DatabaseHelper.Error) {
+						break;
+					}
+				}
 			}
+
+			if (success != -1) {
+				db.setTransactionSuccessful();
+				return true;
+			}
+
+			return false;
+		} finally {
+			db.endTransaction();
+			closeDatabase();
 		}
 	}
 
 	public MemoBase get(String memoBaseId) {
 		SQLiteDatabase db = null;
 
-		if (inSync() && m_memoBaseCache.containsKey(memoBaseId)) {
+		if (!inSync()) {
+			invalidateCache();
+		}
+
+		if (m_memoBaseCache.containsKey(memoBaseId)) {
 			return m_memoBaseCache.get(memoBaseId);
 		}
 
 		try {
-			MemoBase memoBase = null;
-
 			db = getDatabase();
 
-			String query = "SELECT "
-					+ "	B.MemoBaseId B_MemoBaseId, B.Name B_Name, B.Created B_Created, B.Active B_Active "
-					+ "FROM MemoBases  AS B " + "WHERE B.MemoBaseId = ?";
-
-			Cursor cursor = db.rawQuery(query, new String[] { memoBaseId });
-
-			if (cursor.moveToFirst()) {
-				memoBase = new MemoBase();
-				memoBase.setActive(DatabaseHelper.getBoolean(cursor, "B_Active"));
-				memoBase.setCreated(DatabaseHelper.getDate(cursor, "B_Created"));
-				memoBase.setMemoBaseId(DatabaseHelper.getString(cursor, "B_MemoBaseId"));
-				memoBase.setName(DatabaseHelper.getString(cursor, "B_Name"));
-			}
-			if (memoBase != null) {
-				m_memoBaseCache.put(memoBaseId, memoBase);
-			}
-
-			return memoBase;
+			return get(this, db, memoBaseId);
 		} finally {
-			if (db != null) {
-				close();
-			}
+			closeDatabase();
 		}
+	}
+
+	public static MemoBase get(SqliteAdapter adapter, SQLiteDatabase db, String memoBaseId) {
+
+		if (!adapter.inSync()) {
+			adapter.invalidateCache();
+		}
+
+		if (m_memoBaseCache.containsKey(memoBaseId)) {
+			return m_memoBaseCache.get(memoBaseId);
+		}
+
+		MemoBase memoBase = null;
+
+		String query = "SELECT " + "	B.MemoBaseId B_MemoBaseId, B.Name B_Name, B.Created B_Created, B.Active B_Active "
+				+ "FROM MemoBases  AS B " + "WHERE B.MemoBaseId = ?";
+
+		Cursor cursor = db.rawQuery(query, new String[] { memoBaseId });
+
+		if (cursor.moveToFirst()) {
+			memoBase = new MemoBase();
+			memoBase.setActive(DatabaseHelper.getBoolean(cursor, "B_Active"));
+			memoBase.setCreated(DatabaseHelper.getDate(cursor, "B_Created"));
+			memoBase.setMemoBaseId(DatabaseHelper.getString(cursor, "B_MemoBaseId"));
+			memoBase.setName(DatabaseHelper.getString(cursor, "B_Name"));
+		}
+		if (memoBase != null) {
+			m_memoBaseCache.put(memoBaseId, memoBase);
+		}
+
+		return memoBase;
 	}
 
 	public ArrayList<MemoBase> getAll() {
 		SQLiteDatabase db = null;
 
-		if (inSync() && m_memoBaseListCache.containsKey("all")) {
+		if (!inSync()) {
+			invalidateCache();
+		}
+
+		if (m_memoBaseListCache.containsKey("all")) {
 			return m_memoBaseListCache.get("all");
 		}
 
@@ -130,16 +180,18 @@ public class MemoBaseAdapter extends SqliteAdapter {
 			return memoBases;
 
 		} finally {
-			if (db != null) {
-				close();
-			}
+			closeDatabase();
 		}
 	}
-	
+
 	public MemoBaseInfo getMemoBaseInfo(String memoBaseId) {
 		SQLiteDatabase db = null;
 
-		if (inSync() && m_memoBaseInfoCache.containsKey(memoBaseId)) {
+		if (!inSync()) {
+			invalidateCache();
+		}
+
+		if (m_memoBaseInfoCache.containsKey(memoBaseId)) {
 			return m_memoBaseInfoCache.get(memoBaseId);
 		}
 
@@ -176,9 +228,7 @@ public class MemoBaseAdapter extends SqliteAdapter {
 
 			return memoBaseInfo;
 		} finally {
-			if (db != null) {
-				close();
-			}
+			closeDatabase();
 		}
 	}
 
@@ -195,18 +245,14 @@ public class MemoBaseAdapter extends SqliteAdapter {
 
 			if (memoList != null) {
 				for (int i = 0; i < memoList.size(); i++) {
-					memoAdapter.delete(memoList.get(i).getMemoBaseId());
+					memoAdapter.delete(memoList.get(i).getMemoId());
 				}
 			}
 
 			db.delete(TableName, "MemoBaseId" + "=?", new String[] { memoBaseId });
 
-		} catch (IOException e) {
-			e.printStackTrace();
 		} finally {
-			if (db != null) {
-				close();
-			}
+			closeDatabase();
 		}
 	}
 
@@ -219,13 +265,11 @@ public class MemoBaseAdapter extends SqliteAdapter {
 			ContentValues values = createValues(memoBase);
 			return db.update(TableName, values, "MemoBaseId =?", new String[] { memoBase.getMemoBaseId() });
 		} finally {
-			if (db != null) {
-				close();
-			}
+			closeDatabase();
 		}
 	}
 
-	private ContentValues createValues(MemoBase base) {
+	private static ContentValues createValues(MemoBase base) {
 		ContentValues values = new ContentValues();
 		values.put("MemoBaseId", base.getMemoBaseId());
 		values.put("Name", base.getName());
@@ -237,7 +281,7 @@ public class MemoBaseAdapter extends SqliteAdapter {
 	@Override
 	protected void onInvalidateCache() {
 		super.onInvalidateCache();
-		
+
 		m_memoBaseCache.clear();
 		m_memoBaseInfoCache.clear();
 		m_memoBaseListCache.clear();

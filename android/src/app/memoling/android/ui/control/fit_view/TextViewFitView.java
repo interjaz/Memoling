@@ -3,7 +3,6 @@ package app.memoling.android.ui.control.fit_view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.Button;
 import android.widget.TextView;
 
 public class TextViewFitView extends TextView {

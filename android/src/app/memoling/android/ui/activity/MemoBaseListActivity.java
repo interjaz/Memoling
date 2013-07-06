@@ -1,6 +1,5 @@
 package app.memoling.android.ui.activity;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -21,7 +20,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import app.memoling.android.R;
 import app.memoling.android.adapter.MemoBaseAdapter;
 import app.memoling.android.entity.MemoBase;
@@ -29,14 +27,12 @@ import app.memoling.android.entity.MemoBaseInfo;
 import app.memoling.android.facebook.FacebookMe;
 import app.memoling.android.facebook.FacebookUser;
 import app.memoling.android.facebook.IFacebookUserFound;
-import app.memoling.android.sync.Sync;
-import app.memoling.android.ui.GestureActivity;
+import app.memoling.android.ui.GestureAdActivity;
 import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.adapter.ModifiableComplexTextAdapter;
 import app.memoling.android.ui.view.MemoBaseInfoView;
-import app.memoling.android.webservice.Webservice;
 
-public class MemoBaseListActivity extends GestureActivity implements IFacebookUserFound {
+public class MemoBaseListActivity extends GestureAdActivity implements IFacebookUserFound {
 
 	private ResourceManager mResource;
 
@@ -59,6 +55,7 @@ public class MemoBaseListActivity extends GestureActivity implements IFacebookUs
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_memobaselist);
+		onCreate_Ads();
 
 		mResource = new ResourceManager(this);
 
@@ -79,12 +76,7 @@ public class MemoBaseListActivity extends GestureActivity implements IFacebookUs
 		m_btnSync.setOnClickListener(new BtnSyncEventHandler());
 		mResource.setFont(m_btnSync, mResource.getThinFont());
 
-		try {
-			m_memoBaseAdapter = new MemoBaseAdapter(this);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		m_memoBaseAdapter = new MemoBaseAdapter(this);
 
 		mResource.setFont(R.layout.adapter_memobaselist_listview, R.id.textView1, mResource.getCondensedFont());
 		mResource.setFont(R.layout.adapter_memobaselist_listview, R.id.textView2, mResource.getCondensedFont());

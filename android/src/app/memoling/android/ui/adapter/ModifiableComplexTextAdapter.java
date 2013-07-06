@@ -9,13 +9,11 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import app.memoling.android.helper.AppLog;
 
-import app.memoling.android.IActive;
-import app.memoling.android.IGet;
 
 public class ModifiableComplexTextAdapter<T extends IGet<String>> extends ModifiableAdapter<T> {
 
@@ -83,6 +81,8 @@ public class ModifiableComplexTextAdapter<T extends IGet<String>> extends Modifi
 					boolean active = ((IActive) object).isActive();
 					if (!active) {
 						text.setPaintFlags(text.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+					} else {
+						text.setPaintFlags(text.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
 					}
 				}
 			}
@@ -123,7 +123,7 @@ public class ModifiableComplexTextAdapter<T extends IGet<String>> extends Modifi
 			}
 
 		} catch (ClassCastException e) {
-			Log.e("ArrayAdapter", "You must supply a resource ID for a TextView");
+			AppLog.e("ArrayAdapter", "You must supply a resource ID for a TextView");
 			throw new IllegalStateException("ArrayAdapter requires the resource ID to be a TextView", e);
 		}
 

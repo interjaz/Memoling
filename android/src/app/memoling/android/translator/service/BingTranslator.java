@@ -13,10 +13,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
-
-import app.memoling.android.Language;
+import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Word;
+import app.memoling.android.helper.AppLog;
 import app.memoling.android.translator.ITranslateComplete;
 import app.memoling.android.translator.TranslatorResult;
 import app.memoling.android.webrequest.HttpGetRequestTask;
@@ -129,7 +128,7 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 								}
 
 							} catch (Exception ex) {
-								ex.printStackTrace();
+								AppLog.e("BingTranslator", "obtainToken", ex);
 							}
 						}
 					} finally {
@@ -140,8 +139,7 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 
 			@Override
 			public void onHttpRequestTimeout(Exception ex) {
-				// TODO Implement
-				ex.printStackTrace();
+				AppLog.w("BingTranslator", "obtainToken - timeout", ex);
 			}
 		}, m_timeout).execute(new BasicNameValuePair("client_id", m_clientId), new BasicNameValuePair("client_secret",
 				m_clientSecret), new BasicNameValuePair("scope", m_scope), new BasicNameValuePair("grant_type",
@@ -153,8 +151,8 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 			StringBuilder url = new StringBuilder(m_bingTranslateUrl);
 			url.append("?appId=" + URLEncoder.encode("Bearer " + m_token, m_defaultEncode));
 			url.append("&text=" + URLEncoder.encode(m_word.getWord(), m_defaultEncode));
-			url.append("&from=" + m_from.getCode());
-			url.append("&to=" + m_to.getCode());
+			url.append("&from=" + m_from.getBingCode());
+			url.append("&to=" + m_to.getBingCode());
 			url.append("&maxTranslations=" + m_MaxTranslationsPerRequest);
 
 			URI uri = new URI(url.toString());
@@ -163,7 +161,7 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 			}
 		} catch (UnsupportedEncodingException ex) {
 		} catch (URISyntaxException ex) {
-			ex.printStackTrace();
+			AppLog.e("BingTranslator", "translate", ex);
 		}
 	}
 
@@ -200,8 +198,8 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 
 			}
 
-		} catch (JSONException e) {
-			e.printStackTrace();
+		} catch (JSONException ex) {
+			AppLog.e("BingTranslator", "prepareJson", ex);
 		}
 
 		return words;
@@ -209,27 +207,70 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 
 	public enum BingLanguage {
 
-		Unsupported("", ""), AR("Arabic", "ar"), BG("Bulgarian", "bg"), CA("Catalan", "ca"), ZH("Chinese", "zh-CHS"), ZHCHS(
-				"Chinese (Simplified)", "zh-CHS"), ZHCHT("Chinese (Traditional)", "zh-CHT"), CS("Czech", "cs"), DA(
-				"Danish", "da"), NL("Dutch", "nl"), EN("English", "en"), ET("Estonian", "et"), FA("Persian (Farsi)",
-				"fa"), FI("Finnish", "fi"), FR("French", "fr"), DE("German", "de"), EL("Greek", "el"), HT(
-				"Haitian Creole", "ht"), HE("Hebrew", "he"), HI("Hindi", "hi"), HU("Hungarian", "hu"), ID("Indonesian",
-				"id"), IT("Italian", "it"), JA("Japanese", "ja"), KO("Korean", "ko"), LV("Latvian", "lv"), LT(
-				"Lithuanian", "lt"), MWW("Hmong Daw", "mww"), NO("Norwegian", "no"), PL("Polish", "pl"), PT(
-				"Portuguese", "pt"), RO("Romanian", "ro"), RU("Russian", "ru"), SK("Slovak", "sk"), SL("Slovenian",
-				"sl"), ES("Spanish", "es"), SV("Swedish", "sv"), TH("Thai", "th"), TR("Turkish", "tr"), UK("Ukrainian",
-				"uk"), VI("Vietnamese", "vi");
+		Unsupported("", ""),
+		AR("Arabic", "ar"),
+		BG("Bulgarian", "bg"),
+		CA("Catalan", "ca"),
+		ZH("Chinese", "zh-CHS", "zh"),
+		ZHCHS("Chinese (Simplified)", "zh-CHS"),
+		ZHCHT("Chinese (Traditional)", "zh-CHT"),
+		CS("Czech", "cs"),
+		DA("Danish", "da"),
+		NL("Dutch", "nl"),
+		EN("English", "en"),
+		ET("Estonian", "et"),
+		FA("Persian (Farsi)","fa"),
+		FI("Finnish", "fi"),
+		FR("French", "fr"),
+		DE("German", "de"),
+		EL("Greek", "el"),
+		HT("Haitian Creole", "ht"),
+		HE("Hebrew", "he"),
+		HI("Hindi", "hi"),
+		HU("Hungarian", "hu"),
+		ID("Indonesian","id"),
+		IT("Italian", "it"),
+		JA("Japanese", "ja"),
+		KO("Korean", "ko"),
+		LV("Latvian", "lv"),
+		LT("Lithuanian", "lt"),
+		MWW("Hmong Daw", "mww"),
+		NO("Norwegian", "no"),
+		PL("Polish", "pl"),
+		PT("Portuguese", "pt"),
+		RO("Romanian", "ro"),
+		RU("Russian", "ru"),
+		SK("Slovak", "sk"),
+		SL("Slovenian","sl"),
+		ES("Spanish", "es", "spa"),
+		SV("Swedish", "sv"),
+		TH("Thai", "th"),
+		TR("Turkish", "tr"),
+		UK("Ukrainian","uk"),
+		VI("Vietnamese", "vi");
 
 		private String m_code;
 		private String m_name;
+		private String m_bingCode;
 
 		private BingLanguage(String name, String code) {
 			m_name = name;
 			m_code = code;
+			m_bingCode = code;
+		}
+		
+		private BingLanguage(String name, String bingCode, String code) {
+			m_name = name;
+			m_code = code;
+			m_bingCode = bingCode;
 		}
 
 		public String getCode() {
 			return m_code;
+		}
+		
+		public String getBingCode() {
+			return m_bingCode;
 		}
 
 		public String getName() {
@@ -237,34 +278,32 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 		}
 
 		public Language toLanguage() {
-
-			Language language = Language.Unsupported;
-
-			try {
-				language = Language.valueOf(this.getCode().toUpperCase(Locale.US));
-			} catch (Exception ex) {
-
+			
+			String code = this.getCode().toUpperCase(Locale.US);
+			for(Language language : Language.values()) {
+				if(language.getCode().toUpperCase(Locale.US).equals(code)) {
+					return language;
+				}
 			}
 
-			return language;
+			return Language.Unsupported;
 		}
 
 		public static BingLanguage getBingLangauge(Language language) {
 
-			BingLanguage bingLanguage = BingLanguage.Unsupported;
-
-			try {
-				bingLanguage = BingLanguage.valueOf(language.getCode().toUpperCase(Locale.US));
-			} catch (Exception ex) {
+			String code = language.getCode().toUpperCase(Locale.US);
+			for(BingLanguage bingLanguage : BingLanguage.values()) {
+				if(bingLanguage.getCode().toUpperCase(Locale.US).equals(code)) {
+					return bingLanguage;
+				}
 			}
 
-			return bingLanguage;
+			return  BingLanguage.Unsupported;
 		}
 	}
 
 	@Override
 	public void onHttpRequestTimeout(Exception ex) {
-		// TODO Auto-generated method stub
-
+		AppLog.w("BingTranslator", "onHttpRequestTimeout", ex);
 	}
 }

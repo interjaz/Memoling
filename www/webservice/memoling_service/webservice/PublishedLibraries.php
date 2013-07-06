@@ -1,7 +1,7 @@
 <?php
 require_once("../Init.php");
 
-class PublishedLibraries extends WebService {
+class PublishedLibraries extends Webservice {
 	
 	private $m_publishedAdapter;
 	private $m_genreAdapter;
@@ -51,7 +51,8 @@ class PublishedLibraries extends WebService {
 		$published = new PublishedMemoBase();
 		$published->decode($library);
 		$result = $this->m_pubishedAdapter->upload($published);
-		return $result->encode();
+		// bool value
+		return json_encode($result);
 	}
 	
 }

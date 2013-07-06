@@ -8,7 +8,7 @@ function __autoload($class_name) {
 	$slashes = substr_count($server, "/");
 	
 	$base = "";
-	for($i=0;$i<$slashes-1;$i++) {
+	for($i=0;$i<$slashes-2;$i++) {
 		$base .= "../";
 	}
 	

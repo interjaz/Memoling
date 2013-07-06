@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import app.memoling.android.R;
 import app.memoling.android.adapter.StatisticsAdapter;
+import app.memoling.android.helper.AppLog;
 import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.control.BarGraph;
 
@@ -44,7 +45,7 @@ public class StatisticsTabMonthFragment extends Fragment {
 		try {
 			m_statisticsAdapter = new StatisticsAdapter(this.getActivity());
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			AppLog.e("StatisticsTabMonthFragment", "onActivityCreated", ex);
 		}
 
 		bindData();

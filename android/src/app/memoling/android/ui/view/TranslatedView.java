@@ -1,8 +1,8 @@
 package app.memoling.android.ui.view;
 
-import app.memoling.android.IGet;
 import app.memoling.android.entity.Word;
 import app.memoling.android.helper.Helper;
+import app.memoling.android.ui.adapter.IGet;
 
 public class TranslatedView implements IGet<String> {
 

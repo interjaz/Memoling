@@ -1,4 +1,4 @@
-package app.memoling.android;
+package app.memoling.android.thread;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CancellationException;

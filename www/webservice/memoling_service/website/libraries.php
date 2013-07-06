@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+
 <?php
 require_once("../Init.php");
 
@@ -10,10 +17,15 @@ class PageAdapter extends DbAdapter {
 	}
 	
 	public function getLibraries() {
-		$stm = $this->db->query("SELECT COUNT(*) FROM memoling_PublishedMemoBases");
+		$stm = $this->db->query("SELECT P.PublishedMemoBaseId AS Id, M.Name AS Name FROM memoling_PublishedMemoBases AS P INNER JOIN memoling_MemoBases AS M ON P.MemoBaseId = M.MemoBaseId");
 		$stm->execute();
-		$row = $stm->fetch();
-		return $row[0];
+		
+		$array = array();
+		while($row = $stm->fetch()) {
+			$array[$row[0]] = $row[1];
+		}
+		
+		return $array;
 	}
 	
 	public function getLanguages() {
@@ -70,6 +82,10 @@ $users = $pageAdapter->getUsers();
 $words = $pageAdapter->getWords();
 $downloads = $pageAdapter->getDownloads();
 
+if(isset($_GET['deletePublishedId'])) {
+	$pageAdapter->deletePublished($_GET['deletePublishedId']);
+}
+
 $links = "";
 if(isset($_GET['password']) && strcmp(md5($_GET['password']), 'e82af5820966236e4e72f28613938b97') == 0) {
 	$links = '<br />Facebook links <br />';
@@ -78,9 +94,26 @@ if(isset($_GET['password']) && strcmp(md5($_GET['password']), 'e82af5820966236e4
 
 ?>
 <a href="index.php">Back</a> <br />&nbsp;<br />
-Total libraries: <?php echo $libs; ?><br />
+<form method="get" action="library.php">
+Total libraries: <?php echo sizeof($libs); ?> 
+
+	<select name="id">
+		<?php
+		foreach($libs as $key=>$value) {
+			echo "<option value='" . $key . "'>" . $value . "</otpion>";
+		}
+		
+		?>
+	</select>
+	
+	<input type="submit" title="Go" />
+</form>
+
 Languages: <?php echo $langs; ?> <br />
 Users: <?php echo $users; ?><br />
 Words: <?php echo $words; ?> <br />
 Downloads: <?php echo $downloads; ?> <br />
 <?php echo $links; ?>
+
+</body>
+</html>

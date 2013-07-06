@@ -1,6 +1,5 @@
 package app.memoling.android.ui.activity;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
 
@@ -34,7 +33,7 @@ import app.memoling.android.sync.ConflictResolve.OnConflictResolveHaltable;
 import app.memoling.android.sync.Export;
 import app.memoling.android.sync.Import;
 import app.memoling.android.sync.SupervisedSync.OnSyncComplete;
-import app.memoling.android.ui.GestureActivity;
+import app.memoling.android.ui.GestureAdActivity;
 import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.adapter.ModifiableComplexTextAdapter;
 import app.memoling.android.ui.view.MemoBaseGenreView;
@@ -42,7 +41,7 @@ import app.memoling.android.webservice.helper.PublishedMemoBaseUpload;
 import app.memoling.android.webservice.helper.PublishedMemoBaseUpload.ExceptionReasons;
 import app.memoling.android.webservice.helper.PublishedMemoBaseUpload.IPublishedMemoBaseUpload;
 
-public class MemoBaseActivity extends GestureActivity implements IPublishedMemoBaseUpload {
+public class MemoBaseActivity extends GestureAdActivity implements IPublishedMemoBaseUpload {
 
 	private static final int MemolingFile = 0;
 	private static final int CsvFile = 1;
@@ -77,7 +76,7 @@ public class MemoBaseActivity extends GestureActivity implements IPublishedMemoB
 	private EditText m_txtDescription;
 	private Spinner m_cbxGenre;
 
-	private TableLayout m_layoutLibrary;
+	private TableLayout m_layLibrary;
 	
 	private MemoBaseInfo m_memoBaseInfo;
 	private MemoBaseAdapter m_memoBaseAdapter;
@@ -94,6 +93,7 @@ public class MemoBaseActivity extends GestureActivity implements IPublishedMemoB
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_memobase);
+		onCreate_Ads();
 
 		m_resources = new ResourceManager(this);
 
@@ -133,7 +133,7 @@ public class MemoBaseActivity extends GestureActivity implements IPublishedMemoB
 		m_chbActive = (CheckBox) findViewById(R.id.memobase_chbEnabled);
 		m_chbActive.setTypeface(m_resources.getThinFont());
 
-		m_layoutLibrary = (TableLayout)findViewById(R.id.memobase_layoutLibrary);
+		m_layLibrary = (TableLayout)findViewById(R.id.memobase_layoutLibrary);
 		m_lblLibraryName = (TextView)findViewById(R.id.memobase_lblLibraryName);
 		m_resources.setFont(m_lblLibraryName, m_resources.getCondensedFont());
 		m_txtDescription = (EditText)findViewById(R.id.memobase_txtDescription);
@@ -148,14 +148,8 @@ public class MemoBaseActivity extends GestureActivity implements IPublishedMemoB
 				new int[] { R.id.textView1 }, new Typeface[] { m_resources.getCondensedFont() });
 		m_cbxGenre.setAdapter(m_genreAdapter);
 		
-
 		m_genreDataAdapter = new MemoBaseGenreAdapter(this);
-		
-		try {
-			m_memoBaseAdapter = new MemoBaseAdapter(this);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		m_memoBaseAdapter = new MemoBaseAdapter(this);
 
 		// Set fonts
 		m_resources.setFont(R.id.textView1, m_resources.getCondensedFont());
@@ -166,6 +160,7 @@ public class MemoBaseActivity extends GestureActivity implements IPublishedMemoB
 		m_resources.setFont(R.id.textView6, m_resources.getCondensedFont());
 		m_resources.setFont(R.id.textView7, m_resources.getCondensedFont());
 		m_resources.setFont(R.id.textView8, m_resources.getCondensedFont());
+		m_resources.setFont(R.id.textView9, m_resources.getCondensedFont());
 		
 		m_publishedUpload = new PublishedMemoBaseUpload(this, this);
 	}
@@ -185,8 +180,7 @@ public class MemoBaseActivity extends GestureActivity implements IPublishedMemoB
 		} else if (intent.getAction().equals(ActionCreate)) {
 			m_memoBaseId = createMemoBase();
 		}
-
-		m_memoBaseInfo = m_memoBaseAdapter.getMemoBaseInfo(m_memoBaseId);
+		
 		bindData();
 	}
 
@@ -221,6 +215,16 @@ public class MemoBaseActivity extends GestureActivity implements IPublishedMemoB
 				break;
 			}
 		}
+	}
+	
+	@Override
+	public void onBackPressed() {
+		if(m_layLibrary.getVisibility() == View.VISIBLE) {
+			m_layLibrary.setVisibility(View.GONE);
+			return;
+		}
+		
+		finish();
 	}
 	
 	public class BtnSaveEventHandler implements OnClickListener {
@@ -280,6 +284,7 @@ public class MemoBaseActivity extends GestureActivity implements IPublishedMemoB
 
 	}
 
+	// TODO: Change this to dialog - remove on back also if changed
 	public class BtnPublishEventHandler implements OnClickListener {
 		@Override
 		public void onClick(View v) {
@@ -290,16 +295,16 @@ public class MemoBaseActivity extends GestureActivity implements IPublishedMemoB
 				return;
 			}
 			
-			m_layoutLibrary.setVisibility(View.VISIBLE);
+			m_layLibrary.setVisibility(View.VISIBLE);
 		}
 	}
 	
 	public class BtnUploadEventHandler implements OnClickListener {
 		@Override
 		public void onClick(View v) {
-			m_layoutLibrary.setVisibility(View.GONE);
+			m_layLibrary.setVisibility(View.GONE);
 			String genreId = m_genreAdapter.getItem(m_cbxGenre.getSelectedItemPosition()).getGenre().getMemoBaseGenreId();
-			m_publishedUpload.upload(m_memoBaseId, genreId, m_txtDescription.getText().toString().toString());
+			m_publishedUpload.upload(m_memoBaseId, genreId, m_txtDescription.getText().toString());
 		}		
 	}
 
@@ -361,6 +366,8 @@ public class MemoBaseActivity extends GestureActivity implements IPublishedMemoB
 	}
 
 	private void bindData() {
+
+		m_memoBaseInfo = m_memoBaseAdapter.getMemoBaseInfo(m_memoBaseId);
 
 		m_txtName.setText(m_memoBaseInfo.getMemoBase().getName());
 		m_lblTitle.setText(m_memoBaseInfo.getMemoBase().getName());
@@ -428,7 +435,7 @@ public class MemoBaseActivity extends GestureActivity implements IPublishedMemoB
 		memoBase.setActive(true);
 		memoBase.setCreated(new Date());
 		memoBase.setMemoBaseId(memoBaseId);
-		memoBase.setName(getString(R.string.memobase_newMemo));
+		memoBase.setName(getString(R.string.memobase_newMemoBase));
 		m_memoBaseAdapter.add(memoBase);
 
 		return memoBaseId;
@@ -455,7 +462,7 @@ public class MemoBaseActivity extends GestureActivity implements IPublishedMemoB
 						m_inoutSelectedWhich = which;
 					}
 				}).create().show();
-
+		
 	}
 
 	private OnConflictResolveHaltable<Memo> m_memoConflictResolve = new OnConflictResolveHaltable<Memo>() {

@@ -8,8 +8,7 @@ import java.util.Locale;
 
 public class DateHelper {
 
-	public final static String DateFormat = "yyyy-MM-dd hh:mm:ss";
-	private final static SimpleDateFormat m_normalizedFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss",
+	private final static SimpleDateFormat m_normalizedFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
 			Locale.US);
 	private final static SimpleDateFormat m_uiDateFormatter = new SimpleDateFormat("dd MMMM yyyy");
 

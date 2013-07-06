@@ -1,8 +1,9 @@
-package app.memoling.android.helper;
+package app.memoling.android.db;
 
 import java.util.Date;
 
 import android.database.Cursor;
+import app.memoling.android.helper.DateHelper;
 
 public class DatabaseHelper {
 
@@ -68,6 +69,13 @@ public class DatabaseHelper {
 		} catch (Exception ex) {
 			return defaultValue;
 		}
+	}
+	
+	public final static long Error = -1;
+	
+	public static enum Order {
+		ASC,
+		DESC,
 	}
 
 }

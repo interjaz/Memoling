@@ -3,10 +3,11 @@ package app.memoling.android.sync;
 import android.content.Context;
 import android.os.Message;
 
-import app.memoling.android.helper.HaltableThread;
-import app.memoling.android.helper.HaltableThread.OnHandleMessageHaltable;
+import app.memoling.android.helper.AppLog;
 import app.memoling.android.sync.ConflictResolve.OnConflictResolve;
 import app.memoling.android.sync.ConflictResolve.OnConflictResolveHaltable;
+import app.memoling.android.thread.HaltableThread;
+import app.memoling.android.thread.HaltableThread.OnHandleMessageHaltable;
 
 public abstract class SupervisedSyncHaltable<T> extends SupervisedSync<T> {
 
@@ -47,8 +48,8 @@ public abstract class SupervisedSyncHaltable<T> extends SupervisedSync<T> {
 					m_thread.getUiHandler().sendEmptyMessage(ConflictMsg);
 					try {
 						m_thread.halt();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+					} catch (InterruptedException ex) {
+						AppLog.e("SupervisedSyncHaltable", "onConflict", ex);
 					}
 					return m_thread.getObject();
 				}

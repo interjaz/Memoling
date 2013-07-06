@@ -27,7 +27,6 @@ public class FbLoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_fblogin);
 		
-		
 		String clientId = AppId;
 		String redirectUrl = "https://www.facebook.com/connect/login_success.html";
 		String scope = "";

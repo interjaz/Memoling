@@ -2,8 +2,8 @@ package app.memoling.android.ui.view;
 
 import java.util.ArrayList;
 
-import app.memoling.android.IGet;
 import app.memoling.android.entity.MemoBaseGenre;
+import app.memoling.android.ui.adapter.IGet;
 
 public class MemoBaseGenreView implements IGet<String> {
 

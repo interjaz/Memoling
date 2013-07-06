@@ -1,29 +1,29 @@
 package app.memoling.android.adapter;
 
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Locale;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
-import app.memoling.android.Language;
+import app.memoling.android.db.DatabaseHelper;
 import app.memoling.android.db.SqliteAdapter;
+import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoBase;
 import app.memoling.android.entity.Statistics;
 import app.memoling.android.entity.Word;
-import app.memoling.android.helper.DatabaseHelper;
 
 public class StatisticsAdapter extends SqliteAdapter {
 
-	public final static String DatabaseName = "TranslateMemo";
-	public final static int m_databaseVersion = 1;
 	private Calendar m_calendar = Calendar.getInstance();
 
-	public StatisticsAdapter(Context context) throws IOException {
-		super(context, DatabaseName, m_databaseVersion);
+	public StatisticsAdapter(Context context) {
+		super(context);
+	}
+	
+	public StatisticsAdapter(Context context, boolean persistant) {
+		super(context, persistant);
 	}
 
 	public int[] getMonthlyAdded() {
@@ -46,9 +46,7 @@ public class StatisticsAdapter extends SqliteAdapter {
 			}
 
 		} finally {
-			if (db != null) {
-				close();
-			}
+			closeDatabase();
 		}
 
 		return monthly;
@@ -76,9 +74,7 @@ public class StatisticsAdapter extends SqliteAdapter {
 			}
 
 		} finally {
-			if (db != null) {
-				close();
-			}
+			closeDatabase();
 		}
 		return daily;
 	}
@@ -243,9 +239,7 @@ public class StatisticsAdapter extends SqliteAdapter {
 			}
 			
 		} finally {
-			if(db!= null) {
-				close();
-			}
+			closeDatabase();
 		}
 		
 		return null;
