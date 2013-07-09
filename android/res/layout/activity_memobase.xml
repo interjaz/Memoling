@@ -13,8 +13,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_margin="10dp"
+            android:layout_weight="1"
             android:fillViewport="true" >
 
             <LinearLayout
@@ -74,6 +74,8 @@
                         android:layout_alignLeft="@id/memobase_lblTitle"
                         android:layout_below="@id/memobase_lblTitle"
                         android:layout_marginTop="30dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/memobase_lblCreated"
                         android:text="@string/memobase_lblCreated"
                         android:textSize="15sp" />
 
@@ -94,6 +96,8 @@
                         android:layout_alignLeft="@id/textView1"
                         android:layout_below="@id/textView1"
                         android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/memobase_lblLastReviewed"
                         android:text="@string/memobase_lblLastReviewed"
                         android:textSize="15sp" />
 
@@ -114,6 +118,8 @@
                         android:layout_alignLeft="@id/textView2"
                         android:layout_below="@id/textView2"
                         android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/memobase_lblNoAll"
                         android:text="@string/memobase_lblNoAll"
                         android:textSize="15sp" />
 
@@ -134,6 +140,8 @@
                         android:layout_alignLeft="@id/textView3"
                         android:layout_below="@id/textView3"
                         android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/memobase_lblNoActive"
                         android:text="@string/memobase_lblNoActive"
                         android:textSize="15sp" />
 
@@ -210,6 +218,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentRight="true"
                         android:layout_below="@id/memobase_btnExport"
+                        android:layout_marginBottom="10dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="5dp"
@@ -307,10 +316,10 @@
                 android:id="@+id/memobase_txtDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="top|left"
+                android:inputType="textMultiLine"
                 android:lines="3"
-			    android:gravity="top|left"
-			    android:inputType="textMultiLine"
-			    android:scrollHorizontally="false" 
+                android:scrollHorizontally="false"
                 android:singleLine="false" />
         </TableRow>
 

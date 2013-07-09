@@ -1,28 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="memolist_whatsNewContent">1. Added language swap button\n2. Changed expression input method\n3. Fixed translation bug on Android 2.3\n\nIf you would like to translate the application please do not hesitate to contact me.</string>
+    
+    
     <!-- MemoList Activity -->
     <string name="memolist_btnSave">Save</string>
     <string name="memolist_listview_lblLearned">Learned:</string>
     <string name="memolist_listview_lblAdded">Added:</string>
-    <string name="memolist_listview_lblLastReview">Last reviewed:</string>
+    <string name="memolist_listview_lblLastReview">Last rev.:</string>
     <string name="memolist_listview_lblRepeated">Repeated:</string>
     <string name="memolist_from">From</string>
     <string name="memolist_to">To</string>
     <string name="memolist_saveErrorMessage">Failed to save memo</string>
+    <string name="memolist_ctxmenu_deactivate">Deactivate</string>
+    <string name="memolist_ctxmenu_activate">Activate</string>
     <string name="memolist_ctxmenu_delete">Delete</string>
     <string name="memolist_ctxmenu_deleteTitle">Warning!</string>
     <string name="memolist_ctxmenu_deleteQuestion">Are you sure? Once deleted, it will not be possible to recover old memo. Consider deactivating.</string>
     <string name="memolist_ctxmenu_deleteYes">Yes, I am sure.</string>
     <string name="memolist_ctxmenu_deleteNo">No, I have changed my mind.</string>
-    <string name="memolist_missingWords">Please provide expressions in correct format. Use \':\' as a separator.</string>
+    <string name="memolist_missingWords">Expression is missing or empty.</string>
     <string name="memolist_goToLibraries">Go to libraries</string>
     <string name="memolist_options">Options</string>
     <string name="memolist_startTraining">Start training</string>
     <string name="memolist_whatsNewTitle">What\'s new (v. %s)</string>
-    <string name="memolist_whatsNewContent">This is first version of Memoling!\n\nIf you would like to translate the application please do not hesitate to contact me.</string>
     <string name="memolist_whatsNewOk">OK</string>
     <string name="memolist_updateCrash">Failed to update the db!</string>
+    <string name="memolist_swap">⇄</string>
 
     <!-- MemoBaseList Activity -->
     <string name="memobaselist_listview_lblCreated">Created</string>
@@ -30,6 +35,8 @@
     <string name="memobaselist_tap_close">Please tap again to exit</string>
     <string name="memobaselist_setting_settings">Settings</string>
     <string name="memobaselist_setting_newLibrary">New library</string>
+    <string name="memobaselist_ctxmenu_deactivate">Deactivate</string>
+    <string name="memobaselist_ctxmenu_activate">Activate</string>
     <string name="memobaselist_ctxmenu_delete">Delete library</string>
     <string name="memobaselist_ctxmenu_deleteImpossible">You need to have at least one library!</string>
     <string name="memobaselist_ctxmenu_deleteImpossibleOK">OK</string>
@@ -57,6 +64,9 @@
     <string name="memo_lblActive">Active</string>
     <string name="memo_lblSave">Save</string>
     <string name="memo_lblSaving">Saving&#8230;</string>
+    <string name="memo_copied">Copied</string>
+    <string name="memo_selectTranslationTitle">Select translation</string>
+    <string name="memo_selectTranslationProgress">Looking for translations</string>
 
     <!-- MemoBase Activity -->
     <string name="memobase_lblStartTraining">Start training</string>
@@ -178,35 +188,7 @@
     <string name="schedule_edit">Edit</string>
     <string name="schedule_delete">Delete</string>
     <string name="schedule_new">New</string>
-    <string name="schedule_monday_l1">M</string>
-    <string name="schedule_tuesday_l1">T</string>
-    <string name="schedule_wednesday_l1">W</string>
-    <string name="schedule_thursday_l1">T</string>
-    <string name="schedule_friday_l1">F</string>
-    <string name="schedule_saturday_l1">S</string>
-    <string name="schedule_sunday_l1">S</string>
-    <string name="schedule_monday_l2">Mo</string>
-    <string name="schedule_tuesday_l2">Tu</string>
-    <string name="schedule_wednesday_l2">We</string>
-    <string name="schedule_thursday_l2">Th</string>
-    <string name="schedule_friday_l2">Fr</string>
-    <string name="schedule_saturday_l2">Sa</string>
-    <string name="schedule_sunday_l2">Su</string>
-
-    <string-array name="string_months">
-        <item>January</item>
-        <item>February</item>
-        <item>March</item>
-        <item>April</item>
-        <item>May</item>
-        <item>June</item>
-        <item>July</item>
-        <item>August</item>
-        <item>September</item>
-        <item>October</item>
-        <item>November</item>
-        <item>December</item>
-    </string-array>
+    
     <string-array name="memobasegenres">
         <item>Animals</item>
         <item>Nature</item>

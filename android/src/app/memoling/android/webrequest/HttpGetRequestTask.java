@@ -19,6 +19,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
 import app.memoling.android.helper.AppLog;
+import app.memoling.android.helper.Helper;
 import app.memoling.android.thread.WorkerThread;
 
 public class HttpGetRequestTask extends WorkerThread<Void, Void, String> {
@@ -72,7 +73,7 @@ public class HttpGetRequestTask extends WorkerThread<Void, Void, String> {
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				response.getEntity().writeTo(out);
 				out.close();
-				return out.toString();
+				return Helper.removeBom(out.toString("UTF-8"));
 			} else {
 				// Closes the connection.
 				response.getEntity().getContent().close();

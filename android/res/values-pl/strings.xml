@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="memolist_whatsNewContent">1. Nowy przycisk zamiany języków\n2. Zmienion sposób dodawania fraz\n3. Usunięto problem z brakiem translacji na Androidzie 2.3</string>
+    
     <!-- MemoList Activity -->
     <string name="memolist_btnSave">Zapisz</string>
     <string name="memolist_listview_lblLearned">Nauczone:</string>
     <string name="memolist_listview_lblAdded">Dodane:</string>
-    <string name="memolist_listview_lblLastReview">Ostatnie przejrzane:</string>
+    <string name="memolist_listview_lblLastReview">Ostatnie powt.:</string>
     <string name="memolist_listview_lblRepeated">Powtórzone:</string>
     <string name="memolist_from">Z</string>
     <string name="memolist_to">Na</string>
     <string name="memolist_saveErrorMessage">Wystąpił problem podczas zapisu</string>
+    <string name="memolist_ctxmenu_deactivate">Deaktywuj</string>
+    <string name="memolist_ctxmenu_activate">Aktywuj</string>
     <string name="memolist_ctxmenu_delete">Usuń</string>
     <string name="memolist_ctxmenu_deleteTitle">Uwaga!</string>
     <string name="memolist_ctxmenu_deleteQuestion">Na pewno? Raz usunięte memo, nie może zostać przywrócone. Zalecana deaktywacja.</string>
     <string name="memolist_ctxmenu_deleteYes">Tak, na pewno.</string>
     <string name="memolist_ctxmenu_deleteNo">Nie, zmieniłem/am zdanie.</string>
-    <string name="memolist_missingWords">Wprowadź memo. Użyj \':\' jako separatora.</string>
+    <string name="memolist_missingWords">Fraza nie może być pusta</string>
     <string name="memolist_goToLibraries">Biblioteka</string>
     <string name="memolist_options">Opcje</string>
     <string name="memolist_startTraining">Zacznij trening</string>
     <string name="memolist_whatsNewTitle">Aktualizacja (v. %s)</string>
-    <string name="memolist_whatsNewContent">To jest pierwsza wersja Memoling!</string>
     <string name="memolist_whatsNewOk">OK</string>
     <string name="memolist_updateCrash">Błąd podczas uaktualniania bazy!</string>
 
@@ -30,6 +33,8 @@
     <string name="memobaselist_tap_close">Proszę naciśnij przycisk jeszcze raz aby wyjść</string>
     <string name="memobaselist_setting_settings">Ustawienia</string>
     <string name="memobaselist_setting_newLibrary">Nowa biblioteka</string>
+    <string name="memobaselist_ctxmenu_deactivate">Deaktywuj</string>
+    <string name="memobaselist_ctxmenu_activate">Aktywuj</string>
     <string name="memobaselist_ctxmenu_delete">Usuń bibliotekę</string>
     <string name="memobaselist_ctxmenu_deleteImpossible">Wymagana przynajmniej jedna biblioteka!</string>
     <string name="memobaselist_ctxmenu_deleteImpossibleOK">OK</string>
@@ -57,6 +62,9 @@
     <string name="memo_lblActive">Aktywne</string>
     <string name="memo_lblSave">Zapisz</string>
     <string name="memo_lblSaving">Zapisywanie&#8230;</string>
+    <string name="memo_copied">Skopiowano</string>
+    <string name="memo_selectTranslationTitle">Wybierz tłumaczenie</string>
+    <string name="memo_selectTranslationProgress">Szukam tłumaczeń</string>
 
     <!-- MemoBase Activity -->
     <string name="memobase_lblStartTraining">Zacznij trening</string>
@@ -178,35 +186,6 @@
 	<string name="schedule_edit">Edytuj</string>
 	<string name="schedule_delete">Usuń</string>
 	<string name="schedule_new">Nowe</string>
-	<string name="schedule_monday_l1">P</string>
-	<string name="schedule_tuesday_l1">W</string>
-	<string name="schedule_wednesday_l1">Ś</string>
-	<string name="schedule_thursday_l1">C</string>
-	<string name="schedule_friday_l1">P</string>
-	<string name="schedule_saturday_l1">S</string>
-	<string name="schedule_sunday_l1">N</string>
-	<string name="schedule_monday_l2">Po</string>
-	<string name="schedule_tuesday_l2">Wt</string>
-	<string name="schedule_wednesday_l2">Śr</string>
-	<string name="schedule_thursday_l2">Czw</string>
-	<string name="schedule_friday_l2">Pt</string>
-	<string name="schedule_saturday_l2">So</string>
-	<string name="schedule_sunday_l2">Nd</string>
-
-    <string-array name="string_months">
-        <item>Styczeń</item>
-        <item>Luty</item>
-        <item>Marzec</item>
-        <item>Kwiecień</item>
-        <item>Maj</item>
-        <item>Czerwiec</item>
-        <item>Luty</item>
-        <item>Sierpień</item>
-        <item>Wrzesień</item>
-        <item>Październik</item>
-        <item>Listopad</item>
-        <item>Grudzień</item>
-    </string-array>
 
     <string-array name="memobasegenres">
         <item>Zwierzęta</item>

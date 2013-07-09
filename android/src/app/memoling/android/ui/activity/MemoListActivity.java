@@ -23,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -68,11 +69,11 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 
 	private Button m_btnSave;
 	private AutoCompleteTextView m_txtAdd;
+	private EditText m_txtAddTranslated;
 	private ListView m_lstWords;
 
 	private ScrollableModifiableComplexTextAdapter<TranslatedView> m_suggestionAdapter;
 	private WordsFinder m_wordsFinder;
-	private TxtAddTextEventHandler m_TxtAddTextEventHandler;
 	private DelayedLookup m_lastLookup;
 	private int m_delayedLookupDelay = 500;
 	private ModifiableComplexTextAdapter<MemoView> m_wordsAdapter;
@@ -81,6 +82,7 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 	private ModifiableComplexTextAdapter<LanguageView> m_spLanguageFromAdapter;
 	private Spinner m_spLanguageTo;
 	private ModifiableComplexTextAdapter<LanguageView> m_spLanguageToAdapter;
+	private Button m_btnLanguageSwap;
 
 	private MemoAdapter m_memoAdapter;
 	private ArrayList<Memo> m_memos;
@@ -93,7 +95,7 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 
 	private String m_saveErrorMessage;
 
-	private int m_selectedItemPosition;
+	private MemoView m_selectedItem;
 
 	private Pair<Language, Language> m_prefferedLanguages;
 
@@ -140,6 +142,10 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 		m_spLanguageTo.setAdapter(m_spLanguageToAdapter);
 		m_spLanguageToAdapter.addAll(LanguageView.getAll());
 
+		m_btnLanguageSwap = (Button) findViewById(R.id.memolist_btnLanguageSwap);
+		m_resources.setFont(m_btnLanguageSwap, m_resources.getThinFont());
+		m_btnLanguageSwap.setOnClickListener(new BtnLanguageSwap());
+
 		// Error message
 		m_saveErrorMessage = getString(R.string.memolist_saveErrorMessage);
 
@@ -150,16 +156,19 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 
 		// AutoCompleteTextView
 		m_txtAdd = (AutoCompleteTextView) findViewById(R.id.memolist_txtAddMemo);
-		m_TxtAddTextEventHandler = new TxtAddTextEventHandler();
+		TxtAddTextEventHandler txtAddTextEventHandler = new TxtAddTextEventHandler();
 		m_suggestionAdapter = new ScrollableModifiableComplexTextAdapter<TranslatedView>(this,
 				R.layout.adapter_memolist_suggestion, new int[] { R.id.memolist_suggestion_txtWord,
 						R.id.memolist_suggestion_txtTranslation }, new Typeface[] { m_resources.getThinFont(),
 						m_resources.getThinFont() });
-		m_suggestionAdapter.setOnScrollListener(m_TxtAddTextEventHandler);
+		m_suggestionAdapter.setOnScrollListener(txtAddTextEventHandler);
 		m_txtAdd.setAdapter(m_suggestionAdapter);
-		m_txtAdd.addTextChangedListener(m_TxtAddTextEventHandler);
-		m_txtAdd.setOnItemClickListener(m_TxtAddTextEventHandler);
+		m_txtAdd.addTextChangedListener(txtAddTextEventHandler);
+		m_txtAdd.setOnItemClickListener(txtAddTextEventHandler);
 		m_txtAdd.setTypeface(m_resources.getThinFont());
+
+		m_txtAddTranslated = (EditText) findViewById(R.id.memolist_txtAddMemoTranslated);
+		m_txtAddTranslated.setTypeface(m_resources.getThinFont());
 
 		// List View
 		m_lstWords = (ListView) findViewById(R.id.memolist_list);
@@ -208,13 +217,27 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 		super.onCreateContextMenu(menu, v, menuInfo);
 		getMenuInflater().inflate(R.menu.memolist_list, menu);
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-		m_selectedItemPosition = (int) info.position;
+		
+		m_selectedItem = m_wordsAdapter.getItem(info.position);
+		MenuItem item = menu.findItem(R.id.memolist_menu_list_activate);
+		if(m_selectedItem.getMemo().getActive()) {
+			item.setTitle(R.string.memolist_ctxmenu_deactivate);
+		} else {
+			item.setTitle(R.string.memolist_ctxmenu_activate);
+		}
 	}
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-
+		Memo memo;
+		
 		switch (item.getItemId()) {
+		case R.id.memolist_menu_list_activate:
+			memo = m_selectedItem.getMemo();
+			memo.setActive(!memo.getActive());
+			m_memoAdapter.update(memo);
+			m_wordsAdapter.notifyDataSetChanged();
+			break;
 		case R.id.memolist_menu_list_delete:
 
 			// Show warning
@@ -227,7 +250,7 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 							new android.content.DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
-									m_memoAdapter.delete(m_wordsAdapter.getItem(m_selectedItemPosition).getMemo()
+									m_memoAdapter.delete(m_selectedItem.getMemo()
 											.getMemoId());
 									bindData(m_memoBaseId);
 								}
@@ -332,7 +355,7 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 	// Event Handlers
 	//
 
-	protected class BtnLibrariesEventHandler implements OnClickListener {
+	private class BtnLibrariesEventHandler implements OnClickListener {
 		@Override
 		public void onClick(View v) {
 			Intent intent = new Intent(MemoListActivity.this, MemoBaseListActivity.class);
@@ -340,7 +363,7 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 		}
 	}
 
-	protected class BtnOptionsEventHandler implements OnClickListener {
+	private class BtnOptionsEventHandler implements OnClickListener {
 		@Override
 		public void onClick(View v) {
 			Intent intent = new Intent(MemoListActivity.this, MemoBaseActivity.class);
@@ -349,7 +372,7 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 		}
 	}
 
-	protected class BtnTrainingEventHandler implements OnClickListener {
+	private class BtnTrainingEventHandler implements OnClickListener {
 		@Override
 		public void onClick(View v) {
 			Intent intent = new Intent(MemoListActivity.this, ReviewActivity.class);
@@ -358,26 +381,24 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 		}
 	}
 
-	protected class BtnSaveEventHanlder implements OnClickListener {
+	private class BtnSaveEventHanlder implements OnClickListener {
 
 		@Override
 		public void onClick(View view) {
 
-			String[] entry = m_txtAdd.getText().toString().split("\\" + TranslatedView.Separator, -1);
+			String fromWord = m_txtAdd.getText().toString();
+			String toWord = m_txtAddTranslated.getText().toString();
 
-			if (entry.length != 2 || Helper.nullOrWhitespace(entry[1])) {
+			if (Helper.nullOrWhitespace(fromWord)) {
 				Toast.makeText(MemoListActivity.this, getString(R.string.memolist_missingWords), Toast.LENGTH_SHORT)
 						.show();
 				return;
 			}
 
-			Word original = new Word(entry[0]);
+			Word original = new Word(fromWord);
 			original.setLanguage(((LanguageView) m_spLanguageFrom.getSelectedItem()).getLanguage());
-			Word translation = new Word("");
-			if (entry.length > 1) {
-				translation.setWord(entry[1]);
-				translation.setLanguage(((LanguageView) m_spLanguageTo.getSelectedItem()).getLanguage());
-			}
+			Word translation = new Word(toWord);
+			translation.setLanguage(((LanguageView) m_spLanguageTo.getSelectedItem()).getLanguage());
 
 			Memo memo = new Memo(original, translation, m_memoBaseId);
 
@@ -387,6 +408,7 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 			}
 
 			m_txtAdd.setText("");
+			m_txtAddTranslated.setText("");
 
 			m_wordsAdapter.add(new MemoView(memo));
 			m_wordsAdapter.notifyDataSetChanged();
@@ -394,7 +416,7 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 
 	}
 
-	protected class BtnWhatsNewEventHandler implements OnClickListener {
+	private class BtnWhatsNewEventHandler implements OnClickListener {
 
 		@Override
 		public void onClick(View arg0) {
@@ -409,9 +431,30 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 
 	}
 
+	private class BtnLanguageSwap implements OnClickListener {
+
+		@Override
+		public void onClick(View button) {
+			int from = m_spLanguageFrom.getSelectedItemPosition();
+			int to = m_spLanguageTo.getSelectedItemPosition();
+			m_spLanguageTo.setSelection(from);
+			m_spLanguageFrom.setSelection(to);
+			invalidateTxtAddDropdown();
+		}
+	}
+
 	private class TxtAddTextEventHandler implements TextWatcher, OnItemClickListener, OnScrollFinishedListener {
+
 		@Override
 		public void afterTextChanged(Editable s) {
+			if (s.toString().indexOf(TranslatedView.Separator) != -1) {
+				String[] data = m_txtAdd.getText().toString().split(TranslatedView.Separator);
+				m_txtAdd.setText(data[0]);
+				m_txtAddTranslated.setText(data[1]);
+				m_txtAdd.dismissDropDown();
+				return;
+			}
+
 			String entry = s.toString();
 			if (entry.length() > 2) {
 
@@ -433,7 +476,6 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
 			// Nothing
-
 		}
 
 		@Override
@@ -585,14 +627,6 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 
 	private synchronized void invalidateTxtAddDropdown() {
 		m_suggestionAdapter.notifyDataSetChanged();
-
-		// Show dropdown
-		// I can't remember why I used this instead
-		// Editable entry = m_txtAdd.getText();
-		// m_txtAdd.removeTextChangedListener(m_TxtAddTextEventHandler);
-		// m_txtAdd.setText(entry.toString());
-		// m_txtAdd.setSelection(m_txtAdd.length());
-		// m_txtAdd.addTextChangedListener(m_TxtAddTextEventHandler);
 		m_txtAdd.showDropDown();
 	}
 

@@ -9,7 +9,7 @@ public class TranslatedView implements IGet<String> {
 	private Word m_from;
 	private Word m_to;
 
-	public final static String Separator = " : ";
+	public final static String Separator = "‡";
 
 	public TranslatedView(Word from) {
 		this(from, new Word(""));

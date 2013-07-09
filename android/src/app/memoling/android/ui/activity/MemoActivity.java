@@ -1,6 +1,11 @@
 package app.memoling.android.ui.activity;
 
+import java.util.ArrayList;
+
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -13,20 +18,28 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 import app.memoling.android.R;
 import app.memoling.android.adapter.MemoAdapter;
+import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Memo;
+import app.memoling.android.entity.Word;
 import app.memoling.android.helper.DateHelper;
+import app.memoling.android.helper.Helper;
+import app.memoling.android.translator.ITranslateComplete;
+import app.memoling.android.translator.Translator;
+import app.memoling.android.translator.TranslatorResult;
 import app.memoling.android.ui.GestureAdActivity;
 import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.adapter.ModifiableComplexTextAdapter;
 import app.memoling.android.ui.view.LanguageView;
 
-public class MemoActivity extends GestureAdActivity implements OnEditorActionListener {
+public class MemoActivity extends GestureAdActivity implements OnEditorActionListener, ITranslateComplete {
 
 	public final static String MemoId = "MemoId";
 
@@ -46,6 +59,9 @@ public class MemoActivity extends GestureAdActivity implements OnEditorActionLis
 	private TextView m_lblCorrectAnswered;
 	private TextView m_lblTitle;
 	private RelativeLayout m_laySaving;
+	private ImageButton m_btnSearchWordA;
+	private ImageButton m_btnCopyWordA;
+	private ImageButton m_btnCopyWordB;
 
 	private MemoAdapter m_memoAdapter;
 	private Memo m_memo;
@@ -55,7 +71,7 @@ public class MemoActivity extends GestureAdActivity implements OnEditorActionLis
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_memo);
 		onCreate_Ads();
-		
+
 		m_resources = new ResourceManager(this);
 
 		m_lblTitle = (TextView) findViewById(R.id.memo_lblTitle);
@@ -75,9 +91,18 @@ public class MemoActivity extends GestureAdActivity implements OnEditorActionLis
 		m_btnSave.setOnClickListener(new BtnSaveEventHandler());
 		m_btnSave.setTypeface(m_resources.getThinFont());
 
+		m_btnSearchWordA = (ImageButton) findViewById(R.id.memo_btnSearchWordA);
+		m_btnSearchWordA.setOnClickListener(new BtnSearchWordAEventHandler());
+
+		m_btnCopyWordA = (ImageButton) findViewById(R.id.memo_btnCopyWordA);
+		m_btnCopyWordA.setOnClickListener(new BtnCopyWordAEventHandler());
+
 		m_txtWordA = (EditText) findViewById(R.id.memo_txtWordA);
 		m_txtWordA.setOnEditorActionListener(this);
 		m_txtWordA.setTypeface(m_resources.getThinFont());
+
+		m_btnCopyWordB = (ImageButton) findViewById(R.id.memo_btnCopyWordB);
+		m_btnCopyWordB.setOnClickListener(new BtnCopyWordBEventHandler());
 
 		m_txtWordB = (EditText) findViewById(R.id.memo_txtWordB);
 		m_txtWordB.setOnEditorActionListener(this);
@@ -99,7 +124,7 @@ public class MemoActivity extends GestureAdActivity implements OnEditorActionLis
 		m_lblCorrectAnswered.setTypeface(m_resources.getThinFont());
 
 		m_laySaving = (RelativeLayout) findViewById(R.id.memo_laySaving);
-		
+
 		m_memoAdapter = new MemoAdapter(this);
 
 		m_resources.setFont(R.id.textView1, m_resources.getCondensedFont());
@@ -156,6 +181,33 @@ public class MemoActivity extends GestureAdActivity implements OnEditorActionLis
 
 	}
 
+	private class BtnSearchWordAEventHandler implements OnClickListener {
+		@Override
+		public void onClick(View v) {
+			Word from = new Word(m_txtWordA.getText().toString().trim());
+			Language fromLang = ((LanguageView) m_spLanguageA.getSelectedItem()).getLanguage();
+			Language toLang = ((LanguageView) m_spLanguageB.getSelectedItem()).getLanguage();
+			Toast.makeText(MemoActivity.this, R.string.memo_selectTranslationProgress, Toast.LENGTH_SHORT).show();
+			new Translator(from, fromLang, toLang, MemoActivity.this);
+		}
+	}
+
+	private class BtnCopyWordAEventHandler implements OnClickListener {
+		@Override
+		public void onClick(View v) {
+			Helper.copyToClipboard(MemoActivity.this, m_txtWordA.getText().toString());
+			Toast.makeText(MemoActivity.this, R.string.memo_copied, Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	private class BtnCopyWordBEventHandler implements OnClickListener {
+		@Override
+		public void onClick(View v) {
+			Helper.copyToClipboard(MemoActivity.this, m_txtWordB.getText().toString());
+			Toast.makeText(MemoActivity.this, R.string.memo_copied, Toast.LENGTH_SHORT).show();
+		}
+	}
+
 	private void bindData(String memoId) {
 		m_memo = m_memoAdapter.get(memoId);
 
@@ -175,6 +227,37 @@ public class MemoActivity extends GestureAdActivity implements OnEditorActionLis
 		m_spLanguageB.setSelection(m_memo.getWordB().getLanguage().getPosition());
 
 		m_chbEnabled.setChecked(m_memo.getActive());
+	}
+
+	@Override
+	public void onTranslateComplete(TranslatorResult result) {
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		String wordB = m_txtWordB.getText().toString();
+		int size = result.TranslatedSuggestions.size();
+		size = wordB.equals("") ? size : size + 1;
+
+		final CharSequence[] words = new CharSequence[size];
+
+		int i = 0;
+		if (!wordB.equals("")) {
+			words[i++] = wordB;
+		}
+
+		for (Word word : result.TranslatedSuggestions) {
+			words[i++] = word.getWord();
+		}
+
+		builder.setTitle(getString(R.string.memo_selectTranslationTitle)).setCancelable(true)
+				.setItems(words, new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						m_txtWordB.setText(words[which]);
+					}
+
+				}).create().show();
+
 	}
 
 	@Override

@@ -119,24 +119,61 @@ public class Helper {
 
 		return output;
 	}
-	
+
+	@SuppressLint("NewApi")
+	@SuppressWarnings("deprecation")
+	public static void copyToClipboard(Context context, String text) {
+		int sdk = android.os.Build.VERSION.SDK_INT;
+		if (sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
+			android.text.ClipboardManager clipboard = (android.text.ClipboardManager) context
+					.getSystemService(Context.CLIPBOARD_SERVICE);
+			clipboard.setText(text);
+		} else {
+			String label;
+			if (text.length() > 5) {
+				label = text.substring(0, 5) + "...";
+			} else {
+				label = text;
+			}
+
+			android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context
+					.getSystemService(Context.CLIPBOARD_SERVICE);
+			android.content.ClipData clip = android.content.ClipData.newPlainText(label, text);
+			clipboard.setPrimaryClip(clip);
+		}
+	}
+
+	// This is helpful if received UTF-8 may be broken
+	// On Android v.10 Bing Translate does not work without this function being
+	// applied
+	public static String removeBom(String str) {
+
+		byte[] isBom = str.substring(0, 1).getBytes();
+		if (isBom.length == 3 && isBom[0] == (byte) 0xEF && isBom[1] == (byte) 0xBB && isBom[2] == (byte) 0xBF) {
+			return str.substring(1);
+		}
+
+		return str;
+	}
+
 	public static class Profile {
 		private long start;
+
 		public void start() {
 			start = System.currentTimeMillis();
 		}
-		
+
 		public void stop() {
 			long last = System.currentTimeMillis() - start;
-			AppLog.e(":: PROFILE ::", Integer.toString((int)last));
+			AppLog.e(":: PROFILE ::", Integer.toString((int) last));
 		}
-		
+
 		public void restart() {
 			stop();
 			start();
 		}
 	}
-	
+
 	public static PackageInfo getPackage(Context context) {
 		try {
 			return context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
@@ -145,19 +182,19 @@ public class Helper {
 			return null;
 		}
 	}
-	
+
 	public static boolean isFirstStart(Context context) {
 		Preferences preferences = new Preferences(context);
 		String lastVersion = preferences.get("VERSION");
-		if(getPackage(context).versionName.equals(lastVersion)) {
+		if (getPackage(context).versionName.equals(lastVersion)) {
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	public static void setFirstStartSuccessful(Context context) {
 		Preferences preferences = new Preferences(context);
-		preferences.set("VERSION", getPackage(context).versionName);		
+		preferences.set("VERSION", getPackage(context).versionName);
 	}
 }

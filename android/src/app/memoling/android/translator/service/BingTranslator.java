@@ -179,7 +179,7 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 
 		try {
 			JSONArray translations = new JSONObject(response).getJSONArray(m_Translations);
-
+			
 			for (int i = 0; i < translations.length(); i++) {
 
 				JSONObject translation = translations.getJSONObject(i);

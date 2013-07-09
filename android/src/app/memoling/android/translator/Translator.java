@@ -14,7 +14,7 @@ public class Translator implements ITranslateComplete {
 	private ITranslateComplete m_onTranslateComplete;
 
 	private final static int MaxCache = 300;
-	private static CacheHelper<Word, TranslatorResult> m_cache = new CacheHelper<Word, TranslatorResult>(MaxCache);
+	private static CacheHelper<String, TranslatorResult> m_cache = new CacheHelper<String, TranslatorResult>(MaxCache);
 
 	public Translator(Word word, Language from, Language to,
 			ITranslateComplete onTranslateComplete) {
@@ -28,13 +28,14 @@ public class Translator implements ITranslateComplete {
 
 	private void translate() {
 		boolean cached = false;
+		String cacheKey = m_word.getWord() + m_from.getCode() + m_to.getCode();
 
 		synchronized (m_cache) {
-			cached = m_cache.containsKey(m_word);
+			cached = m_cache.containsKey(cacheKey);
 		}
 
 		if (cached) {
-			m_onTranslateComplete.onTranslateComplete(m_cache.get(m_word));
+			m_onTranslateComplete.onTranslateComplete(m_cache.get(cacheKey));
 		} else {
 
 			new WorkerThread<Void, Void, Void>() {
@@ -57,8 +58,10 @@ public class Translator implements ITranslateComplete {
 		if (result.TranslatedSuggestions.size() > 0) {
 
 			synchronized (m_cache) {
-				if (m_cache.containsKey(result.AutoCompleteWord)) {
-					cached = m_cache.remove(result.AutoCompleteWord);
+				String cacheKey = m_word.getWord() + m_from.getCode() + m_to.getCode();
+				
+				if (m_cache.containsKey(cacheKey)) {
+					cached = m_cache.remove(cacheKey);
 
 					for (Word translation : result.TranslatedSuggestions) {
 						if (!cached.TranslatedSuggestions.contains(translation)) {
@@ -67,7 +70,7 @@ public class Translator implements ITranslateComplete {
 					}
 				}
 
-				m_cache.put(result.AutoCompleteWord, cached);
+				m_cache.put(cacheKey, cached);
 			}
 		}
 

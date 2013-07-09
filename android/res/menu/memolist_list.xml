@@ -2,6 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/memolist_menu_list_activate"
+        android:icon="@drawable/ic_menu_close_clear_cancel"
+        android:title="@string/memolist_ctxmenu_deactivate"/>
+    <item
         android:id="@+id/memolist_menu_list_delete"
         android:icon="@drawable/ic_menu_close_clear_cancel"
         android:title="@string/memolist_ctxmenu_delete"/>

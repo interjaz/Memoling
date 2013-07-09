@@ -10,6 +10,8 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -31,7 +33,7 @@ import app.memoling.android.entity.Word;
 import app.memoling.android.ui.AdActivity;
 import app.memoling.android.ui.ResourceManager;
 
-public class ReviewActivity extends AdActivity implements OnEditorActionListener {
+public class ReviewActivity extends AdActivity {
 
 	public final static String MemoBaseId = "MemoBaseId";
 	public final static String NotificationId = "NotificationId";
@@ -61,6 +63,8 @@ public class ReviewActivity extends AdActivity implements OnEditorActionListener
 	private Animation m_fadeInAnswer;
 	private Animation m_fadeOutAnswer;
 
+	InputMethodManager m_inputManager;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -71,20 +75,31 @@ public class ReviewActivity extends AdActivity implements OnEditorActionListener
 
 		m_lblResult = (TextView) findViewById(R.id.review_lblResult);
 		m_lblResult.setTypeface(m_resources.getThinFont());
+		
 		m_txtMemo1 = (TextView) findViewById(R.id.review_txtMemo1);
 		m_txtMemo1.setTypeface(m_resources.getThinFont());
 		m_txtMemo2 = (EditText) findViewById(R.id.review_txtMemo2);
-		m_txtMemo2.setTypeface(m_resources.getThinFont());
-		m_txtMemo2.setOnEditorActionListener(this);
+		m_txtMemo2.setTypeface(m_resources.getThinFont());		
+		TextMemo2EventHandler txtMemo2EventHandler = new TextMemo2EventHandler();
+		m_txtMemo2.setOnEditorActionListener(txtMemo2EventHandler);
+		m_txtMemo2.addTextChangedListener(txtMemo2EventHandler);
+		
 		m_lblLang1 = (TextView) findViewById(R.id.review_lblMemo1Lang);
 		m_lblLang1.setTypeface(m_resources.getThinFont());
+		
 		m_lblLang2 = (TextView) findViewById(R.id.review_lblMemo2Lang);
 		m_lblLang2.setTypeface(m_resources.getThinFont());
+		
 		m_lblTotal = (TextView) findViewById(R.id.review_lblTotal);
 		m_lblTotal.setTypeface(m_resources.getThinFont());
+		
 		m_btnNext = (Button) findViewById(R.id.review_btnNext);
 		m_btnNext.setOnClickListener(new BtnNextEventHandler());
 		m_btnNext.setTypeface(m_resources.getThinFont());
+		
+
+		m_inputManager = (InputMethodManager)getSystemService(
+			      Context.INPUT_METHOD_SERVICE);
 
 		m_random = new Random();
 
@@ -113,21 +128,11 @@ public class ReviewActivity extends AdActivity implements OnEditorActionListener
 		return true;
 	}
 
-	@Override
-	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		if (actionId == EditorInfo.IME_ACTION_DONE) {
-			InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-			return true;
-		}
-		return false;
-	}
-
 	public void newMemo() {
-		if(m_memos.size() == 0) {
+		if (m_memos.size() == 0) {
 			return;
 		}
-		
+
 		Memo memo = m_memos.get(m_currentMemo);
 		m_memo = memo;
 
@@ -170,40 +175,74 @@ public class ReviewActivity extends AdActivity implements OnEditorActionListener
 	private void bindData(String memoBaseId) {
 		m_memos = m_memoAdapter.getTrainSet(memoBaseId, DefaultTrainSetSize);
 		m_currentMemo = 0;
-		
-		if(m_memos.size() == 0) {
+
+		if (m_memos.size() == 0) {
 			Toast.makeText(this, R.string.review_noMemos, Toast.LENGTH_SHORT).show();
 			finish();
 			return;
 		}
-		
+
 		updateTotal();
 	}
 
-	private class BtnNextEventHandler implements OnClickListener {
+	private void submitAnswer() {
+		String original = m_origWord.getWord().trim().toLowerCase(Locale.US);
+		String user = m_txtMemo2.getText().toString().trim().toLowerCase(Locale.US);
+
+		boolean match = user.equals(original);
+
+		m_memo.setDisplayed(m_memo.getDisplayed() + 1);
+		m_memo.setLastReviewed(new Date());
+		if (match) {
+			if (m_memo.getWordA().equals(m_origWord)) {
+				m_memo.setCorrectAnsweredWordA(m_memo.getCorrectAnsweredWordA() + 1);
+			} else {
+				m_memo.setCorrectAnsweredWordB(m_memo.getCorrectAnsweredWordB() + 1);
+			}
+		}
+		m_memoAdapter.update(m_memo);
+
+		animateAnswer(match, original);
+	}
+	
+	private class TextMemo2EventHandler implements OnEditorActionListener, TextWatcher {
 
 		@Override
-		public void onClick(View v) {
-
-			String original = m_origWord.getWord().trim().toLowerCase(Locale.US);
-			String user = m_txtMemo2.getText().toString().trim().toLowerCase(Locale.US);
-
-			boolean match = user.equals(original);
-
-			m_memo.setDisplayed(m_memo.getDisplayed() + 1);
-			m_memo.setLastReviewed(new Date());
-			if (match) {
-				if (m_memo.getWordA().equals(m_origWord)) {
-					m_memo.setCorrectAnsweredWordA(m_memo.getCorrectAnsweredWordA() + 1);
-				} else {
-					m_memo.setCorrectAnsweredWordB(m_memo.getCorrectAnsweredWordB() + 1);
-				}
-			}
-			m_memoAdapter.update(m_memo);
-
-			animateAnswer(match, original);
+		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+			if (actionId == EditorInfo.IME_ACTION_DONE) {
+				InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+				submitAnswer();
+				return true;
+			} 
+			
+			return false;
 		}
 
+		@Override
+		public void afterTextChanged(Editable s) {
+			if(s.toString().contains("\n")) {
+				submitAnswer();
+				m_inputManager.hideSoftInputFromWindow(m_txtMemo2.getWindowToken(), 0);
+			}
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			// Nothing
+		}
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			// Nothing
+		}
+	}
+
+	private class BtnNextEventHandler implements OnClickListener {
+		@Override
+		public void onClick(View v) {
+			submitAnswer();
+		}
 	}
 
 	private class FadeInAnswerEventHandler implements AnimationListener {

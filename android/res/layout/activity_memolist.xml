@@ -16,8 +16,8 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="right"
-			android:padding="10dp"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:padding="10dp" >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -74,23 +74,36 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.0"
+                    android:orientation="vertical"
                     android:paddingBottom="3dp"
                     android:paddingTop="3dp" >
 
                     <AutoCompleteTextView
                         android:id="@+id/memolist_txtAddMemo"
-                        android:layout_width="0.0dip"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="8.0"
                         android:inputType="text" />
 
-                    <Button
-                        android:id="@+id/memolist_btnSave"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.0"
-                        android:text="@string/memolist_btnSave" />
+                        android:orientation="horizontal" >
+
+                        <EditText
+                            android:id="@+id/memolist_txtAddMemoTranslated"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="8.0"
+                            android:inputType="text" />
+
+                        <Button
+                            android:id="@+id/memolist_btnSave"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.0"
+                            android:text="@string/memolist_btnSave" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -104,22 +117,30 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp" 
                         android:text="@string/memolist_from" />
 
                     <Spinner
                         android:id="@+id/memolist_spLanguageFrom"
                         android:layout_width="0.0dip"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10.0dip"
                         android:layout_weight="1.0"
                         tools:listitem="@layout/adapter_textdropdown" />
+
+                    <Button
+                        android:id="@+id/memolist_btnLanguageSwap"
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/memolist_swap" />
 
                     <TextView
                         android:id="@+id/textView2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10.0dip"
                         android:layout_marginRight="10.0dip"
                         android:text="@string/memolist_to" />
 
@@ -132,43 +153,42 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+        </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/memolist_layWhatsNew"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="10dp"
-        android:background="#EE000000"
-        android:orientation="vertical"
-        android:padding="10dp"
-        android:visibility="gone" >
-
-        <TextView
-            android:id="@+id/memolist_lblWhatsNewTitle"
+        <LinearLayout
+            android:id="@+id/memolist_layWhatsNew"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="15dp"
-            android:text="@string/memolist_whatsNewTitle"
-            android:textSize="20sp" />
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:background="#EE000000"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:visibility="gone" >
 
-        <TextView
-            android:id="@+id/memolist_lblWhatsNewContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="30dp"
-            android:text="@string/memolist_whatsNewContent" />
+            <TextView
+                android:id="@+id/memolist_lblWhatsNewTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="15dp"
+                android:text="@string/memolist_whatsNewTitle"
+                android:textSize="20sp" />
 
-        <Button
-            android:id="@+id/memolist_btnWhatsNew"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
-            android:paddingLeft="45dp"
-            android:paddingRight="45dp"
-            android:text="@string/memolist_whatsNewOk"
-            android:textSize="15sp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/memolist_lblWhatsNewContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:text="@string/memolist_whatsNewContent" />
 
+            <Button
+                android:id="@+id/memolist_btnWhatsNew"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:paddingLeft="45dp"
+                android:paddingRight="45dp"
+                android:text="@string/memolist_whatsNewOk"
+                android:textSize="15sp" />
+        </LinearLayout>
 </RelativeLayout>

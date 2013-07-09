@@ -21,9 +21,9 @@ public class MemoView implements IGet<String>, IActive {
 		if (index == 0) {
 			return m_memo.getWordA().getLanguage().getCode() + "-" + m_memo.getWordB().getLanguage().getCode();
 		} else if (index == 1) {
-			return DateHelper.toUiDate(m_memo.getCreated());
+			return DateHelper.toShortUiDate(m_memo.getCreated());
 		} else if (index == 2) {
-			return DateHelper.toUiDate(m_memo.getLastReviewed());
+			return DateHelper.toShortUiDate(m_memo.getLastReviewed());
 		} else if (index == 3) {
 			return m_memo.getWordA().getWord();
 		} else if (index == 4) {

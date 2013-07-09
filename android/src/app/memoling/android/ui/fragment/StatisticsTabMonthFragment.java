@@ -1,6 +1,8 @@
 package app.memoling.android.ui.fragment;
 
+import java.text.DateFormatSymbols;
 import java.util.Calendar;
+import java.util.Date;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -52,9 +54,8 @@ public class StatisticsTabMonthFragment extends Fragment {
 	}
 
 	private void bindData() {
-		String[] monthLabels = this.getResources().getStringArray(R.array.string_months);
-
-		m_barMonth.setTitle(monthLabels[m_calendar.get(Calendar.MONTH)]);
+		String[] months = new DateFormatSymbols().getMonths();
+		m_barMonth.setTitle(months[m_calendar.get(Calendar.MONTH)]);
 		String[] daysLabel = new String[m_calendar.getActualMaximum(Calendar.DAY_OF_MONTH)];
 		for (int i = 0; i < daysLabel.length; i++) {
 			daysLabel[i] = String.format("%02d", (i + 1));

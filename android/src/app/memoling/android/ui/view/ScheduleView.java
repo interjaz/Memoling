@@ -1,5 +1,7 @@
 package app.memoling.android.ui.view;
 
+import java.text.DateFormatSymbols;
+
 import android.content.Context;
 import app.memoling.android.R;
 import app.memoling.android.entity.Schedule;
@@ -9,6 +11,7 @@ public class ScheduleView implements IGet<String> {
 
 	private Schedule m_schedule;
 	private Context m_context;
+	private static String[] m_days = new DateFormatSymbols().getShortWeekdays();
 	
 	public Schedule getSchedule() { 
 		return m_schedule;
@@ -26,29 +29,10 @@ public class ScheduleView implements IGet<String> {
 			int daysInWeek = 7;
 			for(int i=0;i<daysInWeek;i++) {
 				if(days[i]) {
-					switch(i){
-					case 0:
-						sb.append(m_context.getString(R.string.schedule_monday_l2) + ", ");
-						break;
-					case 1:
-						sb.append(m_context.getString(R.string.schedule_tuesday_l2) + ", ");
-						break;
-					case 2:
-						sb.append(m_context.getString(R.string.schedule_wednesday_l2) + ", ");
-						break;
-					case 3:
-						sb.append(m_context.getString(R.string.schedule_thursday_l2) + ", ");
-						break;
-					case 4:
-						sb.append(m_context.getString(R.string.schedule_friday_l2) + ", ");
-						break;
-					case 5:
-						sb.append(m_context.getString(R.string.schedule_saturday_l2) + ", ");
-						break;
-					case 6:
-						sb.append(m_context.getString(R.string.schedule_sunday_l2) + ", ");
-						break;
-					}
+					// Sunday corresponds to one, Monday to two, in application 0 is Monday
+					int day = i+2;
+					day = day == 8 ? 1 : day;
+					sb.append(m_days[day] + ", ");
 				}
 			}
 			// Remove ', '

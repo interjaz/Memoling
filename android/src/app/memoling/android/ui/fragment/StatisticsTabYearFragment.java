@@ -1,5 +1,6 @@
 package app.memoling.android.ui.fragment;
 
+import java.text.DateFormatSymbols;
 import java.util.Calendar;
 
 import android.app.Activity;
@@ -53,11 +54,11 @@ public class StatisticsTabYearFragment extends Fragment {
 	}
 
 	private void bindData() {
-		String[] monthLabels = this.getResources().getStringArray(R.array.string_months);
-
+		String[] months = new DateFormatSymbols().getMonths();
+		
 		m_barYear.setValues(m_statisticsAdapter.getMonthlyAdded());
 		m_barYear.setTitle(Integer.toString(m_calendar.get(Calendar.YEAR)));
-		m_barYear.setLabels(monthLabels);
+		m_barYear.setLabels(months);
 		m_barYear.bind();
 	}
 

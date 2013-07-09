@@ -46,7 +46,7 @@ public class MemoBaseListActivity extends GestureAdActivity implements IFacebook
 	private Button m_btnNewMemoBase;
 	private Button m_btnSync;
 
-	private int m_selectedItemPosition;
+	private MemoBaseInfoView m_selectedItem;
 
 	private final static int[] m_memoBaseAdapterResources = new int[] { R.id.memobaselist_listview_lblCreated,
 			R.id.memobaselist_listview_lblMemos, R.id.memobaselist_listview_lblName };
@@ -84,7 +84,7 @@ public class MemoBaseListActivity extends GestureAdActivity implements IFacebook
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_memobaselist, menu);
+		getMenuInflater().inflate(R.menu.activity_memobaselist, menu);		
 		return true;
 	}
 
@@ -116,19 +116,32 @@ public class MemoBaseListActivity extends GestureAdActivity implements IFacebook
 		super.onCreateContextMenu(menu, v, menuInfo);
 		getMenuInflater().inflate(R.menu.memobaselist_list, menu);
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-		m_selectedItemPosition = (int) info.position;
+		
+		m_selectedItem = m_lstAdapter.getItem(info.position);
+		MenuItem item = menu.findItem(R.id.memobaselist_menu_list_activate);
+		if(m_selectedItem.getMemoBaseInfo().getMemoBase().getActive()) {
+			item.setTitle(R.string.memobaselist_ctxmenu_deactivate);
+		} else {
+			item.setTitle(R.string.memobaselist_ctxmenu_activate);
+		}
 	}
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 
 		Context ctx = MemoBaseListActivity.this;
-		final String memoBaseId = m_lstAdapter.getItem(m_selectedItemPosition).getMemoBaseInfo().getMemoBase()
-				.getMemoBaseId();
 		Intent intent;
+		final MemoBase memoBase;
 
 		switch (item.getItemId()) {
+		case R.id.memobaselist_menu_list_activate:
+			memoBase = m_selectedItem.getMemoBaseInfo().getMemoBase();
+			memoBase.setActive(!memoBase.getActive());
+			m_memoBaseAdapter.update(memoBase);
+			m_lstAdapter.notifyDataSetChanged();
+			break;
 		case R.id.memobaselist_menu_list_delete:
+			memoBase = m_selectedItem.getMemoBaseInfo().getMemoBase();
 
 			if (m_lstAdapter.getCount() == 1) {
 
@@ -146,7 +159,7 @@ public class MemoBaseListActivity extends GestureAdActivity implements IFacebook
 					.setPositiveButton(ctx.getString(R.string.memobaselist_ctxmenu_deleteYes), new OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							m_memoBaseAdapter.delete(memoBaseId);
+							m_memoBaseAdapter.delete(memoBase.getMemoBaseId());
 							bindData();
 						}
 					}).setNegativeButton(ctx.getString(R.string.memobaselist_ctxmenu_deleteNo), new OnClickListener() {
@@ -158,9 +171,10 @@ public class MemoBaseListActivity extends GestureAdActivity implements IFacebook
 
 			break;
 		case R.id.memobaselist_menu_list_options:
+			memoBase = m_selectedItem.getMemoBaseInfo().getMemoBase();
 
 			intent = new Intent(MemoBaseListActivity.this, MemoBaseActivity.class);
-			intent.putExtra(MemoBaseActivity.MemoBaseId, memoBaseId);
+			intent.putExtra(MemoBaseActivity.MemoBaseId, memoBase.getMemoBaseId());
 			startActivity(intent);
 
 			break;

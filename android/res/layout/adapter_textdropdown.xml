@@ -7,3 +7,5 @@
     android:paddingLeft="10dp"
     android:paddingTop="5dp"
     android:text="15dp" />
+
+<!-- This background balue is a hack for not working android:spinnerMode option under Android v.10 -->

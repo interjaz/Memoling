@@ -1,5 +1,6 @@
 package app.memoling.android.ui.activity;
 
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 
 import android.graphics.Typeface;
@@ -78,27 +79,36 @@ public class SchedulerActivity extends AdActivity {
 		m_txtMinutes = (TextView) findViewById(R.id.scheduler_txtMinutes);
 		m_txtMinutes.setTypeface(m_resources.getThinFont());
 
+		String[] days = new DateFormatSymbols().getShortWeekdays();
+		
 		m_btnMo = (Button) findViewById(R.id.scheduler_btnMo);
 		m_btnMo.setTypeface(m_resources.getThinFont());
 		m_btnMo.setOnClickListener(m_btnMoEventHandler);
+		m_btnMo.setText(days[2]);
 		m_btnTu = (Button) findViewById(R.id.scheduler_btnTu);
 		m_btnTu.setTypeface(m_resources.getThinFont());
 		m_btnTu.setOnClickListener(m_btnTuEventHandler);
+		m_btnTu.setText(days[3]);
 		m_btnWe = (Button) findViewById(R.id.scheduler_btnWe);
 		m_btnWe.setTypeface(m_resources.getThinFont());
 		m_btnWe.setOnClickListener(m_btnWeEventHandler);
+		m_btnWe.setText(days[4]);
 		m_btnTh = (Button) findViewById(R.id.scheduler_btnTh);
 		m_btnTh.setTypeface(m_resources.getThinFont());
 		m_btnTh.setOnClickListener(m_btnThEventHandler);
+		m_btnTh.setText(days[5]);
 		m_btnFr = (Button) findViewById(R.id.scheduler_btnFr);
 		m_btnFr.setTypeface(m_resources.getThinFont());
 		m_btnFr.setOnClickListener(m_btnFrEventHandler);
+		m_btnFr.setText(days[6]);
 		m_btnSa = (Button) findViewById(R.id.scheduler_btnSa);
 		m_btnSa.setTypeface(m_resources.getThinFont());
 		m_btnSa.setOnClickListener(m_btnSaEventHandler);
+		m_btnSa.setText(days[7]);
 		m_btnSu = (Button) findViewById(R.id.scheduler_btnSu);
 		m_btnSu.setTypeface(m_resources.getThinFont());
 		m_btnSu.setOnClickListener(m_btnSuEventHandler);
+		m_btnSu.setText(days[1]);
 
 		m_btnSubmit = (Button) findViewById(R.id.scheduler_btnSubmit);
 		BtnSubmitEventHandler submitHandler = new BtnSubmitEventHandler();

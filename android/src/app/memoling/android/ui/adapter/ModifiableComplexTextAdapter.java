@@ -59,7 +59,11 @@ public class ModifiableComplexTextAdapter<T extends IGet<String>> extends Modifi
 		} else {
 			view = convertView;
 		}
-
+		
+		if(Build.VERSION.SDK_INT == Build.VERSION_CODES.GINGERBREAD_MR1 && view instanceof TextView) {
+			view.setBackgroundColor(0xff1A1A1A);
+		}
+		
 		try {
 
 			T object = getItem(position);
