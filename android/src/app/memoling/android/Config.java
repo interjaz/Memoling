@@ -17,7 +17,7 @@ public class Config {
 	public final static String DatabaseName = "TranslateMemo";
 	public final static int DatabaseVersion = 1;
 
-	public final static boolean Debug = false;
+	public final static boolean Debug = true;
 	
 	public final static boolean EnableAds = true;
 	public final static String AdUnitId = "a151d4995a52331";

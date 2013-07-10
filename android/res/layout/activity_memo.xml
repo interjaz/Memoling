@@ -100,9 +100,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_below="@id/textView5"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="5dp"
-                    android:layout_below="@id/textView5"
                     android:text="memo_lblCorrectAnswered" />
 
                 <TextView
@@ -110,8 +110,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/textView5"
-                    android:layout_marginRight="10dp"
                     android:layout_alignTop="@id/memo_lblCorrectAnswered"
+                    android:layout_marginRight="10dp"
                     android:layout_toLeftOf="@id/memo_lblCorrectAnswered"
                     android:text="@string/memo_lblCorrectAnswered" />
 
@@ -121,7 +121,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/textView6"
                     android:layout_below="@id/textView6"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="20dp"
+                    android:paddingBottom="7dp"
                     android:text="@string/memo_lblwordA"
                     android:textSize="15sp" />
 
@@ -129,43 +130,71 @@
                     android:id="@+id/memo_btnCopyWordA"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/memo_lblWordA"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="5dp"
-                    android:background="#22000000"
+                    android:layout_alignBottom="@id/memo_lblWordA"
+                    android:layout_alignRight="@id/memo_lblCorrectAnswered"
                     android:src="@drawable/ic_menu_copy_holo_dark" />
+
+                <Button
+                    android:id="@+id/memo_btnDictionaryWordA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/memo_lblWordA"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/memo_btnCopyWordA"
+                    android:minWidth="0dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:src="@drawable/ic_menu_refresh"
+                    android:text="@string/memo_abbrDictionary" />
+
+                <Button
+                    android:id="@+id/memo_btnThesaurusWordA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/memo_lblWordA"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/memo_btnDictionaryWordA"
+                    android:minWidth="0dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:src="@drawable/ic_menu_refresh"
+                    android:text="@string/memo_abbrThesaurus" />
 
                 <ImageButton
                     android:id="@+id/memo_btnSearchWordA"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/memo_lblWordA"
+                    android:layout_alignBottom="@+id/memo_lblWordA"
                     android:layout_marginRight="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_toLeftOf="@id/memo_btnCopyWordA"
-                    android:background="#22000000"
+                    android:layout_toLeftOf="@+id/memo_btnThesaurusWordA"
                     android:src="@drawable/ic_menu_refresh" />
 
-                <EditText
+                <ImageButton
+                    android:id="@+id/memo_btnCopyWordB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@+id/memo_spLangA"
+                    android:layout_below="@+id/memo_spLangA"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/ic_menu_copy_holo_dark" />
+
+                <app.memoling.android.ui.control.EditTextActionDone
                     android:id="@+id/memo_txtWordA"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/memo_lblWordA"
+                    android:layout_alignLeft="@id/memo_lblWordA"
+                    android:layout_alignRight="@id/memo_btnCopyWordA"
                     android:layout_below="@id/memo_lblWordA"
-                    android:layout_marginRight="5dp"
                     android:layout_marginTop="5dp"
-                    android:layout_toLeftOf="@id/memo_btnSearchWordA"
                     android:imeOptions="actionDone"
                     android:inputType="text" />
 
-                <Spinner
+                <app.memoling.android.ui.control.LanguageSpinner
                     android:id="@+id/memo_spLangA"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignRight="@id/memo_txtWordA"
                     android:layout_below="@id/memo_txtWordA"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="5dp"
                     android:textSize="15sp"
                     tools:listitem="@layout/adapter_textdropdown" />
@@ -180,40 +209,44 @@
                     android:layout_toLeftOf="@id/memo_spLangA"
                     android:text="@string/memo_lblLangA" />
 
-                <TextView
-                    android:id="@+id/memo_lblWordB"
+                <Button
+                    android:id="@+id/memo_btnDictionaryWordB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/textView1"
-                    android:layout_below="@id/textView1"
-                    android:layout_marginTop="15dp"
-                    android:text="@string/memo_lblWordB"
-                    android:textSize="15sp" />
+                    android:layout_alignBottom="@+id/memo_lblWordB"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/memo_btnCopyWordB"
+                    android:minWidth="0dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:src="@drawable/ic_menu_refresh"
+                    android:text="@string/memo_abbrDictionary" />
 
-                <ImageButton
-                    android:id="@+id/memo_btnCopyWordB"
+                <Button
+                    android:id="@+id/memo_btnThesaurusWordB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/memo_lblWordB"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="5dp"
-                    android:background="#22000000"
-                    android:src="@drawable/ic_menu_copy_holo_dark" />
+                    android:layout_alignBottom="@+id/memo_lblWordB"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/memo_btnDictionaryWordB"
+                    android:minWidth="0dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:src="@drawable/ic_menu_refresh"
+                    android:text="@string/memo_abbrThesaurus" />
 
-                <EditText
+                <app.memoling.android.ui.control.EditTextActionDone
                     android:id="@+id/memo_txtWordB"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/memo_lblWordB"
+                    android:layout_alignRight="@+id/memo_btnCopyWordB"
                     android:layout_below="@id/memo_lblWordB"
-                    android:layout_marginRight="5dp"
                     android:layout_marginTop="5dp"
-                    android:layout_toLeftOf="@id/memo_btnCopyWordA"
                     android:imeOptions="actionDone"
-                    android:inputType="text" />
+                    android:inputType="textMultiLine" />
 
-                <Spinner
+                <app.memoling.android.ui.control.LanguageSpinner
                     android:id="@+id/memo_spLangB"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
@@ -272,8 +305,33 @@
                         android:textColor="#EEEEEE"
                         android:textSize="25sp" />
                 </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/memo_lblWordB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/memo_btnCopyWordB"
+                    android:layout_alignLeft="@+id/textView1"
+                    android:paddingBottom="7dp"
+                    android:text="@string/memo_lblWordB"
+                    android:textSize="15sp" />
             </RelativeLayout>
         </ScrollView>
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/memo_layWebSearch"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:background="#222222"
+        android:visibility="gone" >
+
+        <WebView
+            android:id="@+id/memo_webSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp" />
+    </FrameLayout>
 
 </RelativeLayout>

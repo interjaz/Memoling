@@ -19,12 +19,14 @@ import android.widget.Toast;
 import app.memoling.android.R;
 import app.memoling.android.adapter.MemoBaseAdapter;
 import app.memoling.android.adapter.MemoBaseGenreAdapter;
+import app.memoling.android.entity.Language;
 import app.memoling.android.entity.PublishedMemoBase;
 import app.memoling.android.ui.GestureAdActivity;
 import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.adapter.ModifiableComplexTextAdapter;
 import app.memoling.android.ui.adapter.ScrollableModifiableComplexTextAdapter;
 import app.memoling.android.ui.adapter.ScrollableModifiableComplexTextAdapter.OnScrollFinishedListener;
+import app.memoling.android.ui.control.LanguageSpinner;
 import app.memoling.android.ui.view.LanguageView;
 import app.memoling.android.ui.view.MemoBaseGenreView;
 import app.memoling.android.ui.view.MemoPreviewView;
@@ -40,8 +42,8 @@ public class DownloadActivity extends GestureAdActivity implements ISearchComple
 
 	private EditText m_txtPhrase;
 	private Spinner m_cbxGenre;
-	private Spinner m_cbxLanguageA;
-	private Spinner m_cbxLanguageB;
+	private LanguageSpinner m_spLanguageA;
+	private LanguageSpinner m_spLanguageB;
 	private ListView m_lstPublished;
 	private Button m_btnSearch;
 	
@@ -52,8 +54,6 @@ public class DownloadActivity extends GestureAdActivity implements ISearchComple
 	private TextView m_lblDescription;
 	
 	private ModifiableComplexTextAdapter<MemoBaseGenreView> m_genreAdapter;
-	private ModifiableComplexTextAdapter<LanguageView> m_languageAAdapter;
-	private ModifiableComplexTextAdapter<LanguageView> m_languageBAdapter;
 	private ScrollableModifiableComplexTextAdapter<PublishedSearchView> m_publishedAdapter;
 	private ModifiableComplexTextAdapter<MemoPreviewView> m_previewAdapter;
 	
@@ -87,17 +87,8 @@ public class DownloadActivity extends GestureAdActivity implements ISearchComple
 				new Typeface[] { m_resources.getThinFont() } );  
 		m_cbxGenre.setAdapter(m_genreAdapter);
 		
-		m_cbxLanguageA = (Spinner)findViewById(R.id.download_cbxLanguageA);
-		m_languageAAdapter = new ModifiableComplexTextAdapter<LanguageView>(this, 
-				R.layout.adapter_textdropdown, new int[] { R.id.textView1 }, 
-				new Typeface[] { m_resources.getThinFont() } );  
-		m_cbxLanguageA.setAdapter(m_languageAAdapter);
-		
-		m_cbxLanguageB = (Spinner)findViewById(R.id.download_cbxLanguageB);
-		m_languageBAdapter = new ModifiableComplexTextAdapter<LanguageView>(this, 
-				R.layout.adapter_textdropdown, new int[] { R.id.textView1 }, 
-				new Typeface[] { m_resources.getThinFont() } );  
-		m_cbxLanguageB.setAdapter(m_languageBAdapter);
+		m_spLanguageA = (LanguageSpinner)findViewById(R.id.download_spLanguageA);
+		m_spLanguageB = (LanguageSpinner)findViewById(R.id.download_spLanguageB);
 		
 		m_lstPublished = (ListView)findViewById(R.id.download_lstPublished);
 		m_publishedAdapter = new ScrollableModifiableComplexTextAdapter<PublishedSearchView>(this,
@@ -178,15 +169,10 @@ public class DownloadActivity extends GestureAdActivity implements ISearchComple
 	private void bindData() {
 		
 		// Bind languages
-		m_languageAAdapter.clear();
-		ArrayList<LanguageView> languagesA = LanguageView.getAll();
-		languagesA.set(0, LanguageView.empty());
-		m_languageAAdapter.addAll(languagesA);
-		
-		m_languageBAdapter.clear();
-		ArrayList<LanguageView> languagesB = LanguageView.getAll();
-		languagesA.add(0, LanguageView.empty());
-		m_languageBAdapter.addAll(languagesB);
+		m_spLanguageA.bindData();
+		m_spLanguageA.setSelection(Language.Unsupported);
+		m_spLanguageB.bindData();
+		m_spLanguageB.setSelection(Language.Unsupported);
 		
 		// Bind genres
 		m_genreAdapter.clear();
@@ -280,17 +266,15 @@ public class DownloadActivity extends GestureAdActivity implements ISearchComple
 			genre = m_genreAdapter.getItem(genrePos);
 		}
 		
-		LanguageView langA = LanguageView.empty();	
-		int langAPos = m_cbxLanguageA.getSelectedItemPosition();	
-		if(langAPos != AdapterView.INVALID_POSITION) {
-			langA = m_languageAAdapter.getItem(langAPos);
-		} 
+		LanguageView langA = LanguageView.empty();
+		if(!m_spLanguageA.isNotSelected()) {
+			langA = m_spLanguageA.getSelectedLanguage();
+		}
 		
-		LanguageView langB = LanguageView.empty();		
-		int langBPos = m_cbxLanguageB.getSelectedItemPosition();
-		if(langBPos != AdapterView.INVALID_POSITION) {
-			langB = m_languageAAdapter.getItem(langBPos);
-		} 
+		LanguageView langB = LanguageView.empty();
+		if(!m_spLanguageB.isNotSelected()) {
+			langB = m_spLanguageB.getSelectedLanguage();
+		}
 		
 		String strGenre = "";
 		String strLangA = "";

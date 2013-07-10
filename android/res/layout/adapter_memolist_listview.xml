@@ -8,57 +8,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <TextView
-            android:id="@+id/memolist_listview_txtLanguages"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="3dp"
             android:layout_alignParentLeft="true"
-            android:paddingLeft="2.0dip"
-            android:text="TextView"
-            android:textSize="12.0dip" />
+            android:paddingRight="5.0dip" >
 
-        <TextView
-            android:id="@+id/memolist_listview_lastReview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:paddingLeft="2.0dip"
-            android:paddingRight="2.0dip"
-            android:text="TextView"
-            android:textSize="12.0dip" />
-        
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/memolist_listview_lastReview"
-            android:paddingLeft="6.0dip"
-            android:text="@string/memolist_listview_lblLastReview"
-            android:textSize="12.0dip" />
+            <View
+                android:id="@+id/memolist_listview_progressBar"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="#3F3F3F" />
 
-
-        <TextView
-            android:id="@+id/memolist_listview_txtAddDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/textView2"
-            android:paddingLeft="2.0dip"
-            android:text="TextView"
-            android:textSize="12.0dip" />
-        
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/memolist_listview_txtAddDate"
-            android:paddingLeft="2.0dip"
-            android:text="@string/memolist_listview_lblAdded"
-            android:textSize="12.0dip" />
-
+            <View
+                android:id="@+id/memolist_listview_progressReminder"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
         <TextView
@@ -69,15 +41,32 @@
             android:paddingRight="6.0dip"
             android:text="TextView"
             android:textColor="#FFFEFEFE"
-            android:textSize="20.0dip" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/memolist_listview_txtTranslate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:minHeight="0dp"
+            android:paddingTop="0dp"
+            android:singleLine="true"
+            android:text="TextView"
+            android:textSize="19sp" />
+
+        <TextView
+            android:id="@+id/memolist_listview_txtLanguages"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:gravity="top"
+            android:includeFontPadding="false"
             android:paddingRight="2.0dip"
             android:text="TextView"
-            android:textSize="20.0dip" />
+            android:textAllCaps="true"
+            android:textSize="12sp" />
+
     </LinearLayout>
 
 </LinearLayout>

@@ -30,17 +30,6 @@ public class LanguageView implements IGet<String> {
 		return m_language;
 	}
 	
-	public static ArrayList<LanguageView> getAll() {
-		
-		ArrayList<LanguageView> languageView = new ArrayList<LanguageView>();
-		
-		for(Language language : Language.values()) {
-			languageView.add(new LanguageView(language));
-		}
-		
-		return languageView;
-	}
-
 	public static final LanguageView empty() {
 		if(m_empty != null) {
 			return m_empty;

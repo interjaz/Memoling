@@ -58,13 +58,14 @@ public class ReviewActivity extends AdActivity {
 	private Word m_origWord;
 	private MemoAdapter m_memoAdapter;
 	private int m_currentMemo;
+	private boolean m_answerCorrect;
 
 	private Animation m_fadeIn;
 	private Animation m_fadeInAnswer;
 	private Animation m_fadeOutAnswer;
 
 	InputMethodManager m_inputManager;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -75,31 +76,29 @@ public class ReviewActivity extends AdActivity {
 
 		m_lblResult = (TextView) findViewById(R.id.review_lblResult);
 		m_lblResult.setTypeface(m_resources.getThinFont());
-		
+
 		m_txtMemo1 = (TextView) findViewById(R.id.review_txtMemo1);
 		m_txtMemo1.setTypeface(m_resources.getThinFont());
 		m_txtMemo2 = (EditText) findViewById(R.id.review_txtMemo2);
-		m_txtMemo2.setTypeface(m_resources.getThinFont());		
+		m_txtMemo2.setTypeface(m_resources.getThinFont());
 		TextMemo2EventHandler txtMemo2EventHandler = new TextMemo2EventHandler();
 		m_txtMemo2.setOnEditorActionListener(txtMemo2EventHandler);
 		m_txtMemo2.addTextChangedListener(txtMemo2EventHandler);
-		
+
 		m_lblLang1 = (TextView) findViewById(R.id.review_lblMemo1Lang);
 		m_lblLang1.setTypeface(m_resources.getThinFont());
-		
+
 		m_lblLang2 = (TextView) findViewById(R.id.review_lblMemo2Lang);
 		m_lblLang2.setTypeface(m_resources.getThinFont());
-		
+
 		m_lblTotal = (TextView) findViewById(R.id.review_lblTotal);
 		m_lblTotal.setTypeface(m_resources.getThinFont());
-		
+
 		m_btnNext = (Button) findViewById(R.id.review_btnNext);
 		m_btnNext.setOnClickListener(new BtnNextEventHandler());
 		m_btnNext.setTypeface(m_resources.getThinFont());
-		
 
-		m_inputManager = (InputMethodManager)getSystemService(
-			      Context.INPUT_METHOD_SERVICE);
+		m_inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
 		m_random = new Random();
 
@@ -189,11 +188,11 @@ public class ReviewActivity extends AdActivity {
 		String original = m_origWord.getWord().trim().toLowerCase(Locale.US);
 		String user = m_txtMemo2.getText().toString().trim().toLowerCase(Locale.US);
 
-		boolean match = user.equals(original);
+		m_answerCorrect = user.equals(original);
 
 		m_memo.setDisplayed(m_memo.getDisplayed() + 1);
 		m_memo.setLastReviewed(new Date());
-		if (match) {
+		if (m_answerCorrect) {
 			if (m_memo.getWordA().equals(m_origWord)) {
 				m_memo.setCorrectAnsweredWordA(m_memo.getCorrectAnsweredWordA() + 1);
 			} else {
@@ -202,26 +201,27 @@ public class ReviewActivity extends AdActivity {
 		}
 		m_memoAdapter.update(m_memo);
 
-		animateAnswer(match, original);
+		animateAnswer(original);
 	}
-	
+
 	private class TextMemo2EventHandler implements OnEditorActionListener, TextWatcher {
 
 		@Override
 		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 			if (actionId == EditorInfo.IME_ACTION_DONE) {
-				InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+				InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(
+						Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 				submitAnswer();
 				return true;
-			} 
-			
+			}
+
 			return false;
 		}
 
 		@Override
 		public void afterTextChanged(Editable s) {
-			if(s.toString().contains("\n")) {
+			if (s.toString().contains("\n")) {
 				submitAnswer();
 				m_inputManager.hideSoftInputFromWindow(m_txtMemo2.getWindowToken(), 0);
 			}
@@ -249,6 +249,15 @@ public class ReviewActivity extends AdActivity {
 
 		@Override
 		public void onAnimationEnd(Animation arg0) {
+
+			if (!m_answerCorrect) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// Do nothing
+				}
+			}
+
 			m_fadeOutAnswer.reset();
 			m_fadeOutAnswer.start();
 			m_lblResult.clearAnimation();
@@ -308,8 +317,8 @@ public class ReviewActivity extends AdActivity {
 		m_lblLang2.setAnimation(m_fadeIn);
 	}
 
-	private void animateAnswer(boolean result, String correct) {
-		if (result) {
+	private void animateAnswer(String correct) {
+		if (m_answerCorrect) {
 			m_lblResult.setText(R.string.review_lblCorrect);
 		} else {
 			String strResult = String.format(getString(R.string.review_lblIncorrect), correct);

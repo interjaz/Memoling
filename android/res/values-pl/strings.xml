@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="memolist_whatsNewContent">1. Nowy przycisk zamiany języków\n2. Zmienion sposób dodawania fraz\n3. Usunięto problem z brakiem translacji na Androidzie 2.3</string>
+    <string name="memolist_whatsNewContent">1. Dodano thesaurus i słownik online (EN,DE)\n2. Dodano preferencje jezykowe\n3. Poprawiono wyświetlanie z reklamami</string>
     
     <!-- MemoList Activity -->
     <string name="memolist_btnSave">Zapisz</string>
@@ -65,6 +65,8 @@
     <string name="memo_copied">Skopiowano</string>
     <string name="memo_selectTranslationTitle">Wybierz tłumaczenie</string>
     <string name="memo_selectTranslationProgress">Szukam tłumaczeń</string>
+    <string name="memo_abbrThesaurus">Th</string>
+    <string name="memo_abbrDictionary">Sł</string>
 
     <!-- MemoBase Activity -->
     <string name="memobase_lblStartTraining">Zacznij trening</string>

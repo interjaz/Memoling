@@ -47,8 +47,10 @@ import app.memoling.android.translator.TranslatorResult;
 import app.memoling.android.ui.GestureAdActivity;
 import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.adapter.ModifiableComplexTextAdapter;
+import app.memoling.android.ui.adapter.ModifiableInjectableAdapter;
 import app.memoling.android.ui.adapter.ScrollableModifiableComplexTextAdapter;
 import app.memoling.android.ui.adapter.ScrollableModifiableComplexTextAdapter.OnScrollFinishedListener;
+import app.memoling.android.ui.control.LanguageSpinner;
 import app.memoling.android.ui.view.LanguageView;
 import app.memoling.android.ui.view.MemoView;
 import app.memoling.android.ui.view.TranslatedView;
@@ -76,12 +78,10 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 	private WordsFinder m_wordsFinder;
 	private DelayedLookup m_lastLookup;
 	private int m_delayedLookupDelay = 500;
-	private ModifiableComplexTextAdapter<MemoView> m_wordsAdapter;
+	private ModifiableInjectableAdapter<MemoView> m_wordsAdapter;
 
-	private Spinner m_spLanguageFrom;
-	private ModifiableComplexTextAdapter<LanguageView> m_spLanguageFromAdapter;
-	private Spinner m_spLanguageTo;
-	private ModifiableComplexTextAdapter<LanguageView> m_spLanguageToAdapter;
+	private LanguageSpinner m_spLanguageFrom;
+	private LanguageSpinner m_spLanguageTo;
 	private Button m_btnLanguageSwap;
 
 	private MemoAdapter m_memoAdapter;
@@ -130,17 +130,8 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 		m_resources.setFont(m_btnTraining, m_resources.getThinFont());
 
 		// Language spinners
-		m_spLanguageFrom = (Spinner) findViewById(R.id.memolist_spLanguageFrom);
-		m_spLanguageFromAdapter = new ModifiableComplexTextAdapter<LanguageView>(this, R.layout.adapter_textdropdown,
-				new int[] { R.id.textView1 }, new Typeface[] { m_resources.getThinFont() });
-		m_spLanguageFrom.setAdapter(m_spLanguageFromAdapter);
-		m_spLanguageFromAdapter.addAll(LanguageView.getAll());
-
-		m_spLanguageTo = (Spinner) findViewById(R.id.memolist_spLanguageTo);
-		m_spLanguageToAdapter = new ModifiableComplexTextAdapter<LanguageView>(this, R.layout.adapter_textdropdown,
-				new int[] { R.id.textView1 }, new Typeface[] { m_resources.getThinFont() });
-		m_spLanguageTo.setAdapter(m_spLanguageToAdapter);
-		m_spLanguageToAdapter.addAll(LanguageView.getAll());
+		m_spLanguageFrom = (LanguageSpinner) findViewById(R.id.memolist_spLanguageFrom);
+		m_spLanguageTo = (LanguageSpinner) findViewById(R.id.memolist_spLanguageTo);
 
 		m_btnLanguageSwap = (Button) findViewById(R.id.memolist_btnLanguageSwap);
 		m_resources.setFont(m_btnLanguageSwap, m_resources.getThinFont());
@@ -172,12 +163,8 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 
 		// List View
 		m_lstWords = (ListView) findViewById(R.id.memolist_list);
-		m_wordsAdapter = new ModifiableComplexTextAdapter<MemoView>(this, R.layout.adapter_memolist_listview,
-				new int[] { R.id.memolist_listview_txtLanguages, R.id.memolist_listview_txtAddDate,
-						R.id.memolist_listview_lastReview, R.id.memolist_listview_txtOriginal,
-						R.id.memolist_listview_txtTranslate }, new Typeface[] { m_resources.getThinFont(),
-						m_resources.getThinFont(), m_resources.getThinFont(), m_resources.getThinFont(),
-						m_resources.getThinFont() }, true);
+		m_wordsAdapter = new ModifiableInjectableAdapter<MemoView>(this, R.layout.adapter_memolist_listview,
+				m_resources, true);
 		m_lstWords.setAdapter(m_wordsAdapter);
 		m_lstWords.setOnItemClickListener(new LstWordsEventHandler());
 		registerForContextMenu(m_lstWords);
@@ -200,8 +187,6 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 
 		m_resources.setFont(R.id.textView1, m_resources.getCondensedFont());
 		m_resources.setFont(R.id.textView2, m_resources.getCondensedFont());
-		m_resources.setFont(R.layout.adapter_memolist_listview, R.id.textView1, m_resources.getCondensedFont());
-		m_resources.setFont(R.layout.adapter_memolist_listview, R.id.textView2, m_resources.getCondensedFont());
 
 		m_tapCloseString = getString(R.string.memobaselist_tap_close);
 	}
@@ -217,10 +202,10 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 		super.onCreateContextMenu(menu, v, menuInfo);
 		getMenuInflater().inflate(R.menu.memolist_list, menu);
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-		
+
 		m_selectedItem = m_wordsAdapter.getItem(info.position);
 		MenuItem item = menu.findItem(R.id.memolist_menu_list_activate);
-		if(m_selectedItem.getMemo().getActive()) {
+		if (m_selectedItem.getMemo().getActive()) {
 			item.setTitle(R.string.memolist_ctxmenu_deactivate);
 		} else {
 			item.setTitle(R.string.memolist_ctxmenu_activate);
@@ -230,7 +215,7 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		Memo memo;
-		
+
 		switch (item.getItemId()) {
 		case R.id.memolist_menu_list_activate:
 			memo = m_selectedItem.getMemo();
@@ -250,8 +235,7 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 							new android.content.DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
-									m_memoAdapter.delete(m_selectedItem.getMemo()
-											.getMemoId());
+									m_memoAdapter.delete(m_selectedItem.getMemo().getMemoId());
 									bindData(m_memoBaseId);
 								}
 							})
@@ -447,6 +431,16 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 
 		@Override
 		public void afterTextChanged(Editable s) {
+
+			if (s.length() == 0) {
+				m_txtAddTranslated.setText("");
+				m_txtAddTranslated.setEnabled(false);
+				m_btnSave.setEnabled(false);
+			} else {
+				m_txtAddTranslated.setEnabled(true);
+				m_btnSave.setEnabled(true);
+			}
+
 			if (s.toString().indexOf(TranslatedView.Separator) != -1) {
 				String[] data = m_txtAdd.getText().toString().split(TranslatedView.Separator);
 				m_txtAdd.setText(data[0]);
@@ -455,15 +449,14 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 				return;
 			}
 
-			String entry = s.toString();
-			if (entry.length() > 2) {
+			if (s.length() > 2) {
 
 				if (m_lastLookup != null) {
 					m_lastLookup.cancel(true);
 				}
 
 				m_lastLookup = new DelayedLookup();
-				m_lastLookup.execute(entry);
+				m_lastLookup.execute(s.toString());
 			}
 		}
 
@@ -565,12 +558,14 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 			return;
 		}
 
+		Pair<Language,Language> preferedLangs = getPrefferedLanguages();
 		m_wordsAdapter.addAll(MemoView.getAll(m_memos));
-		Pair<Language, Language> languages = getPrefferedLanguages();
-		m_spLanguageFrom.setSelection(languages.first.getPosition());
-		m_spLanguageTo.setSelection(languages.second.getPosition());
+		m_spLanguageFrom.bindData();
+		m_spLanguageFrom.setSelection(preferedLangs.first);
+		m_spLanguageTo.bindData();
+		m_spLanguageTo.setSelection(preferedLangs.second);
 	}
-
+	
 	private Pair<Language, Language> getPrefferedLanguages() {
 
 		if (m_prefferedLanguages != null) {
@@ -625,6 +620,7 @@ public class MemoListActivity extends GestureAdActivity implements ITranslateCom
 		return m_prefferedLanguages;
 	}
 
+	
 	private synchronized void invalidateTxtAddDropdown() {
 		m_suggestionAdapter.notifyDataSetChanged();
 		m_txtAdd.showDropDown();

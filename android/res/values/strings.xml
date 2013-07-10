@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="memolist_whatsNewContent">1. Added language swap button\n2. Changed expression input method\n3. Fixed translation bug on Android 2.3\n\nIf you would like to translate the application please do not hesitate to contact me.</string>
+    <string name="memolist_whatsNewContent">1. Added thesaurus and dictionary button (EN,DE)\n2. Added language preferences\n3. Fixed display issues training screen\n\nIf you would like to translate the application please do not hesitate to contact me.</string>
     
     
     <!-- MemoList Activity -->
@@ -67,6 +67,8 @@
     <string name="memo_copied">Copied</string>
     <string name="memo_selectTranslationTitle">Select translation</string>
     <string name="memo_selectTranslationProgress">Looking for translations</string>
+    <string name="memo_abbrThesaurus">Th</string>
+    <string name="memo_abbrDictionary">Dc</string>
 
     <!-- MemoBase Activity -->
     <string name="memobase_lblStartTraining">Start training</string>

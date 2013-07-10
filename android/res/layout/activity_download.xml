@@ -5,8 +5,6 @@
     android:background="@drawable/background"
     tools:context=".DownloadActivity" >
 
-    <!-- Dummy item to prevent EditText from receiving focus -->
-
     <LinearLayout
         android:id="@+id/adLayout"
         android:layout_width="match_parent"
@@ -19,12 +17,6 @@
             android:layout_weight="1"
             android:layout_margin="10dp"
             android:background="#55000000" >
-
-            <LinearLayout
-                android:layout_width="0px"
-                android:layout_height="0px"
-                android:focusable="true"
-                android:focusableInTouchMode="true" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -106,8 +98,8 @@
                         android:layout_marginRight="5dp"
                         android:text="@string/download_langA" />
 
-                    <Spinner
-                        android:id="@+id/download_cbxLanguageA"
+                    <app.memoling.android.ui.control.LanguageSpinner
+                        android:id="@+id/download_spLanguageA"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -122,8 +114,8 @@
                         android:layout_marginRight="5dp"
                         android:text="@string/download_langB" />
 
-                    <Spinner
-                        android:id="@+id/download_cbxLanguageB"
+                    <app.memoling.android.ui.control.LanguageSpinner
+                        android:id="@+id/download_spLanguageB"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
