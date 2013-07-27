@@ -1,0 +1,227 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".SchedulerFragment" >
+
+    <LinearLayout
+        android:id="@+id/adLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="3"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/schedule_repetition"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <EditText
+                        android:id="@+id/scheduler_txtHours"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:inputType="time"
+                        android:maxLength="2"
+                        android:text="12"
+                        android:textSize="65sp" />
+
+                    <app.memoling.android.ui.control.fit_view.TextViewFitView
+                        android:id="@+id/scheduler_lblColon"
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text=":"
+                        android:textSize="65sp" />
+
+                    <EditText
+                        android:id="@+id/scheduler_txtMinutes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:gravity="center"
+                        android:inputType="time"
+                        android:maxLength="2"
+                        android:text="00"
+                        android:textSize="65sp" />
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp" >
+
+                    <Button
+                        android:id="@+id/scheduler_btnSubmit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="#FF1A1A1A"
+                        android:text="@string/schedule_submit"
+                        android:textSize="25sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <Button
+                            android:id="@+id/scheduler_btnEdit"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:background="#FF1A1A1A"
+                            android:text="@string/schedule_edit"
+                            android:textSize="25sp"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/scheduler_btnDelete"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:background="#FF1A1A1A"
+                            android:text="@string/schedule_delete"
+                            android:textSize="25sp"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/scheduler_btnNew"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:background="#FF1A1A1A"
+                            android:text="@string/schedule_new"
+                            android:textSize="25sp"
+                            android:visibility="invisible" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <ListView
+                    android:id="@+id/schedule_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:background="#FF1A1A1A" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+
+                <Button
+                    android:id="@+id/scheduler_btnMo"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:background="#FF1A1A1A"
+                    android:orientation="vertical"
+                    android:text="M"
+                    android:textSize="40sp"
+                    android:typeface="normal" />
+
+                <Button
+                    android:id="@+id/scheduler_btnTu"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:background="#FF1A1A1A"
+                    android:orientation="vertical"
+                    android:text="T"
+                    android:textSize="40sp" />
+
+                <Button
+                    android:id="@+id/scheduler_btnWe"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:background="#FF1A1A1A"
+                    android:orientation="vertical"
+                    android:text="W"
+                    android:textSize="40sp" />
+
+                <Button
+                    android:id="@+id/scheduler_btnTh"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:background="#FF1A1A1A"
+                    android:orientation="vertical"
+                    android:text="T"
+                    android:textSize="40sp" />
+
+                <Button
+                    android:id="@+id/scheduler_btnFr"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:background="#FF1A1A1A"
+                    android:orientation="vertical"
+                    android:text="F"
+                    android:textSize="40sp" />
+
+                <Button
+                    android:id="@+id/scheduler_btnSa"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:background="#FF1A1A1A"
+                    android:orientation="vertical"
+                    android:text="S"
+                    android:textSize="40sp" />
+
+                <Button
+                    android:id="@+id/scheduler_btnSu"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:background="#FF1A1A1A"
+                    android:orientation="vertical"
+                    android:text="S"
+                    android:textSize="40sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

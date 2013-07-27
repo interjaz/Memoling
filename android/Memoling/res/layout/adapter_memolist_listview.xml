@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="3dp"
+        android:paddingRight="5.0dip" >
+
+        <View
+            android:id="@+id/memolist_listview_progressBar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="#3F3F3F" />
+
+        <View
+            android:id="@+id/memolist_listview_progressReminder"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/memolist_listview_txtOriginal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="2.0dip"
+            android:paddingRight="6.0dip"
+            android:text="TextView"
+            android:textColor="#FFFEFEFE"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/memolist_listview_txtTranslate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:minHeight="0dp"
+            android:paddingTop="0dp"
+            android:singleLine="true"
+            android:text="TextView"
+            android:textSize="19sp" />
+
+        <TextView
+            android:id="@+id/memolist_listview_txtLanguages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:gravity="top"
+            android:includeFontPadding="false"
+            android:paddingRight="2.0dip"
+            android:text="TextView"
+            android:textAllCaps="true"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</LinearLayout>

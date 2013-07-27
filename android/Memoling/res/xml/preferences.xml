@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <Preference
+        android:key="BTN_CLEAR_LANGPREF"
+        android:summary="@string/preferences_btnClearLangPref_summary"
+        android:title="@string/preferences_btnClearLangPref_title" />
+    
+    <Preference
+        android:key="BTN_CLEAR_FACEBOOK"
+        android:summary="@string/preferences_btnClearFacebook_summary"
+        android:title="@string/preferences_btnClearFacebook_title" />
+
+    <EditTextPreference
+        android:defaultValue="10"
+        android:key="LEARNING_SET_SIZE"
+        android:numeric="integer"
+        android:summary="@string/preferences_learningSetSize_summary"
+        android:title="@string/preferences_learningSetSize_title" />
+
+    <Preference
+        android:key="BTN_RATE_MEMOLING"
+        android:summary="@string/preferences_btnRateMemoling_summary"
+        android:title="@string/preferences_btnRateMemoling_title" />
+
+    <Preference
+        android:key="BTN_GOTO_MEMOLING"
+        android:summary="@string/preferences_btnGoToMemoling_summary"
+        android:title="@string/preferences_btnGoToMemoling_title" />
+
+    <!--
+    TODO: DO IT!
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="ENABLE_WORD_NOTIFICATION"
+        android:summary="@string/preferences_enableWordNotification_summary"
+        android:title="@string/preferences_enableWordNotification_title" />
+
+    <app.memoling.android.preference.custom.MemoBaseListPreference
+        android:dependency="ENABLE_WORD_NOTIFICATION"
+        android:key="WORD_NOTIFICATION_MEMOBASE"
+        android:title="@string/preferences_wordNotificationMemoBase_title" />
+    -->
+
+</PreferenceScreen>
