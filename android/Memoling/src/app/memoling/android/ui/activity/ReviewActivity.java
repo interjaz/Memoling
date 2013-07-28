@@ -214,6 +214,8 @@ public class ReviewActivity extends AdActivity {
 			finish();
 			return;
 		}
+		
+		m_trainingSetSize = m_memos.size();
 	}
 
 	private void submitAnswer() {

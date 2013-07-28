@@ -5,7 +5,12 @@
 		Jeśli chciałbyś/ąs przetłumaczyć applikację na inny język, 
 		  zażyczyć nową funkcjonalność albo być na bieżąco z aplikacją odwiedź jej stronę (link w ustawieniach)\n
 		\n
-		Zmiany:\n
+		Zmainy v.1.3.2\n
+		1. Usunięto kilka błędów\n
+		2. Zmniejszono natrętność reklam\n
+		Zmiany v.1.3.1\n
+		1. Usunięto kilka błędów\n
+		Zmiany v.1.3.0\n
 		1. Nowy interfejs\n
 		2. Usunięto reklamy z urządzeń o małej rozdzielczości\n
 		3. Dodano więcej słowników\n
@@ -226,7 +231,7 @@
     <string name="preferences_btnGoToMemoling_title">Strona aplikacji</string>
     <string name="preferences_btnGoToMemoling_summary">Odwiedź stronę aplikacji</string>
     <string name="preferences_btnClearLangPref_title">Preferencje językowe</string>
-    <string name="preferences_btnClearLangPref_summary">Wyczyść preferencje językowe</string>
+    <string name="preferences_btnClearLangPref_summary">Wyczyść ulubione języki</string>
     <string name="preferences_btnClearFacebook_title">Konto Facebook</string>
     <string name="preferences_btnClearFacebook_summary">Wyloguj</string>
     <string name="preferences_learningSetSize_summary">Ile wyrażeń ma zawierać powtórka</string>

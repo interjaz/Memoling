@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import app.memoling.android.helper.AppLog;
 import app.memoling.android.helper.Lazy;
 import app.memoling.android.preference.Preferences;
 import app.memoling.android.ui.adapter.DrawerAdapter;
@@ -27,6 +28,8 @@ public abstract class ApplicationFragment extends Fragment {
 	private AdView m_adView;
 	private ResourceManager m_resourceManager;
 	private Preferences m_preferences;
+
+	private Bundle m_savedInstanceState;
 
 	private Menu m_menu;
 	private ArrayList<Integer> m_menuItems;
@@ -73,8 +76,14 @@ public abstract class ApplicationFragment extends Fragment {
 		DrawerAdapter drawer = appActivity.getDrawerAdapter();
 		drawer.clear();
 		onPopulateDrawer(drawer);
+		m_savedInstanceState = savedInstanceState;
+	}
 
-		onDataBind(savedInstanceState);
+	@Override
+	public void onResume() {
+		super.onResume();
+		onDataBind(m_savedInstanceState);
+		m_savedInstanceState = null;
 	}
 
 	protected void onPopulateDrawer(DrawerAdapter drawer) {
@@ -159,7 +168,7 @@ public abstract class ApplicationFragment extends Fragment {
 	public final void setSupportProgress(float newValue) {
 		m_uiProgress = newValue;
 		int progress = (int) ((Window.PROGRESS_END - Window.PROGRESS_START) * newValue);
-		
+
 		ApplicationActivity activity = ((ApplicationActivity) getActivity());
 		activity.setSupportProgressBarVisibility(true);
 		activity.setSupportProgress(progress);
@@ -180,6 +189,11 @@ public abstract class ApplicationFragment extends Fragment {
 			@Override
 			public void run() {
 				ApplicationActivity activity = ((ApplicationActivity) getActivity());
+
+				if (activity == null) {
+					AppLog.e("ApplicationFragment", "updateSupportProgress - missing activity");
+					return;
+				}
 
 				if (m_uiProgress == 1.0f) {
 					activity.setSupportProgressBarVisibility(false);

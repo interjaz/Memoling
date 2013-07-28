@@ -11,9 +11,9 @@ import android.content.pm.PackageInfo;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Pair;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +21,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,6 +40,7 @@ import app.memoling.android.entity.Word;
 import app.memoling.android.helper.AppLog;
 import app.memoling.android.helper.Helper;
 import app.memoling.android.helper.Lazy;
+import app.memoling.android.preference.custom.MemoListPreference;
 import app.memoling.android.thread.WorkerThread;
 import app.memoling.android.translator.ITranslateComplete;
 import app.memoling.android.translator.Translator;
@@ -97,9 +99,10 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 
 	private MemoView m_selectedItem;
 
-	private Pair<Language, Language> m_prefferedLanguages;
 	private int m_lastSearchLimit = 0;
 	private int m_searchLimit = 10;
+
+	private FragmentState m_fragmentState;
 
 	//
 	// Base class implementation
@@ -116,7 +119,9 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 
 		// Language spinners
 		m_spLanguageFrom = (LanguageSpinner) contentView.findViewById(R.id.memolist_spLanguageFrom);
+		m_spLanguageFrom.setOnItemSelectedListener(new SpLanguageEventHandler());
 		m_spLanguageTo = (LanguageSpinner) contentView.findViewById(R.id.memolist_spLanguageTo);
+		m_spLanguageTo.setOnItemSelectedListener(new SpLanguageEventHandler());
 
 		m_btnLanguageSwap = (Button) contentView.findViewById(R.id.memolist_btnLanguageSwap);
 		resources.setFont(m_btnLanguageSwap, thinFont);
@@ -170,6 +175,9 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 
 		resources.setFont(contentView, R.id.textView1, condensedFont);
 		resources.setFont(contentView, R.id.textView2, condensedFont);
+
+		m_fragmentState = (m_fragmentState == null) ? new FragmentState().fromBundle(savedInstanceState)
+				: m_fragmentState;
 
 		return contentView;
 	}
@@ -253,7 +261,7 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
 									m_memoAdapter.delete(m_selectedItem.getMemo().getMemoId());
-									bindData(null);
+									bindData();
 								}
 							})
 					.setNegativeButton(ctx.getString(R.string.memobaselist_ctxmenu_deleteNo),
@@ -497,6 +505,30 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 		}
 	}
 
+	private class SpLanguageEventHandler implements OnItemSelectedListener {
+		@Override
+		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+			MemoListPreference pref = getPreferences().getMemoListPreference(m_memoBaseId);
+			if (pref == null) {
+				pref = new MemoListPreference();
+			}
+
+			Language from = ((LanguageView) m_spLanguageFrom.getSelectedItem()).getLanguage();
+			Language to = ((LanguageView) m_spLanguageTo.getSelectedItem()).getLanguage();
+			String langCodeFrom = from.getCode();
+			String langCodeTo = to.getCode();
+
+			pref.setMemoBaseId(m_memoBaseId);
+			pref.setLanguageFromCode(langCodeFrom);
+			pref.setLanguageToCode(langCodeTo);
+			getPreferences().setMemoListPreference(pref);
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> arg0) {
+		}
+	}
+
 	private class SearchEventHandler implements SearchView.OnQueryTextListener {
 
 		@Override
@@ -545,29 +577,21 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 	}
 
 	private void onStartContinue(Bundle data) {
-		bindData(data);
+		bindData();
 	}
 
-	private void bindData(final Bundle data) {
+	private void bindData() {
 
 		setSupportProgress(0f);
 		updateSupportProgress(0.5f);
-		m_wordsAdapter.clear();
 
 		new AsyncTask<Void, Void, Void>() {
-			private Pair<Language, Language> preferedLangs;
+			private Helper.Pair<Language, Language> preferedLangs;
 			private String title;
 
 			@Override
 			protected Void doInBackground(Void... params) {
 				MemoBaseAdapter memoBaseAdapter = new MemoBaseAdapter(getActivity());
-
-				// Get selected
-				if (data != null) {
-					m_memoBaseId = data.getString(MemoBaseId);
-				} else {
-					m_memoBaseId = null;
-				}
 
 				if (m_memoBaseId == null) {
 					// Open last opened one
@@ -583,27 +607,28 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 						AppLog.e("MemoListActivity", "onStartContinuse", ex);
 					}
 				}
-				
+
 				getPreferences().setLastMemoBaseId(m_memoBaseId);
-				
+
 				title = memoBaseAdapter.get(m_memoBaseId).getName();
+
+				m_spLanguageFrom.loadData();
+				m_spLanguageTo.loadData();
 
 				MemoAdapter m_memoAdapter = new MemoAdapter(getActivity());
 				m_memos = m_memoAdapter.getAll(m_memoBaseId, MemoAdapter.Sort.CreatedDate, Order.ASC);
 
 				updateSupportProgress(0.7f);
-				
+
 				if (m_memos == null) {
 					return null;
 				}
 
 				m_memosViews = MemoView.getAll(m_memos);
 
-				updateSupportProgress(0.9f);
+				updateSupportProgress(0.8f);
 
-				preferedLangs = getPrefferedLanguages();
-				m_spLanguageFrom.bindData();
-				m_spLanguageTo.bindData();
+				preferedLangs = getPreferedLanguages();
 
 				return null;
 			}
@@ -613,20 +638,32 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 					return;
 				}
 
+				updateSupportProgress(0.9f);
+
 				setTitle(title);
+
+				m_wordsAdapter.clear();
+				m_wordsAdapter.addAll(m_memosViews);
+
+				m_spLanguageFrom.bindData();
+				m_spLanguageTo.bindData();
 				m_spLanguageFrom.setSelection(preferedLangs.first);
 				m_spLanguageTo.setSelection(preferedLangs.second);
-				m_wordsAdapter.addAll(m_memosViews);
+
 				updateSupportProgress(1f);
+
+				m_fragmentState.restore();
 			}
 
 		}.execute();
 	}
 
-	private Pair<Language, Language> getPrefferedLanguages() {
+	private Helper.Pair<Language, Language> getPreferedLanguages() {
 
-		if (m_prefferedLanguages != null) {
-			return m_prefferedLanguages;
+		MemoListPreference pref = getPreferences().getMemoListPreference(m_memoBaseId);
+		if (pref != null) {
+			return new Helper.Pair<Language, Language>(Language.parse(pref.getLanguageFromCode()), Language.parse(pref
+					.getLanguageToCode()));
 		}
 
 		ArrayList<Helper.Pair<Language, Integer>> languages = new ArrayList<Helper.Pair<Language, Integer>>();
@@ -683,8 +720,7 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 			}
 		}
 
-		m_prefferedLanguages = new Pair<Language, Language>(fLangMax, sLangMax);
-		return m_prefferedLanguages;
+		return new Helper.Pair<Language, Language>(fLangMax, sLangMax);
 	}
 
 	private synchronized void invalidateTxtAddDropdown() {
@@ -788,7 +824,69 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 
 	@Override
 	public void onFragmentResult(Bundle result) {
-		onStartContinue(result);
+		if (result != null) {
+			m_memoBaseId = result.getString(MemoBaseId);
+		} else {
+			m_memoBaseId = null;
+		}
+	}
+
+	@Override
+	public void onDestroyView() {
+		m_fragmentState.save();
+		super.onDestroyView();
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		// This is activity wide not fragment wide
+		if (m_fragmentState != null) {
+			m_fragmentState.save();
+			m_fragmentState.addToBundle(outState);
+		}
+		super.onSaveInstanceState(outState);
+	}
+
+	// Something is wrong with retainInstance since it is not restored correctly
+	// This is class is trying to fix this issue (listView is not restored a correct position)
+	private class FragmentState {
+		public int lstWordsTop;
+		public int lstWordsIndex;
+		private boolean isSaved;
+
+		public void save() {
+			lstWordsIndex = m_lstWords.getFirstVisiblePosition();
+			View v = m_lstWords.getChildAt(0);
+			lstWordsTop = (v == null) ? 0 : v.getTop();
+			isSaved = true;
+		}
+
+		public void restore() {
+			if (!isSaved) {
+				return;
+			}
+
+			return;
+			//m_lstWords.setSelectionFromTop(lstWordsIndex, lstWordsTop);
+		}
+
+		public void addToBundle(Bundle bundle) {
+			bundle.putBoolean("mlf_isSaved", isSaved);
+			bundle.putInt("mlf_lstWordsTop", lstWordsTop);
+			bundle.putInt("mlf_lstWordsIndex", lstWordsIndex);
+		}
+
+		public FragmentState fromBundle(Bundle bundle) {
+			if (bundle == null || !bundle.containsKey("mlf_isSaved")) {
+				return this;
+			}
+
+			isSaved = bundle.getBoolean("mlf_isSaved");
+			lstWordsTop = bundle.getInt("mlf_lstWordsTop");
+			lstWordsIndex = bundle.getInt("mlf_lstWordsIndex");
+
+			return this;
+		}
 	}
 
 }

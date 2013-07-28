@@ -19,7 +19,10 @@ public class LanguageSpinner extends Spinner implements AdapterView.OnItemSelect
 
 	ModifiableComplexTextAdapter<LanguageView> m_spLanguageAdapter;
 	private Preferences m_preferences;
-
+	private ArrayList<LanguageView> m_laguageViews;
+	
+	private boolean m_loaded;
+	
 	public LanguageSpinner(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		
@@ -36,11 +39,10 @@ public class LanguageSpinner extends Spinner implements AdapterView.OnItemSelect
 		setAdapter(m_spLanguageAdapter);
 		setOnItemSelectedListener(this);
 	}
-
-	public void bindData() {
-		
+	
+	public void loadData() {
 		String languagePreferences = m_preferences.getLanguagePreferences();
-		final ArrayList<LanguageView> all = new ArrayList<LanguageView>();
+		m_laguageViews = new ArrayList<LanguageView>();
 		
 		if(languagePreferences != null) {
 			String[] codes = languagePreferences.split(",");
@@ -58,25 +60,28 @@ public class LanguageSpinner extends Spinner implements AdapterView.OnItemSelect
 					continue;
 				}
 				
-				all.add(new LanguageView(lang));
+				m_laguageViews.add(new LanguageView(lang));
 			}
 			
 			for(int i=0;i<ordered.length;i++) {
-				all.add(i, ordered[i]);
+				m_laguageViews.add(i, ordered[i]);
 			}
 		} else {
 			for(Language lang : Language.values()) {
-				all.add(new LanguageView(lang));
+				m_laguageViews.add(new LanguageView(lang));
 			}
 		}
+		
+		m_loaded = true;
+	}
 
-		this.post(new Runnable() {
-			@Override
-			public void run() {
-				m_spLanguageAdapter.clear();
-				m_spLanguageAdapter.addAll(all);				
-			}
-		});
+	public void bindData() {
+		if(!m_loaded) {
+			loadData();
+		}
+
+		m_spLanguageAdapter.clear();
+		m_spLanguageAdapter.addAll(m_laguageViews);	
 	}
 
 	public void setSelection(Language view) {

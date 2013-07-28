@@ -147,11 +147,13 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 	}
 
 	public void requestFragmentReplace(ApplicationFragment fragment) {
+		m_layDrawer.closeDrawers();
 		m_fragmentManager.beginTransaction().replace(R.id.application_layContent, fragment).addToBackStack(null)
 				.commit();
 	}
 
 	public void requestFinishFragment(Bundle result) {
+		m_layDrawer.closeDrawers();
 		m_fragmentManager.popBackStackImmediate();
 		ApplicationFragment fragment = getCurrentFragment();
 		fragment.onFragmentResult(result);
@@ -184,7 +186,7 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 		// First screen
 		if (view == null) {
 			fragment = new MemoListFragment();
-
+			
 			// Insert the fragment
 			m_fragmentManager.beginTransaction().replace(R.id.application_layContent, fragment).commit();
 

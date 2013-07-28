@@ -5,7 +5,12 @@
 		If you would like to translate the application to other language, 
 		request a feature or just be up to date visit/follow application page (link Settings).\n
 		\n
-		Changes:\n
+		Chagnes v.1.3.2\n
+		1. Bug fixes\n
+		2. Made ads less annoying\n
+		Changes v.1.3.1\n
+		1. Bug fixes\n
+		Changes v.1.3.0\n
 		1. Changed UI\n
 		2. Removed Ads from low res devices\n
 		3. Added more thesauruses and dictionaries\n
@@ -229,7 +234,7 @@
     <string name="preferences_btnGoToMemoling_title">Application Website</string>
     <string name="preferences_btnGoToMemoling_summary">Visit application page</string>
     <string name="preferences_btnClearLangPref_title">Language Preferences</string>
-    <string name="preferences_btnClearLangPref_summary">Clear language preferences</string>
+    <string name="preferences_btnClearLangPref_summary">Clear favorite languages</string>
     <string name="preferences_btnClearFacebook_title">Facebook Account</string>
     <string name="preferences_btnClearFacebook_summary">Logout</string>
     <string name="preferences_learningSetSize_summary">How many expressions do you want to review at once</string>

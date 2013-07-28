@@ -49,7 +49,7 @@ public class MemoBaseListFragment extends ApplicationFragment {
 		ResourceManager resources = getResourceManager();
 		Typeface thinFont = resources.getThinFont();
 		Typeface condensedFont = resources.getCondensedFont();
-		
+
 		m_lstMemos = (ListView) contentView.findViewById(R.id.memobaselist_lstMemo);
 		m_lstAdapter = new ModifiableComplexTextAdapter<MemoBaseInfoView>(getActivity(),
 				R.layout.adapter_memobaselist_listview, m_memoBaseAdapterResources, new Typeface[] { thinFont,
@@ -144,17 +144,17 @@ public class MemoBaseListFragment extends ApplicationFragment {
 
 		return super.onContextItemSelected(item);
 	}
-	
+
 	@Override
 	protected boolean onCreateOptionsMenu() {
 		MenuItem item;
-		
-		item = createMenuItem(0,"NewMemo").setIcon(R.drawable.ic_library_add);
-		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);		
 
-		item = createMenuItem(1,"OnlineMemo").setIcon(R.drawable.ic_download);
+		item = createMenuItem(0, "NewMemo").setIcon(R.drawable.ic_library_add);
 		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		
+
+		item = createMenuItem(1, "OnlineMemo").setIcon(R.drawable.ic_download);
+		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
 		return true;
 	}
 
@@ -166,28 +166,31 @@ public class MemoBaseListFragment extends ApplicationFragment {
 			result.putString(Action, MemoBaseFragment.ActionCreate);
 			ApplicationFragment fragment = new MemoBaseFragment();
 			fragment.setArguments(result);
-			
-			startFragment(fragment);			
+
+			startFragment(fragment);
 			return false;
-		} else if(item.getItemId() == 1) {
+		} else if (item.getItemId() == 1) {
 			ApplicationFragment fragment = new DownloadFragment();
-			startFragment(fragment);		
+			startFragment(fragment);
 			return false;
 		}
 		return true;
 	}
-	
-//	@Override
-//	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//		super.onActivityResult(requestCode, resultCode, data);
-//
-//		if (requestCode == FbLoginActivity.CredentialsRequest && resultCode == Activity.RESULT_OK) {
-//			FacebookMe fbMe = new FacebookMe();
-//			fbMe.getUser(data.getStringExtra(FbLoginActivity.AccessToken), this);
-//		} else {
-//			Toast.makeText(getActivity(), R.string.memobaselist_fbFailed, Toast.LENGTH_LONG).show();
-//		}
-//	}
+
+	// @Override
+	// public void onActivityResult(int requestCode, int resultCode, Intent
+	// data) {
+	// super.onActivityResult(requestCode, resultCode, data);
+	//
+	// if (requestCode == FbLoginActivity.CredentialsRequest && resultCode ==
+	// Activity.RESULT_OK) {
+	// FacebookMe fbMe = new FacebookMe();
+	// fbMe.getUser(data.getStringExtra(FbLoginActivity.AccessToken), this);
+	// } else {
+	// Toast.makeText(getActivity(), R.string.memobaselist_fbFailed,
+	// Toast.LENGTH_LONG).show();
+	// }
+	// }
 
 	private class MemoBaseListEventHandler implements OnItemClickListener {
 
@@ -200,28 +203,29 @@ public class MemoBaseListFragment extends ApplicationFragment {
 		}
 	}
 
-//	private class BtnSyncEventHandler implements View.OnClickListener {
-//		@Override
-//		public void onClick(View v) {
-//			FacebookUser user = FacebookUser.read(getActivity());
-//			if (user == null) {
-//				Intent fbLoginIntent = new Intent(getActivity(), FbLoginActivity.class);
-//				getActivity().startActivityForResult(fbLoginIntent, FbLoginActivity.CredentialsRequest);
-//			} else {
-//				synchronize();
-//			}
-//		}
-//	}
-//
-//	@Override
-//	public void onFacebookUserFound(FacebookUser user) {
-//		FacebookUser.save(user, getActivity());
-//		synchronize();
-//	}
-//
-//	private void synchronize() {
-//		// Webservice.synchronize();
-//	}
+	// private class BtnSyncEventHandler implements View.OnClickListener {
+	// @Override
+	// public void onClick(View v) {
+	// FacebookUser user = FacebookUser.read(getActivity());
+	// if (user == null) {
+	// Intent fbLoginIntent = new Intent(getActivity(), FbLoginActivity.class);
+	// getActivity().startActivityForResult(fbLoginIntent,
+	// FbLoginActivity.CredentialsRequest);
+	// } else {
+	// synchronize();
+	// }
+	// }
+	// }
+	//
+	// @Override
+	// public void onFacebookUserFound(FacebookUser user) {
+	// FacebookUser.save(user, getActivity());
+	// synchronize();
+	// }
+	//
+	// private void synchronize() {
+	// // Webservice.synchronize();
+	// }
 
 	@Override
 	protected void onDataBind(Bundle savedInstanceState) {
