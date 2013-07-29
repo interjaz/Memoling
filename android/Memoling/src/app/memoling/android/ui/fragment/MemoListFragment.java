@@ -615,7 +615,7 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 				m_spLanguageFrom.loadData();
 				m_spLanguageTo.loadData();
 
-				MemoAdapter m_memoAdapter = new MemoAdapter(getActivity());
+				m_memoAdapter = new MemoAdapter(getActivity());
 				m_memos = m_memoAdapter.getAll(m_memoBaseId, MemoAdapter.Sort.CreatedDate, Order.ASC);
 
 				updateSupportProgress(0.7f);
