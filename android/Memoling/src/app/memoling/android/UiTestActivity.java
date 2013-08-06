@@ -7,10 +7,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import app.memoling.android.entity.Language;
+import app.memoling.android.wordoftheday.IFetchComplete;
+import app.memoling.android.wordoftheday.MemoOfTheDay;
+import app.memoling.android.wordoftheday.provider.Provider;
+import app.memoling.android.wordoftheday.provider.ProviderAdapter;
+import app.memoling.android.wordoftheday.resolver.ResolverBase;
+import app.memoling.android.wordoftheday.resolver.ResolverFactory;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -48,8 +56,14 @@ public class UiTestActivity extends SherlockFragmentActivity {
 		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
 		mDrawerLayout, /* DrawerLayout object */
 		R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
-		R.string.application_drawerOpen, /* "open drawer" description for accessibility */
-		R.string.application_drawerClose /* "close drawer" description for accessibility */
+		R.string.application_drawerOpen, /*
+										 * "open drawer" description for
+										 * accessibility
+										 */
+		R.string.application_drawerClose /*
+										 * "close drawer" description for
+										 * accessibility
+										 */
 		) {
 			public void onDrawerClosed(View view) {
 				UiTestActivity.this.getSupportActionBar().setTitle(mTitle);
@@ -68,11 +82,24 @@ public class UiTestActivity extends SherlockFragmentActivity {
 		// enable ActionBar app icon to behave as action to toggle nav drawer
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
-		
+
 		// Select first fragment
-        if (savedInstanceState == null) {
-            selectItem(0);
-        }
+		if (savedInstanceState == null) {
+			selectItem(0);
+		}
+
+		Provider word = new ProviderAdapter().getAll().get(0);
+		word.setTranslateToLanguage(Language.PL);
+		word.setPreTranslateToLanguage(Language.RU);
+		ResolverBase provider = ResolverFactory.getProvider(word, this);
+		provider.fetch(new IFetchComplete() {
+			@Override
+			public void onFetchComplete(MemoOfTheDay memo) {
+				MemoOfTheDay nMemo = memo;
+				Log.e("Yes","Tes");
+			}			
+		});
+
 	}
 
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -128,8 +155,7 @@ public class UiTestActivity extends SherlockFragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		// Dirty hack icon always first
-		if (item.getOrder() == 0) 
-		{
+		if (item.getOrder() == 0) {
 
 			if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
 				mDrawerLayout.closeDrawer(mDrawerList);

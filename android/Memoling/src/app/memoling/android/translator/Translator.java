@@ -17,12 +17,10 @@ public class Translator implements ITranslateComplete {
 	private final static int MaxCache = 300;
 	private static CacheHelper<String, TranslatorResult> m_cache = new CacheHelper<String, TranslatorResult>(MaxCache);
 
-	@SuppressLint("DefaultLocale")
 	public Translator(Word word, Language from, Language to,
 			ITranslateComplete onTranslateComplete) {
 
-		// Default locale to lower case
-		m_word = new Word(word.getWord().trim().toLowerCase());
+		m_word = new Word(word.getWord().trim());
 		m_from = from;
 		m_to = to;
 		m_onTranslateComplete = onTranslateComplete;

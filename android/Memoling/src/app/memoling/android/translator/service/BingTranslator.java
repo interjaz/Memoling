@@ -190,7 +190,7 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 
 				if (matchDegree >= m_minMatchDegree && rating >= m_minRating) {
 
-					Word newWord = new Word(translation.getString(m_TranslatedText).toLowerCase());
+					Word newWord = new Word(translation.getString(m_TranslatedText));
 
 					// Ignore duplicates
 					if (!words.contains(newWord)) {

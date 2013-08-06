@@ -12,6 +12,8 @@ import android.preference.PreferenceManager;
 import app.memoling.android.facebook.FacebookUser;
 import app.memoling.android.helper.AppLog;
 import app.memoling.android.preference.custom.MemoListPreference;
+import app.memoling.android.preference.custom.TimePreference;
+import app.memoling.android.preference.custom.WordOfTheDayTime;
 
 public class Preferences {
 
@@ -26,6 +28,7 @@ public class Preferences {
 	public final static String LEARNING_SET_SIZE = "LEARNING_SET_SIZE";
 	public final static String ABOUT_FRAGMENT_SEEN = "ABOUT_FRAGMENT_SEEN";
 	public final static String LAST_MEMOBASE_ID = "LAST_MEMOBASE_ID";
+	public final static String WORDOFTHEDAY_TIME = "WORDOFTHEDAY_TIME";
 
 	private SharedPreferences m_sharedPreferences;
 
@@ -124,7 +127,7 @@ public class Preferences {
 	public MemoListPreference getMemoListPreference(String memoBaseId) {
 		try {
 			ArrayList<MemoListPreference> list = MemoListPreference.deserializeList(get(MEMOLIST_PREFERENCES));
-			
+
 			for (MemoListPreference pref : list) {
 				if (pref.getMemoBaseId().equals(memoBaseId)) {
 					return pref;
@@ -163,4 +166,14 @@ public class Preferences {
 			AppLog.e("Preferences", "Failed to serialize memolist", ex);
 		}
 	}
+
+	public WordOfTheDayTime getWordOfTheDayTime() {
+		WordOfTheDayTime time = new WordOfTheDayTime();
+		String pref = get(WORDOFTHEDAY_TIME);
+		time.setHours(TimePreference.getHour(pref));
+		time.setMinutes(TimePreference.getMinute(pref));
+
+		return time;
+	}
+
 }

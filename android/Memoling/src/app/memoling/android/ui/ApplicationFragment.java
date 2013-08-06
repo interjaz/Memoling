@@ -82,6 +82,8 @@ public abstract class ApplicationFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		ApplicationActivity appActivity = (ApplicationActivity) getActivity();
+		onFragmentResult(appActivity.getRequestFinishFragmentResult());
 		onDataBind(m_savedInstanceState);
 		m_savedInstanceState = null;
 	}

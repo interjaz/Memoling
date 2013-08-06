@@ -62,8 +62,8 @@ public class AdCommon {
 															// Device
 		}
 
-		AdMobAdapterExtras extras = new AdMobAdapterExtras().addExtra("color_bg", "888888")
-				.addExtra("color_bg_top", "000000").addExtra("color_border", "000000").addExtra("color_link", "EEEEEE")
+		AdMobAdapterExtras extras = new AdMobAdapterExtras().addExtra("color_bg", "1F1F1F")
+				.addExtra("color_bg_top", "0000000").addExtra("color_border", "000000").addExtra("color_link", "EEEEEE")
 				.addExtra("color_text", "FFFFFF").addExtra("color_url", "EEEEEE");
 		adRequest.setNetworkExtras(extras);
 

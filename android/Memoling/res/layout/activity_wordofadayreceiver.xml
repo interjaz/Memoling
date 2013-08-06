@@ -1,0 +1,131 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WordOfTheDayReceiverActivity" >
+
+    <LinearLayout
+        android:id="@+id/adLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:fillViewport="true" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/wordofadayreceiver_lblSource"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/wordofadayreceiver_btnSource"
+                        android:layout_alignBottom="@+id/wordofadayreceiver_btnSource"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/wordofthedayreceiver_lblSource"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/wordofadayreceiver_txtSource"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/wordofadayreceiver_btnSource"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/wordofadayreceiver_btnSource"
+                        android:layout_toRightOf="@+id/wordofadayreceiver_lblSource"
+                        android:text="http://"
+                        android:singleLine="true"
+                        android:textSize="15sp" />
+
+                    <Button
+                        android:id="@+id/wordofadayreceiver_btnSource"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:text="@string/wordofthedayreceiver_btnSource"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/wordofadayreceiver_lblWordFrom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/wordofthedayreceiver_lblWordFrom"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/wordofadayreceiver_txtWordFrom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="19sp" />
+
+                <TextView
+                    android:id="@+id/wordofadayreceiver_lblWordTo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/wordofthedayreceiver_lblWordTo"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/wordofadayreceiver_txtWordTo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="19sp" />
+                
+                <TextView
+                    android:id="@+id/wordofadayreceiver_lblDescriptionFrom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/wordofthedayreceiver_lblDescriptionFrom"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/wordofadayreceiver_txtDescriptionFrom"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="top"
+                    android:text=""
+                    android:layout_marginLeft="10dp"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/wordofadayreceiver_lblDescriptionTo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/wordofthedayreceiver_lblDescriptionTo"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/wordofadayreceiver_txtDescriptionTo"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="top"
+                    android:inputType="none"
+                    android:minLines="2"
+                    android:text=""
+                    android:layout_marginLeft="10dp"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</RelativeLayout>

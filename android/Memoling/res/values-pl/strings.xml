@@ -5,6 +5,8 @@
 		Jeśli chciałbyś/ąs przetłumaczyć applikację na inny język, 
 		  zażyczyć nową funkcjonalność albo być na bieżąco z aplikacją odwiedź jej stronę (link w ustawieniach)\n
 		\n
+		Zmainy v.1.4\n
+		1. Dodano słówka dnia\n
 		Zmainy v.1.3.3\n
 		1. Usunięto kilka błędów\n
 		Zmainy v.1.3.2\n
@@ -48,6 +50,8 @@
     <string name="memolist_whatsNewTitle">Aktualizacja (v. %s)</string>
     <string name="memolist_whatsNewOk">OK</string>
     <string name="memolist_updateCrash">Błąd podczas uaktualniania bazy!</string>
+    <string name="memolist_wordOfTheDay">Słówko dnia</string>
+    <string name="memolist_repeatAll">Powtórz wszystkie</string>
 
     <!-- MemoBaseList Fragment -->
     <string name="memobaselist_title">Biblioteki</string>
@@ -229,9 +233,9 @@
     <!-- Preferences -->
     <string name="preferences_title">Ustawienia</string>
     <string name="preferences_btnRateMemoling_title">Oceń!</string>
-    <string name="preferences_btnRateMemoling_summary">Oceń Memoling</string>
+    <string name="preferences_btnRateMemoling_summary">Oceń Memolinga</string>
     <string name="preferences_btnGoToMemoling_title">Strona aplikacji</string>
-    <string name="preferences_btnGoToMemoling_summary">Odwiedź stronę aplikacji</string>
+    <string name="preferences_btnGoToMemoling_summary">Odwiedź stronę aplikacji (poproś o nową funkcję)</string>
     <string name="preferences_btnClearLangPref_title">Preferencje językowe</string>
     <string name="preferences_btnClearLangPref_summary">Wyczyść ulubione języki</string>
     <string name="preferences_btnClearFacebook_title">Konto Facebook</string>
@@ -240,7 +244,35 @@
     <string name="preferences_learningSetSize_title">Rozmiar powtórki</string>
     <string name="preferences_enableWordNotification_title">Powiadomienie o słowie dnia</string>
     <string name="preferences_enableWordNotification_summary">Chcę otrzymywać powiadomienia</string>
-    <string name="preferences_wordNotificationMemoBase_title">Wybierz bibliotekę na słówka dnia</string>
+    <string name="preferences_wordOfTheDay_title">Słówka dnia</string>
+    <string name="preferences_wordOfTheDay_summary">Ustaw kiedy słowka mają zostać dostarczone</string>
+
+	<!-- Word of the day Fragment -->
+	<string name="wordoftheday_title">Słówko dnia</string>
+    <string name="wordoftheday_lblEnable">Czy chcesz otrzymywać codziennie nowe słówko?</string>
+    <string name="wordoftheday_lblMode">Powiadomienia powinny pochodzić z</string>
+    <string name="wordoftheday_lblLanguageFrom">Czy chciałbyć/chciałabyś przetłumaczyć słówko najpierw na inny język</string>
+    <string name="wordoftheday_lblLanguageTo">Przetłumacz nowe słówko na</string>
+    <string name="wordoftheday_lblSource">Źródło powiadomień</string>
+    <string name="wordoftheday_lblSourceHint">Oryginalny język słówka jest w nawiasach. Jeśli możliwe, lepiej jest użyć oryginalnego języka niż przetłumaczonego</string>
+    <string name="wordoftheday_test">Przetestuj</string>
+
+    <string-array name="wordoftheday_modes">
+        <item>Z internetu (nowe słówka)</item>
+        <item>Z internetu i z mojej biblioteki</item>
+        <item>Z mojej biblioteki (tylko znane słówka)</item>
+    </string-array>
+
+    <!-- WordOfTheDayReceiver -->
+    <string name="wordofthedayreceiver_title">Słówko dnia</string>
+    <string name="wordofthedayreceiver_lblSource">Źródło</string>
+    <string name="wordofthedayreceiver_btnSource">Odwiedź</string>
+    <string name="wordofthedayreceiver_lblWordFrom">Słówko dnia</string>
+    <string name="wordofthedayreceiver_lblWordTo">Tłumaczenie</string>
+    <string name="wordofthedayreceiver_lblDescriptionFrom">Opis</string>
+    <string name="wordofthedayreceiver_lblDescriptionTo">Przetłumaczony opis</string>
+    <string name="wordofthedayreceiver_saved">Zapisz</string>
+    <string name="wordofthedayreceiver_deleted">Usuń</string>
     
     <!-- General -->
     <string name="dummy_content">DUMMY\nCONTENT</string>

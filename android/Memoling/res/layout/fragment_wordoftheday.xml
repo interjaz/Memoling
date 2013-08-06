@@ -1,0 +1,180 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".AboutFragment" >
+
+    <LinearLayout
+        android:id="@+id/adLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:fillViewport="true" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/wordoftheday_lblEnable"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:minHeight="50dp"
+                        android:text="@string/wordoftheday_lblEnable"
+                        android:textSize="20sp" />
+
+                    <CheckBox
+                        android:id="@+id/wordoftheday_chbEnable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/wordotheday_layMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" >
+
+                    <TextView
+                        android:id="@+id/wordoftheday_lblMode"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:minHeight="50dp"
+                        android:text="@string/wordoftheday_lblMode"
+                        android:textSize="20sp" />
+
+                    <Spinner
+                        android:id="@+id/wordoftheday_spMode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:listitem="@layout/adapter_textdropdown" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/wordotheday_laySource"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" >
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/wordoftheday_lblSource"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/wordoftheday_lblSource"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/wordoftheday_lblSourceHint"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/wordoftheday_lblSourceHint"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <Spinner
+                        android:id="@+id/wordoftheday_spSource"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:listitem="@layout/adapter_textdropdown" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/wordotheday_layFrom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" >
+
+                    <TextView
+                        android:id="@+id/wordoftheday_lblLanguageFrom"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:minHeight="50dp"
+                        android:text="@string/wordoftheday_lblLanguageFrom"
+                        android:textSize="20sp" />
+
+                    <CheckBox
+                        android:id="@+id/wordoftheday_chbLanguageFrom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/wordotheday_layFromLanguage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:visibility="gone" >
+
+                    <app.memoling.android.ui.control.LanguageSpinner
+                        android:id="@+id/wordofthelist_spLanguageFrom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:listitem="@layout/adapter_textdropdown" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/wordotheday_layTo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" >
+
+                    <TextView
+                        android:id="@+id/wordoftheday_lblLanguageTo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:minHeight="50dp"
+                        android:text="@string/wordoftheday_lblLanguageTo"
+                        android:textSize="20sp" />
+
+                    <app.memoling.android.ui.control.LanguageSpinner
+                        android:id="@+id/wordofthelist_spLanguageTo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:listitem="@layout/adapter_textdropdown" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/wordotheday_layTest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:visibility="gone" >
+
+                    <Button
+                        android:id="@+id/wordoftheday_btnTest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="@string/wordoftheday_test" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</RelativeLayout>

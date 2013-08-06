@@ -94,7 +94,8 @@ public class MemoAdapter extends SqliteAdapter {
 				+ "	WA.WordId WA_WordId, WA.LanguageIso639 WA_LanguageIso639, WA.Word WA_Word, "
 				+ "	WB.WordId WB_WordId, WB.LanguageIso639 WB_LanguageIso639, WB.Word WB_Word " + "FROM Memos  AS M "
 				+ "JOIN MemoBases AS B ON M.MemoBaseId = B.MemoBaseId " + "JOIN Words AS WA ON M.WordAId = WA.WordId "
-				+ "JOIN Words AS WB ON M.WordBId = WB.WordId " + "WHERE M.MemoId = ?";
+				+ "JOIN Words AS WB ON M.WordBId = WB.WordId " 
+				+ "WHERE M.MemoId = ?";
 
 		Cursor cursor = db.rawQuery(query, new String[] { memoId });
 
@@ -136,7 +137,72 @@ public class MemoAdapter extends SqliteAdapter {
 
 		return null;
 	}
+	
+	public Memo getRandom(String memoBaseId) {
 
+		SQLiteDatabase db = null;
+
+		try {
+			db = getDatabase();
+			return getRandom(this, db, memoBaseId);
+
+		} finally {
+			closeDatabase();
+		}
+	}
+
+	public static Memo getRandom(SqliteAdapter adapter, SQLiteDatabase db, String memoBaseId) {
+		
+		String query = "SELECT "
+				+ "	M.MemoId M_MemoId, M.Created M_Created, M.LastReviewed M_LastReviewed, M.Displayed M_Displayed, M.CorrectAnsweredWordA M_CorrectAnsweredWordA, M.CorrectAnsweredWordB M_CorrectAnsweredWordB, M.Active M_Active, "
+				+ "	B.MemoBaseId B_MemoBaseId, B.Name B_Name, B.Created B_Created, B.Active B_Active, "
+				+ "	WA.WordId WA_WordId, WA.LanguageIso639 WA_LanguageIso639, WA.Word WA_Word, "
+				+ "	WB.WordId WB_WordId, WB.LanguageIso639 WB_LanguageIso639, WB.Word WB_Word " + "FROM Memos  AS M "
+				+ "JOIN MemoBases AS B ON M.MemoBaseId = B.MemoBaseId " + "JOIN Words AS WA ON M.WordAId = WA.WordId "
+				+ "JOIN Words AS WB ON M.WordBId = WB.WordId " 
+				+ "WHERE M.rowid > (abs(random()) % (SELECT max(rowid) FROM Memos WHERE MemoBaseId = ?)) "
+				+ "AND B.MemoBaseId = ? "
+				+ "LIMIT 1";
+
+		Cursor cursor = db.rawQuery(query, new String[] { memoBaseId, memoBaseId });
+
+		if (cursor.moveToNext()) {
+
+			Word wordA = new Word();
+			wordA.setWord(DatabaseHelper.getString(cursor, "WA_Word"));
+			wordA.setLanguage(Language.parse(DatabaseHelper.getString(cursor, "WA_LanguageIso639")));
+			wordA.setWordId(DatabaseHelper.getString(cursor, "WA_WordId"));
+
+			Word wordB = new Word();
+			wordB.setWord(DatabaseHelper.getString(cursor, "WB_Word"));
+			wordB.setLanguage(Language.parse(DatabaseHelper.getString(cursor, "WB_LanguageIso639")));
+			wordB.setWordId(DatabaseHelper.getString(cursor, "WB_WordId"));
+
+			MemoBase memoBase = new MemoBase();
+			memoBase.setActive(DatabaseHelper.getBoolean(cursor, "B_Active"));
+			memoBase.setCreated(DatabaseHelper.getDate(cursor, "B_Created"));
+			memoBase.setMemoBaseId(DatabaseHelper.getString(cursor, "B_MemoBaseId"));
+			memoBase.setName(DatabaseHelper.getString(cursor, "B_Name"));
+
+			Memo memo = new Memo();
+			memo.setMemoId(DatabaseHelper.getString(cursor, "M_MemoId"));
+			memo.setActive(DatabaseHelper.getBoolean(cursor, "M_Active"));
+			memo.setCorrectAnsweredWordA(DatabaseHelper.getInt(cursor, "M_CorrectAnsweredWordA"));
+			memo.setCorrectAnsweredWordB(DatabaseHelper.getInt(cursor, "M_CorrectAnsweredWordB"));
+			memo.setCreated(DatabaseHelper.getDate(cursor, "M_Created"));
+			memo.setDisplayed(DatabaseHelper.getInt(cursor, "M_Displayed"));
+			memo.setLastReviewed(DatabaseHelper.getDate(cursor, "M_LastReviewed"));
+			memo.setMemoBase(memoBase);
+			memo.setMemoBaseId(memoBase.getMemoBaseId());
+			memo.setWordA(wordA);
+			memo.setWordB(wordB);
+
+			return memo;
+		}
+
+		return null;
+	}
+	
 	public ArrayList<Memo> getAll(String memoBaseId, Sort sort, Order order) {
 		SQLiteDatabase db = null;
 

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="memolist_whatsNewContent">        
-		If you would like to translate the application to other language, 
+    <string name="memolist_whatsNewContent">		If you would like to translate the application to other language, 
 		request a feature or just be up to date visit/follow application page (link Settings).\n
 		\n
+		Chagnes v.1.4\n
+		1. Added Word Of the Day feature\n
 		Chagnes v.1.3.3\n
 		1. Bug fixes\n
 		Chagnes v.1.3.2\n
@@ -20,17 +21,16 @@
 		5. Added word search\n
 		6. Fixed language preferences bug\n
 		7. Fixed training bug\n
-		8. Improved performance
-    </string>
+		8. Improved performance</string>
 
     <!-- General -->
     <string name="app_name">Memoling</string>
-    
+
     <!-- Application Activity -->
     <string name="application_title">Memoling</string>
     <string name="application_drawerOpen">Open</string>
     <string name="application_drawerClose">Close</string>
-    
+
     <!-- MemoList Fragment -->
     <string name="memolist_title">Expressions</string>
     <string name="memolist_btnSave">Save</string>
@@ -52,6 +52,8 @@
     <string name="memolist_whatsNewOk">OK</string>
     <string name="memolist_updateCrash">Failed to update the db!</string>
     <string name="memolist_swap">⇄</string>
+    <string name="memolist_wordOfTheDay">Word of the Day</string>
+    <string name="memolist_repeatAll">Repeat all</string>
 
     <!-- MemoBaseList Fragment -->
     <string name="memobaselist_title">Libraries</string>
@@ -206,8 +208,8 @@
 
     <!-- Schedule Fragment -->
     <string name="schedule_title">Set Training</string>
-    <string name="schedule_repetition">Schedule repetition</string>
-    <string name="schedule_submit">Submit</string>
+    <string name="schedule_repetition">Schedule Training</string>
+    <string name="schedule_submit">Create</string>
     <string name="schedule_edit">Edit</string>
     <string name="schedule_delete">Delete</string>
     <string name="schedule_new">New</string>
@@ -228,7 +230,7 @@
 
     <!-- Facebook Fragment -->
     <string name="fbLogin_title">Facebook Authorization</string>
-    
+
     <!-- Preferences -->
     <string name="preferences_title">Preferences</string>
     <string name="preferences_btnRateMemoling_title">Rate!</string>
@@ -243,8 +245,35 @@
     <string name="preferences_learningSetSize_title">Learning Set Size</string>
     <string name="preferences_enableWordNotification_title">Word of a Day Notification</string>
     <string name="preferences_enableWordNotification_summary">Receive daily notification with word of a day with it translation</string>
-    <string name="preferences_wordNotificationMemoBase_title">Word of a Day Library</string>
+    <string name="preferences_wordOfTheDay_title">Word of the Day Notification</string>
+    <string name="preferences_wordOfTheDay_summary">Set when notification should arrive</string>
 
+    <!-- Word of the day Fragment -->
+    <string name="wordoftheday_title">Word of the Day</string>
+    <string name="wordoftheday_lblEnable">Do you want receive Word of the Day notifications?</string>
+    <string name="wordoftheday_lblMode">Notifications should come from</string>
+    <string name="wordoftheday_lblLanguageFrom">Would you like to pretranslate word to other language first?</string>
+    <string name="wordoftheday_lblLanguageTo">Translate new words to</string>
+    <string name="wordoftheday_lblSource">Notification source</string>
+    <string name="wordoftheday_lblSourceHint">Word\'s native language is in brakets. It is better to use native source one then using pretranslation - more accurate.</string>
+    <string name="wordoftheday_test">Test configuration</string>
+
+    <string-array name="wordoftheday_modes">
+        <item>Online source (new words)</item>
+        <item>Online source and my library</item>
+        <item>My library (known words)</item>
+    </string-array>
+
+    <!-- WordOfTheDayReceiver -->
+    <string name="wordofthedayreceiver_title">Word of the Day</string>
+    <string name="wordofthedayreceiver_lblSource">Source</string>
+    <string name="wordofthedayreceiver_btnSource">Visit</string>
+    <string name="wordofthedayreceiver_lblWordFrom">Word of the Day</string>
+    <string name="wordofthedayreceiver_lblWordTo">Word translation</string>
+    <string name="wordofthedayreceiver_lblDescriptionFrom">Description</string>
+    <string name="wordofthedayreceiver_lblDescriptionTo">Desc. translation</string>
+    <string name="wordofthedayreceiver_saved">Saved</string>
+    <string name="wordofthedayreceiver_deleted">Deleted</string>
     
     <!-- General -->
     <string name="dummy_content">DUMMY\nCONTENT</string>

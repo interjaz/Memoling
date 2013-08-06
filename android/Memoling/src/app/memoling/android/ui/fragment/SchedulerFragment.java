@@ -2,6 +2,7 @@ package app.memoling.android.ui.fragment;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -18,9 +19,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import app.memoling.android.R;
+import app.memoling.android.adapter.ScheduleAdapter;
 import app.memoling.android.entity.Schedule;
-import app.memoling.android.schedule.BaseSchedule;
-import app.memoling.android.schedule.Scheduler;
+import app.memoling.android.schedule.AlarmReceiver;
 import app.memoling.android.ui.ApplicationFragment;
 import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.adapter.ModifiableComplexTextAdapter;
@@ -62,6 +63,7 @@ public class SchedulerFragment extends ApplicationFragment {
 	private ModifiableComplexTextAdapter<ScheduleView> m_lstListAdapter;
 
 	private String m_memoBaseId = "testId";
+	private ScheduleAdapter m_scheduleAdapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,7 +83,7 @@ public class SchedulerFragment extends ApplicationFragment {
 		m_txtMinutes.setTypeface(thinFont);
 
 		String[] days = new DateFormatSymbols().getShortWeekdays();
-		
+
 		m_btnMo = (Button) contentView.findViewById(R.id.scheduler_btnMo);
 		m_btnMo.setTypeface(thinFont);
 		m_btnMo.setOnClickListener(m_btnMoEventHandler);
@@ -118,9 +120,9 @@ public class SchedulerFragment extends ApplicationFragment {
 		m_btnSubmit.setTypeface(thinFont);
 
 		m_lstList = (ListView) contentView.findViewById(R.id.schedule_list);
-		m_lstListAdapter = new ModifiableComplexTextAdapter<ScheduleView>(getActivity(), R.layout.adapter_scheduler_listview,
-				new int[] { R.id.textView1, R.id.textView2 }, new Typeface[] { thinFont,
-						condensedFont });
+		m_lstListAdapter = new ModifiableComplexTextAdapter<ScheduleView>(getActivity(),
+				R.layout.adapter_scheduler_listview, new int[] { R.id.textView1, R.id.textView2 }, new Typeface[] {
+						thinFont, condensedFont });
 		m_lstList.setAdapter(m_lstListAdapter);
 		m_lstList.setOnItemClickListener(new LstListEventHandler());
 
@@ -133,7 +135,7 @@ public class SchedulerFragment extends ApplicationFragment {
 		m_btnDelete = (Button) contentView.findViewById(R.id.scheduler_btnDelete);
 		m_btnDelete.setTypeface(thinFont);
 		m_btnDelete.setOnClickListener(new BtnDeleteEventHandler());
-		
+
 		return contentView;
 	}
 
@@ -343,6 +345,8 @@ public class SchedulerFragment extends ApplicationFragment {
 			}
 
 			Schedule schedule = new Schedule();
+			schedule.setScheduleId(UUID.randomUUID().toString());
+			schedule.setMemoBaseId(m_memoBaseId);
 			schedule.setHours(Integer.parseInt(m_txtHours.getText().toString()));
 			schedule.setMinutes(Integer.parseInt(m_txtMinutes.getText().toString()));
 
@@ -489,19 +493,20 @@ public class SchedulerFragment extends ApplicationFragment {
 			schedules.add(m_lstListAdapter.getItem(i).getSchedule());
 		}
 
-		Scheduler.updateSchedule(new BaseSchedule(m_memoBaseId, schedules));
-		Scheduler.updateAlarm(getActivity());
+		m_scheduleAdapter.updateAllForMemoBase(schedules, m_memoBaseId);
+		AlarmReceiver.updateAlarm(getActivity());
 	}
 
 	@Override
 	protected void onDataBind(Bundle savedInstanceState) {
+		m_scheduleAdapter = new ScheduleAdapter(getActivity());
+
 		m_lstListAdapter.clear();
-		m_memoBaseId = getArguments().getString(MemoBaseId);	
-		BaseSchedule base = Scheduler.getSchedule(m_memoBaseId);
-		ArrayList<Schedule> schedule = base.getSchedule();
-		for (int i = 0; i < schedule.size(); i++) {
-			m_lstListAdapter.add(new ScheduleView(schedule.get(i), getActivity()));
-		}	
-		
+		m_memoBaseId = getArguments().getString(MemoBaseId);
+		ArrayList<Schedule> schedules = m_scheduleAdapter.getByMemoBaseId(m_memoBaseId);
+		for (Schedule schedule : schedules) {
+			m_lstListAdapter.add(new ScheduleView(schedule, getActivity()));
+		}
 	}
+
 }

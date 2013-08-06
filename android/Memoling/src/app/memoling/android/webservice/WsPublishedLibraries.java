@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -74,7 +75,7 @@ public class WsPublishedLibraries {
 	public void search(String keyword, String generId, String languageA, String  languageB, int page, final ISearchComplete onComplete) {
 		try {
 
-			String uri = String.format("%s?action=search&keyword=%s&genreId=%s&languageAIso639=%s&languageBIso639=%s&page=%d",
+			String uri = String.format(Locale.US, "%s?action=search&keyword=%s&genreId=%s&languageAIso639=%s&languageBIso639=%s&page=%d",
 					WsUrl, keyword, generId, languageA, languageB, page);
 			URI WsUri = new URI(uri);
 			

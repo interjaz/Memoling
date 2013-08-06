@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VariableTranslator", "Varia
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LineCounter", "LineCounter\LineCounter.csproj", "{9589BD11-5108-4C1C-B366-FF8008B6C696}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SententceOptimizer", "SententceOptimizer\SententceOptimizer.csproj", "{276B85AB-9721-40C6-8EC9-A3315E9BC64A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{9589BD11-5108-4C1C-B366-FF8008B6C696}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9589BD11-5108-4C1C-B366-FF8008B6C696}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9589BD11-5108-4C1C-B366-FF8008B6C696}.Release|Any CPU.Build.0 = Release|Any CPU
+		{276B85AB-9721-40C6-8EC9-A3315E9BC64A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{276B85AB-9721-40C6-8EC9-A3315E9BC64A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{276B85AB-9721-40C6-8EC9-A3315E9BC64A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{276B85AB-9721-40C6-8EC9-A3315E9BC64A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -18,6 +18,12 @@
         android:summary="@string/preferences_learningSetSize_summary"
         android:title="@string/preferences_learningSetSize_title" />
 
+    <app.memoling.android.preference.custom.TimePreference 
+        android:defaultValue="15:00"
+        android:key="WORDOFTHEDAY_TIME"
+        android:title="@string/preferences_wordOfTheDay_title"
+        android:summary="@string/preferences_wordOfTheDay_summary" />
+
     <Preference
         android:key="BTN_RATE_MEMOLING"
         android:summary="@string/preferences_btnRateMemoling_summary"
@@ -27,7 +33,7 @@
         android:key="BTN_GOTO_MEMOLING"
         android:summary="@string/preferences_btnGoToMemoling_summary"
         android:title="@string/preferences_btnGoToMemoling_title" />
-
+    
     <!--
     TODO: DO IT!
     <CheckBoxPreference

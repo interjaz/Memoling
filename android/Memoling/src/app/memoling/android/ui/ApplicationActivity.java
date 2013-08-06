@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -31,12 +32,17 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 	private ActionBarDrawerToggle m_toggleDrawer;
 	private FragmentManager m_fragmentManager;
 
+	private Bundle m_onRequestFinishFragmentResult;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_PROGRESS);
 		setContentView(R.layout.activity_application);
 
+		// Read all preferences at start
+		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+		
 		m_fragmentManager = getSupportFragmentManager();
 
 		m_layDrawer = (DrawerLayout) findViewById(R.id.application_layDrawer);
@@ -153,10 +159,13 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 	}
 
 	public void requestFinishFragment(Bundle result) {
+		m_onRequestFinishFragmentResult = result;
 		m_layDrawer.closeDrawers();
 		m_fragmentManager.popBackStackImmediate();
-		ApplicationFragment fragment = getCurrentFragment();
-		fragment.onFragmentResult(result);
+	}
+	
+	public Bundle getRequestFinishFragmentResult() {
+		return m_onRequestFinishFragmentResult;
 	}
 
 	public void requestInvalidateOptionsMenu() {

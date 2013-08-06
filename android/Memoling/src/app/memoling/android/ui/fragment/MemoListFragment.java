@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -69,6 +70,8 @@ import com.actionbarsherlock.widget.SearchView;
 public class MemoListFragment extends ApplicationFragment implements ITranslateComplete, IWordsFindComplete {
 
 	public static String MemoBaseId = "MemoBaseId";
+	public static String NotificationId = "NotificationId";
+	private final static int InvalidNotificationId = -1;
 
 	private Button m_btnSave;
 	private AutoCompleteTextView m_txtAdd;
@@ -290,6 +293,7 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 		if (result.AutoCompleteWord.getWord().startsWith(entry)) {
 
 			for (Word word : result.TranslatedSuggestions) {
+				word.setWord(word.getWord().toLowerCase());
 
 				TranslatedView searchedView = new TranslatedView(result.AutoCompleteWord);
 				TranslatedView wordView = new TranslatedView(result.AutoCompleteWord, word);
@@ -330,7 +334,7 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 		Language toLang = ((LanguageView) m_spLanguageTo.getSelectedItem()).getLanguage();
 
 		if (result.Result.size() == 0) {
-			new Translator(new Word(currentStr.trim()), fromLang, toLang, this);
+			new Translator(new Word(currentStr.trim().toLowerCase()), fromLang, toLang, this);
 		} else {
 			ArrayList<TranslatedView> tViews = new ArrayList<TranslatedView>(result.Result.size());
 
@@ -786,6 +790,27 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 			}
 		}));
 
+		drawer.add(new DrawerView(R.drawable.ic_repeat_all, R.string.memolist_repeatAll, new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), ReviewActivity.class);
+				intent.putExtra(ReviewActivity.MemoBaseId, m_memoBaseId);
+				intent.putExtra(ReviewActivity.RepeatAll, true);
+				startActivity(intent);
+			}
+		}));
+
+		drawer.add(new DrawerView(R.drawable.ic_wordoftheday, R.string.memolist_wordOfTheDay,
+				new Lazy<ApplicationFragment>() {
+					public ApplicationFragment create() {
+						ApplicationFragment fragment = new WordOfTheDayFragment();
+						Bundle bundle = new Bundle();
+						bundle.putString(WordOfTheDayFragment.MemoBaseId, m_memoBaseId);
+						fragment.setArguments(bundle);
+						return fragment;
+					}
+				}));
+
 		drawer.add(new DrawerView(R.drawable.ic_statistics, R.string.memobaselist_setting_statistics,
 				new Lazy<ApplicationFragment>() {
 					public ApplicationFragment create() {
@@ -819,6 +844,21 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 			return;
 		}
 
+		Intent intent = getActivity().getIntent();
+		if (intent != null) {
+			if (intent.hasExtra(NotificationId)) {
+				int notificationId = intent.getIntExtra(NotificationId, InvalidNotificationId);
+				if (notificationId != InvalidNotificationId) {
+					((NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE))
+							.cancel(notificationId);
+				}
+			}
+			if (intent.hasExtra(MemoBaseId)) {
+				m_memoBaseId = intent.getStringExtra(MemoBaseId);
+				intent.removeExtra(MemoBaseId);
+			}
+		}
+
 		onStartContinue(getArguments());
 	}
 
@@ -848,7 +888,8 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 	}
 
 	// Something is wrong with retainInstance since it is not restored correctly
-	// This is class is trying to fix this issue (listView is not restored a correct position)
+	// This is class is trying to fix this issue (listView is not restored a
+	// correct position)
 	private class FragmentState {
 		public int lstWordsTop;
 		public int lstWordsIndex;
@@ -867,7 +908,7 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 			}
 
 			return;
-			//m_lstWords.setSelectionFromTop(lstWordsIndex, lstWordsTop);
+			// m_lstWords.setSelectionFromTop(lstWordsIndex, lstWordsTop);
 		}
 
 		public void addToBundle(Bundle bundle) {

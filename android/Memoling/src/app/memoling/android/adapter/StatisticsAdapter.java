@@ -40,7 +40,7 @@ public class StatisticsAdapter extends SqliteAdapter {
 			Cursor cursor = db.rawQuery(query, new String[] { Integer.toString(m_calendar.get(Calendar.YEAR)) });
 
 			while (cursor.moveToNext()) {
-				int month = DatabaseHelper.getInt(cursor, "Month") - 1;
+				int month = Integer.parseInt(DatabaseHelper.getString(cursor, "Month")) - 1;
 				monthly[month] = DatabaseHelper.getInt(cursor, "Memos");
 			}
 

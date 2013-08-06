@@ -25,6 +25,8 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import app.memoling.android.R;
 import app.memoling.android.adapter.MemoAdapter;
+import app.memoling.android.adapter.MemoAdapter.Sort;
+import app.memoling.android.db.DatabaseHelper.Order;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.Word;
 import app.memoling.android.preference.Preferences;
@@ -39,6 +41,7 @@ public class ReviewActivity extends AdActivity {
 
 	public final static String MemoBaseId = "MemoBaseId";
 	public final static String NotificationId = "NotificationId";
+	public final static String RepeatAll = "RepeatAll";
 	public static int m_trainingSetSize;
 
 	private final static int InvalidNotificationId = -1;
@@ -58,6 +61,7 @@ public class ReviewActivity extends AdActivity {
 	private Word m_origWord;
 	private MemoAdapter m_memoAdapter;
 	private int m_currentMemo;
+	private int m_uiCurrentMemo;
 	private boolean m_answerCorrect;
 
 	private Animation m_fadeIn;
@@ -70,6 +74,12 @@ public class ReviewActivity extends AdActivity {
 	private float m_uiProgress = 0;
 	Runnable m_progressRunner;
 
+	private enum Mode {
+		Random, AllA, AllB,
+	}
+
+	private Mode m_mode;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -80,7 +90,7 @@ public class ReviewActivity extends AdActivity {
 		// Show back arrow
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
-		
+
 		m_resources = new ResourceManager(this);
 		m_trainingSetSize = new Preferences(this).getLearningSetSize();
 
@@ -129,19 +139,19 @@ public class ReviewActivity extends AdActivity {
 		MenuItem submit = menu.add(1, 0, Menu.NONE, "Submit");
 		submit.setIcon(R.drawable.ic_submit);
 		submit.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-		
+
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
-		if(item.getItemId() == 0) {
+		if (item.getItemId() == 0) {
 			submitAnswer();
 		} else {
 			finish();
 		}
-		
+
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -153,15 +163,23 @@ public class ReviewActivity extends AdActivity {
 		Memo memo = m_memos.get(m_currentMemo);
 		m_memo = memo;
 
-		Word visible;
-		Word toGuess;
+		Word visible = null;
+		Word toGuess = null;
 
-		if (m_random.nextFloat() > 0.5f) {
-			visible = memo.getWordA();
-			toGuess = memo.getWordB();
-		} else {
+		if (m_mode == Mode.Random) {
+			if (m_random.nextFloat() > 0.5f) {
+				visible = memo.getWordA();
+				toGuess = memo.getWordB();
+			} else {
+				visible = memo.getWordB();
+				toGuess = memo.getWordA();
+			}
+		} else if (m_mode == Mode.AllA) {
 			visible = memo.getWordB();
 			toGuess = memo.getWordA();
+		} else if (m_mode == Mode.AllB) {
+			visible = memo.getWordA();
+			toGuess = memo.getWordB();
 		}
 
 		m_origWord = toGuess;
@@ -176,7 +194,7 @@ public class ReviewActivity extends AdActivity {
 			@Override
 			public void run() {
 				m_uiProgress += 0.02;
-				float target = (float) m_currentMemo / m_trainingSetSize;
+				float target = (float) m_uiCurrentMemo / m_trainingSetSize;
 
 				// Normalize our progress along the progress bar's scale
 				int progress = (int) ((Window.PROGRESS_END - Window.PROGRESS_START) * m_uiProgress);
@@ -201,21 +219,35 @@ public class ReviewActivity extends AdActivity {
 			((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(notificationId);
 		}
 
-		bindData(memoBaseId);
+		boolean repeatAll = false;
+		if (intent.hasExtra(RepeatAll)) {
+			repeatAll = true;
+		}
+
+		bindData(memoBaseId, repeatAll);
 		newMemo();
 	}
 
-	private void bindData(String memoBaseId) {
-		m_memos = m_memoAdapter.getTrainSet(memoBaseId, m_trainingSetSize);
+	private void bindData(String memoBaseId, boolean repeatAll) {
+
+		if (!repeatAll) {
+			m_memos = m_memoAdapter.getTrainSet(memoBaseId, m_trainingSetSize);
+			m_mode = Mode.Random;
+			m_trainingSetSize = m_memos.size();
+		} else {
+			m_memos = m_memoAdapter.getAll(memoBaseId, Sort.CreatedDate, Order.ASC);
+			m_mode = Mode.AllA;
+			m_trainingSetSize = m_memos.size()*2;
+		}
 		m_currentMemo = 0;
+		m_uiCurrentMemo = 0;
 
 		if (m_memos.size() == 0) {
 			Toast.makeText(this, R.string.review_noMemos, Toast.LENGTH_SHORT).show();
 			finish();
 			return;
 		}
-		
-		m_trainingSetSize = m_memos.size();
+
 	}
 
 	private void submitAnswer() {
@@ -271,7 +303,7 @@ public class ReviewActivity extends AdActivity {
 			// Nothing
 		}
 	}
-	
+
 	private class FadeInAnswerEventHandler implements AnimationListener {
 
 		@Override
@@ -312,11 +344,18 @@ public class ReviewActivity extends AdActivity {
 		@Override
 		public void onAnimationEnd(Animation animation) {
 			m_currentMemo++;
+			m_uiCurrentMemo++;
 			if (m_currentMemo < m_memos.size()) {
 				newMemo();
 			} else {
+				if(m_mode == Mode.Random || m_mode == Mode.AllB) {
 				setResult(Activity.RESULT_OK);
 				finish();
+				} else {
+					m_mode = Mode.AllB;
+					m_currentMemo = 0;
+					newMemo();
+				}
 			}
 		}
 

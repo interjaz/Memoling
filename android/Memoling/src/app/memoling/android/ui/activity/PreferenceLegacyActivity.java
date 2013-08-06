@@ -4,11 +4,14 @@ import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import app.memoling.android.R;
 import app.memoling.android.preference.Preferences;
 import app.memoling.android.preference.PreferencesCommon;
+import app.memoling.android.preference.custom.TimePreference;
+import app.memoling.android.wordoftheday.AlarmReceiver;
 
 @SuppressLint("NewApi")
 @SuppressWarnings("deprecation")
@@ -60,12 +63,22 @@ public class PreferenceLegacyActivity extends PreferenceActivity {
 				return true;
 			}
 		});
-		
+
 		button = (Preference) findPreference(Preferences.BTN_GOTO_MEMOLING);
 		button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference arg0) {
 				m_common.goToMemoling(PreferenceLegacyActivity.this);
+				return true;
+			}
+		});
+
+		Preference wordOfTheDayPref = (Preference) findPreference(Preferences.WORDOFTHEDAY_TIME);
+		wordOfTheDayPref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue) {
+				TimePreference pref = (TimePreference) preference;
+				AlarmReceiver.updateAlarm(PreferenceLegacyActivity.this, pref.getLastHour(), pref.getLastMinute());
 				return true;
 			}
 		});
@@ -121,12 +134,22 @@ public class PreferenceLegacyActivity extends PreferenceActivity {
 					return true;
 				}
 			});
-			
+
 			button = (Preference) findPreference(Preferences.BTN_GOTO_MEMOLING);
 			button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 				@Override
 				public boolean onPreferenceClick(Preference arg0) {
 					m_common.goToMemoling(PreferenceNewFragment.this.getActivity());
+					return true;
+				}
+			});
+
+			Preference wordOfTheDayPref = (Preference) findPreference(Preferences.WORDOFTHEDAY_TIME);
+			wordOfTheDayPref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+				@Override
+				public boolean onPreferenceChange(Preference preference, Object newValue) {
+					TimePreference pref = (TimePreference) preference;
+					AlarmReceiver.updateAlarm(getActivity(), pref.getLastHour(), pref.getLastMinute());
 					return true;
 				}
 			});
