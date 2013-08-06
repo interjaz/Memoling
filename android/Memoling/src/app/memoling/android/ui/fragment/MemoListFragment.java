@@ -12,7 +12,6 @@ import android.content.pm.PackageInfo;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.ContextMenu;
@@ -41,6 +40,7 @@ import app.memoling.android.entity.Word;
 import app.memoling.android.helper.AppLog;
 import app.memoling.android.helper.Helper;
 import app.memoling.android.helper.Lazy;
+import app.memoling.android.helper.VoiceInputHelper;
 import app.memoling.android.preference.custom.MemoListPreference;
 import app.memoling.android.thread.WorkerThread;
 import app.memoling.android.translator.ITranslateComplete;
@@ -69,9 +69,11 @@ import com.actionbarsherlock.widget.SearchView;
 
 public class MemoListFragment extends ApplicationFragment implements ITranslateComplete, IWordsFindComplete {
 
-	public static String MemoBaseId = "MemoBaseId";
-	public static String NotificationId = "NotificationId";
+	public final static String MemoBaseId = "MemoBaseId";
+	public final static String NotificationId = "NotificationId";
 	private final static int InvalidNotificationId = -1;
+
+	public final static int VoiceInputRequestCode = 1;
 
 	private Button m_btnSave;
 	private AutoCompleteTextView m_txtAdd;
@@ -203,6 +205,11 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 		item = createMenuItem(1, "Details").setIcon(R.drawable.ic_details);
 		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
+		if (VoiceInputHelper.isSupported(getActivity())) {
+			item = createMenuItem(2, "Voice").setIcon(R.drawable.ic_voice_search);
+			item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		}
+
 		return true;
 	}
 
@@ -219,6 +226,10 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 			fragment.setArguments(bundle);
 			startFragment(fragment);
 
+			return false;
+		} else if (item.getItemId() == 2) {
+			Intent intent = VoiceInputHelper.buildIntent(m_spLanguageFrom.getSelectedLanguage().getLanguage());
+			getActivity().startActivityForResult(intent, VoiceInputRequestCode);
 			return false;
 		}
 		return true;
@@ -866,8 +877,21 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 	public void onFragmentResult(Bundle result) {
 		if (result != null) {
 			m_memoBaseId = result.getString(MemoBaseId);
+
 		} else {
 			m_memoBaseId = null;
+		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if (data != null) {
+			String voice = VoiceInputHelper.getData(data.getExtras());
+			if (voice != null) {
+				m_txtAdd.setText(voice);
+			}
 		}
 	}
 

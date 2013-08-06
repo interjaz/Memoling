@@ -59,7 +59,13 @@ public class AlarmReceiver extends BroadcastReceiver {
 			// Schedule tomorrow
 			schedule += 1000 * 24 * 60 * 60L; // Add day
 		}
-		
+
+		// Delay to remove multiple notifications problem
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException ex) {
+			// Should not happen
+		}
 
 		try {
 			Intent timerIntent = new Intent(context, AlarmReceiver.class);

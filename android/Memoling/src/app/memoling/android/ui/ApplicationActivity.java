@@ -223,7 +223,7 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {		
 		getCurrentFragment().onActivityResult(requestCode, resultCode, data);
 	}
 

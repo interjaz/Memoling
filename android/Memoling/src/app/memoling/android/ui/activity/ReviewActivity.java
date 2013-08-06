@@ -29,6 +29,7 @@ import app.memoling.android.adapter.MemoAdapter.Sort;
 import app.memoling.android.db.DatabaseHelper.Order;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.Word;
+import app.memoling.android.helper.VoiceInputHelper;
 import app.memoling.android.preference.Preferences;
 import app.memoling.android.ui.AdActivity;
 import app.memoling.android.ui.ResourceManager;
@@ -45,6 +46,8 @@ public class ReviewActivity extends AdActivity {
 	public static int m_trainingSetSize;
 
 	private final static int InvalidNotificationId = -1;
+
+	public final static int VoiceInputRequestCode = 1;
 
 	private static ResourceManager m_resources;
 
@@ -136,10 +139,17 @@ public class ReviewActivity extends AdActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
+
+		if (VoiceInputHelper.isSupported(this)) {
+			MenuItem item = menu.add(1, 1, Menu.NONE, "Voice");
+			item.setIcon(R.drawable.ic_voice_search);
+			item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		}
+		
 		MenuItem submit = menu.add(1, 0, Menu.NONE, "Submit");
 		submit.setIcon(R.drawable.ic_submit);
 		submit.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
+		
 		return true;
 	}
 
@@ -148,6 +158,11 @@ public class ReviewActivity extends AdActivity {
 
 		if (item.getItemId() == 0) {
 			submitAnswer();
+			return false;
+		} else if (item.getItemId() == 1) {
+			Intent intent = VoiceInputHelper.buildIntent(m_origWord.getLanguage());
+			startActivityForResult(intent, VoiceInputRequestCode);
+			return false;
 		} else {
 			finish();
 		}
@@ -228,6 +243,18 @@ public class ReviewActivity extends AdActivity {
 		newMemo();
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (data != null) {
+			String voice = VoiceInputHelper.getData(data.getExtras());
+			if (voice != null) {
+				m_txtMemo2.setText(voice);
+			}
+		}
+	}
+
 	private void bindData(String memoBaseId, boolean repeatAll) {
 
 		if (!repeatAll) {
@@ -237,7 +264,7 @@ public class ReviewActivity extends AdActivity {
 		} else {
 			m_memos = m_memoAdapter.getAll(memoBaseId, Sort.CreatedDate, Order.ASC);
 			m_mode = Mode.AllA;
-			m_trainingSetSize = m_memos.size()*2;
+			m_trainingSetSize = m_memos.size() * 2;
 		}
 		m_currentMemo = 0;
 		m_uiCurrentMemo = 0;
@@ -348,9 +375,9 @@ public class ReviewActivity extends AdActivity {
 			if (m_currentMemo < m_memos.size()) {
 				newMemo();
 			} else {
-				if(m_mode == Mode.Random || m_mode == Mode.AllB) {
-				setResult(Activity.RESULT_OK);
-				finish();
+				if (m_mode == Mode.Random || m_mode == Mode.AllB) {
+					setResult(Activity.RESULT_OK);
+					finish();
 				} else {
 					m_mode = Mode.AllB;
 					m_currentMemo = 0;
