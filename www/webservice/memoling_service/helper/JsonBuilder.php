@@ -16,7 +16,7 @@ class JsonBuilder {
 		} else if(is_numeric($val)) {
 			$this->json .= '"' . $key . '":' . $val . ',';
 		} else {
-			$this->json .= '"' . $key . '":"' . $val . '",';
+			$this->json .= '"' . $key . '":"' . addslashes($val) . '",';
 		}
 		
 	}
@@ -43,7 +43,7 @@ class JsonBuilder {
 			} else if(is_numeric($val)) {
 				$string .= $val . ',';
 			} else {
-				$string .= '"' . $val . '",';
+				$string .= '"' . addslashes($val) . '",';
 			}
 		}
 		

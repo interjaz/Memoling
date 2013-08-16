@@ -38,23 +38,29 @@ public class WordOfTheDayAdapter extends SqliteAdapter {
 
 		Cursor cursor = db.rawQuery(query, new String[] { memoBaseId });
 
-		if (cursor.moveToNext()) {
+		try {
+			if (cursor.moveToNext()) {
 
-			WordOfTheDay word = new WordOfTheDay();
-			word.setLanguageTo(Language.parse(DatabaseHelper.getString(cursor, "LanguageTo")));
-			word.setMemoBaseId(DatabaseHelper.getString(cursor, "MemoBaseId"));
-			word.setMode(WordOfTheDayMode.values()[DatabaseHelper.getInt(cursor, "Mode")]);
-			String preLanguage = DatabaseHelper.getString(cursor, "PreLanguageFrom");
-			if (preLanguage != null) {
-				word.setPreLanguageFrom(Language.parse(preLanguage));
+				WordOfTheDay word = new WordOfTheDay();
+				word.setLanguageTo(Language.parse(DatabaseHelper.getString(cursor, "LanguageTo")));
+				word.setMemoBaseId(DatabaseHelper.getString(cursor, "MemoBaseId"));
+				word.setMode(WordOfTheDayMode.values()[DatabaseHelper.getInt(cursor, "Mode")]);
+				String preLanguage = DatabaseHelper.getString(cursor, "PreLanguageFrom");
+				if (preLanguage != null) {
+					word.setPreLanguageFrom(Language.parse(preLanguage));
+				}
+				word.setProviderId(DatabaseHelper.getInt(cursor, "ProviderId"));
+				word.setWordOfTheDayId(DatabaseHelper.getString(cursor, "WordOfTheDayId"));
+
+				return word;
 			}
-			word.setProviderId(DatabaseHelper.getInt(cursor, "ProviderId"));
-			word.setWordOfTheDayId(DatabaseHelper.getString(cursor, "WordOfTheDayId"));
 
-			return word;
+			return null;
+		} finally {
+			if (cursor != null && !cursor.isClosed()) {
+				cursor.close();
+			}
 		}
-
-		return null;
 	}
 
 	public ArrayList<WordOfTheDay> getAll() {
@@ -77,23 +83,31 @@ public class WordOfTheDayAdapter extends SqliteAdapter {
 				+ "FROM WordOfTheDay ";
 
 		Cursor cursor = db.rawQuery(query, null);
-		while (cursor.moveToNext()) {
 
-			WordOfTheDay word = new WordOfTheDay();
-			word.setLanguageTo(Language.parse(DatabaseHelper.getString(cursor, "LanguageTo")));
-			word.setMemoBaseId(DatabaseHelper.getString(cursor, "MemoBaseId"));
-			word.setMode(WordOfTheDayMode.values()[DatabaseHelper.getInt(cursor, "Mode")]);
-			String preLanguage = DatabaseHelper.getString(cursor, "PreLanguageFrom");
-			if (preLanguage != null) {
-				word.setPreLanguageFrom(Language.parse(preLanguage));
+		try {
+			while (cursor.moveToNext()) {
+
+				WordOfTheDay word = new WordOfTheDay();
+				word.setLanguageTo(Language.parse(DatabaseHelper.getString(cursor, "LanguageTo")));
+				word.setMemoBaseId(DatabaseHelper.getString(cursor, "MemoBaseId"));
+				word.setMode(WordOfTheDayMode.values()[DatabaseHelper.getInt(cursor, "Mode")]);
+				String preLanguage = DatabaseHelper.getString(cursor, "PreLanguageFrom");
+				if (preLanguage != null) {
+					word.setPreLanguageFrom(Language.parse(preLanguage));
+				}
+				word.setProviderId(DatabaseHelper.getInt(cursor, "ProviderId"));
+				word.setWordOfTheDayId(DatabaseHelper.getString(cursor, "WordOfTheDayId"));
+
+				words.add(word);
 			}
-			word.setProviderId(DatabaseHelper.getInt(cursor, "ProviderId"));
-			word.setWordOfTheDayId(DatabaseHelper.getString(cursor, "WordOfTheDayId"));
 
-			words.add(word);
+			return words;
+		} finally {
+			if (cursor != null && !cursor.isClosed()) {
+				cursor.close();
+			}
+
 		}
-
-		return words;
 	}
 
 	public long add(WordOfTheDay wordOfTheDay) {

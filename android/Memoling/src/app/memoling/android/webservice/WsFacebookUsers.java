@@ -1,15 +1,14 @@
 package app.memoling.android.webservice;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import app.memoling.android.Config;
 import app.memoling.android.facebook.FacebookUser;
+import app.memoling.android.helper.AppLog;
 import app.memoling.android.webrequest.HttpPostRequestTask;
 import app.memoling.android.webrequest.IHttpRequestTaskComplete;
 
@@ -70,10 +69,8 @@ public class WsFacebookUsers {
 				
 			}, null, m_timeout, "UTF-8").execute(postUser);
 
-		} catch (JSONException e) {
-			// should not happen
-		} catch(URISyntaxException e) {
-			// should not happen
+		} catch (Exception ex) {
+			AppLog.e("WsFacebookUsrs", "login", ex);
 		}
 	}
 

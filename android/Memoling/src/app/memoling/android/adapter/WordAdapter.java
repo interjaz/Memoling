@@ -1,6 +1,5 @@
 package app.memoling.android.adapter;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +14,7 @@ import app.memoling.android.helper.AppLog;
 import app.memoling.android.helper.CacheHelper;
 
 public class WordAdapter extends SqliteAdapter {
-	
+
 	public final static String TableName = "Words";
 
 	private final static int m_wordCacheSize = 20;
@@ -24,14 +23,14 @@ public class WordAdapter extends SqliteAdapter {
 	public WordAdapter(Context context) {
 		super(context);
 	}
-	
+
 	public WordAdapter(Context context, boolean persistant) {
 		super(context, persistant);
 	}
 
 	public long add(Word word) {
 		SQLiteDatabase db = null;
-		invalidateCache();
+		invalidateGlobalCache();
 
 		try {
 			db = getDatabase();
@@ -46,53 +45,46 @@ public class WordAdapter extends SqliteAdapter {
 		return db.insert(TableName, null, values);
 	}
 
-	public Word get(String wordId) {
-		// TODO not implemented
-		return null;
-	}
-
-	public ArrayList<Word> getAll() {
-		// TODO not implemented
-		return null;
-	}
-
 	public Set<String> getAdKeywords() {
 		SQLiteDatabase db = null;
+		Cursor cursor = null;
 		Set<String> words = new HashSet<String>();
-		
+
 		try {
 			db = getDatabase();
-			
-			String sql = 
-					"SELECT WA.Word AS WordA, WB.Word AS WordB          " +
-					"FROM Memos AS M                                    " +
-					"INNER JOIN Words AS WA ON M.WordAId = WA.WordId    " +
-					"INNER JOIN Words AS WB ON M.WordBId = WB.WordId    " +
-					"ORDER BY M.Created DESC LIMIT 10                   ";
-			
-			
-			Cursor cursor = db.rawQuery(sql, null);
+
+			String sql = "SELECT WA.Word AS WordA, WB.Word AS WordB          "
+					+ "FROM Memos AS M                                    "
+					+ "INNER JOIN Words AS WA ON M.WordAId = WA.WordId    "
+					+ "INNER JOIN Words AS WB ON M.WordBId = WB.WordId    "
+					+ "ORDER BY M.Created DESC LIMIT 10                   ";
+
+			cursor = db.rawQuery(sql, null);
 
 			while (cursor.moveToNext()) {
 				String wordA = DatabaseHelper.getString(cursor, "WordA");
 				String wordB = DatabaseHelper.getString(cursor, "WordB");
-				
+
 				words.add(wordA);
 				words.add(wordB);
 			}
-			
-		} catch(Exception ex) {
+
+		} catch (Exception ex) {
 			AppLog.e("WordAdapter", "getAdKeywords", ex);
 		} finally {
+			if (cursor != null && !cursor.isClosed()) {
+				cursor.close();
+			}
+
 			closeDatabase();
 		}
-		
+
 		return words;
 	}
-	
+
 	public int update(Word word) {
 		SQLiteDatabase db = null;
-		invalidateCache();
+		invalidateGlobalCache();
 
 		try {
 			db = getDatabase();
@@ -105,7 +97,7 @@ public class WordAdapter extends SqliteAdapter {
 
 	public void delete(String wordId) {
 		SQLiteDatabase db = null;
-		invalidateCache();
+		invalidateGlobalCache();
 
 		try {
 			db = getDatabase();
@@ -114,9 +106,9 @@ public class WordAdapter extends SqliteAdapter {
 			closeDatabase();
 		}
 	}
-	
+
 	public static void delete(SqliteAdapter adapter, SQLiteDatabase db, String wordId) {
-		db.delete(TableName, "WordId" + "=?", new String[] { wordId });		
+		db.delete(TableName, "WordId" + "=?", new String[] { wordId });
 	}
 
 	private static ContentValues createValues(Word word) {
@@ -124,12 +116,20 @@ public class WordAdapter extends SqliteAdapter {
 		values.put("WordId", word.getWordId());
 		values.put("Word", word.getWord());
 		values.put("LanguageIso639", word.getLanguage().getCode());
+		values.put("Description", word.getDescription());
 		return values;
 	}
 
 	@Override
-	protected void onInvalidateCache() {
-		super.onInvalidateCache();
+	protected void onInvalidateGlobalCache() {
+		super.onInvalidateGlobalCache();
+
+		m_wordCache.clear();
+	}
+
+	@Override
+	protected void onInvalidateLocalCache() {
+		super.onInvalidateLocalCache();
 
 		m_wordCache.clear();
 	}

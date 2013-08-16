@@ -2,6 +2,7 @@ package app.memoling.android.webservice;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -18,6 +19,7 @@ import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoBase;
 import app.memoling.android.entity.PublishedMemoBase;
 import app.memoling.android.entity.Word;
+import app.memoling.android.helper.AppLog;
 import app.memoling.android.webrequest.HttpGetRequestTask;
 import app.memoling.android.webrequest.HttpPostRequestTask;
 import app.memoling.android.webrequest.IHttpRequestTaskComplete;
@@ -75,8 +77,9 @@ public class WsPublishedLibraries {
 	public void search(String keyword, String generId, String languageA, String  languageB, int page, final ISearchComplete onComplete) {
 		try {
 
+			String htmlKeyword = URLEncoder.encode(keyword, "utf-8");
 			String uri = String.format(Locale.US, "%s?action=search&keyword=%s&genreId=%s&languageAIso639=%s&languageBIso639=%s&page=%d",
-					WsUrl, keyword, generId, languageA, languageB, page);
+					WsUrl, htmlKeyword, generId, languageA, languageB, page);
 			URI WsUri = new URI(uri);
 			
 			new HttpGetRequestTask(WsUri, new IHttpRequestTaskComplete() {
@@ -105,8 +108,8 @@ public class WsPublishedLibraries {
 				
 			}, null, m_timeout).execute();
 
-		} catch(URISyntaxException e) {
-			// should not happen
+		} catch(Exception ex) {
+			AppLog.e("WsPublishLibraries", "search", ex);
 		}
 	}
 	
@@ -299,6 +302,7 @@ public class WsPublishedLibraries {
 			obj.setLanguage(Language.parse(json.getString("languageIso639")));
 			obj.setWord(json.getString("word"));
 			obj.setWordId(UUID.randomUUID().toString());
+			obj.setDescription(json.optString("description"));
 			
 			return obj;
 		} catch(JSONException ex) {

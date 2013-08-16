@@ -20,6 +20,7 @@ class WordAdapter extends DbAdapter {
 			$obj->Language = $row["Language"];
 			$obj->Word = $row["Word"];
 			$obj->WordId = $row["WordId"];
+			$obj->Description = $row["Description"];
 			$list[] = $obj;
 		}
 		

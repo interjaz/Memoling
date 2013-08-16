@@ -1,6 +1,5 @@
 package app.memoling.android.translator;
 
-import android.annotation.SuppressLint;
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Word;
 import app.memoling.android.helper.CacheHelper;

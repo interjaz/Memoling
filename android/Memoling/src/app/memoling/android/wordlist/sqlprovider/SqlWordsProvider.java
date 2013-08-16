@@ -35,7 +35,7 @@ public final class SqlWordsProvider implements IWordsProvider {
 		String key = word.getWord() + Integer.toString(limitFrom) + Integer.toString(limitTo);
 
 		if (m_cache.containsKey(key)) {
-			words = m_cache.get(key);
+			return m_cache.get(key);
 		} else {
 			words = m_wordListAdapter.findWord(word, language, limitFrom, limitTo);
 			m_cache.put(key, words);
@@ -52,7 +52,7 @@ public final class SqlWordsProvider implements IWordsProvider {
 			return true;
 		case FR:
 			return true;
-		case SPA:
+		case ES:
 			return true;
 		case PL:
 			return true;

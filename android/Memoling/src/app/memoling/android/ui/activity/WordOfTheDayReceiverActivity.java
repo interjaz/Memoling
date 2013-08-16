@@ -19,9 +19,9 @@ import app.memoling.android.adapter.MemoAdapter;
 import app.memoling.android.helper.AppLog;
 import app.memoling.android.ui.AdActivity;
 import app.memoling.android.ui.ResourceManager;
-import app.memoling.android.wordoftheday.MemoOfTheDay;
 import app.memoling.android.wordoftheday.provider.Provider;
 import app.memoling.android.wordoftheday.provider.ProviderAdapter;
+import app.memoling.android.wordoftheday.resolver.MemoOfTheDay;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -34,7 +34,7 @@ public class WordOfTheDayReceiverActivity extends AdActivity {
 
 	private static ResourceManager m_resources;
 
-	private MemoOfTheDay m_memoOfTheDay;
+	private MemoOfTheDay m_memo;
 
 	private TextView m_txtSource;
 	private TextView m_txtWordFrom;
@@ -113,9 +113,9 @@ public class WordOfTheDayReceiverActivity extends AdActivity {
 
 		Intent intent = getIntent();
 		String strMemo = intent.getStringExtra(MemoOfTheDayObject);
-		m_memoOfTheDay = new MemoOfTheDay();
+		m_memo = new MemoOfTheDay();
 		try {
-			m_memoOfTheDay.deserialize(new JSONObject(strMemo));
+			m_memo.deserialize(new JSONObject(strMemo));
 		} catch (JSONException ex) {
 			AppLog.e("WordOfTheDayReviewActivity", "onStart", ex);
 		}
@@ -129,14 +129,14 @@ public class WordOfTheDayReceiverActivity extends AdActivity {
 	}
 
 	private void bindData() {
-		Provider word = new ProviderAdapter().getById(m_memoOfTheDay.getWordOfTheDayId());
+		Provider word = new ProviderAdapter().getById(m_memo.getProviderId());
 
 		m_txtSource.setText(word.getUri());
-		m_txtWordFrom.setText(m_memoOfTheDay.getWordA().getWord());
-		m_txtWordTo.setText(m_memoOfTheDay.getWordB().getWord());
+		m_txtWordFrom.setText(m_memo.getWordA().getWord());
+		m_txtWordTo.setText(m_memo.getWordB().getWord());
 
 		String description;
-		description = m_memoOfTheDay.getDescriptionFrom();
+		description = m_memo.getWordA().getDescription();
 		if (description.equals("")) {
 			findViewById(R.id.wordofadayreceiver_lblDescriptionFrom).setVisibility(View.GONE);
 			m_txtDescriptionFrom.setVisibility(View.GONE);
@@ -144,7 +144,7 @@ public class WordOfTheDayReceiverActivity extends AdActivity {
 			m_txtDescriptionFrom.setText(description);
 		}
 
-		description = m_memoOfTheDay.getDescriptionTo();
+		description = m_memo.getWordB().getDescription();
 		if (description.equals("")) {
 			findViewById(R.id.wordofadayreceiver_lblDescriptionTo).setVisibility(View.GONE);
 			m_txtDescriptionTo.setVisibility(View.GONE);
@@ -165,6 +165,6 @@ public class WordOfTheDayReceiverActivity extends AdActivity {
 
 	private void saveMemo() {
 		MemoAdapter adapter = new MemoAdapter(this);
-		adapter.add(m_memoOfTheDay);
+		adapter.add(m_memo);
 	}
 }

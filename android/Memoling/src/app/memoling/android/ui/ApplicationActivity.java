@@ -9,6 +9,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -33,7 +34,7 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 	private FragmentManager m_fragmentManager;
 
 	private Bundle m_onRequestFinishFragmentResult;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,7 +43,7 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 
 		// Read all preferences at start
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-		
+
 		m_fragmentManager = getSupportFragmentManager();
 
 		m_layDrawer = (DrawerLayout) findViewById(R.id.application_layDrawer);
@@ -149,7 +150,7 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 
 	public void setDrawerToggleEnabled(boolean enabled) {
 		m_toggleDrawer.setDrawerIndicatorEnabled(enabled);
-		m_layDrawer.setDrawerLockMode(enabled?DrawerLayout.LOCK_MODE_UNLOCKED:DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+		m_layDrawer.setDrawerLockMode(enabled ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 	}
 
 	public void requestFragmentReplace(ApplicationFragment fragment) {
@@ -163,7 +164,7 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 		m_layDrawer.closeDrawers();
 		m_fragmentManager.popBackStackImmediate();
 	}
-	
+
 	public Bundle getRequestFinishFragmentResult() {
 		return m_onRequestFinishFragmentResult;
 	}
@@ -195,7 +196,7 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 		// First screen
 		if (view == null) {
 			fragment = new MemoListFragment();
-			
+
 			// Insert the fragment
 			m_fragmentManager.beginTransaction().replace(R.id.application_layContent, fragment).commit();
 
@@ -223,13 +224,14 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {		
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		getCurrentFragment().onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		boolean invokeSuper = getCurrentFragment().onCreateOptionsMenu(menu);
+
 		if (invokeSuper) {
 			return super.onCreateOptionsMenu(menu);
 		}
@@ -243,6 +245,23 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 		if (invokeSuper) {
 			super.onBackPressed();
 		}
+	}
+
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_MENU) {
+
+			if (m_adapterDrawer != null && m_adapterDrawer.getCount() > 0) {
+				if (m_layDrawer.isDrawerOpen(m_lstDrawer)) {
+					m_layDrawer.closeDrawer(m_lstDrawer);
+				} else {
+					m_layDrawer.openDrawer(m_lstDrawer);
+				}
+			}
+
+			return true;
+		}
+		return super.onKeyUp(keyCode, event);
 	}
 
 }

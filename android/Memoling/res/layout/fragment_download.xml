@@ -135,14 +135,13 @@
     <LinearLayout
         android:id="@+id/download_layPreview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="400dp"
         android:layout_centerInParent="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_margin="15dp"
         android:background="#FF000000"
         android:orientation="vertical"
-        android:padding="10dp" 
-        android:visibility="gone">
+        android:padding="10dp"
+        android:visibility="gone" >
 
         <TextView
             android:id="@+id/textView5"
@@ -162,8 +161,9 @@
         <ListView
             android:id="@+id/download_lstPreview"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="0dip"
             android:layout_marginTop="10dp"
+            android:layout_weight="1"
             android:background="#22000000"
             tools:listitem="@layout/adapter_download_previewview" />
 

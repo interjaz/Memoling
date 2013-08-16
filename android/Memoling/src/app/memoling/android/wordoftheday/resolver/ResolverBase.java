@@ -9,7 +9,6 @@ import app.memoling.android.translator.ITranslateComplete;
 import app.memoling.android.translator.Translator;
 import app.memoling.android.translator.TranslatorResult;
 import app.memoling.android.wordoftheday.IFetchComplete;
-import app.memoling.android.wordoftheday.MemoOfTheDay;
 import app.memoling.android.wordoftheday.provider.Provider;
 import app.memoling.android.wordoftheday.provider.Provider.WordWithDescription;
 
@@ -150,12 +149,12 @@ public abstract class ResolverBase {
 				: m_provider.getBaseLanguage();
 
 		Word wordA = new Word(UUID.randomUUID().toString(), m_wordFrom, langFrom);
+		wordA.setDescription(m_descriptionFrom);
 		Word wordB = new Word(UUID.randomUUID().toString(), m_wordTo, m_provider.getTranslateToLanguage());
+		wordB.setDescription(m_descriptionTo);
 
 		MemoOfTheDay memo = new MemoOfTheDay(wordA, wordB, UUID.randomUUID().toString());
-		memo.setDescriptionFrom(m_descriptionFrom);
-		memo.setDescriptionTo(m_descriptionTo);
-		memo.setWordOfTheDayId(m_provider.getId());
+		memo.setProviderId(m_provider.getId());
 
 		m_onFetchComplete.onFetchComplete(memo);
 	}

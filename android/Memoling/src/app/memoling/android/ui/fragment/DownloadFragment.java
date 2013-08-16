@@ -73,7 +73,6 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 
 		ResourceManager resources = getResourceManager();
 		Typeface thinFont = resources.getThinFont();
-		Typeface condensedFont = resources.getCondensedFont();
 
 		m_txtPhrase = (EditText) contentView.findViewById(R.id.download_txtPhrase);
 		resources.setFont(m_txtPhrase, thinFont);
@@ -101,21 +100,21 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 		// m_lstPublished.setOnTouchListener(this);
 		m_lstPublished.setOnItemClickListener(new LstPublishedEventHandler());
 
-		resources.setFont(R.layout.adapter_download_publishedview, R.id.textView1, condensedFont);
-		resources.setFont(R.layout.adapter_download_publishedview, R.id.textView2, condensedFont);
-		resources.setFont(R.layout.adapter_download_publishedview, R.id.textView3, condensedFont);
-		resources.setFont(R.layout.adapter_download_publishedview, R.id.textView4, condensedFont);
+		resources.setFont(R.layout.adapter_download_publishedview, R.id.textView1, thinFont);
+		resources.setFont(R.layout.adapter_download_publishedview, R.id.textView2, thinFont);
+		resources.setFont(R.layout.adapter_download_publishedview, R.id.textView3, thinFont);
+		resources.setFont(R.layout.adapter_download_publishedview, R.id.textView4, thinFont);
 
 		m_layPreview = (LinearLayout) contentView.findViewById(R.id.download_layPreview);
 
 		m_lblDescription = (TextView) contentView.findViewById(R.id.download_lblDescription);
-		resources.setFont(m_lblDescription, condensedFont);
+		resources.setFont(m_lblDescription, thinFont);
 
 		m_lstPreview = (ListView) contentView.findViewById(R.id.download_lstPreview);
 		m_previewAdapter = new ModifiableComplexTextAdapter<MemoPreviewView>(getActivity(),
 				R.layout.adapter_download_previewview, new int[] { R.id.download_preview_lblWordA,
 						R.id.download_preview_lblWordB, R.id.download_preview_lblLanguage }, new Typeface[] { thinFont,
-						thinFont, condensedFont });
+						thinFont, thinFont });
 		m_lstPreview.setAdapter(m_previewAdapter);
 
 		m_btnClose = (Button) contentView.findViewById(R.id.download_btnClose);
@@ -126,12 +125,12 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 		m_btnDownload.setOnClickListener(new BtnDownloadEventHandler());
 		resources.setFont(m_btnDownload, thinFont);
 
-		resources.setFont(R.layout.adapter_download_previewview, R.id.textView1, condensedFont);
+		resources.setFont(R.layout.adapter_download_previewview, R.id.textView1, thinFont);
 
-		resources.setFont(contentView, R.id.textView1, condensedFont);
-		resources.setFont(contentView, R.id.textView2, condensedFont);
-		resources.setFont(contentView, R.id.textView3, condensedFont);
-		resources.setFont(contentView, R.id.textView4, condensedFont);
+		resources.setFont(contentView, R.id.textView1, thinFont);
+		resources.setFont(contentView, R.id.textView2, thinFont);
+		resources.setFont(contentView, R.id.textView3, thinFont);
+		resources.setFont(contentView, R.id.textView4, thinFont);
 		resources.setFont(contentView, R.id.textView5, thinFont);
 
 		m_genreDataAdapter = new MemoBaseGenreAdapter(getActivity());

@@ -158,7 +158,7 @@ public enum Language {
 	SL("Slovene","sl"),
 	SO("Somali","so"),
 	ST("Southern Sotho","st"),
-	SPA("Spanish","spa"),
+	ES("Spanish","es"),
 	SU("Sundanese","su"),
 	SW("Swahili","sw"),
 	SS("Swati","ss"),
@@ -219,7 +219,7 @@ public enum Language {
 		code = code.toLowerCase(Locale.US);
 		for(int i=code.length()-1;i>=0;i--) {
 			value += power * (int)code.charAt(i);
-			power *= 10;
+			power *= 100;
 		}
 		return value;
 	}
@@ -250,6 +250,11 @@ public enum Language {
 			if(language.getValue() == value) {
 				return language;
 			}
+		}
+		
+		// Legacy bug
+		if(calculateValue("spa") == value) {
+			return Language.ES;
 		}
 		
 		return Language.Unsupported;

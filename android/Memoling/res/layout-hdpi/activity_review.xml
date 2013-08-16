@@ -44,7 +44,6 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="top"
-                    android:maxLines="3"
                     android:textSize="25sp" />
 
                 <LinearLayout
@@ -72,7 +71,7 @@
                     android:id="@+id/review_txtMemo2"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_margin="10dp"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:gravity="top"
                     android:imeOptions="actionDone"
@@ -83,14 +82,15 @@
 
     <TextView
         android:id="@+id/review_lblResult"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginTop="-10dp"
         android:background="#FF222222"
         android:paddingBottom="15dp"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:gravity="center"
         android:paddingTop="15dp"
         android:text="@string/review_lblCorrect"
         android:textColor="#FFFFFFFF"

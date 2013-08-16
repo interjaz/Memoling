@@ -27,13 +27,13 @@ public class BarGraph extends LinearLayout {
 
 	public BarGraph(Context context) {
 		super(context);
-		m_font = new ResourceManager(context).getCondensedFont();
+		m_font = new ResourceManager(context).getThinFont();
 		m_context = context;
 	}
 
 	public BarGraph(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		m_font = new ResourceManager(context).getCondensedFont();
+		m_font = new ResourceManager(context).getThinFont();
 		m_context = context;
 	}
 

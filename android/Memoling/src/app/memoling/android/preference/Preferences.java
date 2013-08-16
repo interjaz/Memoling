@@ -137,6 +137,11 @@ public class Preferences {
 			return null;
 		} catch (JSONException ex) {
 			AppLog.e("Preferences", "Failed to deserialize MemoListPreferences", ex);
+			try {
+				set(MEMOLIST_PREFERENCES, MemoListPreference.serializeList(new ArrayList<MemoListPreference>()));
+			} catch (JSONException ex2) {
+				AppLog.e("Preferences", "Failed to deserialize MemoListPreferences - on clearing", ex2);
+			}
 			return null;
 		}
 	}
@@ -170,6 +175,11 @@ public class Preferences {
 	public WordOfTheDayTime getWordOfTheDayTime() {
 		WordOfTheDayTime time = new WordOfTheDayTime();
 		String pref = get(WORDOFTHEDAY_TIME);
+		if(pref == null) { 
+			// TODO: Fix it
+			// This should not happen, however sometimes does
+			pref = "12:00";
+		}
 		time.setHours(TimePreference.getHour(pref));
 		time.setMinutes(TimePreference.getMinute(pref));
 

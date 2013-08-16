@@ -15,9 +15,10 @@ import app.memoling.android.entity.Word;
 public class CsvParser {
 
 	public static String MemoToString(MemoBase base, Memo memo) {
-		return String.format(Locale.US, "%s;%s;%s;%s;%s;%d;%d;%d\r\n", base.getName(), memo.getWordA().getWord(), memo
-				.getWordB().getWord(), memo.getWordA().getLanguage(), memo.getWordB().getLanguage(), memo
-				.getCorrectAnsweredWordA(), memo.getCorrectAnsweredWordB(), memo.getDisplayed());
+		return String.format(Locale.US, "%s;%s;%s;%s;%s;%s;%s;%d;%d;%d\r\n", base.getName(), memo.getWordA().getWord(),
+				memo.getWordB().getWord(), memo.getWordA().getDescription(), memo.getWordB().getDescription(), memo
+						.getWordA().getLanguage(), memo.getWordB().getLanguage(), memo.getCorrectAnsweredWordA(), memo
+						.getCorrectAnsweredWordB(), memo.getDisplayed());
 	}
 
 	public static Memo StringToMemo(String string) {
@@ -51,17 +52,19 @@ public class CsvParser {
 		base.setName(vals[0]);
 		wordA.setWord(vals[1]);
 		wordB.setWord(vals[2]);
-		wordA.setLanguage(Language.parse(vals[3]));
-		wordB.setLanguage(Language.parse(vals[4]));
+		wordA.setDescription(vals[3]);
+		wordB.setDescription(vals[4]);
+		wordA.setLanguage(Language.parse(vals[5]));
+		wordB.setLanguage(Language.parse(vals[6]));
 
 		memo.setWordA(wordA);
 		memo.setWordB(wordB);
 
 		// Ignore if not present
-		if (vals.length > 5) {
-			memo.setCorrectAnsweredWordA(Integer.parseInt(vals[5]));
-			memo.setCorrectAnsweredWordB(Integer.parseInt(vals[6]));
-			memo.setDisplayed(Integer.parseInt(vals[7]));
+		if (vals.length > 7) {
+			memo.setCorrectAnsweredWordA(Integer.parseInt(vals[7]));
+			memo.setCorrectAnsweredWordB(Integer.parseInt(vals[8]));
+			memo.setDisplayed(Integer.parseInt(vals[9]));
 		}
 
 		return memo;
@@ -81,25 +84,25 @@ public class CsvParser {
 		ArrayList<Memo> memos = new ArrayList<Memo>();
 		ArrayList<MemoBase> bases = new ArrayList<MemoBase>();
 
-		String[] lines = sb.toString().split("\\r?\\n");		
+		String[] lines = sb.toString().split("\\r?\\n");
 		// Skip first line (description);
-		for (int i=1;i<lines.length;i++) {
+		for (int i = 1; i < lines.length; i++) {
 			String line = lines[i];
-			
+
 			Memo memo = StringToMemo(line);
 			memos.add(memo);
-			
+
 			// Make MemoBase subset as small as possible
 			MemoBase exisitingBase = null;
-			
-			for(MemoBase base : bases) {
-				if(memo.getMemoBase().getName().equals(base.getName())) {
+
+			for (MemoBase base : bases) {
+				if (memo.getMemoBase().getName().equals(base.getName())) {
 					exisitingBase = base;
 					break;
 				}
 			}
-			
-			if(exisitingBase != null) {
+
+			if (exisitingBase != null) {
 				memo.setMemoBase(exisitingBase);
 				memo.setMemoBaseId(exisitingBase.getMemoBaseId());
 			}

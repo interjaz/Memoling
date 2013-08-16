@@ -3,6 +3,7 @@ package app.memoling.android.ui.fragment;
 import java.util.Random;
 import java.util.UUID;
 
+import android.app.AlertDialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -32,6 +33,8 @@ import app.memoling.android.wordoftheday.DispatcherService;
 import app.memoling.android.wordoftheday.WordOfTheDayMode;
 import app.memoling.android.wordoftheday.provider.Provider;
 import app.memoling.android.wordoftheday.provider.ProviderAdapter;
+
+import com.actionbarsherlock.view.MenuItem;
 
 public class WordOfTheDayFragment extends ApplicationFragment {
 
@@ -73,7 +76,6 @@ public class WordOfTheDayFragment extends ApplicationFragment {
 
 		ResourceManager resources = getResourceManager();
 		Typeface thinFont = resources.getThinFont();
-		Typeface condensedFont = resources.getCondensedFont();
 
 		m_chbEnabled = (CheckBox) contentView.findViewById(R.id.wordoftheday_chbEnable);
 		m_chbEnabled.setOnCheckedChangeListener(new ChbEnabledEventHandler());
@@ -114,6 +116,29 @@ public class WordOfTheDayFragment extends ApplicationFragment {
 		resources.setFont(contentView, R.id.wordoftheday_btnTest, thinFont);
 
 		return contentView;
+	}
+
+	@Override
+	protected boolean onCreateOptionsMenu() {
+
+		MenuItem item;
+
+		item = createMenuItem(0, "Help").setIcon(R.drawable.ic_help);
+		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Override so drawer is no shown
+		if (item.getItemId() == 0) {
+			new AlertDialog.Builder(getActivity()).setMessage(getActivity().getString(R.string.wordoftheday_help))
+					.create().show();
+			return false;
+		}
+
+		return true;
 	}
 
 	@Override
@@ -284,7 +309,7 @@ public class WordOfTheDayFragment extends ApplicationFragment {
 				m_wordOfTheDayAdapter.delete(m_wordOfTheDay.getWordOfTheDayId());
 			}
 		}
-		
+
 		AlarmReceiver.updateAlarm(getActivity());
 	}
 

@@ -95,7 +95,6 @@ public class MemoBaseFragment extends ApplicationFragment implements IPublishedM
 
 		ResourceManager resources = getResourceManager();
 		Typeface thinFont = resources.getThinFont();
-		Typeface condensedFont = resources.getCondensedFont();
 
 		m_lblTitle = (TextView) contentView.findViewById(R.id.memobase_lblTitle);
 		m_lblTitle.setTypeface(thinFont);
@@ -115,9 +114,9 @@ public class MemoBaseFragment extends ApplicationFragment implements IPublishedM
 
 		m_layLibrary = (TableLayout) contentView.findViewById(R.id.memobase_layoutLibrary);
 		m_lblLibraryName = (TextView) contentView.findViewById(R.id.memobase_lblLibraryName);
-		resources.setFont(m_lblLibraryName, condensedFont);
+		resources.setFont(m_lblLibraryName, thinFont);
 		m_txtDescription = (EditText) contentView.findViewById(R.id.memobase_txtDescription);
-		resources.setFont(m_txtDescription, condensedFont);
+		resources.setFont(m_txtDescription, thinFont);
 
 		m_btnUpload = (Button) contentView.findViewById(R.id.memobase_btnUpload);
 		m_btnUpload.setOnClickListener(new BtnUploadEventHandler());
@@ -125,22 +124,22 @@ public class MemoBaseFragment extends ApplicationFragment implements IPublishedM
 
 		m_cbxGenre = (Spinner) contentView.findViewById(R.id.memobase_cbxGenre);
 		m_genreAdapter = new ModifiableComplexTextAdapter<MemoBaseGenreView>(getActivity(),
-				R.layout.adapter_textdropdown, new int[] { R.id.textView1 }, new Typeface[] { condensedFont });
+				R.layout.adapter_textdropdown, new int[] { R.id.textView1 }, new Typeface[] { thinFont });
 		m_cbxGenre.setAdapter(m_genreAdapter);
 
 		m_genreDataAdapter = new MemoBaseGenreAdapter(getActivity());
 		m_memoBaseAdapter = new MemoBaseAdapter(getActivity());
 
 		// Set fonts
-		resources.setFont(contentView, R.id.textView1, condensedFont);
-		resources.setFont(contentView, R.id.textView2, condensedFont);
-		resources.setFont(contentView, R.id.textView3, condensedFont);
-		resources.setFont(contentView, R.id.textView4, condensedFont);
-		resources.setFont(contentView, R.id.textView5, condensedFont);
-		resources.setFont(contentView, R.id.textView6, condensedFont);
-		resources.setFont(contentView, R.id.textView7, condensedFont);
-		resources.setFont(contentView, R.id.textView8, condensedFont);
-		resources.setFont(contentView, R.id.textView9, condensedFont);
+		resources.setFont(contentView, R.id.textView1, thinFont);
+		resources.setFont(contentView, R.id.textView2, thinFont);
+		resources.setFont(contentView, R.id.textView3, thinFont);
+		resources.setFont(contentView, R.id.textView4, thinFont);
+		resources.setFont(contentView, R.id.textView5, thinFont);
+		resources.setFont(contentView, R.id.textView6, thinFont);
+		resources.setFont(contentView, R.id.textView7, thinFont);
+		resources.setFont(contentView, R.id.textView8, thinFont);
+		resources.setFont(contentView, R.id.textView9, thinFont);
 
 		m_publishedUpload = new PublishedMemoBaseUpload(getActivity(), this);
 

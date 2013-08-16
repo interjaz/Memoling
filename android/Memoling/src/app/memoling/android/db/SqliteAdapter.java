@@ -77,11 +77,25 @@ public abstract class SqliteAdapter {
 		return m_context;
 	}
 
-	public final void invalidateCache() {
-		onInvalidateCache();
+	/**
+	 * Call this if inSync return false - to drop local caches
+	 */
+	public final void invalidateLocalCache() {
+		onInvalidateLocalCache();
 	}
 
-	protected void onInvalidateCache() {
+	/**
+	 * Call this method when altering database data
+	 */
+	public final void invalidateGlobalCache() {
+		onInvalidateGlobalCache();
+	}
+	
+	protected void onInvalidateLocalCache() {
+		SqliteSync.localSyncTokenSet(this.getClass(), SqliteSync.globalSyncToken());
+	}
+	
+	protected void onInvalidateGlobalCache() {
 		SqliteSync.localSyncTokenSet(this.getClass(), SqliteSync.globalSyncTokenGetAndIncrement());
 	}
 

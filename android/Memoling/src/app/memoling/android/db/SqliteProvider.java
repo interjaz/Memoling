@@ -28,7 +28,7 @@ public class SqliteProvider {
 		if (!databaseExists()) {
 			copyDatabaseFromAssets();
 		} else {
-			SqliteUpdater.onUpdate(version, getDatabase());
+			SqliteUpdater.onUpdate(version, this);
 		}
 	}
 

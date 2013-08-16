@@ -11,8 +11,6 @@ public class DateHelper {
 	private final static SimpleDateFormat m_normalizedFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
 			Locale.US);
 	private final static SimpleDateFormat m_uiDateFormatter = new SimpleDateFormat("dd MMM yyyy");
-	
-	private final static SimpleDateFormat m_uiShortDateFormatter = new SimpleDateFormat("dd MMM yy");
 
 	public static String toNormalizedString(Date date) {
 		return m_normalizedFormatter.format(date);

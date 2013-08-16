@@ -76,6 +76,7 @@ public abstract class WorkerThread<TExecute, TProgress, TResult> {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			
+			
 			Object[] progress;
 			Object result;
 			WorkerThread<Object, Object, Object> workerThread;

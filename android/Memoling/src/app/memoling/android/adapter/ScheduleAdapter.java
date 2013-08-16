@@ -40,30 +40,36 @@ public class ScheduleAdapter extends SqliteAdapter {
 
 		Cursor cursor = db.rawQuery(query, new String[] { memoBaseId });
 
-		ArrayList<Schedule> schedules = new ArrayList<Schedule>();
+		try {
+			ArrayList<Schedule> schedules = new ArrayList<Schedule>();
 
-		while (cursor.moveToNext()) {
-			Schedule schedule = new Schedule();
+			while (cursor.moveToNext()) {
+				Schedule schedule = new Schedule();
 
-			boolean[] days = new boolean[7];
-			days[0] = DatabaseHelper.getBoolean(cursor, "Monday");
-			days[1] = DatabaseHelper.getBoolean(cursor, "Tuesday");
-			days[2] = DatabaseHelper.getBoolean(cursor, "Wednesday");
-			days[3] = DatabaseHelper.getBoolean(cursor, "Thursday");
-			days[4] = DatabaseHelper.getBoolean(cursor, "Friday");
-			days[5] = DatabaseHelper.getBoolean(cursor, "Saturday");
-			days[6] = DatabaseHelper.getBoolean(cursor, "Sunday");
+				boolean[] days = new boolean[7];
+				days[0] = DatabaseHelper.getBoolean(cursor, "Monday");
+				days[1] = DatabaseHelper.getBoolean(cursor, "Tuesday");
+				days[2] = DatabaseHelper.getBoolean(cursor, "Wednesday");
+				days[3] = DatabaseHelper.getBoolean(cursor, "Thursday");
+				days[4] = DatabaseHelper.getBoolean(cursor, "Friday");
+				days[5] = DatabaseHelper.getBoolean(cursor, "Saturday");
+				days[6] = DatabaseHelper.getBoolean(cursor, "Sunday");
 
-			schedule.setDays(days);
-			schedule.setHours(DatabaseHelper.getInt(cursor, "Hours"));
-			schedule.setMinutes(DatabaseHelper.getInt(cursor, "Minutes"));
-			schedule.setMemoBaseId(DatabaseHelper.getString(cursor, "MemoBaseId"));
-			schedule.setScheduleId(DatabaseHelper.getString(cursor, "ScheduleId"));
+				schedule.setDays(days);
+				schedule.setHours(DatabaseHelper.getInt(cursor, "Hours"));
+				schedule.setMinutes(DatabaseHelper.getInt(cursor, "Minutes"));
+				schedule.setMemoBaseId(DatabaseHelper.getString(cursor, "MemoBaseId"));
+				schedule.setScheduleId(DatabaseHelper.getString(cursor, "ScheduleId"));
 
-			schedules.add(schedule);
+				schedules.add(schedule);
+			}
+
+			return schedules;
+		} finally {
+			if (cursor != null && !cursor.isClosed()) {
+				cursor.close();
+			}
 		}
-
-		return schedules;
 	}
 
 	public ArrayList<Schedule> getOnTime(Date date) {
@@ -79,7 +85,7 @@ public class ScheduleAdapter extends SqliteAdapter {
 		}
 	}
 
-	public ArrayList<Schedule> getOnTime(SqliteAdapter adapter, SQLiteDatabase db, Date date) {
+	public static ArrayList<Schedule> getOnTime(SqliteAdapter adapter, SQLiteDatabase db, Date date) {
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
@@ -116,31 +122,36 @@ public class ScheduleAdapter extends SqliteAdapter {
 
 		Cursor cursor = db.rawQuery(query, new String[] { Integer.toString(hours), Integer.toString(minutes) });
 
-		ArrayList<Schedule> schedules = new ArrayList<Schedule>();
+		try {
+			ArrayList<Schedule> schedules = new ArrayList<Schedule>();
 
-		while (cursor.moveToNext()) {
-			Schedule schedule = new Schedule();
+			while (cursor.moveToNext()) {
+				Schedule schedule = new Schedule();
 
-			boolean[] days = new boolean[7];
-			days[0] = DatabaseHelper.getBoolean(cursor, "Monday");
-			days[1] = DatabaseHelper.getBoolean(cursor, "Tuesday");
-			days[2] = DatabaseHelper.getBoolean(cursor, "Wednesday");
-			days[3] = DatabaseHelper.getBoolean(cursor, "Thursday");
-			days[4] = DatabaseHelper.getBoolean(cursor, "Friday");
-			days[5] = DatabaseHelper.getBoolean(cursor, "Saturday");
-			days[6] = DatabaseHelper.getBoolean(cursor, "Sunday");
+				boolean[] days = new boolean[7];
+				days[0] = DatabaseHelper.getBoolean(cursor, "Monday");
+				days[1] = DatabaseHelper.getBoolean(cursor, "Tuesday");
+				days[2] = DatabaseHelper.getBoolean(cursor, "Wednesday");
+				days[3] = DatabaseHelper.getBoolean(cursor, "Thursday");
+				days[4] = DatabaseHelper.getBoolean(cursor, "Friday");
+				days[5] = DatabaseHelper.getBoolean(cursor, "Saturday");
+				days[6] = DatabaseHelper.getBoolean(cursor, "Sunday");
 
-			schedule.setDays(days);
-			schedule.setHours(DatabaseHelper.getInt(cursor, "Hours"));
-			schedule.setMinutes(DatabaseHelper.getInt(cursor, "Minutes"));
-			schedule.setMemoBaseId(DatabaseHelper.getString(cursor, "MemoBaseId"));
-			schedule.setScheduleId(DatabaseHelper.getString(cursor, "ScheduleId"));
+				schedule.setDays(days);
+				schedule.setHours(DatabaseHelper.getInt(cursor, "Hours"));
+				schedule.setMinutes(DatabaseHelper.getInt(cursor, "Minutes"));
+				schedule.setMemoBaseId(DatabaseHelper.getString(cursor, "MemoBaseId"));
+				schedule.setScheduleId(DatabaseHelper.getString(cursor, "ScheduleId"));
 
-			schedules.add(schedule);
+				schedules.add(schedule);
+			}
+			
+			return schedules;
+		} finally {
+			if (cursor != null && !cursor.isClosed()) {
+				cursor.close();
+			}
 		}
-
-		return schedules;
-
 	}
 
 	public Schedule getNextFirstSchedule() {
@@ -156,7 +167,7 @@ public class ScheduleAdapter extends SqliteAdapter {
 		}
 	}
 
-	public Schedule getNextFirstSchedule(SqliteAdapter adapter, SQLiteDatabase db) {
+	public static Schedule getNextFirstSchedule(SqliteAdapter adapter, SQLiteDatabase db) {
 
 		String order = "ORDER BY ";
 		Calendar calendar = Calendar.getInstance();
@@ -193,56 +204,62 @@ public class ScheduleAdapter extends SqliteAdapter {
 				+ "FROM Schedules " + order;
 
 		Cursor cursor = db.rawQuery(query, null);
+		try {
+			ArrayList<Schedule> schedules = new ArrayList<Schedule>();
+			if (cursor.moveToNext()) {
+				Schedule schedule = new Schedule();
 
-		ArrayList<Schedule> schedules = new ArrayList<Schedule>();
-		if (cursor.moveToNext()) {
-			Schedule schedule = new Schedule();
+				boolean[] days = new boolean[7];
+				days[0] = DatabaseHelper.getBoolean(cursor, "Monday");
+				days[1] = DatabaseHelper.getBoolean(cursor, "Tuesday");
+				days[2] = DatabaseHelper.getBoolean(cursor, "Wednesday");
+				days[3] = DatabaseHelper.getBoolean(cursor, "Thursday");
+				days[4] = DatabaseHelper.getBoolean(cursor, "Friday");
+				days[5] = DatabaseHelper.getBoolean(cursor, "Saturday");
+				days[6] = DatabaseHelper.getBoolean(cursor, "Sunday");
 
-			boolean[] days = new boolean[7];
-			days[0] = DatabaseHelper.getBoolean(cursor, "Monday");
-			days[1] = DatabaseHelper.getBoolean(cursor, "Tuesday");
-			days[2] = DatabaseHelper.getBoolean(cursor, "Wednesday");
-			days[3] = DatabaseHelper.getBoolean(cursor, "Thursday");
-			days[4] = DatabaseHelper.getBoolean(cursor, "Friday");
-			days[5] = DatabaseHelper.getBoolean(cursor, "Saturday");
-			days[6] = DatabaseHelper.getBoolean(cursor, "Sunday");
+				schedule.setDays(days);
+				schedule.setHours(DatabaseHelper.getInt(cursor, "Hours"));
+				schedule.setMinutes(DatabaseHelper.getInt(cursor, "Minutes"));
+				schedule.setMemoBaseId(DatabaseHelper.getString(cursor, "MemoBaseId"));
+				schedule.setScheduleId(DatabaseHelper.getString(cursor, "ScheduleId"));
 
-			schedule.setDays(days);
-			schedule.setHours(DatabaseHelper.getInt(cursor, "Hours"));
-			schedule.setMinutes(DatabaseHelper.getInt(cursor, "Minutes"));
-			schedule.setMemoBaseId(DatabaseHelper.getString(cursor, "MemoBaseId"));
-			schedule.setScheduleId(DatabaseHelper.getString(cursor, "ScheduleId"));
+				schedules.add(schedule);
+			}
 
-			schedules.add(schedule);
-		}
+			int hours = calendar.get(Calendar.HOUR_OF_DAY);
+			int minutes = calendar.get(Calendar.MINUTE);
 
-		int hours = calendar.get(Calendar.HOUR_OF_DAY);
-		int minutes = calendar.get(Calendar.MINUTE);
+			for (int i = 0; i < schedules.size(); i++) {
+				Schedule schedule = schedules.get(i);
 
-		for (int i = 0; i < schedules.size(); i++) {
-			Schedule schedule = schedules.get(i);
-
-			// Look first for next not the first one
-			if (schedule.getDays()[today]) {
-				if ((schedule.getHours() > hours) || (schedule.getHours() == hours && schedule.getMinutes() > minutes)) {
+				// Look first for next not the first one
+				if (schedule.getDays()[today]) {
+					if ((schedule.getHours() > hours)
+							|| (schedule.getHours() == hours && schedule.getMinutes() > minutes)) {
+						return schedule;
+					}
+				} else {
 					return schedule;
 				}
-			} else {
-				return schedule;
+			}
+
+			// Case of non or one schedule which is today and now.
+			if (schedules.size() == 0) {
+				return schedules.get(0);
+			}
+
+			return null;
+		} finally {
+			if (cursor != null && !cursor.isClosed()) {
+				cursor.close();
 			}
 		}
-
-		// Case of non or one schedule which is today and now.
-		if (schedules.size() == 0) {
-			return schedules.get(0);
-		}
-
-		return null;
 	}
 
 	public void updateAllForMemoBase(ArrayList<Schedule> schedules, String memoBaseId) {
-
 		SQLiteDatabase db = null;
+
 		try {
 			db = getDatabase();
 			db.beginTransaction();

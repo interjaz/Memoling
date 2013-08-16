@@ -5,6 +5,11 @@
 		Jeśli chciałbyś/ąs przetłumaczyć applikację na inny język, 
 		  zażyczyć nową funkcjonalność albo być na bieżąco z aplikacją odwiedź jej stronę (link w ustawieniach)\n
 		\n
+		Zmainy v.1.5\n
+		1. Dodano zdania (zobacz wyrażenia)\n
+		2. Dodano trening z użyciem zdań\n
+		3. Dodano opisy do wyrażeń\n
+		4. Zmieniono ekran wyrażeń\n
 		Zmainy v.1.4\n
 		1. Dodano słówka dnia\n
 		Zmainy v.1.3.3\n
@@ -52,6 +57,7 @@
     <string name="memolist_updateCrash">Błąd podczas uaktualniania bazy!</string>
     <string name="memolist_wordOfTheDay">Słówko dnia</string>
     <string name="memolist_repeatAll">Powtórz wszystkie</string>
+<string name="memolist_sentencesTraining">Trening z użyciem zdań</string>
 
     <!-- MemoBaseList Fragment -->
     <string name="memobaselist_title">Biblioteki</string>
@@ -89,6 +95,10 @@
     <string name="memo_selectTranslationProgress">Szukam tłumaczeń</string>
     <string name="memo_abbrThesaurus">Th</string>
     <string name="memo_abbrDictionary">Sł</string>
+	<string name="memo_description">Opis</string>
+    <string name="memo_sentences">Zdania</string>
+    <string name="memo_sentencesDownloading">Pobieram &#8230;</string>
+    <string name="memo_sentencesNoSentences">Nie znaleziono zdań</string>
 
     <!-- MemoBase Fragment -->
     <string name="memobase_title">Biblioteka</string>
@@ -152,6 +162,8 @@
     <string name="review_lblIncorrect">Błąd. Odpowiedź:\n%s</string>
     <string name="review_lblLanguage">Język</string>
     <string name="review_noMemos">Nie znaleziono mem</string>
+	<string name="review_sentencesNotFound">Zdania nie znalezione</string>
+    <string name="review_sentenceNotSupported">Trening z zużyciem zdań nie wspiera nauki wyrażeń w tym samym języku</string>
 
     <!-- Statistics Fragment -->
     <string name="statistics_title">Statystyki</string>
@@ -178,6 +190,8 @@
     <string name="about_uselessFactsContent">Aplikacja została napisana w Javie i C#. Część serwerowa w PHP (próby w ruby zawiodły). Aplikacja ma ok. +<b>%1$d</b> linii kodu. Słownik ze słowami zawiera 246957 słów. Żadne zwierzę nie ucierpiało podczas pisania aplikacji. Odwiedzasz tą stronę <b>%2$s</b> raz. Losowo wygenerowane liczby: 1, 1, 1, 1 &#8211; nie ma za co (prawdziwie naturalny rozkład). Największa parzysta liczba pierwsza: 2. Podczas czytania tego tekstu %3$1.4f Amerykan doznało obrażeń używając toalety. Koksy uśmiercają jedną osobę co 2.433333333333 dni. </string>
     <string name="about_lblDonateDelux">Luksusowa Dotacja</string>
     <string name="about_version">Wersja %s</string>
+	<string name="about_credit">Uznania</string>
+    <string name="about_credits">Aplikacja używa zdań z bazy Tatoeba, które są na licencji CC-BY 2.0</string>
 
     <!-- Download Fragment -->
     <string name="download_title">Online biblioteki</string>
@@ -256,6 +270,15 @@
     <string name="wordoftheday_lblSource">Źródło powiadomień</string>
     <string name="wordoftheday_lblSourceHint">Oryginalny język słówka jest w nawiasach. Jeśli możliwe, lepiej jest użyć oryginalnego języka niż przetłumaczonego</string>
     <string name="wordoftheday_test">Przetestuj</string>
+ 	<string name="wordoftheday_help">
+        Słówka dnia - Pomoc\n\n
+        Słówka dnia to zaawansowane narzędzie, które poznawa na personalizację otrzymywanych słówek.\n
+        Możesz wybrać między wyrażeniami które sam dodałeś lub zupełnie nowymi.\n\n
+        Aby zrozumieć mechaniz otrzymywania słówek oto przykładowe konfiguracje narzędzia.\n
+        1. Chcę otrzymywać słówko po angielsku z tłumaczeniem na polski. Zaznacz \'Czy chcesz&#8230;\', następnie zaznacz źródło powiadomień jako Merriam-Webster i ustaw \'Przetł&#8230;\' na polski.\n\n
+        2. Chcę otrzymywać nowe słówko w języku greckin z tłuaczeniem w języku fińskim. Zaznacz \'Czy chcesz&#8230;\', następnie zaznacz źródło powiadomień jako Merriam-Webster, zaznacz \'Czy chciał&#8230;\', ustaw \'Przetłumacz nowe&#8230;\' na grecki i \'Przetł&#8230;\' na fiński.\n\n
+        Pod koniec możesz przetestować konfiguracjię by zobczyć czy otrzymałeś/aś to co oczekiwałeś/aś.
+     </string>
 
     <string-array name="wordoftheday_modes">
         <item>Z internetu (nowe słówka)</item>

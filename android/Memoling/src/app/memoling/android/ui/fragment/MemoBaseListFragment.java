@@ -48,7 +48,6 @@ public class MemoBaseListFragment extends ApplicationFragment {
 
 		ResourceManager resources = getResourceManager();
 		Typeface thinFont = resources.getThinFont();
-		Typeface condensedFont = resources.getCondensedFont();
 
 		m_lstMemos = (ListView) contentView.findViewById(R.id.memobaselist_lstMemo);
 		m_lstAdapter = new ModifiableComplexTextAdapter<MemoBaseInfoView>(getActivity(),
@@ -61,8 +60,8 @@ public class MemoBaseListFragment extends ApplicationFragment {
 
 		m_memoBaseAdapter = new MemoBaseAdapter(getActivity());
 
-		resources.setFont(R.layout.adapter_memobaselist_listview, R.id.textView1, condensedFont);
-		resources.setFont(R.layout.adapter_memobaselist_listview, R.id.textView2, condensedFont);
+		resources.setFont(R.layout.adapter_memobaselist_listview, R.id.textView1, thinFont);
+		resources.setFont(R.layout.adapter_memobaselist_listview, R.id.textView2, thinFont);
 
 		return contentView;
 	}

@@ -13,7 +13,7 @@ public class ThesaurusAdapter {
 		m_library = new  Hashtable<Language,String>();
 		m_library.put(Language.EN, "http://m.dictionary.com/t/?q=%s");
 		m_library.put(Language.DE, "http://www.openthesaurus.de/synonyme/%s");
-		m_library.put(Language.SPA, "http://www.sinonimos.com/sinonimo.php?palabra=%s");
+		m_library.put(Language.ES, "http://www.sinonimos.com/sinonimo.php?palabra=%s");
 		m_library.put(Language.FR, "http://www.crisco.unicaen.fr/des/synonymes/%s");
 		m_library.put(Language.IT, "http://www.sinonimi-contrari.it/%s/");
 		//m_library.put(Language.AR, "");

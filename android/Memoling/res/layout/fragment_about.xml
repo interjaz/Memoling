@@ -118,6 +118,30 @@
                     android:gravity="center"
                     android:text="@string/about_uselessFactsContent"
                     android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/about_lblUselessFactsContent"
+                    android:layout_marginTop="25dp"
+                    android:gravity="center"
+                    android:text="@string/about_credit"
+                    android:textSize="20sp" />
+                
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/textView4"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="@string/about_credits"
+                    android:textSize="18sp" />
             </RelativeLayout>
         </ScrollView>
     </LinearLayout>

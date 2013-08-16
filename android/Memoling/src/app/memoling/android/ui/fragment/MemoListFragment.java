@@ -21,7 +21,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -120,13 +119,10 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 
 		ResourceManager resources = getResourceManager();
 		Typeface thinFont = resources.getThinFont();
-		Typeface condensedFont = resources.getCondensedFont();
 
 		// Language spinners
 		m_spLanguageFrom = (LanguageSpinner) contentView.findViewById(R.id.memolist_spLanguageFrom);
-		m_spLanguageFrom.setOnItemSelectedListener(new SpLanguageEventHandler());
 		m_spLanguageTo = (LanguageSpinner) contentView.findViewById(R.id.memolist_spLanguageTo);
-		m_spLanguageTo.setOnItemSelectedListener(new SpLanguageEventHandler());
 
 		m_btnLanguageSwap = (Button) contentView.findViewById(R.id.memolist_btnLanguageSwap);
 		resources.setFont(m_btnLanguageSwap, thinFont);
@@ -178,11 +174,26 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 		m_btnWhatsNew.setOnClickListener(new BtnWhatsNewEventHandler());
 		resources.setFont(m_btnWhatsNew, thinFont);
 
-		resources.setFont(contentView, R.id.textView1, condensedFont);
-		resources.setFont(contentView, R.id.textView2, condensedFont);
+		resources.setFont(contentView, R.id.textView1, thinFont);
+		resources.setFont(contentView, R.id.textView2, thinFont);
 
 		m_fragmentState = (m_fragmentState == null) ? new FragmentState().fromBundle(savedInstanceState)
 				: m_fragmentState;
+
+		// Look for send action
+		Intent sendIntent = getActivity().getIntent();
+		if (sendIntent != null) {
+			String action = sendIntent.getAction();
+			String type = sendIntent.getType();
+			if (Intent.ACTION_SEND.equals(action) && type != null) {
+				if ("text/plain".equals(type)) {
+					String sharedText = sendIntent.getStringExtra(Intent.EXTRA_TEXT);
+					if (sharedText != null) {
+						m_txtAdd.setText(sharedText);
+					}
+				}
+			}
+		}
 
 		return contentView;
 	}
@@ -356,14 +367,23 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 				currentStrBase.append(" ");
 			}
 
-			for (Word word : result.Result) {
+			// Local copy
+			ArrayList<Word> words = new ArrayList<Word>();
+			for (Word w : result.Result) {
+				words.add(new Word(w));
+			}
+
+			for (Word word : words) {
 				word.setWord(currentStrBase.toString() + word.getWord());
 				tViews.add(new TranslatedView(word));
 			}
 
 			m_suggestionAdapter.addAll(tViews);
-			for (int i = 0; i < result.Result.size(); i++) {
-				new Translator(result.Result.get(i), fromLang, toLang, this);
+
+			if (fromLang != toLang) {
+				for (int i = 0; i < result.Result.size(); i++) {
+					new Translator(result.Result.get(i), fromLang, toLang, this);
+				}
 			}
 		}
 
@@ -517,30 +537,6 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 			fragment.setArguments(bundle);
 
 			startFragment(fragment);
-		}
-	}
-
-	private class SpLanguageEventHandler implements OnItemSelectedListener {
-		@Override
-		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-			MemoListPreference pref = getPreferences().getMemoListPreference(m_memoBaseId);
-			if (pref == null) {
-				pref = new MemoListPreference();
-			}
-
-			Language from = ((LanguageView) m_spLanguageFrom.getSelectedItem()).getLanguage();
-			Language to = ((LanguageView) m_spLanguageTo.getSelectedItem()).getLanguage();
-			String langCodeFrom = from.getCode();
-			String langCodeTo = to.getCode();
-
-			pref.setMemoBaseId(m_memoBaseId);
-			pref.setLanguageFromCode(langCodeFrom);
-			pref.setLanguageToCode(langCodeTo);
-			getPreferences().setMemoListPreference(pref);
-		}
-
-		@Override
-		public void onNothingSelected(AdapterView<?> arg0) {
 		}
 	}
 
@@ -722,16 +718,21 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 		Language fLangMax = Language.Unsupported;
 		Language sLangMax = Language.Unsupported;
 
-		for (Helper.Pair<Language, Integer> lang : languages) {
-			int val = lang.second.intValue();
-			if (val > fMax) {
-				sMax = fMax;
-				fMax = val;
-				sLangMax = fLangMax;
-				fLangMax = lang.first;
-			} else if (val > sMax) {
-				sMax = val;
-				sLangMax = lang.first;
+		if (languages.size() == 1) {
+			fLangMax = languages.get(0).first;
+			sLangMax = languages.get(0).first;
+		} else {
+			for (Helper.Pair<Language, Integer> lang : languages) {
+				int val = lang.second.intValue();
+				if (val > fMax) {
+					sMax = fMax;
+					fMax = val;
+					sLangMax = fLangMax;
+					fLangMax = lang.first;
+				} else if (val > sMax) {
+					sMax = val;
+					sLangMax = lang.first;
+				}
 			}
 		}
 
@@ -759,6 +760,12 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 
 			try {
 				Thread.sleep(m_delayedLookupDelay);
+
+				// Still initializing (probably called from share intent)
+				if (m_wordsFinder == null) {
+					Thread.sleep(1000); // Sleep some more
+				}
+
 			} catch (InterruptedException e) {
 				return null;
 			}
@@ -797,6 +804,7 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity(), ReviewActivity.class);
 				intent.putExtra(ReviewActivity.MemoBaseId, m_memoBaseId);
+				intent.putExtra(ReviewActivity.Mode, ReviewActivity.WordMode);
 				startActivity(intent);
 			}
 		}));
@@ -807,9 +815,21 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 				Intent intent = new Intent(getActivity(), ReviewActivity.class);
 				intent.putExtra(ReviewActivity.MemoBaseId, m_memoBaseId);
 				intent.putExtra(ReviewActivity.RepeatAll, true);
+				intent.putExtra(ReviewActivity.Mode, ReviewActivity.WordMode);
 				startActivity(intent);
 			}
 		}));
+
+		drawer.add(new DrawerView(R.drawable.ic_training_sentences, R.string.memolist_sentencesTraining,
+				new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(getActivity(), ReviewActivity.class);
+						intent.putExtra(ReviewActivity.MemoBaseId, m_memoBaseId);
+						intent.putExtra(ReviewActivity.Mode, ReviewActivity.SentenceMode);
+						startActivity(intent);
+					}
+				}));
 
 		drawer.add(new DrawerView(R.drawable.ic_wordoftheday, R.string.memolist_wordOfTheDay,
 				new Lazy<ApplicationFragment>() {
@@ -886,17 +906,23 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		
+
 		if (data != null) {
 			String voice = VoiceInputHelper.getData(data.getExtras());
 			if (voice != null) {
-				m_txtAdd.setText(voice);
+				m_txtAdd.getText().insert(m_txtAdd.getSelectionStart(), voice);
 			}
 		}
 	}
 
 	@Override
 	public void onDestroyView() {
+		MemoListPreference pref = new MemoListPreference();
+		pref.setMemoBaseId(m_memoBaseId);
+		pref.setLanguageFromCode(m_spLanguageFrom.getSelectedLanguage().getLanguage().getCode());
+		pref.setLanguageToCode(m_spLanguageTo.getSelectedLanguage().getLanguage().getCode());
+		getPreferences().setMemoListPreference(pref);
+		
 		m_fragmentState.save();
 		super.onDestroyView();
 	}

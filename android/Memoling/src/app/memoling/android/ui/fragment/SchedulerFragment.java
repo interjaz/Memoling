@@ -73,7 +73,6 @@ public class SchedulerFragment extends ApplicationFragment {
 
 		ResourceManager resources = getResourceManager();
 		Typeface thinFont = resources.getThinFont();
-		Typeface condensedFont = resources.getCondensedFont();
 
 		((TextView) contentView.findViewById(R.id.textView1)).setTypeface(thinFont);
 
@@ -122,7 +121,7 @@ public class SchedulerFragment extends ApplicationFragment {
 		m_lstList = (ListView) contentView.findViewById(R.id.schedule_list);
 		m_lstListAdapter = new ModifiableComplexTextAdapter<ScheduleView>(getActivity(),
 				R.layout.adapter_scheduler_listview, new int[] { R.id.textView1, R.id.textView2 }, new Typeface[] {
-						thinFont, condensedFont });
+						thinFont, thinFont });
 		m_lstList.setAdapter(m_lstListAdapter);
 		m_lstList.setOnItemClickListener(new LstListEventHandler());
 

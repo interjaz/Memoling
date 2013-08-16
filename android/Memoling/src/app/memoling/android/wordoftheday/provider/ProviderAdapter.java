@@ -87,7 +87,7 @@ public class ProviderAdapter {
 				}));
 
 		// diccionariolibre
-		m_providers.add(new Provider(providerId++, Language.SPA, "Diccionario Libre", ResourceType.RSS,
+		m_providers.add(new Provider(providerId++, Language.ES, "Diccionario Libre", ResourceType.RSS,
 				"http://diccionariolibre.com/daily.rss", "channel/item", new PostProcessor() {
 					@Override
 					public WordWithDescription process(Object raw) {
@@ -249,7 +249,7 @@ public class ProviderAdapter {
 				null, null, memolingPostProcessor));
 		
 		// Memoling
-		m_providers.add(new Provider(providerId++, Language.SPA, "Memoling", ResourceType.DB,
+		m_providers.add(new Provider(providerId++, Language.ES, "Memoling", ResourceType.DB,
 				null, null, memolingPostProcessor));
 		
 		// Memoling

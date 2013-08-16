@@ -9,13 +9,13 @@ public class Config {
 	// Live
 	public final static String WsUrlRoot = "http://ec2-79-125-102-130.eu-west-1.compute.amazonaws.com/memoling/webservice";
 	// Dev
-	//public final static String WsUrlRoot = "http://192.168.1.70:8080/memoling_service/webservice";
+//	public final static String WsUrlRoot = "http://192.168.1.65:8080/memoling_service/webservice";
 	
 	
 	public final static int MinNumberOfMemosForUpload = 20;
 
 	public final static String DatabaseName = "TranslateMemo";
-	public final static int DatabaseVersion = 1;
+	public final static int DatabaseVersion = 2;
 
 	public final static boolean Debug = false;
 	

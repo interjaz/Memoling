@@ -14,9 +14,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import app.memoling.android.entity.Language;
 import app.memoling.android.wordoftheday.IFetchComplete;
-import app.memoling.android.wordoftheday.MemoOfTheDay;
 import app.memoling.android.wordoftheday.provider.Provider;
 import app.memoling.android.wordoftheday.provider.ProviderAdapter;
+import app.memoling.android.wordoftheday.resolver.MemoOfTheDay;
 import app.memoling.android.wordoftheday.resolver.ResolverBase;
 import app.memoling.android.wordoftheday.resolver.ResolverFactory;
 

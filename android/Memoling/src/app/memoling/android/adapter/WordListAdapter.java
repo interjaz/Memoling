@@ -19,7 +19,8 @@ public class WordListAdapter extends SqliteAdapter {
 
 	public String getRandom(Language language) {
 		SQLiteDatabase db;
-
+		Cursor cursor = null;
+		
 		try {
 			db = getDatabase();
 
@@ -27,7 +28,7 @@ public class WordListAdapter extends SqliteAdapter {
 					"FROM WordLists " +
 					"WHERE LanguageIso639 = ? AND LENGTH(Word) > 5";
 
-			Cursor cursor = db.rawQuery(query, new String[] { language.getCode().toUpperCase() });
+			cursor = db.rawQuery(query, new String[] { language.getCode().toUpperCase() });
 			
 			int size = 0;
 			if (cursor.moveToNext()) {
@@ -52,6 +53,10 @@ public class WordListAdapter extends SqliteAdapter {
 			return null;
 
 		} finally {
+			if (cursor != null && !cursor.isClosed()) {
+				cursor.close();
+			}
+			
 			closeDatabase();
 		}
 	}

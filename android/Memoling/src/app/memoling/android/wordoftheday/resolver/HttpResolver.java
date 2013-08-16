@@ -9,7 +9,7 @@ import app.memoling.android.wordoftheday.provider.Provider;
 
 public abstract class HttpResolver extends ResolverBase {
 
-	private int m_timeout = 5000;
+	private int m_timeout = 15000;
 	
 	public HttpResolver(Provider provider) {
 		super(provider);

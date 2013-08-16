@@ -11,8 +11,6 @@ class MemoBaseAdapter extends DbAdapter {
 	
 	public function getAll() {
 		
-		$this->db = DbAdapter::connect();
-		
 		$stm = $this->db->prepare("SELECT * FROM memoling_MemoBases");
 		$stm->execute();
 		

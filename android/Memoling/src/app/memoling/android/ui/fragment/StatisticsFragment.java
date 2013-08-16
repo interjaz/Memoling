@@ -69,6 +69,17 @@ public class StatisticsFragment extends ApplicationFragment {
 		return true;
 	}
 
+	@Override
+	public boolean onBackPressed() {
+
+		int item = m_pager.getCurrentItem();
+		if(item != 0) {
+			m_pager.setCurrentItem(item-1);
+		}
+
+		return true;
+	}
+	
 	private class MyPagerAdapter extends FragmentStatePagerAdapter {
 
 		private Fragment[] m_tabs = new Fragment[TabSize];

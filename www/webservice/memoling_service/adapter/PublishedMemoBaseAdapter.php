@@ -224,10 +224,12 @@ class PublishedMemoBaseAdapter extends DbAdapter {
 				M.MemoBaseId AS M_MemoBaseId,
 				WA.WordId AS W_WordAId,
 				WA.Word AS W_WordA,
+				WA.Description AS W_DescriptionA,
 				WA.LanguageIso639 AS W_WordALang,
 				WB.WordId AS W_WordBId,
 				WB.Word AS W_WordB,
-				WB.LanguageIso639 AS W_WordBLang
+				WB.LanguageIso639 AS W_WordBLang,
+				WB.Description AS W_DescriptionB
 				FROM
 				memoling_Memos AS M
 				INNER JOIN
@@ -259,16 +261,18 @@ class PublishedMemoBaseAdapter extends DbAdapter {
 			$obj->WordA->WordId = $row["W_WordAId"];
 			$obj->WordAId = $obj->WordA->WordId;
 			$obj->WordA->Word = $row["W_WordA"];
+			$obj->WordA->Description = $row["W_DescriptionA"];
 			$obj->WordA->LanguageIso639 = $row["W_WordALang"];
 			$obj->WordB = new Word();
 			$obj->WordB->WordId = $row["W_WordBId"];
 			$obj->WordBId = $obj->WordB->WordId;
 			$obj->WordB->Word = $row["W_WordB"];
+			$obj->WordB->Description = $row["W_DescriptionB"];
 			$obj->WordB->LanguageIso639 = $row["W_WordBLang"];
 			$list[] = $obj;
 		}
 		$base->Memos = $list;
-
+		
 		return $published;
 	}
 
@@ -327,11 +331,12 @@ class PublishedMemoBaseAdapter extends DbAdapter {
 
 				$query = "INSERT INTO
 						memoling_Words
-						VALUES(:Wid,:Lang,:Word)";
+						VALUES(:Wid,:Lang,:Word,:Description)";
 				$stm = $this->db->prepare($query);
 				$stm->bindParam(":Wid", $wordAId);
 				$stm->bindParam(":Lang", $memo->WordA->LanguageIso639);
 				$stm->bindParam(":Word", $memo->WordA->Word);
+				$stm->bindParam(":Description", $memo->WordA->Description);
 				if(!$stm->execute()) {
 					$this->db->rollBack();
 					return false;
@@ -339,11 +344,12 @@ class PublishedMemoBaseAdapter extends DbAdapter {
 
 				$query = "INSERT INTO
 						memoling_Words
-						VALUES(:Wid,:Lang,:Word)";
+						VALUES(:Wid,:Lang,:Word,:Description)";
 				$stm = $this->db->prepare($query);
 				$stm->bindParam(":Wid", $wordBId);
 				$stm->bindParam(":Lang", $memo->WordB->LanguageIso639);
 				$stm->bindParam(":Word", $memo->WordB->Word);
+				$stm->bindParam(":Description", $memo->WordB->Description);
 				if(!$stm->execute()) {
 					throw new SqlException("Failed to create new Word", $this->db);
 				}

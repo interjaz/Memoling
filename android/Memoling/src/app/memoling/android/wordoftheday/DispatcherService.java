@@ -24,6 +24,7 @@ import app.memoling.android.ui.activity.WordOfTheDayReceiverActivity;
 import app.memoling.android.ui.fragment.MemoListFragment;
 import app.memoling.android.wordoftheday.provider.Provider;
 import app.memoling.android.wordoftheday.provider.ProviderAdapter;
+import app.memoling.android.wordoftheday.resolver.MemoOfTheDay;
 import app.memoling.android.wordoftheday.resolver.ResolverBase;
 import app.memoling.android.wordoftheday.resolver.ResolverFactory;
 

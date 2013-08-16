@@ -13,7 +13,7 @@ public class DictionaryAdapter {
 		m_library = new Hashtable<Language, String>();
 		m_library.put(Language.EN, "http://i.word.com/idictionary/%s");
 		m_library.put(Language.DE, "http://de.thefreedictionary.com/_/dict.aspx?word=%s");
-		m_library.put(Language.SPA, "http://es.thefreedictionary.com/_/dict.aspx?word=%s");
+		m_library.put(Language.ES, "http://es.thefreedictionary.com/_/dict.aspx?word=%s");
 		m_library.put(Language.FR, "http://fr.thefreedictionary.com/_/dict.aspx?word=%s");
 		m_library.put(Language.IT, "http://it.thefreedictionary.com/_/dict.aspx?word=%s");
 		m_library.put(Language.AR, "http://ar.thefreedictionary.com/_/dict.aspx?word=%s");

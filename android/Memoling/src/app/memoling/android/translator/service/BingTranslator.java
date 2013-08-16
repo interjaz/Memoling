@@ -244,7 +244,7 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 		RU("Russian", "ru"),
 		SK("Slovak", "sk"),
 		SL("Slovenian","sl"),
-		ES("Spanish", "es", "spa"),
+		ES("Spanish", "es"),
 		SV("Swedish", "sv"),
 		TH("Thai", "th"),
 		TR("Turkish", "tr"),

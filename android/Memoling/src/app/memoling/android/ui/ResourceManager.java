@@ -25,10 +25,6 @@ public class ResourceManager {
 		return Typeface.createFromAsset(m_ctx.getAssets(), "Roboto-Thin.ttf");
 	}
 
-	public Typeface getCondensedFont() {
-		return Typeface.createFromAsset(m_ctx.getAssets(), "Roboto-Condensed.ttf");
-	}
-
 	public void setFont(TextView view, Typeface font) {
 		view.setTypeface(font);
 	}

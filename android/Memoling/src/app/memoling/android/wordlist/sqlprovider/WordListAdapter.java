@@ -84,8 +84,8 @@ public class WordListAdapter extends SqliteAdapter {
 			return "EN";
 		case FR:
 			return "FR";
-		case SPA:
-			return "SPA";
+		case ES:
+			return "ES";
 		case PL:
 			return "PL";
 		case RU:

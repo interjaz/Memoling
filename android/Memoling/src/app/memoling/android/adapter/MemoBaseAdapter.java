@@ -43,7 +43,7 @@ public class MemoBaseAdapter extends SqliteAdapter {
 
 	public long add(MemoBase memoBase) {
 		SQLiteDatabase db = null;
-		invalidateCache();
+		invalidateGlobalCache();
 
 		try {
 			db = getDatabase();
@@ -57,7 +57,7 @@ public class MemoBaseAdapter extends SqliteAdapter {
 
 	public boolean addDeep(MemoBase memoBase) {
 		SQLiteDatabase db = null;
-		invalidateCache();
+		invalidateGlobalCache();
 
 		try {
 			db = getDatabase();
@@ -92,11 +92,7 @@ public class MemoBaseAdapter extends SqliteAdapter {
 	public MemoBase get(String memoBaseId) {
 		SQLiteDatabase db = null;
 
-		if (!inSync()) {
-			invalidateCache();
-		}
-
-		if (m_memoBaseCache.containsKey(memoBaseId)) {
+		if (inSync() && m_memoBaseCache.containsKey(memoBaseId)) {
 			return m_memoBaseCache.get(memoBaseId);
 		}
 
@@ -112,7 +108,7 @@ public class MemoBaseAdapter extends SqliteAdapter {
 	public static MemoBase get(SqliteAdapter adapter, SQLiteDatabase db, String memoBaseId) {
 
 		if (!adapter.inSync()) {
-			adapter.invalidateCache();
+			adapter.invalidateLocalCache();
 		}
 
 		if (m_memoBaseCache.containsKey(memoBaseId)) {
@@ -126,15 +122,21 @@ public class MemoBaseAdapter extends SqliteAdapter {
 
 		Cursor cursor = db.rawQuery(query, new String[] { memoBaseId });
 
-		if (cursor.moveToFirst()) {
-			memoBase = new MemoBase();
-			memoBase.setActive(DatabaseHelper.getBoolean(cursor, "B_Active"));
-			memoBase.setCreated(DatabaseHelper.getDate(cursor, "B_Created"));
-			memoBase.setMemoBaseId(DatabaseHelper.getString(cursor, "B_MemoBaseId"));
-			memoBase.setName(DatabaseHelper.getString(cursor, "B_Name"));
-		}
-		if (memoBase != null) {
-			m_memoBaseCache.put(memoBaseId, memoBase);
+		try {
+			if (cursor.moveToFirst()) {
+				memoBase = new MemoBase();
+				memoBase.setActive(DatabaseHelper.getBoolean(cursor, "B_Active"));
+				memoBase.setCreated(DatabaseHelper.getDate(cursor, "B_Created"));
+				memoBase.setMemoBaseId(DatabaseHelper.getString(cursor, "B_MemoBaseId"));
+				memoBase.setName(DatabaseHelper.getString(cursor, "B_Name"));
+			}
+			if (memoBase != null) {
+				m_memoBaseCache.put(memoBaseId, memoBase);
+			}
+		} finally {
+			if (cursor != null && !cursor.isClosed()) {
+				cursor.close();
+			}
 		}
 
 		return memoBase;
@@ -142,9 +144,10 @@ public class MemoBaseAdapter extends SqliteAdapter {
 
 	public ArrayList<MemoBase> getAll() {
 		SQLiteDatabase db = null;
+		Cursor cursor = null;
 
 		if (!inSync()) {
-			invalidateCache();
+			invalidateLocalCache();
 		}
 
 		if (m_memoBaseListCache.containsKey("all")) {
@@ -160,7 +163,7 @@ public class MemoBaseAdapter extends SqliteAdapter {
 					+ "	B.MemoBaseId B_MemoBaseId, B.Name B_Name, B.Created B_Created, B.Active B_Active "
 					+ "FROM MemoBases  AS B";
 
-			Cursor cursor = db.rawQuery(query, null);
+			cursor = db.rawQuery(query, null);
 
 			while (cursor.moveToNext()) {
 				MemoBase memoBase = new MemoBase();
@@ -180,18 +183,18 @@ public class MemoBaseAdapter extends SqliteAdapter {
 			return memoBases;
 
 		} finally {
+			if (cursor != null && !cursor.isClosed()) {
+				cursor.close();
+			}
 			closeDatabase();
 		}
 	}
 
 	public MemoBaseInfo getMemoBaseInfo(String memoBaseId) {
 		SQLiteDatabase db = null;
+		Cursor cursor = null;
 
-		if (!inSync()) {
-			invalidateCache();
-		}
-
-		if (m_memoBaseInfoCache.containsKey(memoBaseId)) {
+		if (inSync() && m_memoBaseInfoCache.containsKey(memoBaseId)) {
 			return m_memoBaseInfoCache.get(memoBaseId);
 		}
 
@@ -206,7 +209,7 @@ public class MemoBaseAdapter extends SqliteAdapter {
 					+ "MAX(M.LastReviewed) AS LastReviewed " + "FROM MemoBases  AS B "
 					+ "OUTER LEFT JOIN Memos AS M ON M.MemoBaseId = B.MemoBaseId " + "WHERE B.MemoBaseId = ?";
 
-			Cursor cursor = db.rawQuery(query, new String[] { memoBaseId });
+			cursor = db.rawQuery(query, new String[] { memoBaseId });
 
 			if (cursor.moveToFirst()) {
 				memoBase = new MemoBase();
@@ -228,13 +231,17 @@ public class MemoBaseAdapter extends SqliteAdapter {
 
 			return memoBaseInfo;
 		} finally {
+			if (cursor != null && !cursor.isClosed()) {
+				cursor.close();
+			}
+
 			closeDatabase();
 		}
 	}
 
 	public void delete(String memoBaseId) {
 		SQLiteDatabase db = null;
-		invalidateCache();
+		invalidateGlobalCache();
 
 		try {
 			db = getDatabase();
@@ -258,7 +265,7 @@ public class MemoBaseAdapter extends SqliteAdapter {
 
 	public int update(MemoBase memoBase) {
 		SQLiteDatabase db = null;
-		invalidateCache();
+		invalidateGlobalCache();
 
 		try {
 			db = getDatabase();
@@ -279,8 +286,17 @@ public class MemoBaseAdapter extends SqliteAdapter {
 	}
 
 	@Override
-	protected void onInvalidateCache() {
-		super.onInvalidateCache();
+	protected void onInvalidateGlobalCache() {
+		super.onInvalidateGlobalCache();
+
+		m_memoBaseCache.clear();
+		m_memoBaseInfoCache.clear();
+		m_memoBaseListCache.clear();
+	}
+
+	@Override
+	protected void onInvalidateLocalCache() {
+		super.onInvalidateLocalCache();
 
 		m_memoBaseCache.clear();
 		m_memoBaseInfoCache.clear();
