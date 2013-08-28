@@ -53,6 +53,12 @@ public class SqliteUpdater {
 						version = 2;
 					}
 
+					if (version == 2) {
+						update23(database);
+						database.setVersion(3);
+						version = 3;
+					}
+
 					database.setTransactionSuccessful();
 				} catch (Exception ex) {
 					AppLog.e("SqliteUpdater", "Failed to update database", ex);
@@ -63,7 +69,7 @@ public class SqliteUpdater {
 			}
 		} finally {
 			firstCall = Boolean.FALSE;
-			if(database != null && database.isOpen()) {
+			if (database != null && database.isOpen()) {
 				database.close();
 			}
 		}
@@ -88,17 +94,19 @@ public class SqliteUpdater {
 
 	private static void update12(SQLiteDatabase database) {
 
-		String createMemoSenteces = "CREATE TABLE \"MemoSentences\" " +
-				"(\"MemoSentenceId\" TEXT PRIMARY KEY  NOT NULL, " +
-				"\"MemoId\" TEXT NOT NULL, " +
-				"\"OriginalSentence\" TEXT NOT NULL, " +
-				"\"OriginalLanguageIso639\" TEXT NOT NULL, " +
-				"\"TranslatedSentence\" TEXT NOT NULL, " +
-				"\"TranslatedLanguageIso639\" TEXT NOT NULL )";
+		String createMemoSenteces = "CREATE TABLE \"MemoSentences\" "
+				+ "(\"MemoSentenceId\" TEXT PRIMARY KEY  NOT NULL, " + "\"MemoId\" TEXT NOT NULL, "
+				+ "\"OriginalSentence\" TEXT NOT NULL, " + "\"OriginalLanguageIso639\" TEXT NOT NULL, "
+				+ "\"TranslatedSentence\" TEXT NOT NULL, " + "\"TranslatedLanguageIso639\" TEXT NOT NULL )";
 
 		String updateWords = "ALTER TABLE Words " + "ADD Description TEXT NOT NULL DEFAULT \"\"";
 
 		database.execSQL(createMemoSenteces);
 		database.execSQL(updateWords);
+	}
+
+	private static void update23(SQLiteDatabase database) {
+		String updateWordLists = "UPDATE WordLists  SET LanguageIso639 = 'ES' WHERE LanguageIso639 = 'SPA'";
+		database.execSQL(updateWordLists);
 	}
 }

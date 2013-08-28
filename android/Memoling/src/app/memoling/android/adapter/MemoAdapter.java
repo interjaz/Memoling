@@ -171,11 +171,13 @@ public class MemoAdapter extends SqliteAdapter {
 				+ "	WA.WordId WA_WordId, WA.LanguageIso639 WA_LanguageIso639, WA.Word WA_Word, WA.Description WA_Description, "
 				+ "	WB.WordId WB_WordId, WB.LanguageIso639 WB_LanguageIso639, WB.Word WB_Word, WB.Description WB_Description "
 				+ "FROM Memos  AS M " + "JOIN MemoBases AS B ON M.MemoBaseId = B.MemoBaseId "
-				+ "JOIN Words AS WA ON M.WordAId = WA.WordId " + "JOIN Words AS WB ON M.WordBId = WB.WordId "
-				+ "WHERE M.rowid > (abs(random()) % (SELECT max(rowid) FROM Memos WHERE MemoBaseId = ?)) "
-				+ "AND B.MemoBaseId = ? " + "LIMIT 1";
+				+ "JOIN Words AS WA ON M.WordAId = WA.WordId " 
+				+ "JOIN Words AS WB ON M.WordBId = WB.WordId "
+				+ "WHERE B.MemoBaseId = ? "
+				+ "ORDER BY RANDOM() "
+				+ "LIMIT 1";
 
-		Cursor cursor = db.rawQuery(query, new String[] { memoBaseId, memoBaseId });
+		Cursor cursor = db.rawQuery(query, new String[] { memoBaseId });
 
 		try {
 			if (cursor.moveToNext()) {

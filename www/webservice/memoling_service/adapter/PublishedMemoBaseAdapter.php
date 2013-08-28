@@ -225,11 +225,15 @@ class PublishedMemoBaseAdapter extends DbAdapter {
 				WA.WordId AS W_WordAId,
 				WA.Word AS W_WordA,
 				WA.Description AS W_DescriptionA,
+				WA.Class AS W_ClassA,
+				WA.Phonetic AS W_PhoneticA,
 				WA.LanguageIso639 AS W_WordALang,
 				WB.WordId AS W_WordBId,
 				WB.Word AS W_WordB,
 				WB.LanguageIso639 AS W_WordBLang,
-				WB.Description AS W_DescriptionB
+				WB.Description AS W_DescriptionB,
+				WB.Class AS W_ClassB,
+				WB.Phonetic AS W_PhoneticB
 				FROM
 				memoling_Memos AS M
 				INNER JOIN
@@ -257,18 +261,25 @@ class PublishedMemoBaseAdapter extends DbAdapter {
 			$obj = new Memo();
 			$obj->MemoId = $row["M_MemoId"];
 			$obj->MemoBaseId = $row["M_MemoBaseId"];
+			
 			$obj->WordA = new Word();
 			$obj->WordA->WordId = $row["W_WordAId"];
 			$obj->WordAId = $obj->WordA->WordId;
 			$obj->WordA->Word = $row["W_WordA"];
 			$obj->WordA->Description = $row["W_DescriptionA"];
 			$obj->WordA->LanguageIso639 = $row["W_WordALang"];
+			$obj->WordA->Class = $row["W_ClassA"];
+			$obj->WordA->Phonetic = $row["W_PhoneticA"];
+			
 			$obj->WordB = new Word();
 			$obj->WordB->WordId = $row["W_WordBId"];
 			$obj->WordBId = $obj->WordB->WordId;
 			$obj->WordB->Word = $row["W_WordB"];
-			$obj->WordB->Description = $row["W_DescriptionB"];
+			$obj->WordB->Description =$row["W_DescriptionB"];
 			$obj->WordB->LanguageIso639 = $row["W_WordBLang"];
+			$obj->WordB->Class = $row["W_ClassB"];
+			$obj->WordB->Phonetic = $row["W_PhoneticB"];
+			
 			$list[] = $obj;
 		}
 		$base->Memos = $list;
@@ -330,7 +341,7 @@ class PublishedMemoBaseAdapter extends DbAdapter {
 				}
 
 				$query = "INSERT INTO
-						memoling_Words
+						memoling_Words (WordId, LanguageIso639, Word, Description)
 						VALUES(:Wid,:Lang,:Word,:Description)";
 				$stm = $this->db->prepare($query);
 				$stm->bindParam(":Wid", $wordAId);
@@ -343,7 +354,7 @@ class PublishedMemoBaseAdapter extends DbAdapter {
 				}
 
 				$query = "INSERT INTO
-						memoling_Words
+						memoling_Words (WordId, LanguageIso639, Word, Description)
 						VALUES(:Wid,:Lang,:Word,:Description)";
 				$stm = $this->db->prepare($query);
 				$stm->bindParam(":Wid", $wordBId);

@@ -842,6 +842,14 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 					}
 				}));
 
+		drawer.add(new DrawerView(R.drawable.ic_game, R.string.memolist_games,
+				new Lazy<ApplicationFragment>() {
+					public ApplicationFragment create() {
+						ApplicationFragment fragment = new GamesFragment();
+						return fragment;
+					}
+				}));
+
 		drawer.add(new DrawerView(R.drawable.ic_statistics, R.string.memobaselist_setting_statistics,
 				new Lazy<ApplicationFragment>() {
 					public ApplicationFragment create() {
@@ -857,7 +865,7 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 				startActivity(intent);
 			}
 		}));
-
+		
 		drawer.add(new DrawerView(R.drawable.ic_info, R.string.memobaselist_setting_about,
 				new Lazy<ApplicationFragment>() {
 					public ApplicationFragment create() {

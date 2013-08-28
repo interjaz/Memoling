@@ -1,5 +1,6 @@
 package app.memoling.android.adapter;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import android.annotation.SuppressLint;
@@ -18,45 +19,40 @@ public class WordListAdapter extends SqliteAdapter {
 	}
 
 	public String getRandom(Language language) {
+		ArrayList<String> words = getRandom(language, 1, 6, Integer.MAX_VALUE);
+		if (words.size() == 0) {
+			return null;
+		}
+		return words.get(0);
+	}
+
+	public ArrayList<String> getRandom(Language language, int count, int minLength, int maxLength) {
 		SQLiteDatabase db;
 		Cursor cursor = null;
-		
+
 		try {
 			db = getDatabase();
+			
+			ArrayList<String> words = new ArrayList<String>();
 
-			String query = "SELECT COUNT(1) AS Size " +
-					"FROM WordLists " +
-					"WHERE LanguageIso639 = ? AND LENGTH(Word) > 5";
-
-			cursor = db.rawQuery(query, new String[] { language.getCode().toUpperCase() });
-			
-			int size = 0;
-			if (cursor.moveToNext()) {
-				size = DatabaseHelper.getInt(cursor, "Size");
-			}
-			
-			Random random = new Random();
-			int rand = (int)(random.nextFloat() * size);
-			
-			query = "SELECT Word FROM WordLists " +
-					"WHERE LanguageIso639 = ? " +
-					"AND LENGTH(Word) > 5 " +
-					"LIMIT " + Integer.toString(rand)+ ",1";
+			String query = "SELECT Word FROM WordLists " + "WHERE LanguageIso639 = ? " + " AND LENGTH(Word) >= "
+					+ Integer.toString(minLength) + " AND LENGTH(Word) <= " + Integer.toString(maxLength)
+					+ " ORDER BY RANDOM() LIMIT " + Integer.toString(count);
 
 			cursor = db.rawQuery(query, new String[] { language.getCode().toUpperCase() });
 
-			if (cursor.moveToNext()) {
+			while (cursor.moveToNext()) {
 				String word = DatabaseHelper.getString(cursor, "Word");
-				return word;
+				words.add(word);
 			}
 
-			return null;
-
-		} finally {
 			if (cursor != null && !cursor.isClosed()) {
 				cursor.close();
 			}
-			
+
+			return words;
+
+		} finally {
 			closeDatabase();
 		}
 	}

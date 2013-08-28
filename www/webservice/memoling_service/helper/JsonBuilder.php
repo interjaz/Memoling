@@ -4,8 +4,8 @@ class JsonBuilder {
 	
 	private $json = "";
 	
-	public function put($key, $val) {
-		if($val == null) {
+	public function put($key, $val, $allowNull=false) {
+		if(!$allowNull && $val == null) {
 			return;
 		}
 		

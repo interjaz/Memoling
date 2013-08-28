@@ -72,8 +72,8 @@ class PublishedMemoBase {
 		$builder->put("memoBase", $this->MemoBase);
 		$builder->put("description", $this->Description);
 		$builder->put("downloads", $this->Downloads);
-		$builder->put("primaryLanguageAIso639", $this->PrimaryLanguageAIso639);
-		$builder->put("primaryLanguageBIso639", $this->PrimaryLanguageBIso639);
+		$builder->put("primaryLanguageAIso639", $this->PrimaryLanguageAIso639,true);
+		$builder->put("primaryLanguageBIso639", $this->PrimaryLanguageBIso639,true);
 		$builder->put("memosCount", $this->MemosCount);
 				
 		return $builder->__toString();

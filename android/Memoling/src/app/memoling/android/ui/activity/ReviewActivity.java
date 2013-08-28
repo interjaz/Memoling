@@ -379,7 +379,14 @@ public class ReviewActivity extends AdActivity {
 			public void run() {
 
 				MemoSentence sentence = m_sentences.get(m_random.nextInt(m_sentences.size()));
-
+				String emptyString = "";
+				
+				if(emptyString.equals(sentence.getTranslatedSentence())) {
+					Toast.makeText(ReviewActivity.this, R.string.review_emptyTranslation, Toast.LENGTH_SHORT).show();
+					newMemo();
+					return;
+				}
+				
 				int pos = sentence.getOriginalSentence().toLowerCase(Locale.US)
 						.indexOf(b.getWord().toLowerCase(Locale.US));
 				String strSentence = sentence.getOriginalSentence().replaceAll("(?i)" + b.getWord(), "");

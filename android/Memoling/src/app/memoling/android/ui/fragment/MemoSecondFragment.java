@@ -92,6 +92,7 @@ public class MemoSecondFragment extends Fragment implements OnEditorActionListen
 		resources.setFont(contentView, R.id.textView1, thinFont);
 		resources.setFont(contentView, R.id.textView2, thinFont);
 		resources.setFont(contentView, R.id.textView3, thinFont);
+		resources.setFont(contentView, R.id.textView4, thinFont);
 		resources.setFont(contentView, R.id.memo_lblWordB, thinFont);
 		resources.setFont(contentView, R.id.memo_txtDescription, thinFont);
 		resources.setFont(contentView, R.id.memo_lblSentences, thinFont);
@@ -210,9 +211,12 @@ public class MemoSecondFragment extends Fragment implements OnEditorActionListen
 				}
 
 				StringBuilder sb = new StringBuilder();
+				String emptyString = "";
 				for (int i = 0; i < memoSentences.size(); i++) {
 					MemoSentence memoSentence = memoSentences.get(i);
-					sb.append(String.format("%d. %s\n", i + 1, memoSentence.getTranslatedSentence()));
+					if (!emptyString.equals(memoSentence.getTranslatedSentence())) {
+						sb.append(String.format("%d. %s\n", i + 1, memoSentence.getTranslatedSentence()));
+					}
 				}
 
 				m_lblSentences.setText(sb.toString());

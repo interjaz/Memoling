@@ -5,6 +5,9 @@
 		Jeśli chciałbyś/ąs przetłumaczyć applikację na inny język, 
 		  zażyczyć nową funkcjonalność albo być na bieżąco z aplikacją odwiedź jej stronę (link w ustawieniach)\n
 		\n
+		Zmainy v.1.6.0\n
+		1. Dodano Gry\n
+		2. Poprawiono obsługę hiszpańskich słówek\n
 		Zmainy v.1.5\n
 		1. Dodano zdania (zobacz wyrażenia)\n
 		2. Dodano trening z użyciem zdań\n
@@ -56,6 +59,7 @@
     <string name="memolist_whatsNewOk">OK</string>
     <string name="memolist_updateCrash">Błąd podczas uaktualniania bazy!</string>
     <string name="memolist_wordOfTheDay">Słówko dnia</string>
+	<string name="memolist_games">Gry językowe</string>
     <string name="memolist_repeatAll">Powtórz wszystkie</string>
 <string name="memolist_sentencesTraining">Trening z użyciem zdań</string>
 
@@ -164,7 +168,8 @@
     <string name="review_noMemos">Nie znaleziono mem</string>
 	<string name="review_sentencesNotFound">Zdania nie znalezione</string>
     <string name="review_sentenceNotSupported">Trening z zużyciem zdań nie wspiera nauki wyrażeń w tym samym języku</string>
-
+    <string name="review_emptyTranslation">Brak translatcji, pomijam</string>
+    
     <!-- Statistics Fragment -->
     <string name="statistics_title">Statystyki</string>
     <string name="statisitcs_yearTitle">Mema dodane w bieżącym roku</string>
@@ -284,6 +289,31 @@
         <item>Z internetu (nowe słówka)</item>
         <item>Z internetu i z mojej biblioteki</item>
         <item>Z mojej biblioteki (tylko znane słówka)</item>
+    </string-array>
+
+	<!-- Games -->
+    <string name="games_title">Gry językowe</string>
+    <string name="games_hangman">Szubienica</string>
+    <string name="games_crossword">Krzyżówka</string>
+    <string name="games_findword">Znajdź słowo</string>
+    <string name="games_win">Wygrałeś</string>
+    <string name="games_lost">Przegrałeś</string>
+    <string name="games_score">Wynik</string>
+    <string name="games_source">Źródło</string>
+    <string name="games_hint">PODPOWIEDZ</string>
+    <string name="crossword_enterWord">Wprowadź słowo</string>
+    <string name="crossword_horizontal">Poziomo</string>
+    <string name="crossword_vertical">Pionowo</string>
+    <string name="crossword_submit">Zatwierdz</string>
+    
+    <string-array name="games_source">
+        <item>Obecna bibiloteka</item>
+        <item>Angielskie słówka</item>
+        <item>Hiszpańskie słówka</item>
+        <item>Niemiecki słówka</item>
+        <item>Francuskie słówka</item>
+        <item>Włoskie słówka</item>
+        <item>Polskie słówka</item>
     </string-array>
 
     <!-- WordOfTheDayReceiver -->

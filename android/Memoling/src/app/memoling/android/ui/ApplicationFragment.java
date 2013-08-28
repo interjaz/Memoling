@@ -55,6 +55,7 @@ public abstract class ApplicationFragment extends Fragment {
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, View contentView) {
 		ApplicationActivity activity = (ApplicationActivity) getActivity();
+
 		m_resourceManager = new ResourceManager(activity);
 		m_preferences = new Preferences(activity);
 
@@ -137,11 +138,23 @@ public abstract class ApplicationFragment extends Fragment {
 	}
 
 	protected void finish(Bundle result) {
-		((ApplicationActivity) getActivity()).requestFinishFragment(result);
+		ApplicationActivity activity = ((ApplicationActivity) getActivity());
+		if (activity == null) {
+			AppLog.e("ApplicationFragment", "finish - missing activity");
+			return;
+		}
+		
+		activity.requestFinishFragment(result);
 	}
 
 	protected void startFragment(ApplicationFragment fragment) {
-		((ApplicationActivity) getActivity()).requestFragmentReplace(fragment);
+		ApplicationActivity activity = ((ApplicationActivity) getActivity());
+		if (activity == null) {
+			AppLog.e("ApplicationFragment", "startFragment - missing activity");
+			return;
+		}
+		
+		activity.requestFragmentReplace(fragment);
 	}
 
 	public ResourceManager getResourceManager() {
@@ -149,7 +162,13 @@ public abstract class ApplicationFragment extends Fragment {
 	}
 
 	public void setTitle(CharSequence title) {
-		getActivity().setTitle(title);
+		Activity activity = getActivity();
+		if (activity == null) {
+			AppLog.e("ApplicationFragment", "setTitle - missing activity");
+			return;
+		}
+		
+		activity.setTitle(title);
 	}
 
 	public Preferences getPreferences() {
@@ -161,7 +180,13 @@ public abstract class ApplicationFragment extends Fragment {
 	}
 
 	private void setDrawerEnabled(boolean enabled) {
-		((ApplicationActivity) getActivity()).setDrawerToggleEnabled(enabled);
+		ApplicationActivity activity = ((ApplicationActivity) getActivity());
+		if (activity == null) {
+			AppLog.e("ApplicationFragment", "setDrawerEnabled - missing activity");
+			return;
+		}
+		
+		activity.setDrawerToggleEnabled(enabled);
 	}
 
 	/**
@@ -172,6 +197,11 @@ public abstract class ApplicationFragment extends Fragment {
 		int progress = (int) ((Window.PROGRESS_END - Window.PROGRESS_START) * newValue);
 
 		ApplicationActivity activity = ((ApplicationActivity) getActivity());
+		if (activity == null) {
+			AppLog.e("ApplicationFragment", "setSupportProgress - missing activity");
+			return;
+		}
+		
 		activity.setSupportProgressBarVisibility(true);
 		activity.setSupportProgress(progress);
 	}
@@ -191,7 +221,6 @@ public abstract class ApplicationFragment extends Fragment {
 			@Override
 			public void run() {
 				ApplicationActivity activity = ((ApplicationActivity) getActivity());
-
 				if (activity == null) {
 					AppLog.e("ApplicationFragment", "updateSupportProgress - missing activity");
 					return;

@@ -19,7 +19,7 @@ namespace MemolingTools.SQLiteImporter
             LanguageInsert("it", "IT");
             LanguageInsert("pl", "PL");
             LanguageInsert("ru", "RU");
-            LanguageInsert("sp", "SPA");
+            LanguageInsert("sp", "ES");
 
 
         }

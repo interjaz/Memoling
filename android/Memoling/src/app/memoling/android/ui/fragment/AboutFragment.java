@@ -13,6 +13,7 @@ import app.memoling.android.R;
 import app.memoling.android.helper.Helper;
 import app.memoling.android.ui.ApplicationFragment;
 import app.memoling.android.ui.ResourceManager;
+import app.memoling.android.ui.activity.QuizletActivity;
 
 import com.actionbarsherlock.view.MenuItem;
 

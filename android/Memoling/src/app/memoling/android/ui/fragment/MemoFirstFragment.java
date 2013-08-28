@@ -104,6 +104,7 @@ public class MemoFirstFragment extends Fragment implements OnEditorActionListene
 		resources.setFont(contentView, R.id.textView1, thinFont);
 		resources.setFont(contentView, R.id.textView2, thinFont);
 		resources.setFont(contentView, R.id.textView3, thinFont);
+		resources.setFont(contentView, R.id.textView4, thinFont);
 		resources.setFont(contentView, R.id.memo_lblWordA, thinFont);
 		resources.setFont(contentView, R.id.memo_txtDescription, thinFont);
 		resources.setFont(contentView, R.id.memo_lblSentences, thinFont);

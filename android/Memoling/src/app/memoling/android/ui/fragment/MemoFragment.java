@@ -83,6 +83,7 @@ public class MemoFragment extends ApplicationFragment {
 		m_memoId = getArguments().getString(MemoId);
 		m_memo = m_memoAdapter.get(m_memoId);
 		setTitle(m_memo.getWordA().getWord() + " - " + m_memo.getWordB().getWord());
+		setSupportProgress(0.5f);
 
 		m_originalWordA = m_memo.getWordA().getWord();
 		m_originalWordB = m_memo.getWordB().getWord();
@@ -94,6 +95,7 @@ public class MemoFragment extends ApplicationFragment {
 				.getLanguage(), m_memo.getWordB().getLanguage(), new IGetComplete() {
 			@Override
 			public void getComplete(ArrayList<MemoSentence> memoSentences) {
+				setSupportProgress(1f);
 				m_memoSentences = memoSentences;
 				if (m_adapter.getCacheSize() > 0) {
 					((IMemoPagerFragment) m_adapter.getCachedItem(0)).setSentences(m_memoSentences);
