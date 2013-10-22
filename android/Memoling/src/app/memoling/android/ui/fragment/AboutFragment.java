@@ -13,7 +13,6 @@ import app.memoling.android.R;
 import app.memoling.android.helper.Helper;
 import app.memoling.android.ui.ApplicationFragment;
 import app.memoling.android.ui.ResourceManager;
-import app.memoling.android.ui.activity.QuizletActivity;
 
 import com.actionbarsherlock.view.MenuItem;
 
@@ -45,10 +44,10 @@ public class AboutFragment extends ApplicationFragment {
 		m_activityVisited = Integer.toString(seen);
 		getPreferences().setAboutSeen(seen);
 
+		resources.setFont(contentView, R.id.memo_lblLang, thinFont);
 		resources.setFont(contentView, R.id.textView1, thinFont);
-		resources.setFont(contentView, R.id.textView2, thinFont);
 		resources.setFont(contentView, R.id.textView3, thinFont);
-		resources.setFont(contentView, R.id.textView4, thinFont);
+		resources.setFont(contentView, R.id.downloadlink_lblDefinitionALabel, thinFont);
 		resources.setFont(contentView, R.id.textView5, thinFont);
 		resources.setFont(contentView, R.id.about_lblUselessFactsContent, thinFont);
 		resources.setFont(contentView, R.id.about_lblVersion, thinFont);

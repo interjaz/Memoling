@@ -15,7 +15,7 @@
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/memo_lblLang"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/download_published_lblName"
@@ -25,10 +25,10 @@
         android:text="@string/download_published_genre" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/textView1"
+        android:layout_alignBaseline="@id/memo_lblLang"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="5dp"
         android:text="@string/download_published_memos" />
@@ -39,25 +39,25 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/download_published_lblName"
         android:layout_marginLeft="5dp"
-        android:layout_toLeftOf="@id/textView2"
-        android:layout_toRightOf="@id/textView1"
+        android:layout_toLeftOf="@id/textView1"
+        android:layout_toRightOf="@id/memo_lblLang"
         android:text="TextView" />
 
     <TextView
         android:id="@+id/download_published_lblMemos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/textView1"
+        android:layout_alignBaseline="@id/memo_lblLang"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@+id/textView2"
+        android:layout_toRightOf="@+id/textView1"
         android:text="TextView" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/textView1"
+        android:layout_alignLeft="@id/memo_lblLang"
         android:layout_below="@id/download_published_lblGenre"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="2dp"
@@ -70,12 +70,12 @@
         android:layout_alignBaseline="@id/textView3"
         android:layout_alignBottom="@id/textView3"
         android:layout_marginLeft="5dp"
-        android:layout_toLeftOf="@+id/textView4"
+        android:layout_toLeftOf="@+id/downloadlink_lblDefinitionALabel"
         android:layout_toRightOf="@id/textView3"
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/downloadlink_lblDefinitionALabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/textView3"
@@ -91,7 +91,7 @@
         android:layout_alignBaseline="@id/textView3"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@+id/textView4"
+        android:layout_toRightOf="@+id/downloadlink_lblDefinitionALabel"
         android:text="TextView" />
 
 </RelativeLayout>

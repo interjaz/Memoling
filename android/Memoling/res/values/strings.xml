@@ -4,6 +4,13 @@
     <string name="memolist_whatsNewContent">		If you would like to translate the application to other language, 
 		request a feature or just be up to date visit/follow application page (link Settings).\n
 		\n
+		Changes v.1.7.0\n
+		1. Better support for Facebook login\n
+		2. Added Expression sharing mechanism\n
+		3. Added text to speech for English (usa/uk), French, German, Italian and Spanish 
+		4. Changed where searched words are displayed\n
+		Changes v.1.7.0 beta\n
+		1. Added Quizlet definitions and words\n
 		Changes v.1.6.0\n
 		1. Added Games\n
 		2. Fixed spanish words suggestions\n
@@ -33,6 +40,7 @@
 
     <!-- General -->
     <string name="app_name">Memoling</string>
+    <string name="app_facebook_appId">620366261326135</string>
 
     <!-- Application Activity -->
     <string name="application_title">Memoling</string>
@@ -52,6 +60,8 @@
     <string name="memolist_ctxmenu_deleteQuestion">Are you sure? Once deleted, it will not be possible to recover old memo. Consider deactivating.</string>
     <string name="memolist_ctxmenu_deleteYes">Yes, I am sure.</string>
     <string name="memolist_ctxmenu_deleteNo">No, I have changed my mind.</string>
+	<string name="memolist_ctxmenu_sharefacebook">Share via Facebook</string>
+	<string name="memolist_ctxmenu_share">Share via Application</string>
     <string name="memolist_missingWords">Expression is missing or empty.</string>
     <string name="memolist_goToLibraries">Go to Libraries</string>
     <string name="memolist_settings">Settings</string>
@@ -81,6 +91,8 @@
     <string name="memobaselist_ctxmenu_deleteYes">Yes, I am sure.</string>
     <string name="memobaselist_ctxmenu_deleteNo">No, I have changed my mind.</string>
     <string name="memobaselist_ctxmenu_details">Details</string>
+    <string name="memobaselist_ctxmenu_shareApplication">Share via Application</string>
+    <string name="memobaselist_ctxmenu_shareFacebook">Share via Facebook</string>
     <string name="memobaselist_setting_about">About</string>
     <string name="memobaselist_fbFailed">Failed to obtain credentials.</string>
     <string name="memobaselist_setting_statistics">Statistics</string>
@@ -91,7 +103,7 @@
     <string name="memo_lblLastReviewed">Last reviewed:</string>
     <string name="memo_lblDisplayed">Displayed:</string>
     <string name="memo_lblCorrectAnswered">Correctly answered:</string>
-    <string name="memo_lblwordA">First part:</string>
+    <string name="memo_lblWordA">First part:</string>
     <string name="memo_lblLangA">First part language:</string>
     <string name="memo_lblWordB">Second part:</string>
     <string name="memo_lblLangB">Second part language:</string>
@@ -104,8 +116,24 @@
     <string name="memo_description">Description</string>
     <string name="memo_sentences">Sentences</string>
     <string name="memo_sentencesDownloading">Downloading &#8230;</string>
-    <string name="memo_sentencesNoSentences">No sentence found</string>
-
+    <string name="memo_definitionsMemoling">Memoling</string>
+    <string name="memo_definitionsQuizlet">Powered by Quizlet.com</string>
+    <string name="memo_sentencesTatoeba">Tatoeba.org</string>
+    <string name="memo_sentencesQuizlet">Powered by Quizlet.com</string>
+    <string name="memo_notFound">Not found</string>
+	<string name="memo_sharefacebook">Share via Facebook</string>
+	<string name="memo_share">Share via Application</string>
+	<string name="memo_backToList">Back to List</string>
+	
+	<!-- Common share -->
+	<string name="share_message">%1$s would like to share a %2$s expression with you. Click link for more details: %3$s</string>
+	<string name="share_intent">Share link via</string>
+	<string name="share_error">Error occurred</string>
+	<string name="share_fbCaption">Memoling - Master Vocabulary</string>
+	<string name="share_generatingShortcut">Generating shortcut</string>
+	<string name="share_fbGettingFriends">Looking for Facebook friends</string>
+	<string name="share_fbGettingFriendsError">Error occurred while looking for Facebook friends</string>
+    
     <!-- MemoBase Fragment -->
     <string name="memobase_title">Library</string>
     <string name="memobase_backToList">Back to list</string>
@@ -120,7 +148,6 @@
     <string name="memobase_lblName">Library Name</string>
     <string name="memobase_lblProcessing">Processing&#8230;</string>
     <string name="memobase_getFileError">Failed to load a file</string>
-    <string name="memobase_exported">File has been saved at location: </string>
     <string name="memobase_newMemoBase">New library</string>
     <string name="memobase_inoutTitle">Select format</string>
     <string name="memobase_inoutConfirm">Confirm</string>
@@ -237,6 +264,7 @@
         <item>Animals</item>
         <item>Nature</item>
         <item>Plants</item>
+        <item>Movies</item>
         <item>Food</item>
         <item>Unspecified</item>
         <item>Activities</item>
@@ -266,7 +294,20 @@
     <string name="preferences_enableWordNotification_summary">Receive daily notification with word of a day with it translation</string>
     <string name="preferences_wordOfTheDay_title">Word of the Day Notification</string>
     <string name="preferences_wordOfTheDay_summary">Set when notification should arrive</string>
-
+	<string name="preferences_facebookLogout">Logged out</string>
+	<string name="preferences_languageAccent_title">Text To Speech Accent</string>
+   	<string name="preferences_languageAccent_summary">Only English accents are supproted</string>
+   	
+   	<string-array name="preferences_languageAccent_entries">
+   	    <item>USA</item>
+   	    <item>UK</item>
+   	</string-array>
+   	
+   	<string-array name="preferences_languageAccent_values">
+   	    <item>0</item>
+   	    <item>1</item>
+   	</string-array>
+	
     <!-- Word of the day Fragment -->
     <string name="wordoftheday_title">Word of the Day</string>
     <string name="wordoftheday_lblEnable">Do you want receive Word of the Day notifications?</string>
@@ -304,7 +345,7 @@
     <string name="crossword_horizontal">Horizontal</string>
     <string name="crossword_vertical">Vertical</string>
     <string name="crossword_submit">Submit</string>
-    
+
     <string-array name="games_source">
         <item>Current Library</item>
         <item>English Words</item>
@@ -314,6 +355,17 @@
         <item>Italian Words</item>
         <item>Polish Words</item>
     </string-array>
+    
+    <!-- Download Link Activity -->
+    <string name="downloadlink_title">Memoling Share</string>
+	<string name="downloadlink_lblMemoBase">Library</string>
+	<string name="downloadlink_lblMemo">Expression</string>
+	<string name="downloadlink_lblPartA">First Part</string>
+	<string name="downloadlink_lblPartB">Second Part</string>
+	<string name="downloadlink_lblDefinition">Definition</string>
+	<string name="downloadlink_lblWord">Expression</string>
+	<string name="downloadlink_errorUrlMalformed">Invalid URL link</string>
+	<string name="downloadlink_errorDownload">Connection error</string>
 
     <!-- WordOfTheDayReceiver -->
     <string name="wordofthedayreceiver_title">Word of the Day</string>

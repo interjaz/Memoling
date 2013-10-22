@@ -1,7 +1,6 @@
 package app.memoling.android.adapter;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

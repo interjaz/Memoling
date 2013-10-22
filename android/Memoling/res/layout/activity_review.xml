@@ -24,7 +24,7 @@
                     android:layout_margin="5dp" >
 
                     <TextView
-                        android:id="@+id/textView1"
+                        android:id="@+id/memo_lblLang"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/review_lblLanguage"
@@ -54,7 +54,7 @@
                     android:layout_margin="5dp" >
 
                     <TextView
-                        android:id="@+id/textView2"
+                        android:id="@+id/textView1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/review_lblLanguage"

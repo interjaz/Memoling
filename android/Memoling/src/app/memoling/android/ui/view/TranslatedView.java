@@ -19,6 +19,14 @@ public class TranslatedView implements IGet<String> {
 		m_from = from;
 		m_to = to;
 	}
+	
+	public Word from() {
+		return m_from;
+	}
+	
+	public Word to() {
+		return m_to;
+	}
 
 	@Override
 	public String get(int index) {

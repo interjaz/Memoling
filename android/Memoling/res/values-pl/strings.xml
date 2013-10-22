@@ -51,6 +51,8 @@
     <string name="memolist_ctxmenu_deleteQuestion">Na pewno? Raz usunięte memo, nie może zostać przywrócone. Zalecana deaktywacja.</string>
     <string name="memolist_ctxmenu_deleteYes">Tak, na pewno.</string>
     <string name="memolist_ctxmenu_deleteNo">Nie, zmieniłem/am zdanie.</string>
+	<string name="memolist_ctxmenu_sharefacebook">Udostępinij przez Facebooka</string>
+	<string name="memolist_ctxmenu_share">Udostępnij innej aplikacji</string>
     <string name="memolist_missingWords">Fraza nie może być pusta</string>
     <string name="memolist_goToLibraries">Biblioteka</string>
     <string name="memolist_settings">Ustawienia</string>
@@ -61,7 +63,7 @@
     <string name="memolist_wordOfTheDay">Słówko dnia</string>
 	<string name="memolist_games">Gry językowe</string>
     <string name="memolist_repeatAll">Powtórz wszystkie</string>
-<string name="memolist_sentencesTraining">Trening z użyciem zdań</string>
+	<string name="memolist_sentencesTraining">Trening z użyciem zdań</string>
 
     <!-- MemoBaseList Fragment -->
     <string name="memobaselist_title">Biblioteki</string>
@@ -79,6 +81,8 @@
     <string name="memobaselist_ctxmenu_deleteYes">Tak, na pewno.</string>
     <string name="memobaselist_ctxmenu_deleteNo">Nie, zmieniłem/łam zdanie.</string>
     <string name="memobaselist_ctxmenu_details">Szczegóły</string>
+    <string name="memobaselist_ctxmenu_shareApplication">Udostępnij innej aplikacji</string>
+    <string name="memobaselist_ctxmenu_shareFacebook">Udostępnij przez Facebook</string>
     <string name="memobaselist_setting_about">O aplikacji</string>
     <string name="memobaselist_fbFailed">Problem podczas uwierzytelniania.</string>
     <string name="memobaselist_setting_statistics">Statystyki</string>
@@ -89,7 +93,7 @@
     <string name="memo_lblLastReviewed">Ostatnio powtórzono:</string>
     <string name="memo_lblDisplayed">Wyświetlono:</string>
     <string name="memo_lblCorrectAnswered">Poprawnie odpowiedziano:</string>
-    <string name="memo_lblwordA">Pierwsze wyrażenie:</string>
+    <string name="memo_lblWordA">Pierwsze wyrażenie:</string>
     <string name="memo_lblLangA">Język pierwszego wyrażenia:</string>
     <string name="memo_lblWordB">Drugie wyrażenie:</string>
     <string name="memo_lblLangB">Second part language:</string>
@@ -102,8 +106,21 @@
 	<string name="memo_description">Opis</string>
     <string name="memo_sentences">Zdania</string>
     <string name="memo_sentencesDownloading">Pobieram &#8230;</string>
-    <string name="memo_sentencesNoSentences">Nie znaleziono zdań</string>
-
+    <string name="memo_notFound">Nie znaleziono</string>
+	<string name="memo_sharefacebook">Share over Facebook</string>
+	<string name="memo_share">Udostępnij link</string>
+	<string name="memo_backToList">Powrót do listy</string>
+	
+	<!-- Common share -->
+	<string name="share_message">%1$s udotępnił(-a) tobie wyrażenie %2$s . Otwórz link aby zobaczyć szczegóły: %3$s</string>
+	<string name="share_intent">Udostępnij link przez</string>
+	<string name="share_error">Wystąpił błąd</string>
+	<string name="share_fbCaption">Memoling - Wzbogać swoje słownictwo</string>
+	<string name="share_generatingShortcut">Tworzę link</string>
+	<string name="share_fbGettingFriends">Szukam twoich przyjaciół</string>
+	<string name="share_fbGettingFriendsError">Wystąpił błąd podczas szukania Facebookowych przyjaciół</string>
+    
+  
     <!-- MemoBase Fragment -->
     <string name="memobase_title">Biblioteka</string>
     <string name="memobase_backToList">Powrót do listy</string>
@@ -118,7 +135,6 @@
     <string name="memobase_lblName">Nazwa biblioteki</string>
     <string name="memobase_lblProcessing">Przetwarzanie&#8230;</string>
     <string name="memobase_getFileError">Błąd z odczytem pliku</string>
-    <string name="memobase_exported">Plik został zapisany w: </string>
     <string name="memobase_newMemoBase">Nowa biblioteka</string>
     <string name="memobase_inoutTitle">Wybierz format</string>
     <string name="memobase_inoutConfirm">Potwierdź</string>
@@ -235,6 +251,7 @@
         <item>Zwierzęta</item>
         <item>Natura</item>
         <item>Rośliny</item>
+        <item>Filmy</item>
         <item>Jedzenie</item>
         <item>Nieokreślone</item>
         <item>Aktywności</item>
@@ -265,7 +282,20 @@
     <string name="preferences_enableWordNotification_summary">Chcę otrzymywać powiadomienia</string>
     <string name="preferences_wordOfTheDay_title">Słówka dnia</string>
     <string name="preferences_wordOfTheDay_summary">Ustaw kiedy słowka mają zostać dostarczone</string>
+	<string name="preferences_facebookLogout">Wylogowano</string>
+	<string name="preferences_languageAccent_title">Syntezator mowy - Wymowa</string>
+   	<string name="preferences_languageAccent_summary">Tylko angielskie akcenty są obsługiwane</string>
 
+   	<string-array name="preferences_languageAccent_entries">
+   	    <item>USA</item>
+   	    <item>UK</item>
+   	</string-array>
+   	
+   	<string-array name="preferences_languageAccent_values">
+   	    <item>0</item>
+   	    <item>1</item>
+   	</string-array>
+	
 	<!-- Word of the day Fragment -->
 	<string name="wordoftheday_title">Słówko dnia</string>
     <string name="wordoftheday_lblEnable">Czy chcesz otrzymywać codziennie nowe słówko?</string>
@@ -326,6 +356,17 @@
     <string name="wordofthedayreceiver_lblDescriptionTo">Przetłumaczony opis</string>
     <string name="wordofthedayreceiver_saved">Zapisz</string>
     <string name="wordofthedayreceiver_deleted">Usuń</string>
+    
+    <!-- Download Link Activity -->
+    <string name="downloadlink_title">Memoling Share</string>
+	<string name="downloadlink_lblMemoBase">Biblioteka</string>
+	<string name="downloadlink_lblMemo">Wyrażenie</string>
+	<string name="downloadlink_lblPartA">Pierwsza część</string>
+	<string name="downloadlink_lblPartB">Druga część</string>
+	<string name="downloadlink_lblDefinition">Opis</string>
+	<string name="downloadlink_lblWord">Wyrażenie</string>
+	<string name="downloadlink_errorUrlMalformed">Nieprawidłowy link</string>
+	<string name="downloadlink_errorDownload">Błąd połączenia</string>
     
     <!-- General -->
     <string name="dummy_content">DUMMY\nCONTENT</string>

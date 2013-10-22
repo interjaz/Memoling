@@ -18,7 +18,9 @@ import app.memoling.android.R;
 import app.memoling.android.adapter.MemoAdapter;
 import app.memoling.android.helper.AppLog;
 import app.memoling.android.ui.AdActivity;
+import app.memoling.android.ui.ApplicationActivity;
 import app.memoling.android.ui.ResourceManager;
+import app.memoling.android.ui.fragment.MemoListFragment;
 import app.memoling.android.wordoftheday.provider.Provider;
 import app.memoling.android.wordoftheday.provider.ProviderAdapter;
 import app.memoling.android.wordoftheday.resolver.MemoOfTheDay;
@@ -92,9 +94,13 @@ public class WordOfTheDayReceiverActivity extends AdActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
+		Intent intent = new Intent(this, ApplicationActivity.class);
+		
 		if (item.getItemId() == 0) {
 			// Save
-			saveMemo();
+			String memoBaseId = saveMemo();
+			intent.putExtra(MemoListFragment.MemoBaseId, memoBaseId);
+			
 			Toast.makeText(this, getString(R.string.wordofthedayreceiver_saved), Toast.LENGTH_SHORT).show();
 		} else if (item.getItemId() == 1) {
 			// Delete
@@ -102,6 +108,8 @@ public class WordOfTheDayReceiverActivity extends AdActivity {
 			Toast.makeText(this, getString(R.string.wordofthedayreceiver_deleted), Toast.LENGTH_SHORT).show();
 		}
 
+		// Start memoling
+		startActivity(intent);
 		finish();
 
 		return super.onOptionsItemSelected(item);
@@ -163,8 +171,9 @@ public class WordOfTheDayReceiverActivity extends AdActivity {
 		}
 	}
 
-	private void saveMemo() {
+	private String saveMemo() {
 		MemoAdapter adapter = new MemoAdapter(this);
 		adapter.add(m_memo);
+		return m_memo.getMemoBaseId();
 	}
 }

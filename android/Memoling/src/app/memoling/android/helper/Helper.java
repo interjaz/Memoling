@@ -258,5 +258,5 @@ public class Helper {
 	    } while(paint.measureText(str) < maxWidth);
 
 	    return size;
-	} 
+	}
 }

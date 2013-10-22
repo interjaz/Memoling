@@ -32,6 +32,8 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 	private DrawerAdapter m_adapterDrawer;
 	private ActionBarDrawerToggle m_toggleDrawer;
 	private FragmentManager m_fragmentManager;
+	
+	public final static int FragmentContainerId = R.id.application_layContent; 
 
 	private Bundle m_onRequestFinishFragmentResult;
 
@@ -155,7 +157,7 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 
 	public void requestFragmentReplace(ApplicationFragment fragment) {
 		m_layDrawer.closeDrawers();
-		m_fragmentManager.beginTransaction().replace(R.id.application_layContent, fragment).addToBackStack(null)
+		m_fragmentManager.beginTransaction().replace(FragmentContainerId, fragment).addToBackStack(null)
 				.commit();
 	}
 
@@ -175,7 +177,7 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 
 	private ApplicationFragment getCurrentFragment() {
 		ApplicationFragment fragment = (ApplicationFragment) m_fragmentManager
-				.findFragmentById(R.id.application_layContent);
+				.findFragmentById(FragmentContainerId);
 		return fragment;
 	}
 
@@ -198,12 +200,12 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 			fragment = new MemoListFragment();
 
 			// Insert the fragment
-			m_fragmentManager.beginTransaction().replace(R.id.application_layContent, fragment).commit();
+			m_fragmentManager.beginTransaction().replace(FragmentContainerId, fragment).commit();
 
 		} else if (fragment != null) {
 
 			// Insert the fragment
-			m_fragmentManager.beginTransaction().replace(R.id.application_layContent, fragment).addToBackStack(null)
+			m_fragmentManager.beginTransaction().replace(FragmentContainerId, fragment).addToBackStack(null)
 					.commit();
 
 		} else if (onClickListener != null) {
@@ -225,6 +227,7 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 		getCurrentFragment().onActivityResult(requestCode, resultCode, data);
 	}
 

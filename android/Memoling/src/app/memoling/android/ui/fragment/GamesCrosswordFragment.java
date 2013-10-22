@@ -77,7 +77,7 @@ public class GamesCrosswordFragment extends GamesMatrixGame {
 		resources.setFont(m_btnHorizontal, thinFont);
 		resources.setFont(m_btnSubmit, thinFont);
 		resources.setFont(m_txtWord, thinFont);
-		resources.setFont(contentView, R.id.textView2, thinFont);
+		resources.setFont(contentView, R.id.textView1, thinFont);
 		
 		m_txtPaint = new Paint();
 		m_txtPaint.setStyle(Style.STROKE);

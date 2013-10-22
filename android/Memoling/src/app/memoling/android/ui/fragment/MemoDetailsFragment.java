@@ -16,6 +16,7 @@ import android.widget.TextView;
 import app.memoling.android.R;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoSentence;
+import app.memoling.android.entity.QuizletDefinition;
 import app.memoling.android.helper.DateHelper;
 import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.fragment.MemoFragment.IMemoPagerFragment;
@@ -55,7 +56,7 @@ public class MemoDetailsFragment extends Fragment implements IMemoPagerFragment 
 		m_lblCorrectAnswered.setTypeface(thinFont);
 
 		resources.setFont(contentView, R.id.textView3, thinFont);
-		resources.setFont(contentView, R.id.textView4, thinFont);
+		resources.setFont(contentView, R.id.downloadlink_lblDefinitionALabel, thinFont);
 		resources.setFont(contentView, R.id.textView5, thinFont);
 		resources.setFont(contentView, R.id.textView6, thinFont);
 
@@ -104,10 +105,6 @@ public class MemoDetailsFragment extends Fragment implements IMemoPagerFragment 
 		m_sentenceDelayedRunnable = runnable;
 	}
 
-	@Override
-	public void setSentences(ArrayList<MemoSentence> sentences) {
-	}
-
 	private class ChbEnabledEventHandler implements OnCheckedChangeListener {
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -120,5 +117,15 @@ public class MemoDetailsFragment extends Fragment implements IMemoPagerFragment 
 	@Override
 	public int getPosition() {
 		return 2;
+	}
+
+	@Override
+	public void setTatoeba(ArrayList<MemoSentence> memoSentences) {
+		// No implementation
+	}
+
+	@Override
+	public void setQuizlet(ArrayList<QuizletDefinition> definitions) {	
+		// No implementation	
 	}
 }

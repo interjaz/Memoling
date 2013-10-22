@@ -3,11 +3,10 @@ package app.memoling.android.facebook;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
-import app.memoling.android.preference.Preferences;
+import com.facebook.model.GraphUser;
 
 public class FacebookUser {
-
+	
 	private String m_id;
 	private String m_name;
 	private String m_firstName;
@@ -24,7 +23,16 @@ public class FacebookUser {
 	private boolean m_verified;
 	private String m_updatedTime;
 
+	public FacebookUser() {
+		
+	}
+	
+	public FacebookUser(GraphUser user) throws JSONException {
+		facebookDeserialize(user.getInnerJSONObject());
+	}
+	
 	public String getId() {
+		//return "01_test";
 		return m_id;
 	}
 
@@ -194,30 +202,5 @@ public class FacebookUser {
 		return this;
 	}
 
-	private static FacebookUser m_user;
-
-	public static FacebookUser read(Context context) {
-		if (m_user != null) {
-			return m_user;
-		}
-
-		Preferences preferences = new Preferences(context);
-		m_user = preferences.getFacebookUser();
-
-		return m_user;
-	}
 	
-	public static FacebookUser read() {
-		return m_user;
-	}
-	
-	public static void save(FacebookUser user, Context context) {
-		if(user == null) {
-			return;
-		}
-		
-		m_user = user;
-		Preferences preferences = new Preferences(context);
-		preferences.setFacebookUser(user);
-	}
 }

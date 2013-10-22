@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content" >
 
                 <TextView
-                    android:id="@+id/textView1"
+                    android:id="@+id/memo_lblLang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/games_source" />
@@ -43,7 +43,7 @@
                 android:layout_marginBottom="5dp" >
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/textView1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/games_score" />
@@ -244,7 +244,10 @@
                     android:inputType="textFilter"
                     android:maxLength="1"
                     android:scaleType="fitStart"
-                    android:textSize="30sp" />
+                    android:textSize="30sp" >
+
+                    <requestFocus />
+                </EditText>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

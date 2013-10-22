@@ -143,8 +143,8 @@ public class ReviewActivity extends AdActivity {
 		m_memoAdapter = new MemoAdapter(this);
 
 		// Set Fonts
+		m_resources.setFont(R.id.memo_lblLang, m_resources.getThinFont());
 		m_resources.setFont(R.id.textView1, m_resources.getThinFont());
-		m_resources.setFont(R.id.textView2, m_resources.getThinFont());
 
 		// Set Animations
 		m_fadeIn = new AlphaAnimation(0.0f, 1.0f);

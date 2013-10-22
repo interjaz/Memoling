@@ -1,11 +1,9 @@
 package app.memoling.android.ui.activity;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
 import app.memoling.android.R;
-import app.memoling.android.R.layout;
-import app.memoling.android.R.menu;
 
 public class QuizletActivity extends Activity {
 

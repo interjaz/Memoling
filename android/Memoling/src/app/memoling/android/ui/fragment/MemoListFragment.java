@@ -21,7 +21,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -39,6 +38,7 @@ import app.memoling.android.entity.Word;
 import app.memoling.android.helper.AppLog;
 import app.memoling.android.helper.Helper;
 import app.memoling.android.helper.Lazy;
+import app.memoling.android.helper.ShareHelper;
 import app.memoling.android.helper.VoiceInputHelper;
 import app.memoling.android.preference.custom.MemoListPreference;
 import app.memoling.android.thread.WorkerThread;
@@ -47,6 +47,7 @@ import app.memoling.android.translator.Translator;
 import app.memoling.android.translator.TranslatorResult;
 import app.memoling.android.ui.ApplicationActivity;
 import app.memoling.android.ui.ApplicationFragment;
+import app.memoling.android.ui.FacebookFragment;
 import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.activity.PreferenceLegacyActivity;
 import app.memoling.android.ui.activity.ReviewActivity;
@@ -66,7 +67,7 @@ import app.memoling.android.wordlist.WordsFinder;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 
-public class MemoListFragment extends ApplicationFragment implements ITranslateComplete, IWordsFindComplete {
+public class MemoListFragment extends FacebookFragment implements ITranslateComplete, IWordsFindComplete {
 
 	public final static String MemoBaseId = "MemoBaseId";
 	public final static String NotificationId = "NotificationId";
@@ -75,7 +76,7 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 	public final static int VoiceInputRequestCode = 1;
 
 	private Button m_btnSave;
-	private AutoCompleteTextView m_txtAdd;
+	private EditText m_txtAdd;
 	private EditText m_txtAddTranslated;
 	private ListView m_lstWords;
 
@@ -84,6 +85,8 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 	private DelayedLookup m_lastLookup;
 	private int m_delayedLookupDelay = 500;
 	private ModifiableInjectableAdapter<MemoView> m_wordsAdapter;
+
+	private ListView m_lstSuggestions;
 
 	private LanguageSpinner m_spLanguageFrom;
 	private LanguageSpinner m_spLanguageTo;
@@ -107,6 +110,8 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 	private int m_searchLimit = 10;
 
 	private FragmentState m_fragmentState;
+
+	private ShareHelper m_shareHelper;
 
 	//
 	// Base class implementation
@@ -137,19 +142,22 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 		m_btnSave.setTypeface(thinFont);
 
 		// AutoCompleteTextView
-		m_txtAdd = (AutoCompleteTextView) contentView.findViewById(R.id.memolist_txtAddMemo);
+		m_txtAdd = (EditText) contentView.findViewById(R.id.memolist_txtAddMemo);
 		TxtAddTextEventHandler txtAddTextEventHandler = new TxtAddTextEventHandler();
-		m_suggestionAdapter = new ScrollableModifiableComplexTextAdapter<TranslatedView>(getActivity(),
-				R.layout.adapter_memolist_suggestion, new int[] { R.id.memolist_suggestion_txtWord,
-						R.id.memolist_suggestion_txtTranslation }, new Typeface[] { thinFont, thinFont });
-		m_suggestionAdapter.setOnScrollListener(txtAddTextEventHandler);
-		m_txtAdd.setAdapter(m_suggestionAdapter);
 		m_txtAdd.addTextChangedListener(txtAddTextEventHandler);
-		m_txtAdd.setOnItemClickListener(txtAddTextEventHandler);
 		m_txtAdd.setTypeface(thinFont);
 
 		m_txtAddTranslated = (EditText) contentView.findViewById(R.id.memolist_txtAddMemoTranslated);
 		m_txtAddTranslated.setTypeface(thinFont);
+
+		m_lstSuggestions = (ListView) contentView.findViewById(R.id.memolist_lstSuggestions);
+		LstSuggestionEventHandler lstSuggestionEventHandler = new LstSuggestionEventHandler();
+		m_suggestionAdapter = new ScrollableModifiableComplexTextAdapter<TranslatedView>(getActivity(),
+				R.layout.adapter_memolist_suggestion, new int[] { R.id.memolist_suggestion_txtWord,
+						R.id.memolist_suggestion_txtTranslation }, new Typeface[] { thinFont, thinFont });
+		m_suggestionAdapter.setOnScrollListener(lstSuggestionEventHandler);
+		m_lstSuggestions.setAdapter(m_suggestionAdapter);
+		m_lstSuggestions.setOnItemClickListener(lstSuggestionEventHandler);
 
 		// List View
 		m_lstWords = (ListView) contentView.findViewById(R.id.memolist_list);
@@ -174,11 +182,14 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 		m_btnWhatsNew.setOnClickListener(new BtnWhatsNewEventHandler());
 		resources.setFont(m_btnWhatsNew, thinFont);
 
+		resources.setFont(contentView, R.id.memo_lblLang, thinFont);
 		resources.setFont(contentView, R.id.textView1, thinFont);
-		resources.setFont(contentView, R.id.textView2, thinFont);
 
 		m_fragmentState = (m_fragmentState == null) ? new FragmentState().fromBundle(savedInstanceState)
 				: m_fragmentState;
+
+		// Share Helper
+		m_shareHelper = new ShareHelper(this, false);
 
 		// Look for send action
 		Intent sendIntent = getActivity().getIntent();
@@ -264,11 +275,10 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 
 	@Override
 	public boolean onContextItemSelected(android.view.MenuItem item) {
-		Memo memo;
+		final Memo memo = m_selectedItem.getMemo();
 
 		switch (item.getItemId()) {
 		case R.id.memolist_menu_list_activate:
-			memo = m_selectedItem.getMemo();
 			memo.setActive(!memo.getActive());
 			m_memoAdapter.update(memo);
 			m_wordsAdapter.notifyDataSetChanged();
@@ -285,7 +295,7 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 							new android.content.DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
-									m_memoAdapter.delete(m_selectedItem.getMemo().getMemoId());
+									m_memoAdapter.delete(memo.getMemoId());
 									bindData();
 								}
 							})
@@ -297,6 +307,12 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 								}
 							}).setIcon(R.drawable.ic_dialog_alert_holo_dark).create().show();
 
+			break;
+		case R.id.memolist_menu_list_shareapplication:
+			m_shareHelper.shareApplication(memo.getMemoId());
+			break;
+		case R.id.memolist_menu_list_sharefacebook:
+			m_shareHelper.shareFacebook(memo.getMemoId());
 			break;
 		}
 
@@ -329,8 +345,6 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 					m_suggestionAdapter.insert(wordView, wordPosition);
 				}
 			}
-
-			invalidateTxtAddDropdown();
 		}
 	}
 
@@ -386,8 +400,6 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 				}
 			}
 		}
-
-		invalidateTxtAddDropdown();
 
 	}
 
@@ -452,11 +464,10 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 			int to = m_spLanguageTo.getSelectedItemPosition();
 			m_spLanguageTo.setSelection(from);
 			m_spLanguageFrom.setSelection(to);
-			invalidateTxtAddDropdown();
 		}
 	}
 
-	private class TxtAddTextEventHandler implements TextWatcher, OnItemClickListener, OnScrollFinishedListener {
+	private class TxtAddTextEventHandler implements TextWatcher {
 
 		@Override
 		public void afterTextChanged(Editable s) {
@@ -470,15 +481,7 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 				m_btnSave.setEnabled(true);
 			}
 
-			if (s.toString().indexOf(TranslatedView.Separator) != -1) {
-				String[] data = m_txtAdd.getText().toString().split(TranslatedView.Separator);
-				m_txtAdd.setText(data[0]);
-				m_txtAddTranslated.setText(data[1]);
-				m_txtAdd.dismissDropDown();
-				return;
-			}
-
-			if (s.length() > 2) {
+			if (s.length() > 1) {
 
 				if (m_lastLookup != null) {
 					m_lastLookup.cancel(true);
@@ -486,6 +489,13 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 
 				m_lastLookup = new DelayedLookup();
 				m_lastLookup.execute(s.toString());
+
+				m_lstWords.setVisibility(View.GONE);
+				m_lstSuggestions.setVisibility(View.VISIBLE);
+
+			} else {
+				m_lstWords.setVisibility(View.VISIBLE);
+				m_lstSuggestions.setVisibility(View.GONE);
 			}
 		}
 
@@ -499,11 +509,26 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
 			// Nothing
 		}
+	}
+
+	private class LstSuggestionEventHandler implements OnItemClickListener, OnScrollFinishedListener {
 
 		@Override
-		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			if (m_lastLookup != null) {
 				m_lastLookup.cancel(true);
+			}
+
+			TranslatedView selectedTranslation = m_suggestionAdapter.getItem(position);
+			Word from = selectedTranslation.from();
+			Word to = selectedTranslation.to();
+
+			if (from != null) {
+				m_txtAdd.setText(from.getWord());
+				m_txtAdd.setSelection(from.getWord().length());
+			}
+			if (to != null) {
+				m_txtAddTranslated.setText(to.getWord());
 			}
 		}
 
@@ -739,11 +764,6 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 		return new Helper.Pair<Language, Language>(fLangMax, sLangMax);
 	}
 
-	private synchronized void invalidateTxtAddDropdown() {
-		m_suggestionAdapter.notifyDataSetChanged();
-		m_txtAdd.showDropDown();
-	}
-
 	//
 	// Internal classes
 	//
@@ -775,11 +795,16 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 			String strWord = strWords[strWords.length - 1];
 			m_lastWord = new Word(strWord);
 
-			m_wordsFinder.findWordsStartingWith(m_lastWord,
-					((LanguageView) m_spLanguageFrom.getSelectedItem()).getLanguage(), MemoListFragment.this,
-					m_lastSearchLimit, m_searchLimit);
+			// This can be null if rotated
+			if (m_spLanguageFrom.getSelectedItem() != null) {
 
-			m_lastSearchLimit += m_searchLimit;
+				m_wordsFinder.findWordsStartingWith(m_lastWord,
+						((LanguageView) m_spLanguageFrom.getSelectedItem()).getLanguage(), MemoListFragment.this,
+						m_lastSearchLimit, m_searchLimit);
+
+				m_lastSearchLimit += m_searchLimit;
+			}
+
 			return null;
 		}
 
@@ -842,13 +867,12 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 					}
 				}));
 
-		drawer.add(new DrawerView(R.drawable.ic_game, R.string.memolist_games,
-				new Lazy<ApplicationFragment>() {
-					public ApplicationFragment create() {
-						ApplicationFragment fragment = new GamesFragment();
-						return fragment;
-					}
-				}));
+		drawer.add(new DrawerView(R.drawable.ic_game, R.string.memolist_games, new Lazy<ApplicationFragment>() {
+			public ApplicationFragment create() {
+				ApplicationFragment fragment = new GamesFragment();
+				return fragment;
+			}
+		}));
 
 		drawer.add(new DrawerView(R.drawable.ic_statistics, R.string.memobaselist_setting_statistics,
 				new Lazy<ApplicationFragment>() {
@@ -865,7 +889,7 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 				startActivity(intent);
 			}
 		}));
-		
+
 		drawer.add(new DrawerView(R.drawable.ic_info, R.string.memobaselist_setting_about,
 				new Lazy<ApplicationFragment>() {
 					public ApplicationFragment create() {
@@ -925,13 +949,16 @@ public class MemoListFragment extends ApplicationFragment implements ITranslateC
 
 	@Override
 	public void onDestroyView() {
-		MemoListPreference pref = new MemoListPreference();
-		pref.setMemoBaseId(m_memoBaseId);
-		pref.setLanguageFromCode(m_spLanguageFrom.getSelectedLanguage().getLanguage().getCode());
-		pref.setLanguageToCode(m_spLanguageTo.getSelectedLanguage().getLanguage().getCode());
-		getPreferences().setMemoListPreference(pref);
-		
-		m_fragmentState.save();
+		try {
+			MemoListPreference pref = new MemoListPreference();
+			pref.setMemoBaseId(m_memoBaseId);
+			pref.setLanguageFromCode(m_spLanguageFrom.getSelectedLanguage().getLanguage().getCode());
+			pref.setLanguageToCode(m_spLanguageTo.getSelectedLanguage().getLanguage().getCode());
+			getPreferences().setMemoListPreference(pref);
+			m_fragmentState.save();
+		} catch (Exception ex) {
+			AppLog.e("MemoListFragment.onDestroy", "Failed to destroy properyl", ex);
+		}
 		super.onDestroyView();
 	}
 

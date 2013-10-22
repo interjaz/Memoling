@@ -3,11 +3,9 @@ package app.memoling.android.webservice;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import app.memoling.android.Config;
 import app.memoling.android.entity.Language;
@@ -25,7 +23,7 @@ public class WsSentences {
 		void getComplete(ArrayList<MemoSentence> memoSentences);
 	}
 
-	public void get(String word, Language from, Language to, final IGetComplete onComplete) {
+	public static void get(String word, Language from, Language to, final IGetComplete onComplete) {
 		try {
 
 			String htmlWord = URLEncoder.encode(word, "utf-8");
@@ -42,7 +40,7 @@ public class WsSentences {
 
 						ArrayList<MemoSentence> sentences = new ArrayList<MemoSentence>();
 						for (int i = 0; i < array.length(); i++) {
-							MemoSentence sentence = parseMemoSentence(array.getJSONObject(i));
+							MemoSentence sentence = CanonicalConverter.parseMemoSentence(array.getJSONObject(i));
 							sentences.add(sentence);
 						}
 
@@ -65,31 +63,6 @@ public class WsSentences {
 		} catch (Exception ex) {
 			AppLog.e("WsSentences", "get", ex);
 			onComplete.getComplete(null);
-		}
-	}
-	
-	private static MemoSentence parseMemoSentence(JSONObject json) {
-
-		try {
-
-			MemoSentence sentence = new MemoSentence();
-
-			JSONObject original = json.getJSONObject("original");
-			JSONObject translated = json.getJSONObject("translated");
-
-			sentence.setMemoSentenceId(UUID.randomUUID().toString());
-
-			sentence.setOriginalSentence(original.getString("sentence"));
-			sentence.setOriginalLanguage(Language.parse(original.getString("languageIso639")));
-
-			sentence.setTranslatedSentence(translated.getString("sentence"));
-			sentence.setTranslatedLanguage(Language.parse(translated.getString("languageIso639")));
-
-			return sentence;
-
-		} catch (Exception ex) {
-			AppLog.e("WsSentcence", "parseMemoSentence", ex);
-			return null;
 		}
 	}
 

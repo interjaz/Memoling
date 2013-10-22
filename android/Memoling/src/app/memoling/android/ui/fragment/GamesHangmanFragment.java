@@ -109,7 +109,7 @@ public class GamesHangmanFragment extends ApplicationFragment implements TextWat
 
 		m_spSource = (Spinner) contentView.findViewById(R.id.hangman_spSource);
 		m_adapter = new ModifiableComplexTextAdapter<GamesSourceView>(getActivity(), R.layout.adapter_textdropdown,
-				new int[] { R.id.textView1 }, new Typeface[] { m_thinFont });
+				new int[] { R.id.memo_lblLang }, new Typeface[] { m_thinFont });
 		m_adapter.addAll(GamesSourceView.getSourceViewsWithMemos(getActivity()));
 		m_spSource.setAdapter(m_adapter);
 
@@ -121,8 +121,8 @@ public class GamesHangmanFragment extends ApplicationFragment implements TextWat
 		resources.setFont(m_txtLetter, m_thinFont);
 		resources.setFont(m_lblScore, m_thinFont);
 		resources.setFont(m_lblResult, m_thinFont);
+		resources.setFont(contentView, R.id.memo_lblLang, m_thinFont);
 		resources.setFont(contentView, R.id.textView1, m_thinFont);
-		resources.setFont(contentView, R.id.textView2, m_thinFont);
 
 		hideHangman();
 

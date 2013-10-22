@@ -60,8 +60,8 @@ public class MemoBaseListFragment extends ApplicationFragment {
 
 		m_memoBaseAdapter = new MemoBaseAdapter(getActivity());
 
+		resources.setFont(R.layout.adapter_memobaselist_listview, R.id.memo_lblLang, thinFont);
 		resources.setFont(R.layout.adapter_memobaselist_listview, R.id.textView1, thinFont);
-		resources.setFont(R.layout.adapter_memobaselist_listview, R.id.textView2, thinFont);
 
 		return contentView;
 	}

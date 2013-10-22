@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -36,6 +37,7 @@ import app.memoling.android.sync.Export;
 import app.memoling.android.sync.Import;
 import app.memoling.android.sync.SupervisedSync.OnSyncComplete;
 import app.memoling.android.ui.ApplicationFragment;
+import app.memoling.android.ui.FacebookFragment;
 import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.adapter.DrawerAdapter;
 import app.memoling.android.ui.adapter.ModifiableComplexTextAdapter;
@@ -47,7 +49,7 @@ import app.memoling.android.webservice.helper.PublishedMemoBaseUpload.IPublished
 
 import com.actionbarsherlock.view.MenuItem;
 
-public class MemoBaseFragment extends ApplicationFragment implements IPublishedMemoBaseUpload {
+public class MemoBaseFragment extends FacebookFragment implements IPublishedMemoBaseUpload {
 
 	private static final int MemolingFile = 0;
 	private static final int CsvFile = 1;
@@ -87,6 +89,8 @@ public class MemoBaseFragment extends ApplicationFragment implements IPublishedM
 
 	private int m_inoutSelectedWhich;
 	private int m_conflictResolveWhich;
+	
+	private InputMethodManager m_inputManager;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -124,24 +128,26 @@ public class MemoBaseFragment extends ApplicationFragment implements IPublishedM
 
 		m_cbxGenre = (Spinner) contentView.findViewById(R.id.memobase_cbxGenre);
 		m_genreAdapter = new ModifiableComplexTextAdapter<MemoBaseGenreView>(getActivity(),
-				R.layout.adapter_textdropdown, new int[] { R.id.textView1 }, new Typeface[] { thinFont });
+				R.layout.adapter_textdropdown, new int[] { R.id.memo_lblLang }, new Typeface[] { thinFont });
 		m_cbxGenre.setAdapter(m_genreAdapter);
 
 		m_genreDataAdapter = new MemoBaseGenreAdapter(getActivity());
 		m_memoBaseAdapter = new MemoBaseAdapter(getActivity());
 
 		// Set fonts
+		resources.setFont(contentView, R.id.memo_lblLang, thinFont);
 		resources.setFont(contentView, R.id.textView1, thinFont);
-		resources.setFont(contentView, R.id.textView2, thinFont);
 		resources.setFont(contentView, R.id.textView3, thinFont);
-		resources.setFont(contentView, R.id.textView4, thinFont);
+		resources.setFont(contentView, R.id.downloadlink_lblDefinitionALabel, thinFont);
 		resources.setFont(contentView, R.id.textView5, thinFont);
 		resources.setFont(contentView, R.id.textView6, thinFont);
-		resources.setFont(contentView, R.id.textView7, thinFont);
+		resources.setFont(contentView, R.id.downloadlink_lblDefinitionBLabel, thinFont);
 		resources.setFont(contentView, R.id.textView8, thinFont);
 		resources.setFont(contentView, R.id.textView9, thinFont);
 
-		m_publishedUpload = new PublishedMemoBaseUpload(getActivity(), this);
+		m_publishedUpload = new PublishedMemoBaseUpload(this, this);
+		m_inputManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		
 
 		return contentView;
 	}
@@ -151,7 +157,6 @@ public class MemoBaseFragment extends ApplicationFragment implements IPublishedM
 		super.onActivityResult(requestCode, resultCode, data);
 
 		Context ctx = getActivity();
-		m_publishedUpload.onActivityResult(requestCode, resultCode, data);
 
 		if (resultCode == Activity.RESULT_OK) {
 
@@ -254,7 +259,11 @@ public class MemoBaseFragment extends ApplicationFragment implements IPublishedM
 	public class BtnUploadEventHandler implements OnClickListener {
 		@Override
 		public void onClick(View v) {
+
 			m_layLibrary.setVisibility(View.GONE);
+			m_inputManager.hideSoftInputFromWindow(m_txtName.getWindowToken(), 0);
+			m_inputManager.hideSoftInputFromWindow(m_txtDescription.getWindowToken(), 0);
+			
 			String genreId = m_genreAdapter.getItem(m_cbxGenre.getSelectedItemPosition()).getGenre()
 					.getMemoBaseGenreId();
 			m_publishedUpload.upload(m_memoBaseId, genreId, m_txtDescription.getText().toString());

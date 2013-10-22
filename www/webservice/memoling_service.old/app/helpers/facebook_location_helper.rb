@@ -1,2 +1,0 @@
-module FacebookLocationHelper
-end

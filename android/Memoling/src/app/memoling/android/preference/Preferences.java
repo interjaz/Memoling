@@ -1,6 +1,7 @@
 package app.memoling.android.preference;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,13 +30,20 @@ public class Preferences {
 	public final static String ABOUT_FRAGMENT_SEEN = "ABOUT_FRAGMENT_SEEN";
 	public final static String LAST_MEMOBASE_ID = "LAST_MEMOBASE_ID";
 	public final static String WORDOFTHEDAY_TIME = "WORDOFTHEDAY_TIME";
+	public final static String LST_LANGUAGE_ACCENT = "LST_LANGUAGE_ACCENT";
 
 	private SharedPreferences m_sharedPreferences;
-
+	private Context m_context;
+	
 	public Preferences(Context context) {
+		m_context = context;
 		m_sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 	}
 
+	public Context getContext() {
+		return m_context;
+	}
+	
 	private String get(String key) {
 		return m_sharedPreferences.getString(key, null);
 	}
@@ -184,6 +192,19 @@ public class Preferences {
 		time.setMinutes(TimePreference.getMinute(pref));
 
 		return time;
+	}
+	
+	public void setLanguageAccent(String value) {
+		set(LST_LANGUAGE_ACCENT, value);
+	}
+	
+	public Locale getEnglishAccent() {
+		String accent = get(LST_LANGUAGE_ACCENT);
+		if(accent != null && accent.equals("1")) {
+			return Locale.UK;
+		} else {
+			return Locale.US;
+		}
 	}
 
 }

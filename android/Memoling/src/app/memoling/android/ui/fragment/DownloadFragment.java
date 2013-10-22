@@ -59,8 +59,6 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 	private MemoBaseGenreAdapter m_genreDataAdapter;
 	private MemoBaseAdapter m_memoBaseDataAdapter;
 
-	private WsPublishedLibraries m_wsPublished;
-
 	private int m_page = 0;
 	private boolean m_noMoreLibraries = false;
 	private String m_lastPreviedPublishedMemoBaseId;
@@ -83,7 +81,7 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 
 		m_cbxGenre = (Spinner) contentView.findViewById(R.id.download_cbxGenre);
 		m_genreAdapter = new ModifiableComplexTextAdapter<MemoBaseGenreView>(getActivity(),
-				R.layout.adapter_textdropdown, new int[] { R.id.textView1 }, new Typeface[] { thinFont });
+				R.layout.adapter_textdropdown, new int[] { R.id.memo_lblLang }, new Typeface[] { thinFont });
 		m_cbxGenre.setAdapter(m_genreAdapter);
 
 		m_spLanguageA = (LanguageSpinner) contentView.findViewById(R.id.download_spLanguageA);
@@ -100,10 +98,10 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 		// m_lstPublished.setOnTouchListener(this);
 		m_lstPublished.setOnItemClickListener(new LstPublishedEventHandler());
 
+		resources.setFont(R.layout.adapter_download_publishedview, R.id.memo_lblLang, thinFont);
 		resources.setFont(R.layout.adapter_download_publishedview, R.id.textView1, thinFont);
-		resources.setFont(R.layout.adapter_download_publishedview, R.id.textView2, thinFont);
 		resources.setFont(R.layout.adapter_download_publishedview, R.id.textView3, thinFont);
-		resources.setFont(R.layout.adapter_download_publishedview, R.id.textView4, thinFont);
+		resources.setFont(R.layout.adapter_download_publishedview, R.id.downloadlink_lblDefinitionALabel, thinFont);
 
 		m_layPreview = (LinearLayout) contentView.findViewById(R.id.download_layPreview);
 
@@ -125,18 +123,16 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 		m_btnDownload.setOnClickListener(new BtnDownloadEventHandler());
 		resources.setFont(m_btnDownload, thinFont);
 
-		resources.setFont(R.layout.adapter_download_previewview, R.id.textView1, thinFont);
+		resources.setFont(R.layout.adapter_download_previewview, R.id.memo_lblLang, thinFont);
 
+		resources.setFont(contentView, R.id.memo_lblLang, thinFont);
 		resources.setFont(contentView, R.id.textView1, thinFont);
-		resources.setFont(contentView, R.id.textView2, thinFont);
 		resources.setFont(contentView, R.id.textView3, thinFont);
-		resources.setFont(contentView, R.id.textView4, thinFont);
+		resources.setFont(contentView, R.id.downloadlink_lblDefinitionALabel, thinFont);
 		resources.setFont(contentView, R.id.textView5, thinFont);
 
 		m_genreDataAdapter = new MemoBaseGenreAdapter(getActivity());
 		m_memoBaseDataAdapter = new MemoBaseAdapter(getActivity());
-
-		m_wsPublished = new WsPublishedLibraries();
 
 		bindData();
 
@@ -206,7 +202,7 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 			m_layPreview.setVisibility(View.GONE);
 			Toast.makeText(getActivity(), R.string.download_download_startDownload, Toast.LENGTH_SHORT).show();
 
-			m_wsPublished.download(m_lastPreviedPublishedMemoBaseId, new IDownloadComplete() {
+			WsPublishedLibraries.download(m_lastPreviedPublishedMemoBaseId, new IDownloadComplete() {
 				@Override
 				public void onDownloadComplete(PublishedMemoBase published) {
 					if (published == null) {
@@ -238,7 +234,7 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 
 			m_lastPreviedPublishedMemoBaseId = m_publishedAdapter.getItem(position).getPublishedMemoBase()
 					.getPublishedMemoBaseId();
-			m_wsPublished.preview(m_lastPreviedPublishedMemoBaseId, new IPreviewComplete() {
+			WsPublishedLibraries.preview(m_lastPreviedPublishedMemoBaseId, new IPreviewComplete() {
 				@Override
 				public void onPreviewComplete(PublishedMemoBase preview) {
 					if (preview == null) {
@@ -289,7 +285,7 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 			strLangB = langB.getLanguage().getCode();
 		}
 
-		m_wsPublished.search(keyword, strGenre, strLangA, strLangB, m_page, this);
+		WsPublishedLibraries.search(keyword, strGenre, strLangA, strLangB, m_page, this);
 	}
 
 	@Override

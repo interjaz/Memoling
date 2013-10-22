@@ -99,14 +99,14 @@ public abstract class GamesMatrixGame extends ApplicationFragment implements OnT
 
 		m_spSource = (Spinner) contentView.findViewById(R.id.matrixgame_spSource);
 		m_adapter = new ModifiableComplexTextAdapter<GamesSourceView>(getActivity(), R.layout.adapter_textdropdown,
-				new int[] { R.id.textView1 }, new Typeface[] { thinFont });
+				new int[] { R.id.memo_lblLang }, new Typeface[] { thinFont });
 		m_adapter.addAll(GamesSourceView.getSourceViews(getActivity()));
 		m_spSource.setAdapter(m_adapter);
 
 		m_spSource.setOnItemSelectedListener(this);
 
 		resources.setFont(m_lblResult, thinFont);
-		resources.setFont(contentView, R.id.textView1, thinFont);
+		resources.setFont(contentView, R.id.memo_lblLang, thinFont);
 
 		onCreateView(contentView);
 

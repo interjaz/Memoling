@@ -34,7 +34,7 @@ public class LanguageSpinner extends Spinner implements AdapterView.OnItemSelect
 		m_preferences = new Preferences(context);
 
 		m_spLanguageAdapter = new ModifiableComplexTextAdapter<LanguageView>(context, R.layout.adapter_textdropdown,
-				new int[] { R.id.textView1 }, new Typeface[] { resources.getThinFont() });
+				new int[] { R.id.memo_lblLang }, new Typeface[] { resources.getThinFont() });
 		
 		setAdapter(m_spLanguageAdapter);
 		setOnItemSelectedListener(this);
@@ -46,12 +46,17 @@ public class LanguageSpinner extends Spinner implements AdapterView.OnItemSelect
 		
 		if(languagePreferences != null) {
 			String[] codes = languagePreferences.split(",");
+			Language[] langs = new Language[codes.length];
 			LanguageView[] ordered = new LanguageView[codes.length];
+			
+			for(int i=0;i<codes.length;i++) {
+				langs[i] = Language.parse(codes[i]);
+			}
 			
 			for(Language lang : Language.values()) {
 				boolean isOrdered = false;
-				for(int i=0;i<codes.length;i++) {
-					if(codes[i].equals(lang.getCode())) {
+				for(int i=0;i<langs.length;i++) {
+					if(langs[i] == lang) {
 						ordered[i] = new LanguageView(lang);
 						break;
 					}
@@ -96,6 +101,10 @@ public class LanguageSpinner extends Spinner implements AdapterView.OnItemSelect
 	
 	public boolean isNotSelected() {
 		return this.getSelectedItemPosition() == AdapterView.INVALID_POSITION; 
+	}
+	
+	public boolean isLoaded() {
+		return m_loaded;
 	}
 	
 	public LanguageView getSelectedLanguage() {

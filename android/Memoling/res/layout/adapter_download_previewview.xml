@@ -13,7 +13,7 @@
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/memo_lblLang"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -34,9 +34,9 @@
         android:id="@+id/download_preview_lblLanguage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView1"
-        android:layout_alignBottom="@+id/textView1"
-        android:layout_toRightOf="@+id/textView1"
+        android:layout_alignBaseline="@+id/memo_lblLang"
+        android:layout_alignBottom="@+id/memo_lblLang"
+        android:layout_toRightOf="@+id/memo_lblLang"
         android:layout_marginLeft="10dp"
         android:text="TextView" />
     

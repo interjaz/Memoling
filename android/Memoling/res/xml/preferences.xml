@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    
+
     <Preference
         android:key="BTN_CLEAR_LANGPREF"
         android:summary="@string/preferences_btnClearLangPref_summary"
         android:title="@string/preferences_btnClearLangPref_title" />
-    
     <Preference
         android:key="BTN_CLEAR_FACEBOOK"
         android:summary="@string/preferences_btnClearFacebook_summary"
@@ -18,22 +17,28 @@
         android:summary="@string/preferences_learningSetSize_summary"
         android:title="@string/preferences_learningSetSize_title" />
 
-    <app.memoling.android.preference.custom.TimePreference 
+    <app.memoling.android.preference.custom.TimePreference
         android:defaultValue="15:00"
         android:key="WORDOFTHEDAY_TIME"
-        android:title="@string/preferences_wordOfTheDay_title"
-        android:summary="@string/preferences_wordOfTheDay_summary" />
+        android:summary="@string/preferences_wordOfTheDay_summary"
+        android:title="@string/preferences_wordOfTheDay_title" />
+
+    <ListPreference
+        android:key="LST_LANGUAGE_ACCENT"
+        android:entries="@array/preferences_languageAccent_entries"
+        android:entryValues="@array/preferences_languageAccent_values"
+        android:summary="@string/preferences_languageAccent_summary"
+        android:title="@string/preferences_languageAccent_title" />
 
     <Preference
         android:key="BTN_RATE_MEMOLING"
         android:summary="@string/preferences_btnRateMemoling_summary"
         android:title="@string/preferences_btnRateMemoling_title" />
-
     <Preference
         android:key="BTN_GOTO_MEMOLING"
         android:summary="@string/preferences_btnGoToMemoling_summary"
         android:title="@string/preferences_btnGoToMemoling_title" />
-    
+
     <!--
     TODO: DO IT!
     <CheckBoxPreference
@@ -45,7 +50,7 @@
     <app.memoling.android.preference.custom.MemoBaseListPreference
         android:dependency="ENABLE_WORD_NOTIFICATION"
         android:key="WORD_NOTIFICATION_MEMOBASE"
-        android:title="@string/preferences_wordNotificationMemoBase_title" />
+        android:title="@string/preferences_wordNotificationMemoBase_title" />
     -->
 
 </PreferenceScreen>

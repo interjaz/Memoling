@@ -44,8 +44,7 @@ public class SentenceProvider {
 		}
 
 		// Otherwise download one
-		WsSentences ws = new WsSentences();
-		ws.get(word, from, to, new IGetComplete() {
+		WsSentences.get(word, from, to, new IGetComplete() {
 
 			@Override
 			public void getComplete(ArrayList<MemoSentence> memoSentences) {

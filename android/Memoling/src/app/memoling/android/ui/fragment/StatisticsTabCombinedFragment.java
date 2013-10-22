@@ -66,13 +66,13 @@ public class StatisticsTabCombinedFragment extends Fragment {
 		m_lblShortest = (TextView) contentView.findViewById(R.id.statistics_lblShortest);
 		m_resources.setFont(m_lblShortest, m_resources.getThinFont());
 
+		m_resources.setFont(contentView, R.id.memo_lblLang, m_resources.getThinFont());
 		m_resources.setFont(contentView, R.id.textView1, m_resources.getThinFont());
-		m_resources.setFont(contentView, R.id.textView2, m_resources.getThinFont());
 		m_resources.setFont(contentView, R.id.textView3, m_resources.getThinFont());
-		m_resources.setFont(contentView, R.id.textView4, m_resources.getThinFont());
+		m_resources.setFont(contentView, R.id.downloadlink_lblDefinitionALabel, m_resources.getThinFont());
 		m_resources.setFont(contentView, R.id.textView5, m_resources.getThinFont());
 		m_resources.setFont(contentView, R.id.textView6, m_resources.getThinFont());
-		m_resources.setFont(contentView, R.id.textView7, m_resources.getThinFont());
+		m_resources.setFont(contentView, R.id.downloadlink_lblDefinitionBLabel, m_resources.getThinFont());
 		m_resources.setFont(contentView, R.id.textView8, m_resources.getThinFont());
 		m_resources.setFont(contentView, R.id.textView9, m_resources.getThinFont());
 		m_resources.setFont(contentView, R.id.textView10, m_resources.getThinFont());

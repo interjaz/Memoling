@@ -2,6 +2,7 @@ package app.memoling.android.ui.fragment;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,14 +14,20 @@ import app.memoling.android.R;
 import app.memoling.android.adapter.MemoAdapter;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoSentence;
+import app.memoling.android.entity.QuizletDefinition;
 import app.memoling.android.helper.RemovableFragmentPagerAdapter;
 import app.memoling.android.helper.SentenceProvider;
-import app.memoling.android.ui.ApplicationFragment;
+import app.memoling.android.helper.ShareHelper;
+import app.memoling.android.quizlet.QuizletProvider;
+import app.memoling.android.quizlet.QuizletProvider.IQuizletGetDefinitions;
+import app.memoling.android.ui.FacebookFragment;
+import app.memoling.android.ui.adapter.DrawerAdapter;
+import app.memoling.android.ui.view.DrawerView;
 import app.memoling.android.webservice.WsSentences.IGetComplete;
 
 import com.actionbarsherlock.view.MenuItem;
 
-public class MemoFragment extends ApplicationFragment {
+public class MemoFragment extends FacebookFragment {
 
 	private final static int TabSize = 3;
 
@@ -33,12 +40,16 @@ public class MemoFragment extends ApplicationFragment {
 	private MemoAdapter m_memoAdapter;
 	private Memo m_memo;
 	private ArrayList<MemoSentence> m_memoSentences;
+	private ArrayList<QuizletDefinition> m_memoDefinitionsA;
+	private ArrayList<QuizletDefinition> m_memoDefinitionsB;
 
 	private String m_originalWordA;
 	private String m_originalWordB;
 	private String m_originalDescriptionA;
 	private String m_originalDescriptionB;
 	private boolean m_originalActive;
+
+	private ShareHelper m_shareHelper;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View contentView = super.onCreateView(inflater, container, savedInstanceState,
@@ -52,6 +63,8 @@ public class MemoFragment extends ApplicationFragment {
 		m_pager.setOffscreenPageLimit(TabSize - 1);
 		m_pager.setAdapter(m_adapter);
 		m_pager.setClickable(true);
+
+		m_shareHelper = new ShareHelper(this, false);
 
 		return contentView;
 	}
@@ -85,6 +98,8 @@ public class MemoFragment extends ApplicationFragment {
 		setTitle(m_memo.getWordA().getWord() + " - " + m_memo.getWordB().getWord());
 		setSupportProgress(0.5f);
 
+		m_shareHelper.setId(m_memoId);
+
 		m_originalWordA = m_memo.getWordA().getWord();
 		m_originalWordB = m_memo.getWordB().getWord();
 		m_originalDescriptionA = m_memo.getWordA().getDescription();
@@ -98,8 +113,28 @@ public class MemoFragment extends ApplicationFragment {
 				setSupportProgress(1f);
 				m_memoSentences = memoSentences;
 				if (m_adapter.getCacheSize() > 0) {
-					((IMemoPagerFragment) m_adapter.getCachedItem(0)).setSentences(m_memoSentences);
-					((IMemoPagerFragment) m_adapter.getCachedItem(1)).setSentences(m_memoSentences);
+					((IMemoPagerFragment) m_adapter.getCachedItem(0)).setTatoeba(m_memoSentences);
+					((IMemoPagerFragment) m_adapter.getCachedItem(1)).setTatoeba(m_memoSentences);
+				}
+			}
+		});
+
+		QuizletProvider.getDefinitions(getActivity(), m_memo.getWordA().getWord(), new IQuizletGetDefinitions() {
+			@Override
+			public void getQuizletDefinitions(ArrayList<QuizletDefinition> definitions) {
+				m_memoDefinitionsA = definitions;
+				if (m_adapter.getCacheSize() > 0) {
+					((IMemoPagerFragment) m_adapter.getCachedItem(0)).setQuizlet(m_memoDefinitionsA);
+				}
+			}
+		});
+
+		QuizletProvider.getDefinitions(getActivity(), m_memo.getWordB().getWord(), new IQuizletGetDefinitions() {
+			@Override
+			public void getQuizletDefinitions(ArrayList<QuizletDefinition> definitions) {
+				m_memoDefinitionsB = definitions;
+				if (m_adapter.getCacheSize() > 0) {
+					((IMemoPagerFragment) m_adapter.getCachedItem(1)).setQuizlet(m_memoDefinitionsB);
 				}
 			}
 		});
@@ -109,7 +144,12 @@ public class MemoFragment extends ApplicationFragment {
 
 		final IMemoPagerFragment ifragment = (IMemoPagerFragment) fragment;
 		ifragment.setMemo(m_memo);
-		ifragment.setSentences(m_memoSentences);
+		ifragment.setTatoeba(m_memoSentences);
+		if (ifragment instanceof MemoFirstFragment) {
+			ifragment.setQuizlet(m_memoDefinitionsA);
+		} else if (ifragment instanceof MemoSecondFragment) {
+			ifragment.setQuizlet(m_memoDefinitionsB);
+		}
 	}
 
 	@Override
@@ -198,7 +238,9 @@ public class MemoFragment extends ApplicationFragment {
 	public static interface IMemoPagerFragment {
 		void setMemo(Memo memo);
 
-		void setSentences(ArrayList<MemoSentence> memoSentences);
+		void setTatoeba(ArrayList<MemoSentence> memoSentences);
+
+		void setQuizlet(ArrayList<QuizletDefinition> definitions);
 
 		boolean onBackPressed();
 
@@ -221,4 +263,19 @@ public class MemoFragment extends ApplicationFragment {
 		super.onDestroyView();
 	}
 
+	@Override
+	protected void onPopulateDrawer(DrawerAdapter drawer) {
+		drawer.add(new DrawerView(R.drawable.ic_back, R.string.memo_backToList));
+		m_shareHelper.onPopulateDrawerMemo(drawer);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == MemoWordFragment.TextToSpeechRequestCodeA) {
+			m_adapter.getCachedItem(0).onActivityResult(requestCode, resultCode, data);
+		} else {
+			m_adapter.getCachedItem(1).onActivityResult(requestCode, resultCode, data);
+		}
+	}
 }

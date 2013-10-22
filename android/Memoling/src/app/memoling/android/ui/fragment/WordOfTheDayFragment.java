@@ -87,14 +87,14 @@ public class WordOfTheDayFragment extends ApplicationFragment {
 
 		m_spMode = (Spinner) contentView.findViewById(R.id.wordoftheday_spMode);
 		m_spModeAdapter = new ModifiableComplexTextAdapter<WordOfTheDayModeView>(getActivity(),
-				R.layout.adapter_textdropdown, new int[] { R.id.textView1 }, new Typeface[] { thinFont });
+				R.layout.adapter_textdropdown, new int[] { R.id.memo_lblLang }, new Typeface[] { thinFont });
 		m_spMode.setAdapter(m_spModeAdapter);
 		m_spModeEventHandler = new SpModeEventHandler();
 		m_spMode.setOnItemSelectedListener(m_spModeEventHandler);
 
 		m_spSource = (Spinner) contentView.findViewById(R.id.wordoftheday_spSource);
 		m_spSourceAdapter = new ModifiableComplexTextAdapter<WordOfTheDayView>(getActivity(),
-				R.layout.adapter_textdropdown, new int[] { R.id.textView1 }, new Typeface[] { thinFont });
+				R.layout.adapter_textdropdown, new int[] { R.id.memo_lblLang }, new Typeface[] { thinFont });
 		m_spSource.setAdapter(m_spSourceAdapter);
 
 		m_btnTest = (Button) contentView.findViewById(R.id.wordoftheday_btnTest);

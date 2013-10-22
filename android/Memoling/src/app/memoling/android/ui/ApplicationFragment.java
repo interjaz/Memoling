@@ -102,7 +102,9 @@ public abstract class ApplicationFragment extends Fragment {
 		return true;
 	}
 
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	public final boolean onCreateOptionsMenu(Menu menu) {

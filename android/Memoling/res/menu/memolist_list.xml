@@ -9,5 +9,13 @@
         android:id="@+id/memolist_menu_list_delete"
         android:icon="@drawable/ic_menu_close_clear_cancel"
         android:title="@string/memolist_ctxmenu_delete"/>
+    <item
+        android:id="@+id/memolist_menu_list_shareapplication"
+        android:icon="@drawable/ic_share"
+        android:title="@string/memobaselist_ctxmenu_shareApplication"/>
+    <item
+        android:id="@+id/memolist_menu_list_sharefacebook"
+        android:icon="@drawable/ic_share"
+        android:title="@string/memobaselist_ctxmenu_shareFacebook"/>
 
 </menu>

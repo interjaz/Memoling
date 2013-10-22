@@ -59,6 +59,12 @@ public class SqliteUpdater {
 						version = 3;
 					}
 
+					if (version == 3) {
+						update34(database);
+						database.setVersion(4);
+						version = 4;
+					}
+
 					database.setTransactionSuccessful();
 				} catch (Exception ex) {
 					AppLog.e("SqliteUpdater", "Failed to update database", ex);
@@ -108,5 +114,20 @@ public class SqliteUpdater {
 	private static void update23(SQLiteDatabase database) {
 		String updateWordLists = "UPDATE WordLists  SET LanguageIso639 = 'ES' WHERE LanguageIso639 = 'SPA'";
 		database.execSQL(updateWordLists);
+	}
+	
+	private static void update34(SQLiteDatabase database) {
+		String updateQuizletDefinitions = "CREATE  TABLE \"QuizletDefinitions\" (" +
+				"\"QuizletDefinitionId\" VARCHAR NOT NULL PRIMARY KEY, " +
+				"\"Word\" VARCHAR NOT NULL, " +
+				"\"SpeechPart\" VARCHAR NOT NULL, " +
+				"\"Definition\" VARCHAR NOT NULL, " +
+				"\"IsOfficial\" BOOL NOT NULL)";
+		String updateQuizletDefinitionExamples = "CREATE  TABLE \"QuizletDefinitionExamples\" ( " +
+				"\"QuizletDefinitionId\" VARCHAR NOT NULL, " +
+				"\"Example\" VARCHAR NOT NULL )";
+		
+		database.execSQL(updateQuizletDefinitions);
+		database.execSQL(updateQuizletDefinitionExamples);
 	}
 }

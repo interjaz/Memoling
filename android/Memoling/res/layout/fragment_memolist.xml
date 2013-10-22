@@ -18,12 +18,23 @@
             android:orientation="vertical"
             android:padding="10dp" >
 
-            <ListView
-                android:id="@+id/memolist_list"
+            <RelativeLayout
+                android:id="@+id/memolist_layListSwitcher"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1.0"
-                tools:listitem="@layout/adapter_memolist_listview" />
+                android:layout_weight="1.0">
+	            <ListView
+	                android:id="@+id/memolist_list"
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent"
+	                tools:listitem="@layout/adapter_memolist_listview" />
+	            <ListView
+	                android:id="@+id/memolist_lstSuggestions"
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent"
+	                tools:listitem="@layout/adapter_memolist_suggestion"
+	                android:visibility="gone"  />
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -32,7 +43,7 @@
                 android:paddingBottom="3dp"
                 android:paddingTop="3dp" >
 
-                <AutoCompleteTextView
+                <EditText
                     android:id="@+id/memolist_txtAddMemo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -68,7 +79,7 @@
                 android:layout_marginLeft="5.0dip" >
 
                 <TextView
-                    android:id="@+id/textView1"
+                    android:id="@+id/memo_lblLang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -92,7 +103,7 @@
                     android:text="@string/memolist_swap" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/textView1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"

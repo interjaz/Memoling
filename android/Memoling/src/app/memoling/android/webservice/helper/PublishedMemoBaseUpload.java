@@ -2,27 +2,24 @@ package app.memoling.android.webservice.helper;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
-import android.content.Intent;
 import app.memoling.android.adapter.MemoAdapter;
 import app.memoling.android.adapter.MemoAdapter.Sort;
 import app.memoling.android.db.DatabaseHelper.Order;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoBase;
 import app.memoling.android.entity.PublishedMemoBase;
-import app.memoling.android.facebook.FacebookBase;
 import app.memoling.android.facebook.FacebookUser;
-import app.memoling.android.facebook.IFacebookUserFound;
+import app.memoling.android.facebook.FacebookWrapper.IFacebookGetUserComplete;
+import app.memoling.android.ui.FacebookFragment;
 import app.memoling.android.webservice.WsFacebookUsers;
 import app.memoling.android.webservice.WsFacebookUsers.ILoginComplete;
 import app.memoling.android.webservice.WsPublishedLibraries;
 import app.memoling.android.webservice.WsPublishedLibraries.IUploadComplete;
 
 // TODO: Add translated name, so search engine can find stuff more easily
-public class PublishedMemoBaseUpload extends FacebookBase implements IFacebookUserFound {
+public class PublishedMemoBaseUpload {
 
-	private Activity m_activity;
-	private FacebookUser m_facebookUser;
+	private FacebookFragment m_facebookFragment;
 	private static PublishedMemoBase m_published;
 	private static IPublishedMemoBaseUpload m_publishedMemoBaseUploadInterface;
 
@@ -39,8 +36,9 @@ public class PublishedMemoBaseUpload extends FacebookBase implements IFacebookUs
 		void onException(Exception ex);
 	}
 
-	public PublishedMemoBaseUpload(Activity activity, IPublishedMemoBaseUpload publishedMemoBaseUploadInterface) {
-		m_activity = activity;
+	public PublishedMemoBaseUpload(FacebookFragment facebookFragment,
+			IPublishedMemoBaseUpload publishedMemoBaseUploadInterface) {
+		m_facebookFragment = facebookFragment;
 		m_publishedMemoBaseUploadInterface = publishedMemoBaseUploadInterface;
 	}
 
@@ -49,46 +47,31 @@ public class PublishedMemoBaseUpload extends FacebookBase implements IFacebookUs
 		m_published.setMemoBaseId(memoBaseId);
 		m_published.setMemoBaseGenreId(memoBaseGenreId);
 		m_published.setDescription(description);
-		login();
+
+		m_facebookFragment.getFacebookUser(new IFacebookGetUserComplete() {
+
+			@Override
+			public void onGetUserComplete(FacebookUser user) {
+
+				MemoAdapter memoAdapter = new MemoAdapter(m_facebookFragment.getActivity());
+				ArrayList<Memo> memos = memoAdapter.getAll(m_published.getMemoBaseId(), Sort.CreatedDate, Order.ASC);
+				if (memos.size() == 0) {
+					m_publishedMemoBaseUploadInterface.onException(new Exception(ExceptionReasons.NoMemosToUpload));
+					return;
+				}
+				MemoBase memoBase = memos.get(0).getMemoBase();
+				m_published.setMemoBase(memoBase);
+				m_published.setFacebookUserId(user.getId());
+
+				loginWs(user);
+
+			}
+
+		});
 	}
 
-	private void login() {
-		super.login(m_activity, this);
-	}
-
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.loginOnActivityResult(m_activity, this, requestCode, resultCode, data);
-	}
-
-	@Override
-	public void onFacebookUserFound(FacebookUser user) {
-		if (user == null) {
-			// Make toast that failed to upload
-			return;
-		}
-
-		m_facebookUser = user;
-		prepareForUpload();
-	}
-
-	private void prepareForUpload() {
-
-		MemoAdapter memoAdapter = new MemoAdapter(m_activity);
-		ArrayList<Memo> memos = memoAdapter.getAll(m_published.getMemoBaseId(), Sort.CreatedDate, Order.ASC);
-		if (memos.size() == 0) {
-			m_publishedMemoBaseUploadInterface.onException(new Exception(ExceptionReasons.NoMemosToUpload));
-			return;
-		}
-		MemoBase memoBase = memos.get(0).getMemoBase();		
-		m_published.setMemoBase(memoBase);
-		m_published.setFacebookUserId(m_facebookUser.getId());
-
-		loginWs();
-	}
-
-	private void loginWs() {
-		WsFacebookUsers wsLogin = new WsFacebookUsers();
-		wsLogin.login(m_facebookUser, new ILoginComplete() {
+	private void loginWs(FacebookUser user) {
+		WsFacebookUsers.login(user, new ILoginComplete() {
 			@Override
 			public void onLoginComplete(boolean result) {
 				if (result != true) {
@@ -97,14 +80,13 @@ public class PublishedMemoBaseUpload extends FacebookBase implements IFacebookUs
 					return;
 				}
 
-				upload();
+				uploadContent();
 			}
 		});
 	}
 
-	private void upload() {
-		WsPublishedLibraries wsLibraries = new WsPublishedLibraries();
-		wsLibraries.upload(m_published, new IUploadComplete() {
+	private void uploadContent() {
+		WsPublishedLibraries.upload(m_published, new IUploadComplete() {
 			@Override
 			public void onUploadComplete(boolean result) {
 				if (result != true) {

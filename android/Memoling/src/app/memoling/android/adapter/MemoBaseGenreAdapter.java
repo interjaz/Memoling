@@ -24,6 +24,7 @@ public class MemoBaseGenreAdapter {
 		add("1112bb89-9a19-4f44-af85-45fa2113e739", strGenres[i++]);
 		add("1b2d882f-05d8-4722-ab07-7eb3314f6825", strGenres[i++]);
 		add("1c2ecf59-fe83-49da-bcf7-f2ba8dcf7f28", strGenres[i++]);
+		add("31220b2f-5e69-4c45-a825-9c9ce01ae903", strGenres[i++]);
 		add("5299cda6-549f-4fbe-b3be-dbefc52cda1d", strGenres[i++]);
 		add("5aaf1226-754e-4f5b-8212-4520b597ab93", strGenres[i++]);
 		add("5e4d61c6-f2f8-49f5-b107-4d2b860a2d33", strGenres[i++]);

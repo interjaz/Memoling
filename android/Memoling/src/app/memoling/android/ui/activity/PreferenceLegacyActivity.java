@@ -22,13 +22,12 @@ public class PreferenceLegacyActivity extends PreferenceActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 			initLegacy();
 		} else {
 			initNew();
 		}
-
 	}
 
 	private void initLegacy() {
@@ -83,6 +82,14 @@ public class PreferenceLegacyActivity extends PreferenceActivity {
 			}
 		});
 
+		Preference languageAccentPref = (Preference) findPreference(Preferences.LST_LANGUAGE_ACCENT);
+		languageAccentPref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue) {
+				m_common.setLanguageAccent((String)newValue);
+				return true;
+			}
+		});
 	}
 
 	private void initNew() {
@@ -150,6 +157,15 @@ public class PreferenceLegacyActivity extends PreferenceActivity {
 				public boolean onPreferenceChange(Preference preference, Object newValue) {
 					TimePreference pref = (TimePreference) preference;
 					AlarmReceiver.updateAlarm(getActivity(), pref.getLastHour(), pref.getLastMinute());
+					return true;
+				}
+			});
+			
+			Preference languageAccentPref = (Preference) findPreference(Preferences.LST_LANGUAGE_ACCENT);
+			languageAccentPref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+				@Override
+				public boolean onPreferenceChange(Preference preference, Object newValue) {
+					m_common.setLanguageAccent((String)newValue);
 					return true;
 				}
 			});

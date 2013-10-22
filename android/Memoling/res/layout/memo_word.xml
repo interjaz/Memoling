@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".MemoListFragment" >
+
+    <ScrollView
+        android:id="@+id/memo_layScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            tools:context=".WordActivity" >
+
+            <TextView
+                android:id="@+id/memo_lblWord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="15dp"
+                android:text="@string/memo_lblWordA"
+                android:textSize="20sp" />
+
+            <app.memoling.android.ui.control.EditTextActionDone
+                android:id="@+id/memo_txtWord"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/memo_lblWord"
+                android:layout_marginTop="5dp"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:textSize="18sp" >
+                <requestFocus />
+            </app.memoling.android.ui.control.EditTextActionDone>
+
+            <TextView
+                android:id="@+id/memo_lblLang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/memo_txtWord"
+                android:layout_marginTop="5dp"
+                android:text="@string/memo_lblLangA"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/memo_txtLang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/memo_lblLang"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@id/memo_lblLang"
+                android:gravity="right"
+                android:textSize="18sp" />
+
+            <ImageButton
+                android:id="@+id/memo_btnCopyWord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/memo_lblWord"
+                android:layout_marginTop="-8dp"
+                android:src="@drawable/ic_menu_copy_holo_dark" />
+            
+			<ImageButton
+                android:id="@+id/memo_btnSpeech"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/memo_btnCopyWord"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/memo_btnCopyWord"
+                android:src="@drawable/ic_voice" />
+
+            <Button
+                android:id="@+id/memo_btnDictionaryWord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/memo_btnSpeech"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/memo_btnSpeech"
+                android:minWidth="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:src="@drawable/ic_menu_refresh"
+                android:text="@string/memo_abbrDictionary" />
+
+            <Button
+                android:id="@+id/memo_btnThesaurusWord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/memo_btnDictionaryWord"
+                android:layout_alignBottom="@+id/memo_btnDictionaryWord"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/memo_btnDictionaryWord"
+                android:minWidth="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:src="@drawable/ic_menu_refresh"
+                android:text="@string/memo_abbrThesaurus" />
+
+            <ImageButton
+                android:id="@+id/memo_btnSearchWord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/memo_btnThesaurusWord"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/memo_btnThesaurusWord"
+                android:src="@drawable/ic_menu_refresh" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/memo_lblLang"
+                android:layout_marginTop="5sp"
+                android:text="@string/memo_description"
+                android:textSize="20sp" />
+
+            <TabHost
+                android:id="@+id/memo_tabDefinitions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textView1" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
+
+                    <TabWidget
+                        android:id="@android:id/tabs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+                    </TabWidget>
+
+                    <FrameLayout
+                        android:id="@android:id/tabcontent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+
+                        <LinearLayout
+                            android:id="@+id/memo_tabDefinitionMemoling"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="5dp"
+                            android:orientation="vertical" >
+
+                            <EditText
+                                android:id="@+id/memo_txtDescriptionMemoling"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="top"
+                                android:inputType="textMultiLine"
+                                android:minLines="2"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/memo_tabDefinitionQuizlet"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="5dp"
+                            android:orientation="vertical" >
+
+                            <TextView
+                                android:id="@+id/memo_lblDescriptionQuizlet"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/memo_sentencesDownloading"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+                    </FrameLayout>
+                </LinearLayout>
+            </TabHost>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/memo_tabDefinitions"
+                android:layout_marginTop="5dp"
+                android:text="@string/memo_sentences"
+                android:textSize="20sp" />
+
+            <TabHost
+                android:id="@+id/memo_tabSentences"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textView2" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
+
+                    <TabWidget
+                        android:id="@android:id/tabs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+                    </TabWidget>
+
+                    <FrameLayout
+                        android:id="@android:id/tabcontent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+
+                        <LinearLayout
+                            android:id="@+id/memo_tabSentencesTatoeba"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="5dp"
+                            android:orientation="vertical" >
+
+                            <TextView
+                                android:id="@+id/memo_lblSentencesTatoeba"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/memo_sentencesDownloading"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/memo_tabSentencesQuizlet"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="5dp"
+                            android:orientation="vertical" >
+
+                            <TextView
+                                android:id="@+id/memo_lblSentencesQuizlet"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/memo_sentencesDownloading"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+                    </FrameLayout>
+                </LinearLayout>
+            </TabHost>
+        </RelativeLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/memo_layWebSearch"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:background="#222222"
+        android:visibility="gone" >
+
+        <WebView
+            android:id="@+id/memo_webSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp" />
+    </FrameLayout>
+
+
+</RelativeLayout>

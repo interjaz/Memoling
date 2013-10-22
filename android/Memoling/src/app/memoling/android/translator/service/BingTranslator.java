@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import app.memoling.android.Config;
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Word;
 import app.memoling.android.helper.AppLog;
@@ -38,8 +39,6 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 	private final static String m_bingTranslateUrl = "http://api.microsofttranslator.com/V2/Ajax.svc/GetTranslations";
 	private final static URI m_bingTokenUri = URI.create("https://datamarket.accesscontrol.windows.net/v2/OAuth2-13/");
 
-	private static String m_clientId = "TranslateMemo";
-	private static String m_clientSecret = "87dfyqGFVxbTVyrqlo2YV+AF2An3gBIH2eOIgI8UPs4=";
 	private static String m_scope = "http://api.microsofttranslator.com";
 	private static String m_grantType = "client_credentials";
 	private static String m_accessTokenName = "access_token";
@@ -142,8 +141,8 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 			public void onHttpRequestTimeout(Exception ex) {
 				AppLog.w("BingTranslator", "obtainToken - timeout", ex);
 			}
-		}, m_timeout).execute(new BasicNameValuePair("client_id", m_clientId), new BasicNameValuePair("client_secret",
-				m_clientSecret), new BasicNameValuePair("scope", m_scope), new BasicNameValuePair("grant_type",
+		}, m_timeout).execute(new BasicNameValuePair("client_id", Config.BingTranslateClientId), new BasicNameValuePair("client_secret",
+				Config.BingTranslateClientSecret), new BasicNameValuePair("scope", m_scope), new BasicNameValuePair("grant_type",
 				m_grantType));
 	}
 

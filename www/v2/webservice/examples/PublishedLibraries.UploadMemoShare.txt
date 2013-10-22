@@ -1,0 +1,28 @@
+memo={
+	"publishedMemoId":"9fe29eaa-6a64-45be-87ff-a5abf925faa1",
+	"facebookUserId":"100002530762250",
+	"facebookUser":{
+		"facebookUserId":"100002530762250",
+		"updatedTime":"2013-04-24 21:50:04",
+		"locationId":"106076586099038",
+		"location": {
+			"facebookLocationId":"106076586099038"
+		},
+		"hometown": {
+			"facebookLocationId":"106076586099038"
+		}
+	},
+	"memo":{
+		"memoId":"886f04a4-6f71-4fa7-9c2c-0572e2892ef9",
+		"wordA":{
+			"wordId":"f9f227e3-bef9-4f0e-9e73-bef66809372c",
+			"word":"wa",
+			"languageIso639":"pl"
+		},
+		"wordB":{
+			"wordId":"314abab1-7880-46e8-af8e-90a61af68c58",
+			"word":"wb",
+			"languageIso639":"en"
+		}
+	}
+}
