@@ -150,8 +150,6 @@ public class DownloadLinkActivity extends AdActivity {
 			// return;
 		}
 
-		uri = Uri.parse("http://memoling.com/s.php?b");
-
 		// Download json
 		WsShare.discoverShare(uri.toString() + "&format=json", new IDiscoverShareResult() {
 			@Override

@@ -272,10 +272,7 @@ public class MemoFragment extends FacebookFragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == MemoWordFragment.TextToSpeechRequestCodeA) {
-			m_adapter.getCachedItem(0).onActivityResult(requestCode, resultCode, data);
-		} else {
-			m_adapter.getCachedItem(1).onActivityResult(requestCode, resultCode, data);
-		}
+		// Does not matter which fragment is used, TextToSpeechHelper is handling data
+		m_adapter.getCachedItem(0).onActivityResult(requestCode, resultCode, data);
 	}
 }

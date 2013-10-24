@@ -8,8 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.TextToSpeech.OnInitListener;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.Html;
@@ -52,9 +50,6 @@ import app.memoling.android.ui.fragment.MemoFragment.IMemoPagerFragment;
 public class MemoWordFragment extends Fragment implements OnEditorActionListener, ITranslateComplete,
 		IMemoPagerFragment {
 
-	public final static int TextToSpeechRequestCodeA = 4000;
-	public final static int TextToSpeechRequestCodeB = 4001;
-
 	private ScrollView m_layScrollView;
 	private TextView m_txtLanguage;
 	private EditText m_txtWord;
@@ -77,7 +72,7 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 
 	private boolean m_isWordA;
 
-	private TextToSpeech m_textToSpeech;
+	private TextToSpeechHelper m_textToSpeechHelper;
 
 	public View onCreateView(boolean isWordA, LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View contentView = inflater.inflate(R.layout.memo_word, container, false);
@@ -184,6 +179,8 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 			((TextView) contentView.findViewById(R.id.memo_lblLang)).setText(R.string.memo_lblLangB);
 		}
 
+		m_textToSpeechHelper = new TextToSpeechHelper(getActivity());
+		
 		return contentView;
 	}
 
@@ -230,13 +227,7 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 
 		@Override
 		public void onClick(View v) {
-			Intent checkIntent = new Intent();
-			checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
-			if (m_isWordA) {
-				getActivity().startActivityForResult(checkIntent, TextToSpeechRequestCodeA);
-			} else {
-				getActivity().startActivityForResult(checkIntent, TextToSpeechRequestCodeB);
-			}
+			m_textToSpeechHelper.readText(getWord().getWord(), getWord().getLanguage());
 		}
 	}
 
@@ -330,8 +321,6 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 
 				m_btnThesaurusWord.setEnabled(ThesaurusAdapter.isSupported(getWord().getLanguage()));
 				m_btnDictionaryWord.setEnabled(ThesaurusAdapter.isSupported(getWord().getLanguage()));
-
-				m_btnSpeech.setEnabled(TextToSpeechHelper.isLanguageSupported(getWord().getLanguage()));
 
 				m_layScrollView.fullScroll(ScrollView.FOCUS_UP);
 			};
@@ -459,30 +448,12 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 
 	}
 
-	private class TextToSpeechEventHandler implements OnInitListener {
-		@Override
-		public void onInit(int status) {
-			m_textToSpeech.setLanguage(TextToSpeechHelper.languageToLocale(getActivity(), getWord().getLanguage()));
-			m_textToSpeech.speak(getWord().getWord(), TextToSpeech.QUEUE_FLUSH, null);
-		}
-	}
-
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// Do not call parent - inside view pager
 		// super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == TextToSpeechRequestCodeA || requestCode == TextToSpeechRequestCodeB) {
-			if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
-				// success, create the TTS instance
-				m_textToSpeech = new TextToSpeech(getActivity(), new TextToSpeechEventHandler());
-			} else {
-				// missing data, install it
-				Intent installIntent = new Intent();
-				installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-				getActivity().startActivity(installIntent);
-			}
-		}
+		m_textToSpeechHelper.onActivityResult(requestCode, resultCode, data);
 	}
 
 	public Word getWord() {
@@ -505,8 +476,8 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if (m_textToSpeech != null) {
-			m_textToSpeech.shutdown();
+		if (m_textToSpeechHelper != null) {
+			m_textToSpeechHelper.shutdown();
 		}
 	}
 

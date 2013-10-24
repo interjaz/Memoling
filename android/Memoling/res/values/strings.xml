@@ -7,8 +7,9 @@
 		Changes v.1.7.0\n
 		1. Better support for Facebook login\n
 		2. Added Expression sharing mechanism\n
-		3. Added text to speech for English (usa/uk), French, German, Italian and Spanish 
-		4. Changed where searched words are displayed\n
+		3. Added text to speech support\n
+		4. Added audio training\n
+		5. Changed where searched words are displayed\n
 		Changes v.1.7.0 beta\n
 		1. Added Quizlet definitions and words\n
 		Changes v.1.6.0\n
@@ -73,6 +74,7 @@
     <string name="memolist_games">Games</string>
     <string name="memolist_repeatAll">Repeat All</string>
     <string name="memolist_sentencesTraining">Sentences Training</string>
+    <string name="memolist_audioTraining">Audio Training</string>
     <string name="memolist_swap">⇄</string>
 
     <!-- MemoBaseList Fragment -->
@@ -126,7 +128,7 @@
 	<string name="memo_backToList">Back to List</string>
 	
 	<!-- Common share -->
-	<string name="share_message">%1$s would like to share a %2$s expression with you. Click link for more details: %3$s</string>
+	<string name="share_message">%1$s would like to share a %2$s expression with you. Click the link for more details: %3$s</string>
 	<string name="share_intent">Share link via</string>
 	<string name="share_error">Error occurred</string>
 	<string name="share_fbCaption">Memoling - Master Vocabulary</string>
@@ -134,6 +136,11 @@
 	<string name="share_fbGettingFriends">Looking for Facebook friends</string>
 	<string name="share_fbGettingFriendsError">Error occurred while looking for Facebook friends</string>
     
+	<!-- Text to Speech -->
+	<string name="texttospeech_languageNotSupported">Language not supported</string>
+	<string name="texttospeech_missingData">Some files need downloading for proper text to speech functionality</string>
+	<string name="texttospeech_muted">Device is muted</string>
+		
     <!-- MemoBase Fragment -->
     <string name="memobase_title">Library</string>
     <string name="memobase_backToList">Back to list</string>
@@ -198,6 +205,7 @@
     <string name="review_sentencesNotFound">Sentences not found</string>
     <string name="review_sentenceNotSupported">Sentence review does not support word the same language as it translation</string>
     <string name="review_emptyTranslation">No translation sentence found, skipping</string>
+    <string name="review_replay">Press to Replay</string>
 
     <!-- Statistics Fragment -->
     <string name="statistics_title">Statistics</string>

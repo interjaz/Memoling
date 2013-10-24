@@ -81,6 +81,16 @@
 			}
 		}
 		
+		@media all and (min-width: 1200px) {
+			#translation_left {
+				width: 600px;
+			}
+			
+			#translation_right {
+				width: 600px;
+			}
+		}
+		
 	</style>
 
 	<div id="notice">

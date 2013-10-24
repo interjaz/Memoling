@@ -15,6 +15,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Pair;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -35,6 +37,7 @@ import app.memoling.android.entity.MemoSentence;
 import app.memoling.android.entity.Word;
 import app.memoling.android.helper.SentenceProvider;
 import app.memoling.android.helper.SentenceProvider.IGetManyComplete;
+import app.memoling.android.helper.TextToSpeechHelper;
 import app.memoling.android.helper.VoiceInputHelper;
 import app.memoling.android.preference.Preferences;
 import app.memoling.android.ui.AdActivity;
@@ -57,6 +60,8 @@ public class ReviewActivity extends AdActivity {
 
 	// TODO: Implement description mode
 	public final static int DescriptionMode = 4;
+	
+	public final static int AudioMode = 8;
 
 	public static int m_trainingSetSize;
 
@@ -85,6 +90,8 @@ public class ReviewActivity extends AdActivity {
 	private int m_currentMemo;
 	private int m_uiCurrentMemo;
 	private boolean m_answerCorrect;
+	
+	private TextToSpeechHelper m_textToSpeechHelper;
 
 	private Animation m_fadeIn;
 	private Animation m_fadeInAnswer;
@@ -124,6 +131,7 @@ public class ReviewActivity extends AdActivity {
 
 		m_txtMemo1 = (TextView) findViewById(R.id.review_txtMemo1);
 		m_txtMemo1.setTypeface(m_resources.getThinFont());
+		m_txtMemo1.setOnClickListener(new TextMemo1EventHandler());
 		m_txtMemo2 = (EditText) findViewById(R.id.review_txtMemo2);
 		m_txtMemo2.setTypeface(m_resources.getThinFont());
 		TextMemo2EventHandler txtMemo2EventHandler = new TextMemo2EventHandler();
@@ -156,6 +164,8 @@ public class ReviewActivity extends AdActivity {
 		m_fadeOutAnswer.setDuration(1000);
 		m_fadeOutAnswer.setAnimationListener(new FadeOutAnswerEventHandler());
 
+		m_textToSpeechHelper = new TextToSpeechHelper(this);
+		
 		getSherlock().setProgressBarIndeterminateVisibility(true);
 	}
 
@@ -228,15 +238,17 @@ public class ReviewActivity extends AdActivity {
 		if ((m_mode & SentenceMode) == SentenceMode && (m_mode & WordMode) == WordMode) {
 
 			if (m_random.nextBoolean()) {
-				SentenceMode(visible, toGuess);
+				sentenceMode(visible, toGuess);
 			} else {
-				WordMode(visible, toGuess);
+				wordMode(visible, toGuess);
 			}
 
 		} else if ((m_mode & SentenceMode) == SentenceMode) {
-			SentenceMode(visible, toGuess);
+			sentenceMode(visible, toGuess);
 		} else if ((m_mode & WordMode) == WordMode) {
-			WordMode(visible, toGuess);
+			wordMode(visible, toGuess);
+		} else if ((m_mode & AudioMode) == AudioMode) {
+			audioMode(visible, toGuess);
 		}
 
 		m_lblLang1.setText(visible.getLanguage().getName());
@@ -307,12 +319,23 @@ public class ReviewActivity extends AdActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		
+		m_textToSpeechHelper.onActivityResult(requestCode, resultCode, data);
 
 		if (data != null) {
 			String voice = VoiceInputHelper.getData(data.getExtras());
 			if (voice != null) {
 				m_txtMemo2.getText().insert(m_txtMemo2.getSelectionStart(), voice);
 			}
+		}
+	}
+	
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if(m_textToSpeechHelper != null) {
+			m_textToSpeechHelper.shutdown();
 		}
 	}
 
@@ -369,7 +392,7 @@ public class ReviewActivity extends AdActivity {
 		animateAnswer(m_toGuess.trim());
 	}
 
-	private void SentenceMode(final Word a, final Word b) {
+	private void sentenceMode(final Word a, final Word b) {
 		MemoSentenceAdapter adapter = new MemoSentenceAdapter(this);
 		ArrayList<MemoSentence> sentences = adapter.getSentences(b.getWord(), b.getLanguage(), a.getLanguage());
 
@@ -413,7 +436,7 @@ public class ReviewActivity extends AdActivity {
 							getSherlock().setProgressBarIndeterminateVisibility(false);
 
 							if (memoSentences == null || memoSentences.size() == 0) {
-								WordMode(a, b);
+								wordMode(a, b);
 								Toast.makeText(ReviewActivity.this, R.string.review_sentencesNotFound,
 										Toast.LENGTH_SHORT).show();
 								return;
@@ -431,10 +454,32 @@ public class ReviewActivity extends AdActivity {
 
 	}
 
-	private void WordMode(Word a, Word b) {
+	private void wordMode(Word a, Word b) {
 		m_txtMemo1.setText(a.getWord());
 		m_txtMemo2.setText("");
 		m_toGuess = b.getWord();
+	}
+	
+	private void audioMode(Word a, Word b) {
+		m_txtMemo1.setText(getString(R.string.review_replay));
+		m_txtMemo2.setText("");
+		m_toGuess = b.getWord();
+		m_textToSpeechHelper.readText(a.getWord(), a.getLanguage());
+	}
+	
+	private class TextMemo1EventHandler implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			if((m_mode & AudioMode) == AudioMode) {
+				if(m_toGuessItem == 1) {
+					m_textToSpeechHelper.readText(m_memo.getWordA().getWord(), m_memo.getWordA().getLanguage());
+				} else {
+					m_textToSpeechHelper.readText(m_memo.getWordB().getWord(), m_memo.getWordB().getLanguage());
+				}
+			}
+		}
+		
 	}
 
 	private class TextMemo2EventHandler implements OnEditorActionListener, TextWatcher {

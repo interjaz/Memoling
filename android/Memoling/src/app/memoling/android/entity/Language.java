@@ -2,6 +2,9 @@ package app.memoling.android.entity;
 
 import java.util.Locale;
 
+import android.content.Context;
+import app.memoling.android.preference.Preferences;
+
 /**
  * Uses ISO-693-1 notation
  * @author Bartosz
@@ -239,6 +242,51 @@ public enum Language {
 	
 	public int getValue() {
 		return m_value;
+	}
+	
+	public Locale toLocale(Context context) {
+		
+		if(this == Language.EN) {
+			return new Preferences(context).getEnglishAccent();
+		}
+		
+		if(this == Language.ES) {
+			return new Locale("spa", "ESP");
+		}
+		
+		if(this == Language.FR) {
+			return Locale.FRANCE;
+		}
+		
+		if(this == Language.IT) {
+			return Locale.ITALY;
+		}
+
+		if(this == Language.DE) {
+			return Locale.GERMANY;
+		}
+
+		if(this == Language.CA) {
+			return Locale.CANADA;
+		}
+
+		if(this == Language.ZH) {
+			return Locale.CHINA;
+		}
+		
+		if(this == Language.JA) {
+			return Locale.JAPAN;
+		}
+		
+		if(this == Language.KR) {
+			return Locale.KOREA;
+		}
+		
+		if(this == Language.TW) {
+			return Locale.TAIWAN;
+		}	
+	
+		return new Locale(this.m_code);
 	}
 	
 	public static Language parse(String object) {

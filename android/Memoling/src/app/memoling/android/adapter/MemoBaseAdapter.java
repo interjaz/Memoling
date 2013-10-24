@@ -245,20 +245,22 @@ public class MemoBaseAdapter extends SqliteAdapter {
 
 		try {
 			db = getDatabase();
-
+			db.beginTransaction();
+			
 			// Delete all children
-			MemoAdapter memoAdapter = new MemoAdapter(getContext());
-			ArrayList<Memo> memoList = memoAdapter.getAll(memoBaseId, Sort.CreatedDate, Order.ASC);
+			ArrayList<Memo> memoList = MemoAdapter.getAll(this, db, memoBaseId, Sort.CreatedDate, Order.ASC);
 
 			if (memoList != null) {
 				for (int i = 0; i < memoList.size(); i++) {
-					memoAdapter.delete(memoList.get(i).getMemoId());
+					MemoAdapter.delete(this, db, memoList.get(i).getMemoId());
 				}
 			}
 
 			db.delete(TableName, "MemoBaseId" + "=?", new String[] { memoBaseId });
 
+			db.setTransactionSuccessful();
 		} finally {
+			db.endTransaction();
 			closeDatabase();
 		}
 	}

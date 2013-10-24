@@ -18,7 +18,7 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class AboutFragment extends ApplicationFragment {
 
-	private final static int LinesOfCode = 26706;
+	private final static int LinesOfCode = 47466;
 
 	private TextView m_lblUselessFacts;
 	private TextView m_lblVersion;

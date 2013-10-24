@@ -627,45 +627,49 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 
 			@Override
 			protected Void doInBackground(Void... params) {
-				MemoBaseAdapter memoBaseAdapter = new MemoBaseAdapter(getActivity());
+				try {
+					MemoBaseAdapter memoBaseAdapter = new MemoBaseAdapter(getActivity());
 
-				if (m_memoBaseId == null) {
-					// Open last opened one
-					m_memoBaseId = getPreferences().getLastMemoBaseId();
-				}
-
-				// Check if exists
-				if (m_memoBaseId == null || memoBaseAdapter.get(m_memoBaseId) == null) {
-					// Open any one
-					try {
-						m_memoBaseId = memoBaseAdapter.getAll().get(0).getMemoBaseId();
-					} catch (Exception ex) {
-						AppLog.e("MemoListActivity", "onStartContinuse", ex);
+					if (m_memoBaseId == null) {
+						// Open last opened one
+						m_memoBaseId = getPreferences().getLastMemoBaseId();
 					}
+
+					// Check if exists
+					if (m_memoBaseId == null || memoBaseAdapter.get(m_memoBaseId) == null) {
+						// Open any one
+						try {
+							m_memoBaseId = memoBaseAdapter.getAll().get(0).getMemoBaseId();
+						} catch (Exception ex) {
+							AppLog.e("MemoListActivity", "onStartContinuse", ex);
+						}
+					}
+
+					getPreferences().setLastMemoBaseId(m_memoBaseId);
+
+					title = memoBaseAdapter.get(m_memoBaseId).getName();
+
+					m_spLanguageFrom.loadData();
+					m_spLanguageTo.loadData();
+
+					m_memoAdapter = new MemoAdapter(getActivity());
+					m_memos = m_memoAdapter.getAll(m_memoBaseId, MemoAdapter.Sort.CreatedDate, Order.ASC);
+
+					updateSupportProgress(0.7f);
+
+					if (m_memos == null) {
+						return null;
+					}
+
+					m_memosViews = MemoView.getAll(m_memos);
+
+					updateSupportProgress(0.8f);
+
+					preferedLangs = getPreferedLanguages();
+				} catch (Exception ex) {
+					// This sometimes happens when debugging
+					AppLog.e("MemoListFragment.bindData.AsyncTask", "Unknwon Exception", ex);
 				}
-
-				getPreferences().setLastMemoBaseId(m_memoBaseId);
-
-				title = memoBaseAdapter.get(m_memoBaseId).getName();
-
-				m_spLanguageFrom.loadData();
-				m_spLanguageTo.loadData();
-
-				m_memoAdapter = new MemoAdapter(getActivity());
-				m_memos = m_memoAdapter.getAll(m_memoBaseId, MemoAdapter.Sort.CreatedDate, Order.ASC);
-
-				updateSupportProgress(0.7f);
-
-				if (m_memos == null) {
-					return null;
-				}
-
-				m_memosViews = MemoView.getAll(m_memos);
-
-				updateSupportProgress(0.8f);
-
-				preferedLangs = getPreferedLanguages();
-
 				return null;
 			}
 
@@ -856,6 +860,16 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 					}
 				}));
 
+		drawer.add(new DrawerView(R.drawable.ic_training_audio, R.string.memolist_audioTraining, new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), ReviewActivity.class);
+				intent.putExtra(ReviewActivity.MemoBaseId, m_memoBaseId);
+				intent.putExtra(ReviewActivity.Mode, ReviewActivity.AudioMode);
+				startActivity(intent);
+			}
+		}));
+
 		drawer.add(new DrawerView(R.drawable.ic_wordoftheday, R.string.memolist_wordOfTheDay,
 				new Lazy<ApplicationFragment>() {
 					public ApplicationFragment create() {
@@ -948,7 +962,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 	}
 
 	@Override
-	public void onDestroyView() {
+	public void onPause() {
 		try {
 			MemoListPreference pref = new MemoListPreference();
 			pref.setMemoBaseId(m_memoBaseId);
@@ -959,7 +973,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 		} catch (Exception ex) {
 			AppLog.e("MemoListFragment.onDestroy", "Failed to destroy properyl", ex);
 		}
-		super.onDestroyView();
+		super.onPause();
 	}
 
 	@Override

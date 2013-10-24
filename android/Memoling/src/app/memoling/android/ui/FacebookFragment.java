@@ -17,10 +17,10 @@ public abstract class FacebookFragment extends ApplicationFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, View contentView) {
 		View parentView = super.onCreateView(inflater, container, savedInstanceState, contentView);
-		
+
 		m_facebookWrapper = new FacebookWrapper(this);
 		m_facebookWrapper.onCreateView(savedInstanceState);
-		
+
 		return parentView;
 	}
 
@@ -45,17 +45,19 @@ public abstract class FacebookFragment extends ApplicationFragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		m_facebookWrapper.onSaveInstanceState(outState);
+		if (m_facebookWrapper != null) {
+			m_facebookWrapper.onSaveInstanceState(outState);
+		}
 	}
-	
+
 	public void getFacebookUser(IFacebookGetUserComplete onFacebookGetUserComplete) {
 		m_facebookWrapper.getUser(onFacebookGetUserComplete);
 	}
-	
+
 	public void getFacebookFriends(IFacebookGetFriendsComplete onFacebookGetFriendsComplete) {
 		m_facebookWrapper.getFriends(onFacebookGetFriendsComplete);
 	}
-	
+
 	public void selectFacebookFriends(IFacebookSelectFriendDialogComplete onSelectFriendDialogComplete) {
 		m_facebookWrapper.selectFriendDialog(onSelectFriendDialogComplete);
 	}

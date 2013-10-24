@@ -5,6 +5,12 @@
 		Jeśli chciałbyś/ąs przetłumaczyć applikację na inny język, 
 		  zażyczyć nową funkcjonalność albo być na bieżąco z aplikacją odwiedź jej stronę (link w ustawieniach)\n
 		\n
+		Changes v.1.7.0\n
+		1. Lepsze wsparcie dla logowanie do Facebooka\n
+		2. Dodano możliwość udostępniania słówek\n
+		3. Memoling teraz także czyta słówka\n
+		4. Dodano trening audio\n
+		5. Zmieniono miejsce w którym ukazują się wyszukane słówka\n
 		Zmainy v.1.6.0\n
 		1. Dodano Gry\n
 		2. Poprawiono obsługę hiszpańskich słówek\n
@@ -64,6 +70,7 @@
 	<string name="memolist_games">Gry językowe</string>
     <string name="memolist_repeatAll">Powtórz wszystkie</string>
 	<string name="memolist_sentencesTraining">Trening z użyciem zdań</string>
+	<string name="memolist_audioTraining">Trening audio</string>
 
     <!-- MemoBaseList Fragment -->
     <string name="memobaselist_title">Biblioteki</string>
@@ -185,6 +192,7 @@
 	<string name="review_sentencesNotFound">Zdania nie znalezione</string>
     <string name="review_sentenceNotSupported">Trening z zużyciem zdań nie wspiera nauki wyrażeń w tym samym języku</string>
     <string name="review_emptyTranslation">Brak translatcji, pomijam</string>
+    <string name="review_replay">Naciśnij by odtworzyć ponownie</string>
     
     <!-- Statistics Fragment -->
     <string name="statistics_title">Statystyki</string>
@@ -208,7 +216,7 @@
     <string name="about_donateReason">Czemu mam wesprzeć?\n1. Byś <b>ty</b> mógł używać aplikacji - pokrywa koszty translacji i serwera.\n2. Utrzymać aplikację bez reklam i aktualną.\n3. Bym <b>ja</b> stał się obrzydliwie bogaty.</string>
     <string name="about_lblDonate">Dotacja</string>
     <string name="about_uselessFacts">Bezużyteczne fakty</string>
-    <string name="about_uselessFactsContent">Aplikacja została napisana w Javie i C#. Część serwerowa w PHP (próby w ruby zawiodły). Aplikacja ma ok. +<b>%1$d</b> linii kodu. Słownik ze słowami zawiera 246957 słów. Żadne zwierzę nie ucierpiało podczas pisania aplikacji. Odwiedzasz tą stronę <b>%2$s</b> raz. Losowo wygenerowane liczby: 1, 1, 1, 1 &#8211; nie ma za co (prawdziwie naturalny rozkład). Największa parzysta liczba pierwsza: 2. Podczas czytania tego tekstu %3$1.4f Amerykan doznało obrażeń używając toalety. Koksy uśmiercają jedną osobę co 2.433333333333 dni. </string>
+    <string name="about_uselessFactsContent">Aplikacja została napisana w Javie i C#. Część serwerowa w PHP (próby w ruby zawiodły). Aplikacja ma ok. +<b>%1$d</b> linii kodu. Podpowiedzi wyrazów są generowane z bazy 246957 słów. Żadne zwierzę nie ucierpiało podczas pisania aplikacji. Odwiedzasz tą stronę <b>%2$s</b> raz. Losowo wygenerowane liczby: 1, 1, 1, 1 &#8211; nie ma za co (prawdziwie naturalny rozkład). Największa parzysta liczba pierwsza: 2. Podczas czytania tego tekstu %3$1.4f Amerykan doznało obrażeń używając toalety. Koksy uśmiercają jedną osobę co 2.433333333333 dni. </string>
     <string name="about_lblDonateDelux">Luksusowa Dotacja</string>
     <string name="about_version">Wersja %s</string>
 	<string name="about_credit">Uznania</string>

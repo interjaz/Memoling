@@ -1,5 +1,8 @@
 package app.memoling.android.helper;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -7,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.Signature;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -16,11 +20,13 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Base64;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -258,5 +264,26 @@ public class Helper {
 	    } while(paint.measureText(str) < maxWidth);
 
 	    return size;
+	}
+	
+	public static String getHashKey(Context context) {
+
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo("app.memoling.android",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                return Base64.encodeToString(md.digest(), Base64.DEFAULT);
+            }
+        } catch (NameNotFoundException e) {
+        } catch (NoSuchAlgorithmException e) {
+        }
+        return null;
+    }
+	
+	public static int getMusicVolume(Context context) {
+		AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+		return audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 	}
 }

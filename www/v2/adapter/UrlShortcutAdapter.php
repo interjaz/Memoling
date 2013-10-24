@@ -2,7 +2,7 @@
 
 class UrlShortcutAdapter extends DbAdapter {
 
-	const MEMOLING_SHORTCUT_BASE = "http://memoling.com?s.php?=";
+	const MEMOLING_SHORTCUT_BASE = "http://memoling.com/s.php?";
 	
 
 	public function getUrl($shortcut) {

@@ -52,7 +52,6 @@ class PublishedMemoAdapter extends DbAdapter {
 				memoling_FacebookUsers AS F ON P.FacebookUserId = F.FacebookUserId
 				WHERE
 				P.PublishedMemoId = :PublishedMemoId
-
 				";
 		$stm = $db->prepare($query);
 		$stm->bindParam(":PublishedMemoId", $id);
