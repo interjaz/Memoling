@@ -36,7 +36,7 @@ public class QuizletProvider {
 			@Override
 			public void definitionSearchResult(DefinitionSearchResult webResult) {
 
-				if (webResult.getDefinitions() == null) {
+				if (webResult == null || webResult.getDefinitions() == null) {
 					result.getQuizletDefinitions(null);
 					return;
 				}

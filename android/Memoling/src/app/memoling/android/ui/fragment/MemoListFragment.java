@@ -71,6 +71,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 
 	public final static String MemoBaseId = "MemoBaseId";
 	public final static String NotificationId = "NotificationId";
+	public final static String MemoId = "MemoId";
 	private final static int InvalidNotificationId = -1;
 
 	public final static int VoiceInputRequestCode = 1;
@@ -123,7 +124,8 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 				inflater.inflate(R.layout.fragment_memolist, container, false));
 
 		ResourceManager resources = getResourceManager();
-		Typeface thinFont = resources.getThinFont();
+		Typeface thinFont = resources.getLightFont();
+		Typeface blackFont = resources.getBlackFont();
 
 		// Language spinners
 		m_spLanguageFrom = (LanguageSpinner) contentView.findViewById(R.id.memolist_spLanguageFrom);
@@ -154,7 +156,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 		LstSuggestionEventHandler lstSuggestionEventHandler = new LstSuggestionEventHandler();
 		m_suggestionAdapter = new ScrollableModifiableComplexTextAdapter<TranslatedView>(getActivity(),
 				R.layout.adapter_memolist_suggestion, new int[] { R.id.memolist_suggestion_txtWord,
-						R.id.memolist_suggestion_txtTranslation }, new Typeface[] { thinFont, thinFont });
+						R.id.memolist_suggestion_txtTranslation }, new Typeface[] { blackFont, thinFont });
 		m_suggestionAdapter.setOnScrollListener(lstSuggestionEventHandler);
 		m_lstSuggestions.setAdapter(m_suggestionAdapter);
 		m_lstSuggestions.setOnItemClickListener(lstSuggestionEventHandler);
@@ -162,7 +164,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 		// List View
 		m_lstWords = (ListView) contentView.findViewById(R.id.memolist_list);
 		m_wordsAdapter = new ModifiableInjectableAdapter<MemoView>(getActivity(), R.layout.adapter_memolist_listview,
-				resources, true);
+				resources, false);
 		m_lstWords.setAdapter(m_wordsAdapter);
 		m_lstWords.setOnItemClickListener(new LstWordsEventHandler());
 		registerForContextMenu(m_lstWords);
@@ -181,9 +183,6 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 		m_btnWhatsNew = (Button) contentView.findViewById(R.id.memolist_btnWhatsNew);
 		m_btnWhatsNew.setOnClickListener(new BtnWhatsNewEventHandler());
 		resources.setFont(m_btnWhatsNew, thinFont);
-
-		resources.setFont(contentView, R.id.memo_lblLang, thinFont);
-		resources.setFont(contentView, R.id.textView1, thinFont);
 
 		m_fragmentState = (m_fragmentState == null) ? new FragmentState().fromBundle(savedInstanceState)
 				: m_fragmentState;
@@ -241,17 +240,10 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 		if (item.getItemId() == 0) {
 			return false;
 		} else if (item.getItemId() == 1) {
-
-			ApplicationFragment fragment = new MemoBaseFragment();
-			Bundle bundle = new Bundle();
-			bundle.putString(MemoBaseFragment.MemoBaseId, m_memoBaseId);
-			fragment.setArguments(bundle);
-			startFragment(fragment);
-
+			openDetails();
 			return false;
 		} else if (item.getItemId() == 2) {
-			Intent intent = VoiceInputHelper.buildIntent(m_spLanguageFrom.getSelectedLanguage().getLanguage());
-			getActivity().startActivityForResult(intent, VoiceInputRequestCode);
+			voiceSearch();
 			return false;
 		}
 		return true;
@@ -768,6 +760,29 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 		return new Helper.Pair<Language, Language>(fLangMax, sLangMax);
 	}
 
+	private void openDetails() {
+
+		ApplicationFragment fragment = new MemoBaseFragment();
+		Bundle bundle = new Bundle();
+		bundle.putString(MemoBaseFragment.MemoBaseId, m_memoBaseId);
+		fragment.setArguments(bundle);
+		startFragment(fragment);
+	}
+
+	private void openScheduler() {
+		ApplicationFragment fragment = new SchedulerFragment();
+		Bundle bundle = new Bundle();
+		bundle.putString(SchedulerFragment.MemoBaseId, m_memoBaseId);
+		fragment.setArguments(bundle);
+
+		startFragment(fragment);
+	}
+
+	private void voiceSearch() {
+		Intent intent = VoiceInputHelper.buildIntent(m_spLanguageFrom.getSelectedLanguage().getLanguage());
+		getActivity().startActivityForResult(intent, VoiceInputRequestCode);
+	}
+
 	//
 	// Internal classes
 	//
@@ -820,6 +835,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 
 	@Override
 	protected void onPopulateDrawer(DrawerAdapter drawer) {
+
 		drawer.add(new DrawerView(R.drawable.ic_libraries, R.string.memolist_goToLibraries,
 				new Lazy<ApplicationFragment>() {
 					public ApplicationFragment create() {
@@ -827,6 +843,27 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 						return fragment;
 					}
 				}));
+
+		drawer.add(new DrawerView(R.drawable.ic_details, R.string.memolist_details, new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				openDetails();
+			}
+		}));
+
+		drawer.add(new DrawerView(R.drawable.ic_scheduler, R.string.memolist_openScheduler, new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				openScheduler();
+			}
+		}));
+
+		drawer.add(new DrawerView(R.drawable.ic_voice_search, R.string.memolist_voiceSearch, new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				voiceSearch();
+			}
+		}));
 
 		drawer.add(new DrawerView(R.drawable.ic_training, R.string.memolist_startTraining, new OnClickListener() {
 			@Override
@@ -930,9 +967,22 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 							.cancel(notificationId);
 				}
 			}
+			
 			if (intent.hasExtra(MemoBaseId)) {
 				m_memoBaseId = intent.getStringExtra(MemoBaseId);
 				intent.removeExtra(MemoBaseId);
+			}
+						
+			// Go to MemoFragemnt
+			if(intent.hasExtra(MemoId)) {
+				String memoId = intent.getStringExtra(MemoId);
+				intent.removeExtra(MemoId);
+				
+				ApplicationFragment fragment = new MemoFragment();
+				Bundle bundle = new Bundle();
+				bundle.putString(MemoFragment.MemoId, memoId);
+				fragment.setArguments(bundle);
+				startFragment(fragment);
 			}
 		}
 
@@ -956,7 +1006,8 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 		if (data != null) {
 			String voice = VoiceInputHelper.getData(data.getExtras());
 			if (voice != null) {
-				m_txtAdd.getText().insert(m_txtAdd.getSelectionStart(), voice);
+				m_txtAdd.setText(voice);
+				m_txtAdd.setSelection(voice.length());
 			}
 		}
 	}

@@ -15,10 +15,11 @@
         android:id="@+id/application_lstDrawer"
         android:layout_width="240dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="#BB222222"
+        android:background="#DD222222"
         android:choiceMode="singleChoice"
         android:divider="#BBAAAAAA"
-        android:dividerHeight="0dp" />
+        android:layout_gravity="start"
+        android:dividerHeight="0dp" 
+        style="@style/Theme.Darktheme.ListView.Dark"/>
 
 </android.support.v4.widget.DrawerLayout>

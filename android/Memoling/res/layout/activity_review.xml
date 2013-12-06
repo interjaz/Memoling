@@ -17,11 +17,12 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:padding="10dp" >
+            android:padding="5dp" >
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp" >
+            		android:background="@color/content_background"
+            android:padding="5dp"  >
 
                     <TextView
                         android:id="@+id/memo_lblLang"
@@ -41,19 +42,23 @@
 
                 <TextView
                     android:id="@+id/review_txtMemo1"
+            android:background="@color/content_background"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
                     android:gravity="top"
                     android:maxLines="3"
-                    android:textSize="30sp" />
+                    android:textSize="30sp" 
+            android:padding="5dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp" >
+                    android:background="@color/content_background_dark"
+            		android:padding="5dp" 
+            		android:layout_marginTop="5dp" >
 
                     <TextView
+                        style="@style/Theme.Darktheme.TextView.Dark"
                         android:id="@+id/textView1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -61,6 +66,7 @@
                         android:textSize="20sp" />
 
                     <TextView
+                        style="@style/Theme.Darktheme.TextView.Dark"
                         android:id="@+id/review_lblMemo2Lang"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -70,13 +76,16 @@
                 </LinearLayout>
 
                 <app.memoling.android.ui.control.EditTextActionDone
+                    android:background="@color/content_background_dark"
+                    style="@style/Theme.Darktheme.EditText.Dark"
                     android:id="@+id/review_txtMemo2"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:gravity="top"
+            		android:padding="5dp" 
                     android:imeOptions="actionDone"
+                    android:layout_margin="0dp"
                     android:inputType="textMultiLine|textNoSuggestions"
                     android:textSize="30sp" />
             </LinearLayout>

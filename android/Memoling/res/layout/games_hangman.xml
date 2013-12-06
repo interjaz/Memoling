@@ -14,14 +14,16 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="top"
+            android:layout_margin="5dp"
             android:layout_weight="1"
             android:gravity="right|top"
-            android:orientation="vertical"
-            android:padding="10dp" >
+            android:orientation="vertical" >
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:background="@color/content_background"
+                android:padding="5dp" >
 
                 <TextView
                     android:id="@+id/memo_lblLang"
@@ -40,7 +42,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp" >
+                android:layout_marginBottom="5dp"
+                android:background="@color/content_background"
+                android:padding="5dp"
+                android:paddingBottom="5dp" >
 
                 <TextView
                     android:id="@+id/textView1"
@@ -57,11 +62,6 @@
                     android:paddingLeft="10dp"
                     android:text="TextView" />
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="#55FFFFFF" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -261,6 +261,7 @@
         android:gravity="center"
         android:padding="10dp"
         android:text="@string/games_win"
+            style="@style/Theme.Darktheme.TextView.Dark"
         android:textSize="40sp"
         android:visibility="invisible" />
 

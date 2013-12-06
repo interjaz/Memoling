@@ -72,7 +72,7 @@ public class SchedulerFragment extends ApplicationFragment {
 		setTitle(getActivity().getString(R.string.schedule_title));
 
 		ResourceManager resources = getResourceManager();
-		Typeface thinFont = resources.getThinFont();
+		Typeface thinFont = resources.getLightFont();
 
 		((TextView) contentView.findViewById(R.id.memo_lblLang)).setTypeface(thinFont);
 

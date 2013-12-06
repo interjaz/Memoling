@@ -21,7 +21,9 @@ public class MemoPreviewView implements IGet<String> {
 		case 1:
 			return m_memo.getWordB().getWord();
 		case 2:
-			return m_memo.getWordA().getLanguage().getCode() + "-" + m_memo.getWordB().getLanguage().getCode();
+			return m_memo.getWordA().getLanguage().toString();
+		case 3:
+			return m_memo.getWordB().getLanguage().toString();
 		}
 
 		return null;

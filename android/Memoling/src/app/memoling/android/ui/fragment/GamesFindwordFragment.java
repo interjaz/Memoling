@@ -50,7 +50,7 @@ public class GamesFindwordFragment extends GamesMatrixGame {
 	protected void onCreateView(View contentView) {
 
 		ResourceManager resources = getResourceManager();
-		Typeface thinFont = resources.getThinFont();
+		Typeface thinFont = resources.getLightFont();
 
 		m_lblScore = (TextView) contentView.findViewById(R.id.findword_lblScore);
 
@@ -61,17 +61,17 @@ public class GamesFindwordFragment extends GamesMatrixGame {
 
 		m_txtPaint = new Paint();
 		m_txtPaint.setStyle(Style.STROKE);
-		m_txtPaint.setColor(0xCCEEEEEE);
+		m_txtPaint.setColor(0xFF222222);
 
 		m_touchPaint = new Paint();
 		m_touchPaint.setStyle(Style.STROKE);
-		m_touchPaint.setColor(0xAAAAAA);
+		m_touchPaint.setColor(0xFFFFFF);
 		m_touchPaint.setStrokeWidth(Helper.dipToPixels(getActivity(), 30));
 		m_touchPaint.setAlpha(0xCC);
 
 		m_foundPaint = new Paint();
 		m_foundPaint.setStyle(Style.STROKE);
-		m_foundPaint.setColor(0xAAAAAA);
+		m_foundPaint.setColor(0xFFFFFF);
 		m_foundPaint.setStrokeWidth(Helper.dipToPixels(getActivity(), 20));
 		m_foundPaint.setAlpha(0x77);
 	}

@@ -11,87 +11,91 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/theme_light_select"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
         android:text="TextView"
         android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/memo_lblLang"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/download_published_lblName"
-        android:layout_below="@id/download_published_lblName"
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp"
-        android:text="@string/download_published_genre" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/memo_lblLang"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="5dp"
-        android:text="@string/download_published_memos" />
 
     <TextView
         android:id="@+id/download_published_lblGenre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/download_published_lblName"
+        android:layout_alignParentRight="true"
         android:layout_marginLeft="5dp"
-        android:layout_toLeftOf="@id/textView1"
-        android:layout_toRightOf="@id/memo_lblLang"
-        android:text="TextView" />
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="-15dp"
+		android:layout_below="@id/download_published_lblName"
+        android:background="#000000"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="TextView"
+        android:textColor="#CCCCCC" />
 
     <TextView
         android:id="@+id/download_published_lblMemos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/memo_lblLang"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@+id/textView1"
-        android:text="TextView" />
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="6dp"
+        android:background="#000000"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="TextView"
+        android:textColor="#CCCCCC" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/download_published_lblLanguageB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/memo_lblLang"
-        android:layout_below="@id/download_published_lblGenre"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="2dp"
-        android:text="@string/download_published_language" />
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="6dp"
+        android:layout_toLeftOf="@id/download_published_lblMemos"
+        android:background="#000000"
+        android:paddingRight="5dp"
+        android:text="ES"
+        android:textColor="#CCCCCC" />
 
     <TextView
-        android:id="@+id/download_published_lblLanguage"
+        android:id="@+id/download_published_lblLanguageA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/textView3"
-        android:layout_alignBottom="@id/textView3"
         android:layout_marginLeft="5dp"
-        android:layout_toLeftOf="@+id/downloadlink_lblDefinitionALabel"
-        android:layout_toRightOf="@id/textView3"
-        android:text="TextView" />
+        android:layout_marginTop="6dp"
+        android:layout_toLeftOf="@id/download_published_lblLanguageB"
+        android:background="#000000"
+        android:paddingLeft="5dp"
+        android:text="EN"
+        android:textColor="#CCCCCC" />
 
     <TextView
-        android:id="@+id/downloadlink_lblDefinitionALabel"
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/textView3"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="-16dp"
-        android:paddingLeft="21dp"
+        android:layout_alignLeft="@+id/download_published_lblName"
+        android:layout_marginTop="1dp"
+        android:textSize="12sp"
+        android:textColor="#444444"
         android:text="@string/download_published_downloads" />
 
     <TextView
         android:id="@+id/download_published_lblDownloads"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/textView3"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@+id/downloadlink_lblDefinitionALabel"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="1dp"
+        android:layout_marginLeft="4dp"
+        android:textSize="12sp"
+        android:textColor="#444444"
+        android:layout_toRightOf="@id/textView1"
         android:text="TextView" />
 
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package app.memoling.android.adapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 import android.content.ContentValues;
@@ -11,6 +12,7 @@ import app.memoling.android.adapter.MemoAdapter.Sort;
 import app.memoling.android.db.DatabaseHelper;
 import app.memoling.android.db.DatabaseHelper.Order;
 import app.memoling.android.db.SqliteAdapter;
+import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoBase;
 import app.memoling.android.entity.MemoBaseInfo;
@@ -204,10 +206,13 @@ public class MemoBaseAdapter extends SqliteAdapter {
 
 			db = getDatabase();
 
-			String query = "SELECT " + "B.MemoBaseId B_MemoBaseId, B.Name B_Name, B.Created B_Created, "
+			String query = "SELECT " 
+					+ "B.MemoBaseId B_MemoBaseId, B.Name B_Name, B.Created B_Created, "
 					+ "B.Active B_Active, COUNT(M.MemoBaseId) NoAll, SUM(M.Active) NoActive, "
-					+ "MAX(M.LastReviewed) AS LastReviewed " + "FROM MemoBases  AS B "
-					+ "OUTER LEFT JOIN Memos AS M ON M.MemoBaseId = B.MemoBaseId " + "WHERE B.MemoBaseId = ?";
+					+ "MAX(M.LastReviewed) AS LastReviewed " 
+					+ "FROM MemoBases  AS B "
+					+ "OUTER LEFT JOIN Memos AS M ON M.MemoBaseId = B.MemoBaseId " 
+					+ "WHERE B.MemoBaseId = ?";
 
 			cursor = db.rawQuery(query, new String[] { memoBaseId });
 
@@ -224,7 +229,27 @@ public class MemoBaseAdapter extends SqliteAdapter {
 				memoBaseInfo.setLastReviewed(DatabaseHelper.optDate(cursor, "LastReviewed", new Date()));
 				memoBaseInfo.setNoActiveMemos(DatabaseHelper.optInt(cursor, "NoActive", 0));
 				memoBaseInfo.setNoAllMemos(DatabaseHelper.optInt(cursor, "NoAll", 0));
+			
+				query = "SELECT LanguageIso639 FROM( " 
+						+"SELECT DISTINCT coalesce(MB.MemoBaseId, MA.MemoBaseId) AS MemoBaseID, W.LanguageIso639 "
+						+"FROM Words AS W "
+						+"OUTER LEFT JOIN Memos AS MA ON MA.WordAId = W.WordId " 
+						+"OUTER LEFT JOIN Memos AS MB ON MB.WordBId = W.WordId "
+						+") "
+						+"WHERE MemoBaseId = ?";
+				
+				cursor.close();
+				cursor = db.rawQuery(query, new String[] { memoBaseId });
+	
+				ArrayList<Language> languages = new ArrayList<Language>();
+				while (cursor.moveToNext()) {
+					languages.add(Language.parse(DatabaseHelper.getString(cursor, "LanguageIso639")));
+				} 
+				Language[] arrayLanguages = new Language[languages.size()];
+				arrayLanguages = languages.toArray(arrayLanguages);
+				memoBaseInfo.setLanguages(arrayLanguages);
 			}
+			
 			if (memoBaseInfo != null) {
 				m_memoBaseInfoCache.put(memoBaseId, memoBaseInfo);
 			}

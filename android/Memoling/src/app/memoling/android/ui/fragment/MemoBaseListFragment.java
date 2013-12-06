@@ -12,6 +12,7 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -21,7 +22,9 @@ import app.memoling.android.entity.MemoBase;
 import app.memoling.android.entity.MemoBaseInfo;
 import app.memoling.android.ui.ApplicationFragment;
 import app.memoling.android.ui.ResourceManager;
+import app.memoling.android.ui.adapter.DrawerAdapter;
 import app.memoling.android.ui.adapter.ModifiableComplexTextAdapter;
+import app.memoling.android.ui.view.DrawerView;
 import app.memoling.android.ui.view.MemoBaseInfoView;
 
 import com.actionbarsherlock.view.MenuItem;
@@ -37,8 +40,8 @@ public class MemoBaseListFragment extends ApplicationFragment {
 
 	private MemoBaseInfoView m_selectedItem;
 
-	private final static int[] m_memoBaseAdapterResources = new int[] { R.id.memobaselist_listview_lblCreated,
-			R.id.memobaselist_listview_lblMemos, R.id.memobaselist_listview_lblName };
+	private final static int[] m_memoBaseAdapterResources = new int[] { R.id.memobaselist_listview_lblName,
+			R.id.memobaselist_listview_lblMemos, R.id.memobaselist_listview_lblLanguages, };
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,21 +50,19 @@ public class MemoBaseListFragment extends ApplicationFragment {
 		setTitle(getActivity().getString(R.string.memobaselist_title));
 
 		ResourceManager resources = getResourceManager();
-		Typeface thinFont = resources.getThinFont();
+		Typeface thinFont = resources.getLightFont();
+		Typeface blackFont = resources.getBlackFont();
 
 		m_lstMemos = (ListView) contentView.findViewById(R.id.memobaselist_lstMemo);
 		m_lstAdapter = new ModifiableComplexTextAdapter<MemoBaseInfoView>(getActivity(),
 				R.layout.adapter_memobaselist_listview, m_memoBaseAdapterResources, new Typeface[] { thinFont,
-						thinFont, thinFont }, true);
+			thinFont, thinFont }, false);
 		m_lstMemos.setAdapter(m_lstAdapter);
 		m_lstHandler = new MemoBaseListEventHandler();
 		m_lstMemos.setOnItemClickListener(m_lstHandler);
 		registerForContextMenu(m_lstMemos);
 
 		m_memoBaseAdapter = new MemoBaseAdapter(getActivity());
-
-		resources.setFont(R.layout.adapter_memobaselist_listview, R.id.memo_lblLang, thinFont);
-		resources.setFont(R.layout.adapter_memobaselist_listview, R.id.textView1, thinFont);
 
 		return contentView;
 	}
@@ -160,17 +161,10 @@ public class MemoBaseListFragment extends ApplicationFragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == 0) {
-
-			Bundle result = new Bundle();
-			result.putString(Action, MemoBaseFragment.ActionCreate);
-			ApplicationFragment fragment = new MemoBaseFragment();
-			fragment.setArguments(result);
-
-			startFragment(fragment);
+			openNewMemoBase();
 			return false;
 		} else if (item.getItemId() == 1) {
-			ApplicationFragment fragment = new DownloadFragment();
-			startFragment(fragment);
+			openDownloadMemoBase();
 			return false;
 		}
 		return true;
@@ -231,6 +225,27 @@ public class MemoBaseListFragment extends ApplicationFragment {
 		bindData();
 	}
 
+	protected void onPopulateDrawer(DrawerAdapter drawer) {
+
+		drawer.add(new DrawerView(R.drawable.ic_back, R.string.memobaselist_backToList));
+
+		drawer.add(new DrawerView(R.drawable.ic_library_add, R.string.memobaselist_addMemoBase, new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				openNewMemoBase();
+			}
+		}));
+
+		drawer.add(new DrawerView(R.drawable.ic_download, R.string.memobaselist_downloadMemoBase,
+				new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						openDownloadMemoBase();
+					}
+				}));
+
+	}
+
 	private void bindData() {
 		m_lstAdapter.clear();
 		m_memoBaseInfos = new ArrayList<MemoBaseInfo>();
@@ -238,5 +253,19 @@ public class MemoBaseListFragment extends ApplicationFragment {
 			m_memoBaseInfos.add(m_memoBaseAdapter.getMemoBaseInfo(memoBase.getMemoBaseId()));
 		}
 		m_lstAdapter.addAll(MemoBaseInfoView.getAll(m_memoBaseInfos));
+	}
+
+	private void openNewMemoBase() {
+		Bundle result = new Bundle();
+		result.putString(Action, MemoBaseFragment.ActionCreate);
+		ApplicationFragment fragment = new MemoBaseFragment();
+		fragment.setArguments(result);
+
+		startFragment(fragment);
+	}
+
+	private void openDownloadMemoBase() {
+		ApplicationFragment fragment = new DownloadFragment();
+		startFragment(fragment);
 	}
 }

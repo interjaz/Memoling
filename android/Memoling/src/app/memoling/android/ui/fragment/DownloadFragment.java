@@ -2,6 +2,10 @@ package app.memoling.android.ui.fragment;
 
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -48,9 +52,8 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 
 	private LinearLayout m_layPreview;
 	private ListView m_lstPreview;
-	private Button m_btnClose;
-	private Button m_btnDownload;
 	private TextView m_lblDescription;
+	private BtnDownloadEventHandler m_btnDownloadEventHandler;
 
 	private ModifiableComplexTextAdapter<MemoBaseGenreView> m_genreAdapter;
 	private ScrollableModifiableComplexTextAdapter<PublishedSearchView> m_publishedAdapter;
@@ -70,7 +73,8 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 		setTitle(getActivity().getString(R.string.download_title));
 
 		ResourceManager resources = getResourceManager();
-		Typeface thinFont = resources.getThinFont();
+		Typeface thinFont = resources.getLightFont();
+		Typeface blackFont = resources.getBlackFont();
 
 		m_txtPhrase = (EditText) contentView.findViewById(R.id.download_txtPhrase);
 		resources.setFont(m_txtPhrase, thinFont);
@@ -90,49 +94,37 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 		m_lstPublished = (ListView) contentView.findViewById(R.id.download_lstPublished);
 		m_publishedAdapter = new ScrollableModifiableComplexTextAdapter<PublishedSearchView>(getActivity(),
 				R.layout.adapter_download_publishedview, new int[] { R.id.download_published_lblName,
-						R.id.download_published_lblGenre, R.id.download_published_lblLanguage,
-						R.id.download_published_lblMemos, R.id.download_published_lblDownloads }, new Typeface[] {
-						thinFont, thinFont, thinFont, thinFont, thinFont });
+						R.id.download_published_lblGenre, R.id.download_published_lblLanguageA,
+						R.id.download_published_lblLanguageB, R.id.download_published_lblMemos,
+						R.id.download_published_lblDownloads }, new Typeface[] { thinFont, thinFont, blackFont,
+						thinFont, thinFont, thinFont }, false);
 		m_publishedAdapter.setOnScrollListener(this);
 		m_lstPublished.setAdapter(m_publishedAdapter);
 		// m_lstPublished.setOnTouchListener(this);
 		m_lstPublished.setOnItemClickListener(new LstPublishedEventHandler());
 
-		resources.setFont(R.layout.adapter_download_publishedview, R.id.memo_lblLang, thinFont);
-		resources.setFont(R.layout.adapter_download_publishedview, R.id.textView1, thinFont);
-		resources.setFont(R.layout.adapter_download_publishedview, R.id.textView3, thinFont);
-		resources.setFont(R.layout.adapter_download_publishedview, R.id.downloadlink_lblDefinitionALabel, thinFont);
-
-		m_layPreview = (LinearLayout) contentView.findViewById(R.id.download_layPreview);
-
-		m_lblDescription = (TextView) contentView.findViewById(R.id.download_lblDescription);
-		resources.setFont(m_lblDescription, thinFont);
-
-		m_lstPreview = (ListView) contentView.findViewById(R.id.download_lstPreview);
-		m_previewAdapter = new ModifiableComplexTextAdapter<MemoPreviewView>(getActivity(),
-				R.layout.adapter_download_previewview, new int[] { R.id.download_preview_lblWordA,
-						R.id.download_preview_lblWordB, R.id.download_preview_lblLanguage }, new Typeface[] { thinFont,
-						thinFont, thinFont });
-		m_lstPreview.setAdapter(m_previewAdapter);
-
-		m_btnClose = (Button) contentView.findViewById(R.id.download_btnClose);
-		m_btnClose.setOnClickListener(new BtnCloseEventHandler());
-		resources.setFont(m_btnClose, thinFont);
-
-		m_btnDownload = (Button) contentView.findViewById(R.id.download_btnDownload);
-		m_btnDownload.setOnClickListener(new BtnDownloadEventHandler());
-		resources.setFont(m_btnDownload, thinFont);
-
-		resources.setFont(R.layout.adapter_download_previewview, R.id.memo_lblLang, thinFont);
-
 		resources.setFont(contentView, R.id.memo_lblLang, thinFont);
 		resources.setFont(contentView, R.id.textView1, thinFont);
-		resources.setFont(contentView, R.id.textView3, thinFont);
-		resources.setFont(contentView, R.id.downloadlink_lblDefinitionALabel, thinFont);
-		resources.setFont(contentView, R.id.textView5, thinFont);
 
 		m_genreDataAdapter = new MemoBaseGenreAdapter(getActivity());
 		m_memoBaseDataAdapter = new MemoBaseAdapter(getActivity());
+
+		// Preview dialog
+		m_layPreview = (LinearLayout) inflater.inflate(R.layout.download_preview, null);
+
+		m_lblDescription = (TextView) m_layPreview.findViewById(R.id.download_lblDescription);
+		resources.setFont(m_lblDescription, thinFont);
+
+		m_lstPreview = (ListView) m_layPreview.findViewById(R.id.download_lstPreview);
+		m_previewAdapter = new ModifiableComplexTextAdapter<MemoPreviewView>(getActivity(),
+				R.layout.adapter_download_previewview, new int[] { R.id.download_preview_lblWordA,
+						R.id.download_preview_lblWordB, R.id.download_preview_lblLanguageA,
+						R.id.download_preview_lblLanguageB }, new Typeface[] { blackFont, thinFont, blackFont,
+						thinFont, thinFont });
+		m_lstPreview.setAdapter(m_previewAdapter);
+
+		resources.setFont(R.layout.adapter_download_publishedview, R.id.textView1, thinFont);
+		resources.setFont(m_layPreview, R.id.textView1, thinFont);
 
 		bindData();
 
@@ -146,16 +138,6 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 	// return true;
 	// }
 	//
-
-	@Override
-	public boolean onBackPressed() {
-		if (m_layPreview.getVisibility() == View.VISIBLE) {
-			m_layPreview.setVisibility(View.GONE);
-			return false;
-		}
-
-		return true;
-	}
 
 	private void bindData() {
 
@@ -186,19 +168,10 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 
 	}
 
-	private class BtnCloseEventHandler implements OnClickListener {
+	private class BtnDownloadEventHandler implements DialogInterface.OnClickListener {
 
 		@Override
-		public void onClick(View view) {
-			m_layPreview.setVisibility(View.GONE);
-		}
-
-	}
-
-	private class BtnDownloadEventHandler implements OnClickListener {
-
-		@Override
-		public void onClick(View view) {
+		public void onClick(DialogInterface dialog, int which) {
 			m_layPreview.setVisibility(View.GONE);
 			Toast.makeText(getActivity(), R.string.download_download_startDownload, Toast.LENGTH_SHORT).show();
 
@@ -219,11 +192,11 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 					Toast.makeText(getActivity(), R.string.download_download_finished, Toast.LENGTH_SHORT).show();
 				}
 			});
+
 		}
 
 	}
 
-	// TODO: Change this to dialog - remove on back press also
 	private class LstPublishedEventHandler implements OnItemClickListener {
 
 		@Override
@@ -246,6 +219,23 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 					m_previewAdapter.addAll(MemoPreviewView.getAll(preview.getMemoBase().getMemos()));
 				}
 			});
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(DownloadFragment.this.getActivity());
+
+			builder.setView(m_layPreview)
+					.setPositiveButton(getString(R.string.download_download), m_btnDownloadEventHandler)
+					.setNegativeButton(getString(R.string.download_close), new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							((ViewGroup) m_layPreview.getParent()).removeView(m_layPreview);
+						}
+					}).setCancelable(true).setOnCancelListener(new OnCancelListener() {
+
+						@Override
+						public void onCancel(DialogInterface dialog) {
+							((ViewGroup) m_layPreview.getParent()).removeView(m_layPreview);
+						}
+					}).create().show();
 		}
 
 	}

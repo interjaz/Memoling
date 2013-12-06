@@ -46,37 +46,37 @@ public class StatisticsTabCombinedFragment extends Fragment {
 		View contentView = inflater.inflate(R.layout.statistics_tabcombined, container, false);
 
 		m_lblMemos = (TextView) contentView.findViewById(R.id.statistics_lblMemos);
-		m_resources.setFont(m_lblMemos, m_resources.getThinFont());
+		m_resources.setFont(m_lblMemos, m_resources.getLightFont());
 		m_lblLibraries = (TextView) contentView.findViewById(R.id.statistics_lblLibraries);
-		m_resources.setFont(m_lblLibraries, m_resources.getThinFont());
+		m_resources.setFont(m_lblLibraries, m_resources.getLightFont());
 		m_lblTotalRepetitions = (TextView) contentView.findViewById(R.id.statistics_lblTotalRepetitions);
-		m_resources.setFont(m_lblTotalRepetitions, m_resources.getThinFont());
+		m_resources.setFont(m_lblTotalRepetitions, m_resources.getLightFont());
 		m_lblAvgPerformance = (TextView) contentView.findViewById(R.id.statistics_lblAvgPerformance);
-		m_resources.setFont(m_lblAvgPerformance, m_resources.getThinFont());
+		m_resources.setFont(m_lblAvgPerformance, m_resources.getLightFont());
 		m_lblMostRepeated = (TextView) contentView.findViewById(R.id.statistics_lblMostRepeated);
-		m_resources.setFont(m_lblMostRepeated, m_resources.getThinFont());
+		m_resources.setFont(m_lblMostRepeated, m_resources.getLightFont());
 		m_lblMostRepeatedNumber = (TextView) contentView.findViewById(R.id.statistics_lblMostRepeatedNumber);
-		m_resources.setFont(m_lblMostRepeatedNumber, m_resources.getThinFont());
+		m_resources.setFont(m_lblMostRepeatedNumber, m_resources.getLightFont());
 		m_lblLeastRepeated = (TextView) contentView.findViewById(R.id.statistics_lblLeastRepeated);
-		m_resources.setFont(m_lblLeastRepeated, m_resources.getThinFont());
+		m_resources.setFont(m_lblLeastRepeated, m_resources.getLightFont());
 		m_lblLeastRepeatedNumber = (TextView) contentView.findViewById(R.id.statistics_lblLeastRepeatedNumber);
-		m_resources.setFont(m_lblLeastRepeatedNumber, m_resources.getThinFont());
+		m_resources.setFont(m_lblLeastRepeatedNumber, m_resources.getLightFont());
 		m_lblLongest = (TextView) contentView.findViewById(R.id.statistics_lblLongest);
-		m_resources.setFont(m_lblLongest, m_resources.getThinFont());
+		m_resources.setFont(m_lblLongest, m_resources.getLightFont());
 		m_lblShortest = (TextView) contentView.findViewById(R.id.statistics_lblShortest);
-		m_resources.setFont(m_lblShortest, m_resources.getThinFont());
+		m_resources.setFont(m_lblShortest, m_resources.getLightFont());
 
-		m_resources.setFont(contentView, R.id.memo_lblLang, m_resources.getThinFont());
-		m_resources.setFont(contentView, R.id.textView1, m_resources.getThinFont());
-		m_resources.setFont(contentView, R.id.textView3, m_resources.getThinFont());
-		m_resources.setFont(contentView, R.id.downloadlink_lblDefinitionALabel, m_resources.getThinFont());
-		m_resources.setFont(contentView, R.id.textView5, m_resources.getThinFont());
-		m_resources.setFont(contentView, R.id.textView6, m_resources.getThinFont());
-		m_resources.setFont(contentView, R.id.downloadlink_lblDefinitionBLabel, m_resources.getThinFont());
-		m_resources.setFont(contentView, R.id.textView8, m_resources.getThinFont());
-		m_resources.setFont(contentView, R.id.textView9, m_resources.getThinFont());
-		m_resources.setFont(contentView, R.id.textView10, m_resources.getThinFont());
-		m_resources.setFont(contentView, R.id.textView11, m_resources.getThinFont());
+		m_resources.setFont(contentView, R.id.memo_lblLang, m_resources.getLightFont());
+		m_resources.setFont(contentView, R.id.textView1, m_resources.getLightFont());
+		m_resources.setFont(contentView, R.id.textView3, m_resources.getLightFont());
+		m_resources.setFont(contentView, R.id.downloadlink_lblDefinitionALabel, m_resources.getLightFont());
+		m_resources.setFont(contentView, R.id.textView5, m_resources.getLightFont());
+		m_resources.setFont(contentView, R.id.textView6, m_resources.getLightFont());
+		m_resources.setFont(contentView, R.id.downloadlink_lblDefinitionBLabel, m_resources.getLightFont());
+		m_resources.setFont(contentView, R.id.textView8, m_resources.getLightFont());
+		m_resources.setFont(contentView, R.id.textView9, m_resources.getLightFont());
+		m_resources.setFont(contentView, R.id.textView10, m_resources.getLightFont());
+		m_resources.setFont(contentView, R.id.textView11, m_resources.getLightFont());
 
 		return contentView;
 	}

@@ -53,14 +53,14 @@ public class DownloadLinkActivity extends AdActivity {
 
 		ResourceManager resources = new ResourceManager(this);
 		m_resources = resources;
-		Typeface thinFont = m_resources.getThinFont();
+		Typeface thinFont = m_resources.getLightFont();
 
 		setProgressBarIndeterminateVisibility(true);
 		
 		m_lstMemoBases = (Spinner)findViewById(R.id.downloadlink_lstMemoBases); 
 
 		m_lstMemoBasesAdapter = new ModifiableComplexTextAdapter<MemoBaseNameView>(this, R.layout.adapter_downloadlink_memobase,
-				new int[] { R.id.textView1 }, new Typeface[] { resources.getThinFont() });
+				new int[] { R.id.textView1 }, new Typeface[] { resources.getLightFont() });
 		
 		m_lstMemoBases.setAdapter(m_lstMemoBasesAdapter);
 		

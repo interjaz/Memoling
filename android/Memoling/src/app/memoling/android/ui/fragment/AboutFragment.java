@@ -38,7 +38,7 @@ public class AboutFragment extends ApplicationFragment {
 		setTitle(getActivity().getString(R.string.about_title));
 
 		ResourceManager resources = getResourceManager();
-		Typeface thinFont = resources.getThinFont();
+		Typeface thinFont = resources.getLightFont();
 
 		int seen = getPreferences().getAboutSeen() + 1;
 		m_activityVisited = Integer.toString(seen);

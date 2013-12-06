@@ -71,6 +71,8 @@
     <string name="memolist_repeatAll">Powtórz wszystkie</string>
 	<string name="memolist_sentencesTraining">Trening z użyciem zdań</string>
 	<string name="memolist_audioTraining">Trening audio</string>
+    <string name="memolist_details">Szczegóły</string>
+    <string name="memolist_voiceSearch">Szukanie głosowe</string>
 
     <!-- MemoBaseList Fragment -->
     <string name="memobaselist_title">Biblioteki</string>
@@ -93,6 +95,9 @@
     <string name="memobaselist_setting_about">O aplikacji</string>
     <string name="memobaselist_fbFailed">Problem podczas uwierzytelniania.</string>
     <string name="memobaselist_setting_statistics">Statystyki</string>
+    <string name="memobaselist_addMemoBase">Nowa Biblioteka</string>
+    <string name="memobaselist_downloadMemoBase">Pobierz Bibliotekę</string>
+    <string name="memobaselist_backToList">Powrót do listy</string>
 
     <!-- Memo Fragment -->
     <string name="memo_title">Wyrażenie</string>
@@ -155,6 +160,8 @@
     <string name="memobase_lblGenre">Gatunek</string>
     <string name="memobase_lblDescription">Opis</string>
     <string name="memobase_btnUpload">Wyślij na serwer</string>
+    <string name="memobase_btnUpload">Opublikuj</string>
+    <string name="memobase_lblOpenScheduler">Ustaw trening</string>
 
     <string-array name="memobase_exportList">
         <item>Plik Memoling (domyślne)</item>

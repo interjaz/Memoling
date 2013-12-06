@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:paddingLeft="5dp"
-        android:textSize="20sp"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textColor="#CCCCCC"
+        android:textSize="20sp" />
 
 </LinearLayout>

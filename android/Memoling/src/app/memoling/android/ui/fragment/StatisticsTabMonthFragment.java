@@ -33,7 +33,7 @@ public class StatisticsTabMonthFragment extends Fragment {
 		View contentView = inflater.inflate(R.layout.statistics_tabmonth, container, false);
 		m_barMonth = (BarGraph) contentView.findViewById(R.id.statistics_barMonth);
 
-		m_resources.setFont(contentView, R.id.memo_lblLang, m_resources.getThinFont());
+		m_resources.setFont(contentView, R.id.memo_lblLang, m_resources.getLightFont());
 		return contentView;
 	}
 

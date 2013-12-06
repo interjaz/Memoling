@@ -27,13 +27,13 @@ public class BarGraph extends LinearLayout {
 
 	public BarGraph(Context context) {
 		super(context);
-		m_font = new ResourceManager(context).getThinFont();
+		m_font = new ResourceManager(context).getLightFont();
 		m_context = context;
 	}
 
 	public BarGraph(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		m_font = new ResourceManager(context).getThinFont();
+		m_font = new ResourceManager(context).getLightFont();
 		m_context = context;
 	}
 
@@ -99,7 +99,7 @@ public class BarGraph extends LinearLayout {
 			LayoutParams barParams = new LayoutParams((int) (barWidth * scaledValue), barHeight);
 			barParams.setMargins(barLeftMargin, barTopMargin, barRightMargin, barBottomMargin);
 			bar.setLayoutParams(barParams);
-			bar.setBackgroundColor((int) Math.min(((long) (scaledValue * 0xEE) * 0x1000000 + 0x11FFFFFF), 0xFFFFFFFFL));
+			bar.setBackgroundColor((int) Math.min(((long) (scaledValue * 0xEE) * 0x1000000L + 0x00000000L), 0xFF000000L));
 
 			line.addView(label);
 			line.addView(bar);

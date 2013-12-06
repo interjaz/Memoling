@@ -19,6 +19,10 @@ public class MemoBaseInfo {
 	private Date m_lastReviewed;
 	public Date getLastReviewed() {  return m_lastReviewed; }
 	public void setLastReviewed(Date lastReviewed) { m_lastReviewed = lastReviewed; }
+	
+	private Language[] m_languages;
+	public Language[] getLanguages() { return m_languages; }
+	public void setLanguages(Language[] languages) { m_languages = languages; };
 
 	
 }

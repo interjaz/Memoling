@@ -61,8 +61,8 @@
     <string name="memolist_ctxmenu_deleteQuestion">Are you sure? Once deleted, it will not be possible to recover old memo. Consider deactivating.</string>
     <string name="memolist_ctxmenu_deleteYes">Yes, I am sure.</string>
     <string name="memolist_ctxmenu_deleteNo">No, I have changed my mind.</string>
-	<string name="memolist_ctxmenu_sharefacebook">Share via Facebook</string>
-	<string name="memolist_ctxmenu_share">Share via Application</string>
+    <string name="memolist_ctxmenu_sharefacebook">Share via Facebook</string>
+    <string name="memolist_ctxmenu_share">Share via Application</string>
     <string name="memolist_missingWords">Expression is missing or empty.</string>
     <string name="memolist_goToLibraries">Go to Libraries</string>
     <string name="memolist_settings">Settings</string>
@@ -75,6 +75,9 @@
     <string name="memolist_repeatAll">Repeat All</string>
     <string name="memolist_sentencesTraining">Sentences Training</string>
     <string name="memolist_audioTraining">Audio Training</string>
+    <string name="memolist_details">Details</string>
+    <string name="memolist_openScheduler">Set Training</string>
+    <string name="memolist_voiceSearch">Voice Search</string>
     <string name="memolist_swap">⇄</string>
 
     <!-- MemoBaseList Fragment -->
@@ -98,6 +101,9 @@
     <string name="memobaselist_setting_about">About</string>
     <string name="memobaselist_fbFailed">Failed to obtain credentials.</string>
     <string name="memobaselist_setting_statistics">Statistics</string>
+    <string name="memobaselist_addMemoBase">New Library</string>
+    <string name="memobaselist_downloadMemoBase">Download Library</string>
+    <string name="memobaselist_backToList">Back To List</string>
 
     <!-- Memo Fragment -->
     <string name="memo_title">Expression</string>
@@ -123,24 +129,24 @@
     <string name="memo_sentencesTatoeba">Tatoeba.org</string>
     <string name="memo_sentencesQuizlet">Powered by Quizlet.com</string>
     <string name="memo_notFound">Not found</string>
-	<string name="memo_sharefacebook">Share via Facebook</string>
-	<string name="memo_share">Share via Application</string>
-	<string name="memo_backToList">Back to List</string>
-	
-	<!-- Common share -->
-	<string name="share_message">%1$s would like to share a %2$s expression with you. Click the link for more details: %3$s</string>
-	<string name="share_intent">Share link via</string>
-	<string name="share_error">Error occurred</string>
-	<string name="share_fbCaption">Memoling - Master Vocabulary</string>
-	<string name="share_generatingShortcut">Generating shortcut</string>
-	<string name="share_fbGettingFriends">Looking for Facebook friends</string>
-	<string name="share_fbGettingFriendsError">Error occurred while looking for Facebook friends</string>
-    
-	<!-- Text to Speech -->
-	<string name="texttospeech_languageNotSupported">Language not supported</string>
-	<string name="texttospeech_missingData">Some files need downloading for proper text to speech functionality</string>
-	<string name="texttospeech_muted">Device is muted</string>
-		
+    <string name="memo_sharefacebook">Share via Facebook</string>
+    <string name="memo_share">Share via Application</string>
+    <string name="memo_backToList">Back to List</string>
+
+    <!-- Common share -->
+    <string name="share_message">%1$s would like to share a %2$s expression with you. Click the link for more details: %3$s</string>
+    <string name="share_intent">Share link via</string>
+    <string name="share_error">Error occurred</string>
+    <string name="share_fbCaption">Memoling - Master Vocabulary</string>
+    <string name="share_generatingShortcut">Generating shortcut</string>
+    <string name="share_fbGettingFriends">Looking for Facebook friends</string>
+    <string name="share_fbGettingFriendsError">Error occurred while looking for Facebook friends</string>
+
+    <!-- Text to Speech -->
+    <string name="texttospeech_languageNotSupported">Language not supported</string>
+    <string name="texttospeech_missingData">Some files need downloading for proper text to speech functionality</string>
+    <string name="texttospeech_muted">Device is muted</string>
+
     <!-- MemoBase Fragment -->
     <string name="memobase_title">Library</string>
     <string name="memobase_backToList">Back to list</string>
@@ -168,6 +174,7 @@
     <string name="memobase_lblGenre">Genre</string>
     <string name="memobase_lblDescription">Description</string>
     <string name="memobase_btnUpload">Upload</string>
+    <string name="memobase_lblOpenScheduler">Set Training</string>
 
     <string-array name="memobase_exportList">
         <item>Memoling file (default)</item>
@@ -197,7 +204,7 @@
     <string name="memobase_evernoteExportSuccess">Exported to Evernote</string>
 
     <!-- Review Activity -->
-    <string name="review_title">Review Expressions</string>
+    <string name="review_title">Review</string>
     <string name="review_lblCorrect">Correct</string>
     <string name="review_lblIncorrect">Incorrect. Answer:\n%s</string>
     <string name="review_lblLanguage">Language</string>
@@ -302,20 +309,19 @@
     <string name="preferences_enableWordNotification_summary">Receive daily notification with word of a day with it translation</string>
     <string name="preferences_wordOfTheDay_title">Word of the Day Notification</string>
     <string name="preferences_wordOfTheDay_summary">Set when notification should arrive</string>
-	<string name="preferences_facebookLogout">Logged out</string>
-	<string name="preferences_languageAccent_title">Text To Speech Accent</string>
-   	<string name="preferences_languageAccent_summary">Only English accents are supproted</string>
-   	
-   	<string-array name="preferences_languageAccent_entries">
-   	    <item>USA</item>
-   	    <item>UK</item>
-   	</string-array>
-   	
-   	<string-array name="preferences_languageAccent_values">
-   	    <item>0</item>
-   	    <item>1</item>
-   	</string-array>
-	
+    <string name="preferences_facebookLogout">Logged out</string>
+    <string name="preferences_languageAccent_title">Text To Speech Accent</string>
+    <string name="preferences_languageAccent_summary">Only English accents are supproted</string>
+
+    <string-array name="preferences_languageAccent_entries">
+        <item>USA</item>
+        <item>UK</item>
+    </string-array>
+    <string-array name="preferences_languageAccent_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
     <!-- Word of the day Fragment -->
     <string name="wordoftheday_title">Word of the Day</string>
     <string name="wordoftheday_lblEnable">Do you want receive Word of the Day notifications?</string>
@@ -332,7 +338,12 @@
         1. I want to receive new words in English with translation in Spanish. Check \'Do you&#8230;\', then select notification source to Merriam-Webster and set translation to Spanish.\n\n
         2. I want to receive new words in Greek with translation in Finish.  Check \'Do you&#8230;\', then select notification source to Merriam-Webster, chcek \'Would you&#8230;\', select pre translate to Greek and translate to Finish.\n\n
         At the end of setting up notification you can test it to see whether it meets you needs.</string>
+	<string name="wordoftheday_widget_title">Memoling Word of the Day</string>
 
+	<string name="wordofthedaywidgetconfiguration_title">Configure Widget</string>
+	<string name="wordofthedaywidgetconfiguration_memoBase">Library</string>
+	<string name="wordofthedaywidgetconfiguration_save">Save</string>
+	
     <string-array name="wordoftheday_modes">
         <item>Online source (new words)</item>
         <item>Online source and my library</item>
@@ -363,17 +374,17 @@
         <item>Italian Words</item>
         <item>Polish Words</item>
     </string-array>
-    
+
     <!-- Download Link Activity -->
     <string name="downloadlink_title">Memoling Share</string>
-	<string name="downloadlink_lblMemoBase">Library</string>
-	<string name="downloadlink_lblMemo">Expression</string>
-	<string name="downloadlink_lblPartA">First Part</string>
-	<string name="downloadlink_lblPartB">Second Part</string>
-	<string name="downloadlink_lblDefinition">Definition</string>
-	<string name="downloadlink_lblWord">Expression</string>
-	<string name="downloadlink_errorUrlMalformed">Invalid URL link</string>
-	<string name="downloadlink_errorDownload">Connection error</string>
+    <string name="downloadlink_lblMemoBase">Library</string>
+    <string name="downloadlink_lblMemo">Expression</string>
+    <string name="downloadlink_lblPartA">First Part</string>
+    <string name="downloadlink_lblPartB">Second Part</string>
+    <string name="downloadlink_lblDefinition">Definition</string>
+    <string name="downloadlink_lblWord">Expression</string>
+    <string name="downloadlink_errorUrlMalformed">Invalid URL link</string>
+    <string name="downloadlink_errorDownload">Connection error</string>
 
     <!-- WordOfTheDayReceiver -->
     <string name="wordofthedayreceiver_title">Word of the Day</string>
@@ -395,5 +406,6 @@
     <string name="title_activity_ui_tes_fragmentt">UiTesFragmenttActivity</string>
     <string name="title_activity_application">ApplicationActivity</string>
     <string name="title_activity_quizlet">QuizletActivity</string>
+    <string name="title_activity_word_of_the_day_widget_configuration">WordOfTheDayWidgetConfigurationActivity</string>
 
 </resources>

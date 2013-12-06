@@ -79,7 +79,7 @@ public class GamesHangmanFragment extends ApplicationFragment implements TextWat
 		getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 		ResourceManager resources = getResourceManager();
-		m_thinFont = resources.getThinFont();
+		m_thinFont = resources.getLightFont();
 
 		m_layLettersL1 = (LinearLayout) contentView.findViewById(R.id.hangman_layLettersL1);
 		m_layLettersL2 = (LinearLayout) contentView.findViewById(R.id.hangman_layLettersL2);

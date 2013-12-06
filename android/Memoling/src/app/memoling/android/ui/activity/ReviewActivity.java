@@ -127,22 +127,22 @@ public class ReviewActivity extends AdActivity {
 		m_trainingSetSize = new Preferences(this).getLearningSetSize();
 
 		m_lblResult = (TextView) findViewById(R.id.review_lblResult);
-		m_lblResult.setTypeface(m_resources.getThinFont());
+		m_lblResult.setTypeface(m_resources.getLightFont());
 
 		m_txtMemo1 = (TextView) findViewById(R.id.review_txtMemo1);
-		m_txtMemo1.setTypeface(m_resources.getThinFont());
+		m_txtMemo1.setTypeface(m_resources.getLightFont());
 		m_txtMemo1.setOnClickListener(new TextMemo1EventHandler());
 		m_txtMemo2 = (EditText) findViewById(R.id.review_txtMemo2);
-		m_txtMemo2.setTypeface(m_resources.getThinFont());
+		m_txtMemo2.setTypeface(m_resources.getLightFont());
 		TextMemo2EventHandler txtMemo2EventHandler = new TextMemo2EventHandler();
 		m_txtMemo2.setOnEditorActionListener(txtMemo2EventHandler);
 		m_txtMemo2.addTextChangedListener(txtMemo2EventHandler);
 
 		m_lblLang1 = (TextView) findViewById(R.id.review_lblMemo1Lang);
-		m_lblLang1.setTypeface(m_resources.getThinFont());
+		m_lblLang1.setTypeface(m_resources.getLightFont());
 
 		m_lblLang2 = (TextView) findViewById(R.id.review_lblMemo2Lang);
-		m_lblLang2.setTypeface(m_resources.getThinFont());
+		m_lblLang2.setTypeface(m_resources.getLightFont());
 
 		m_inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -151,8 +151,8 @@ public class ReviewActivity extends AdActivity {
 		m_memoAdapter = new MemoAdapter(this);
 
 		// Set Fonts
-		m_resources.setFont(R.id.memo_lblLang, m_resources.getThinFont());
-		m_resources.setFont(R.id.textView1, m_resources.getThinFont());
+		m_resources.setFont(R.id.memo_lblLang, m_resources.getLightFont());
+		m_resources.setFont(R.id.textView1, m_resources.getLightFont());
 
 		// Set Animations
 		m_fadeIn = new AlphaAnimation(0.0f, 1.0f);
@@ -251,6 +251,8 @@ public class ReviewActivity extends AdActivity {
 			audioMode(visible, toGuess);
 		}
 
+		setTitle(getString(R.string.review_title) + " " + Integer.toString(m_currentMemo+1) + "/" + Integer.toString(m_trainingSetSize));
+		
 		m_lblLang1.setText(visible.getLanguage().getName());
 		m_lblLang2.setText(toGuess.getLanguage().getName());
 		animateNew();
@@ -258,8 +260,8 @@ public class ReviewActivity extends AdActivity {
 		new Runnable() {
 			@Override
 			public void run() {
-				m_uiProgress += 0.02;
-				float target = (float) m_uiCurrentMemo / m_trainingSetSize;
+				float target = (float) (m_uiCurrentMemo+1) / m_trainingSetSize;
+				m_uiProgress += Math.min(0.02, target);
 
 				// Normalize our progress along the progress bar's scale
 				int progress = (int) ((Window.PROGRESS_END - Window.PROGRESS_START) * m_uiProgress);

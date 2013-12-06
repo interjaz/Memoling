@@ -19,7 +19,7 @@ public class GamesFragment extends ApplicationFragment {
 		setTitle(getActivity().getString(R.string.games_title));
 
 		ResourceManager resources = getResourceManager();
-		Typeface thinFont = resources.getThinFont();
+		Typeface thinFont = resources.getLightFont();
 		
 		
 		Button hangman = (Button)contentView.findViewById(R.id.games_hangman);

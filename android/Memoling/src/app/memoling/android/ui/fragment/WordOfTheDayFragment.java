@@ -75,7 +75,7 @@ public class WordOfTheDayFragment extends ApplicationFragment {
 		setTitle(getActivity().getString(R.string.wordoftheday_title));
 
 		ResourceManager resources = getResourceManager();
-		Typeface thinFont = resources.getThinFont();
+		Typeface thinFont = resources.getLightFont();
 
 		m_chbEnabled = (CheckBox) contentView.findViewById(R.id.wordoftheday_chbEnable);
 		m_chbEnabled.setOnCheckedChangeListener(new ChbEnabledEventHandler());

@@ -124,7 +124,7 @@ namespace SententceOptimizer
             {
                 foreach (var unique in uniqueSentences)
                 {
-                    sw.WriteLine(string.Format("%s\t%s", unique.Words[0].Language, unique.Line));
+                    sw.WriteLine(string.Format("{0}\t{1}", unique.Words[0].Language, unique.Line));
                 }
 
             }

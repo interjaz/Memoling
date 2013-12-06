@@ -1,7 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res/app.memoling.android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@null"
     tools:context=".MemoListFragment" >
 
     <LinearLayout
@@ -16,35 +18,52 @@
             android:layout_weight="1"
             android:gravity="right"
             android:orientation="vertical"
-            android:padding="10dp" >
+            android:paddingTop="5dp" >
 
             <RelativeLayout
                 android:id="@+id/memolist_layListSwitcher"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1.0">
+                android:layout_weight="1.0" >
+
 	            <ListView
 	                android:id="@+id/memolist_list"
 	                android:layout_width="match_parent"
 	                android:layout_height="match_parent"
+	                android:divider="@null"
+	                android:dividerHeight="0dp"
 	                tools:listitem="@layout/adapter_memolist_listview" />
+
 	            <ListView
 	                android:id="@+id/memolist_lstSuggestions"
 	                android:layout_width="match_parent"
 	                android:layout_height="match_parent"
-	                tools:listitem="@layout/adapter_memolist_suggestion"
-	                android:visibility="gone"  />
+	                android:background="@null"
+	                android:divider="@null"
+	                android:dividerHeight="0dp"
+	                android:visibility="gone"
+	                tools:listitem="@layout/adapter_memolist_suggestion" />
+
             </RelativeLayout>
 
+			<View
+			    android:layout_width="match_parent"
+			    android:layout_height="6dp"
+			    android:background="#FF444444" />
+			
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#FF222222"
                 android:orientation="vertical"
                 android:paddingBottom="3dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:paddingTop="3dp" >
 
                 <EditText
                     android:id="@+id/memolist_txtAddMemo"
+                    style="@style/Theme.Darktheme.EditText.Dark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text" />
@@ -56,6 +75,7 @@
 
                     <EditText
                         android:id="@+id/memolist_txtAddMemoTranslated"
+                        style="@style/Theme.Darktheme.EditText.Dark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
@@ -65,36 +85,36 @@
 
                     <Button
                         android:id="@+id/memolist_btnSave"
+                    	style="@style/Theme.Darktheme.Button.Dark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1.0"
                         android:enabled="false"
                         android:text="@string/memolist_btnSave" />
+
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5.0dip" >
-
-                <TextView
-                    android:id="@+id/memo_lblLang"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="5dp"
-                    android:text="@string/memolist_from" />
+                android:background="#FF222222"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp" >
 
                 <app.memoling.android.ui.control.LanguageSpinner
                     android:id="@+id/memolist_spLanguageFrom"
+                    style="@style/Theme.Darktheme.Spinner.Dark"
                     android:layout_width="0.0dip"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
-                    tools:listitem="@layout/adapter_textdropdown" />
+                    app:bold="true"
+                    tools:listitem="@layout/adapter_textdropdown_dark" />
 
                 <Button
                     android:id="@+id/memolist_btnLanguageSwap"
+                    style="@style/Theme.Darktheme.Button.Dark"
                     android:layout_width="30dp"
                     android:layout_height="25dp"
                     android:layout_gravity="center_vertical"
@@ -102,20 +122,14 @@
                     android:layout_marginRight="5dp"
                     android:text="@string/memolist_swap" />
 
-                <TextView
-                    android:id="@+id/textView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="10.0dip"
-                    android:text="@string/memolist_to" />
-
                 <app.memoling.android.ui.control.LanguageSpinner
                     android:id="@+id/memolist_spLanguageTo"
+                    style="@style/Theme.Darktheme.Spinner.Dark"
                     android:layout_width="0.0dip"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
-                    tools:listitem="@layout/adapter_textdropdown" />
+                    tools:listitem="@layout/adapter_textdropdown_dark" />
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -132,6 +146,7 @@
         android:padding="10dp" >
 
         <TextView
+            style="@style/Theme.Darktheme.TextView.Dark"
             android:id="@+id/memolist_lblWhatsNewTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -146,6 +161,7 @@
             android:layout_weight="1" >
 
             <TextView
+            style="@style/Theme.Darktheme.TextView.Dark"
                 android:id="@+id/memolist_lblWhatsNewContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -153,6 +169,7 @@
         </ScrollView>
 
         <Button
+            style="@style/Theme.Darktheme.Button.Dark"
             android:id="@+id/memolist_btnWhatsNew"
             android:layout_width="wrap_content"
             android:layout_height="30dp"

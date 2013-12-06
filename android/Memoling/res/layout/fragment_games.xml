@@ -20,49 +20,53 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+      			android:background="@color/content_background" 
                 android:orientation="vertical" >
 
                 <Button
                     android:id="@+id/games_hangman"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/btn_holo_background"
+                    android:background="@drawable/theme_light_select"
                     android:gravity="center"
                     android:text="@string/games_hangman"
+                    android:textColor="#222222"
                     android:textSize="65sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:background="#55FFFFFF" />
+                    android:background="@color/background" />
 
                 <Button
                     android:id="@+id/games_crossword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/btn_holo_background"
+                    android:background="@drawable/theme_light_select"
                     android:gravity="center"
                     android:text="@string/games_crossword"
+                    android:textColor="#222222"
                     android:textSize="60sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:background="#55FFFFFF" />
+                    android:background="@color/background" />
 
                 <Button
                     android:id="@+id/games_findword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/btn_holo_background"
+                    android:background="@drawable/theme_light_select"
                     android:gravity="center"
                     android:text="@string/games_findword"
+                    android:textColor="#222222"
                     android:textSize="65sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:background="#55FFFFFF" />
+                    android:background="@color/background" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

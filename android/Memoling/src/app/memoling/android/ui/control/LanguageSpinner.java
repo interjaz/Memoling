@@ -31,10 +31,21 @@ public class LanguageSpinner extends Spinner implements AdapterView.OnItemSelect
 		}
 
 		ResourceManager resources = new ResourceManager(context);
+		Typeface font = resources.getLightFont();
+		if(attrs.getAttributeBooleanValue("http://schemas.android.com/apk/res/app.memoling.android", "bold", false)) {
+			font = resources.getBlackFont();
+		}
+		
+		int adapterLayout = R.layout.adapter_textdropdown_dark;
+		if(attrs.getAttributeBooleanValue("http://schemas.android.com/apk/res/app.memoling.android", "light_theme", false)) {
+			adapterLayout = R.layout.adapter_textdropdown;
+		}
+		
+		
 		m_preferences = new Preferences(context);
 
-		m_spLanguageAdapter = new ModifiableComplexTextAdapter<LanguageView>(context, R.layout.adapter_textdropdown,
-				new int[] { R.id.memo_lblLang }, new Typeface[] { resources.getThinFont() });
+		m_spLanguageAdapter = new ModifiableComplexTextAdapter<LanguageView>(context, adapterLayout,
+				new int[] { R.id.memo_lblLang }, new Typeface[] { font });
 		
 		setAdapter(m_spLanguageAdapter);
 		setOnItemSelectedListener(this);

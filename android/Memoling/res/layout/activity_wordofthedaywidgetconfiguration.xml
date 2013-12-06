@@ -1,0 +1,55 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    tools:context=".WordOfTheDayWidgetConfigurationActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:background="#222222"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:text="@string/wordofthedaywidgetconfiguration_memoBase"
+                android:textColor="#AAAAAA"
+                android:textSize="30sp" />
+
+            <Button
+                android:id="@+id/wordofthedaywidgetconfiguration_btnSave"
+                style="@style/Theme.Darktheme.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/wordofthedaywidgetconfiguration_save" />
+
+        </LinearLayout>
+
+        <Spinner
+            android:id="@+id/wordofthedaywidgetconfiguration_lstMemoBases"
+            style="@style/Theme.Darktheme.Spinner.Dark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/adapter_textdropdown_dark" />
+
+    </LinearLayout>
+
+</RelativeLayout>

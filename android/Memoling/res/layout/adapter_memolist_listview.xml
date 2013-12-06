@@ -1,44 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingBottom="1dp"
+    android:paddingTop="2dp" >
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="3dp"
-        android:paddingRight="5.0dip" >
-
-        <View
-            android:id="@+id/memolist_listview_progressBar"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:background="#4c4c4c" />
-
-        <View
-            android:id="@+id/memolist_listview_progressReminder"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="1dp"
-        android:paddingRight="1dp"
+        android:background="@drawable/theme_light_select"
         android:paddingBottom="2dp"
-        android:paddingTop="2dp" >
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingTop="2dp"
+        android:layout_marginLeft="5dp" 
+        android:layout_marginRight="10dp" 
+        android:layout_marginTop="8dp" >
 
         <TextView
             android:id="@+id/memolist_listview_txtOriginal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="2.0dip"
-            android:paddingRight="6.0dip"
-            android:text="TextView"
-            android:textColor="#FFFEFEFE"
+            android:paddingRight="0.0dip"
+            android:text="Dog"
+            android:textColor="#FF000000"
             android:textSize="24sp" />
 
         <TextView
@@ -50,20 +38,63 @@
             android:minHeight="0dp"
             android:paddingTop="0dp"
             android:singleLine="true"
-            android:text="TextView"
-            android:textSize="22sp" />
+            android:text="Perro"
+            android:textColor="#FF000000"
+            android:textSize="24sp" />
 
-        <TextView
-            android:id="@+id/memolist_listview_txtLanguages"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:gravity="top"
-            android:includeFontPadding="false"
-            android:paddingRight="2.0dip"
-            android:text="TextView"
-            android:textAllCaps="true"
-            android:textSize="14sp" />
     </LinearLayout>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/memolist_listview_txtLanguageB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="2.0dip"
+        android:layout_marginTop="1dp" 
+        android:paddingRight="4dp"
+        android:layout_alignParentRight="true"
+        android:includeFontPadding="false"
+        android:text="ES"
+        android:textAllCaps="true"
+        android:textColor="#FFFFFFFF"
+        android:background="#FF000000"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/memolist_listview_txtLanguageA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:layout_toLeftOf="@id/memolist_listview_txtLanguageB"
+        android:includeFontPadding="false"
+        android:paddingRight="2.0dip"
+        android:paddingLeft="5dp" 
+        android:text="EN"
+        android:textAllCaps="true"
+        android:textColor="#FFFFFFFF"
+        android:background="#FF000000"
+        android:textSize="14sp" />
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="3dp"
+        android:layout_alignLeft="@id/linearLayout"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="1dp"
+        android:layout_toLeftOf="@id/memolist_listview_txtLanguageA">
+
+        <View
+            android:id="@+id/memolist_listview_progressBar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="#ff0099cc" />
+
+        <View
+            android:id="@+id/memolist_listview_progressReminder"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#FF444444" />
+    </LinearLayout>
+
+</RelativeLayout>

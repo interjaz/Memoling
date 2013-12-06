@@ -14,6 +14,7 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import app.memoling.android.R;
 import app.memoling.android.adapter.MemoAdapter;
+import app.memoling.android.adapter.MemoBaseAdapter;
 import app.memoling.android.adapter.WordOfTheDayAdapter;
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Memo;
@@ -41,10 +42,25 @@ public class DispatcherService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 
-		WordOfTheDayAdapter adapter = new WordOfTheDayAdapter(this);
-		ArrayList<WordOfTheDay> words = adapter.getAll();
+		WordOfTheDayAdapter wordAdapter = new WordOfTheDayAdapter(this);
+		MemoBaseAdapter memoBaseAdapter = new MemoBaseAdapter(this);
+		ArrayList<WordOfTheDay> words = wordAdapter.getAll();
 
 		Random rand = new Random();
+		
+		// Check if still MemoBase exists
+		ArrayList<WordOfTheDay> wordOfTheDayToDelete =  new ArrayList<WordOfTheDay>();
+		for(WordOfTheDay word : words) {
+			if(memoBaseAdapter.get(word.getMemoBaseId()) == null) {
+				wordOfTheDayToDelete.add(word);
+			}
+		}
+		
+		// Remove old ones
+		for(WordOfTheDay word : wordOfTheDayToDelete) {
+			wordAdapter.delete(word.getWordOfTheDayId());
+			words.remove(word);
+		}
 
 		for (WordOfTheDay word : words) {
 			dispatch(this, word.getMode(), rand, word.getMemoBaseId(), word.getProviderId(), word.getPreLanguageFrom(),

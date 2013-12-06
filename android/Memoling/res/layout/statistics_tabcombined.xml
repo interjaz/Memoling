@@ -3,13 +3,15 @@
     android:id="@+id/statistics_layCombined"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:padding="10dp" >
+    android:fillViewport="true" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_margin="5dp"
+        android:background="@color/content_background"
+        android:orientation="vertical"
+        android:padding="5dp" >
 
         <TextView
             android:id="@+id/memo_lblLang"

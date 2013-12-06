@@ -65,8 +65,7 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 	private String m_memoBaseId;
 
 	private Button m_btnUpload;
-
-	private TextView m_lblTitle;
+	
 	private TextView m_lblCreated;
 	private TextView m_lblLastReviewed;
 	private TextView m_lblNoAll;
@@ -98,10 +97,8 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 				inflater.inflate(R.layout.fragment_memobase, container, false));
 
 		ResourceManager resources = getResourceManager();
-		Typeface thinFont = resources.getThinFont();
+		Typeface thinFont = resources.getLightFont();
 
-		m_lblTitle = (TextView) contentView.findViewById(R.id.memobase_lblTitle);
-		m_lblTitle.setTypeface(thinFont);
 		m_lblCreated = (TextView) contentView.findViewById(R.id.memobase_lblCreated);
 		m_lblCreated.setTypeface(thinFont);
 		m_lblLastReviewed = (TextView) contentView.findViewById(R.id.memobase_lblLastReviewed);
@@ -138,10 +135,8 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 		resources.setFont(contentView, R.id.memo_lblLang, thinFont);
 		resources.setFont(contentView, R.id.textView1, thinFont);
 		resources.setFont(contentView, R.id.textView3, thinFont);
-		resources.setFont(contentView, R.id.downloadlink_lblDefinitionALabel, thinFont);
 		resources.setFont(contentView, R.id.textView5, thinFont);
 		resources.setFont(contentView, R.id.textView6, thinFont);
-		resources.setFont(contentView, R.id.downloadlink_lblDefinitionBLabel, thinFont);
 		resources.setFont(contentView, R.id.textView8, thinFont);
 		resources.setFont(contentView, R.id.textView9, thinFont);
 
@@ -204,14 +199,7 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == 0) {
-
-			ApplicationFragment fragment = new SchedulerFragment();
-			Bundle bundle = new Bundle();
-			bundle.putString(SchedulerFragment.MemoBaseId, m_memoBaseId);
-			fragment.setArguments(bundle);
-			
-			startFragment(fragment);
-			
+			openScheduler();
 			return false;
 		}
 		return true;
@@ -328,7 +316,6 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 		setTitle(m_memoBaseInfo.getMemoBase().getName());
 
 		m_txtName.setText(m_memoBaseInfo.getMemoBase().getName());
-		m_lblTitle.setText(m_memoBaseInfo.getMemoBase().getName());
 		m_lblCreated.setText(DateHelper.toUiDate(m_memoBaseInfo.getMemoBase().getCreated()));
 		m_chbActive.setChecked(m_memoBaseInfo.getMemoBase().getActive());
 		m_lblNoAll.setText(Integer.valueOf(m_memoBaseInfo.getNoAllMemos()).toString());
@@ -490,6 +477,13 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 
 		drawer.add(new DrawerView(R.drawable.ic_back, R.string.memobase_backToList));
 
+		drawer.add(new DrawerView(R.drawable.ic_scheduler, R.string.memobase_lblOpenScheduler, new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				openScheduler();
+			}
+		}));
+		
 		drawer.add(new DrawerView(R.drawable.ic_import, R.string.memobase_lblImport, new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -529,11 +523,20 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 
 	@Override
 	public void onDestroyView() {
-		saveAndExit();
+		save();
 		super.onDestroyView();
 	}
 
-	private void saveAndExit() {
+	private void openScheduler() {
+		ApplicationFragment fragment = new SchedulerFragment();
+		Bundle bundle = new Bundle();
+		bundle.putString(SchedulerFragment.MemoBaseId, m_memoBaseId);
+		fragment.setArguments(bundle);
+		
+		startFragment(fragment);
+	}
+	
+	private void save() {
 		MemoBase memoBase = m_memoBaseInfo.getMemoBase();
 		memoBase.setName(m_txtName.getText().toString());
 		memoBase.setActive(m_chbActive.isChecked());

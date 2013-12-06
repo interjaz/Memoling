@@ -11,7 +11,7 @@ public class Config {
 	public final static String AppPath = Environment.getExternalStorageDirectory() + "/memoling";
 	
 	public final static String DatabaseName = "TranslateMemo";
-	public final static int DatabaseVersion = 4;
+	public final static int DatabaseVersion = 5;
 	
 	//
 	// Webservices
@@ -42,7 +42,7 @@ public class Config {
 	//
 	// Ads
 	//
-	public final static boolean EnableAds = true;
+	public final static boolean EnableAds = false;
 	public final static String AdUnitId = "a151d4995a52331";
 	public final static String AdTestDeviceId = "1D422D9852675CECF96B500DB4EC80F3";
 		

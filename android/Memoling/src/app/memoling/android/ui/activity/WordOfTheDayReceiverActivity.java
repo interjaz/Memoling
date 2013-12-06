@@ -59,7 +59,7 @@ public class WordOfTheDayReceiverActivity extends AdActivity {
 		ResourceManager resources = new ResourceManager(this);
 		m_resources = resources;
 
-		Typeface thinFont = m_resources.getThinFont();
+		Typeface thinFont = m_resources.getLightFont();
 
 		m_txtSource = (TextView) findViewById(R.id.wordofadayreceiver_txtSource);
 		m_txtWordFrom = (TextView) findViewById(R.id.wordofadayreceiver_txtWordFrom);
@@ -72,9 +72,9 @@ public class WordOfTheDayReceiverActivity extends AdActivity {
 		m_btnVoiceB = (ImageButton) findViewById(R.id.wordofadayreceiver_btnVoiceB);
 		m_btnVoiceA.setOnClickListener(new BtnVoiceAEventHandler());
 		m_btnVoiceB.setOnClickListener(new BtnVoiceBEventHandler());
-		
+
 		m_textToSpeechHelper = new TextToSpeechHelper(this);
-		
+
 		resources.setFont(R.id.wordofadayreceiver_btnSource, thinFont);
 		resources.setFont(R.id.wordofadayreceiver_lblDescriptionFrom, thinFont);
 		resources.setFont(R.id.wordofadayreceiver_lblDescriptionTo, thinFont);
@@ -106,12 +106,13 @@ public class WordOfTheDayReceiverActivity extends AdActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		Intent intent = new Intent(this, ApplicationActivity.class);
-		
+
 		if (item.getItemId() == 0) {
 			// Save
-			String memoBaseId = saveMemo();
-			intent.putExtra(MemoListFragment.MemoBaseId, memoBaseId);
-			
+			saveMemo();
+			intent.putExtra(MemoListFragment.MemoBaseId, m_memo.getMemoBaseId());
+			intent.putExtra(MemoListFragment.MemoId, m_memo.getMemoId());
+
 			Toast.makeText(this, getString(R.string.wordofthedayreceiver_saved), Toast.LENGTH_SHORT).show();
 		} else if (item.getItemId() == 1) {
 			// Delete
@@ -156,7 +157,7 @@ public class WordOfTheDayReceiverActivity extends AdActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if(m_textToSpeechHelper != null) {
+		if (m_textToSpeechHelper != null) {
 			m_textToSpeechHelper.shutdown();
 		}
 	}
@@ -195,28 +196,27 @@ public class WordOfTheDayReceiverActivity extends AdActivity {
 			startActivity(intent);
 		}
 	}
-	
+
 	private class BtnVoiceAEventHandler implements OnClickListener {
 
 		@Override
 		public void onClick(View v) {
 			m_textToSpeechHelper.readText(m_memo.getWordA().getWord(), m_memo.getWordA().getLanguage());
 		}
-		
+
 	}
-	
+
 	private class BtnVoiceBEventHandler implements OnClickListener {
 
 		@Override
 		public void onClick(View v) {
 			m_textToSpeechHelper.readText(m_memo.getWordB().getWord(), m_memo.getWordB().getLanguage());
 		}
-		
+
 	}
-	
-	private String saveMemo() {
+
+	private void saveMemo() {
 		MemoAdapter adapter = new MemoAdapter(this);
 		adapter.add(m_memo);
-		return m_memo.getMemoBaseId();
 	}
 }

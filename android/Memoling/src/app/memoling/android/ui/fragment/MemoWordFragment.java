@@ -80,7 +80,7 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 		m_isWordA = isWordA;
 
 		ResourceManager resources = new ResourceManager(getActivity());
-		Typeface thinFont = resources.getThinFont();
+		Typeface thinFont = resources.getLightFont();
 
 		m_layScrollView = (ScrollView) contentView.findViewById(R.id.memo_layScrollView);
 		

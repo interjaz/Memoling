@@ -64,6 +64,12 @@ public class SqliteUpdater {
 						database.setVersion(4);
 						version = 4;
 					}
+					
+					if(version == 4) {
+						update45(database);
+						database.setVersion(5);
+						version = 5;
+					}
 
 					database.setTransactionSuccessful();
 				} catch (Exception ex) {
@@ -129,5 +135,13 @@ public class SqliteUpdater {
 		
 		database.execSQL(updateQuizletDefinitions);
 		database.execSQL(updateQuizletDefinitionExamples);
+	}
+	
+	private static void update45(SQLiteDatabase database) {
+		String updateWordOfTheDayWiget = "CREATE  TABLE \"WordOfTheDayWidget\" (" +
+				"\"WordOfTheDayWidgetId\" INTEGER PRIMARY KEY  NOT NULL, " +
+				"\"MemoBaseId\" TEXT NOT NULL )";
+		
+		database.execSQL(updateWordOfTheDayWiget);
 	}
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".DownloadPreview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#282828"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/download_preview"
+            android:textColor="#F1F1F1"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/download_lblDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|left"
+            android:textColor="#DDDDDD"
+            android:textSize="18sp" />
+
+        <ListView
+            android:id="@+id/download_lstPreview"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:background="#FF000000"
+            tools:listitem="@layout/adapter_download_previewview" />
+
+</LinearLayout>

@@ -13,18 +13,25 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:fillViewport="true" >
+            android:fillViewport="true" 
+                android:layout_margin="5dp">
 
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:background="@color/content_background" 
+                android:padding="5dp">
 
-                <TextView
-                    android:id="@+id/memobase_lblTitle"
+                <EditText
+                    android:id="@+id/memobase_txtName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
                     android:layout_marginTop="10dp"
                     android:text="memobase_lblTitle"
                     android:textSize="30sp" />
@@ -33,10 +40,10 @@
                     android:id="@+id/memo_lblLang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/memobase_lblTitle"
-                    android:layout_below="@id/memobase_lblTitle"
+                    android:layout_alignLeft="@id/memobase_txtName"
+                    android:layout_below="@id/memobase_txtName"
                     android:layout_marginRight="10dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="20dp"
                     android:layout_toLeftOf="@+id/memobase_lblCreated"
                     android:text="@string/memobase_lblCreated"
                     android:textSize="15sp" />
@@ -117,36 +124,6 @@
                     android:text="memobase_lblNoActive"
                     android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/downloadlink_lblDefinitionALabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/textView6"
-                    android:layout_below="@id/textView6"
-                    android:layout_marginTop="30dp"
-                    android:text="@string/memobase_lblName"
-                    android:textSize="20sp" />
-
-                <EditText
-                    android:id="@+id/memobase_txtName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/downloadlink_lblDefinitionALabel"
-                    android:layout_below="@id/downloadlink_lblDefinitionALabel"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="5dp"
-                    android:imeOptions="actionDone"
-                    android:inputType="text" />
-
-                <CheckBox
-                    android:id="@+id/memobase_chbEnabled"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/memobase_txtName"
-                    android:layout_below="@id/memobase_txtName"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/memobase_lblActive" />
-
                 <RelativeLayout
                     android:id="@+id/memobase_laySaving"
                     android:layout_width="match_parent"
@@ -165,7 +142,18 @@
                         android:textColor="#EEEEEE"
                         android:textSize="25sp" />
                 </RelativeLayout>
-            </RelativeLayout>
+
+                <CheckBox
+                    android:id="@+id/memobase_chbEnabled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignRight="@+id/memobase_lblNoActive"
+                    android:layout_below="@+id/textView6"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/memobase_lblActive" />
+
+            </RelativeLayout></FrameLayout>
         </ScrollView>
     </LinearLayout>
 

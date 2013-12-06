@@ -89,7 +89,7 @@ public abstract class GamesMatrixGame extends ApplicationFragment implements OnT
 		getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 		ResourceManager resources = getResourceManager();
-		Typeface thinFont = resources.getThinFont();
+		Typeface thinFont = resources.getLightFont();
 
 		m_surface = (SurfaceView) contentView.findViewById(R.id.matrixgame_surface);
 		m_surface.setOnTouchListener(this);
@@ -242,9 +242,11 @@ public abstract class GamesMatrixGame extends ApplicationFragment implements OnT
 			return;
 		}
 
-		m_bkg.setTileModeXY(TileMode.REPEAT, TileMode.REPEAT);
-		m_bkg.setBounds(0, 0, m_surface.getWidth(), m_surface.getHeight());
-		m_bkg.draw(c);
+		//m_bkg.setTileModeXY(TileMode.REPEAT, TileMode.REPEAT);
+		//m_bkg.setBounds(0, 0, m_surface.getWidth(), m_surface.getHeight());
+		//m_bkg.draw(c);
+		
+		c.drawColor(getResources().getColor(R.color.background));
 
 		if (m_showProgress) {
 

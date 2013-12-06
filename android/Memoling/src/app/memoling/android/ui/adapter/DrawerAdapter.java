@@ -57,7 +57,7 @@ public class DrawerAdapter extends ModifiableAdapter<DrawerView> {
 
 			m_icon = (ImageView)view.findViewById(R.id.drawer_adapter_icon);
 			m_text = (TextView)view.findViewById(R.id.drawer_adapter_text);
-			resources.setFont(m_text, resources.getThinFont());
+			resources.setFont(m_text, resources.getLightFont());
 			
 			view.setTag(this);
 		}

@@ -8,7 +8,7 @@ using System.Data.SQLite;
 
 namespace MemolingTools.SQLiteImporter
 {
-    class SqlWrapper
+    class SqlWrapper : IDisposable
     {
         public SQLiteConnection connection;
 
@@ -32,6 +32,11 @@ namespace MemolingTools.SQLiteImporter
 
                 cmd.ExecuteNonQuery();
             }
+        }
+
+        public void Dispose()
+        {
+            Close();
         }
 
         public void Close()

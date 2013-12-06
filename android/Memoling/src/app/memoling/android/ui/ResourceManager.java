@@ -21,8 +21,12 @@ public class ResourceManager {
 		m_inflater = ctx.getLayoutInflater();
 	}
 
-	public Typeface getThinFont() {
-		return Typeface.createFromAsset(m_ctx.getAssets(), "Roboto-Thin.ttf");
+	public Typeface getLightFont() {
+		return Typeface.createFromAsset(m_ctx.getAssets(), "Roboto-Light.ttf");
+	}
+	
+	public Typeface getBlackFont() {
+		return Typeface.createFromAsset(m_ctx.getAssets(), "Roboto-Black.ttf");
 	}
 
 	public void setFont(TextView view, Typeface font) {

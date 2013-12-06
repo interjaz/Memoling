@@ -62,7 +62,7 @@ public class GamesCrosswordFragment extends GamesMatrixGame {
 	protected void onCreateView(View contentView) {
 
 		ResourceManager resources = getResourceManager();
-		Typeface thinFont = resources.getThinFont();
+		Typeface thinFont = resources.getLightFont();
 
 		m_btnVertical = (Button) contentView.findViewById(R.id.crossword_btnVertical);
 		m_btnVertical.setOnClickListener(new BtnVerticalEventHandler());
@@ -81,11 +81,11 @@ public class GamesCrosswordFragment extends GamesMatrixGame {
 		
 		m_txtPaint = new Paint();
 		m_txtPaint.setStyle(Style.STROKE);
-		m_txtPaint.setColor(0xCCEEEEEE);
+		m_txtPaint.setColor(0xFF222222);
 
 		m_borderPaint = new Paint();
 		m_borderPaint.setStyle(Style.STROKE);
-		m_borderPaint.setColor(0xFFDDDDDD);
+		m_borderPaint.setColor(0xFF1F1F1F);
 		m_borderPaint.setStrokeWidth(Helper.dipToPixels(getActivity(), 2f));
 		
 		m_rectangle = new Rect();

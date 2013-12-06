@@ -1,6 +1,7 @@
 package app.memoling.android.ui.view;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import app.memoling.android.adapter.MemoBaseGenreAdapter;
 import app.memoling.android.entity.PublishedMemoBase;
@@ -24,10 +25,12 @@ public class PublishedSearchView implements IGet<String> {
 		case 1:
 			return m_published.getMemoBaseGenre().getGenre();
 		case 2:
-			return m_published.getPrimaryLanguageAIso639().getCode() + "-" + m_published.getPrimaryLanguageBIso639().getCode();
+			return m_published.getPrimaryLanguageAIso639().getCode().toUpperCase(Locale.US);
 		case 3:
-			return Integer.toString(m_published.getMemosCount());
+			return m_published.getPrimaryLanguageBIso639().getCode().toUpperCase(Locale.US);
 		case 4:
+			return Integer.toString(m_published.getMemosCount());
+		case 5:
 			return Integer.toString(m_published.getDownloads());
 		}
 		

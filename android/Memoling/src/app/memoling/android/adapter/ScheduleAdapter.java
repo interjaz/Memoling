@@ -285,6 +285,21 @@ public class ScheduleAdapter extends SqliteAdapter {
 			}
 		}
 	}
+	
+	public void deleteForMemoBaseId(String memoBaseId) {
+		SQLiteDatabase db = null;
+
+		try {
+			db = getDatabase();
+			db.delete("Schedules", "MemoBaseId = ?", new String[] { memoBaseId });			
+		} catch (Exception ex) {
+			AppLog.e("ScheduleAdapter", "deleteForMemoBaseId - failed to delete", ex);
+		} finally {
+			if (db != null) {
+				db.endTransaction();
+			}
+		}
+	}
 
 	private static ContentValues createValues(Schedule schedule) {
 		ContentValues values = new ContentValues();

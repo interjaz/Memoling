@@ -2,6 +2,8 @@ package app.memoling.android.helper;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collection;
+import java.util.Iterator;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -286,4 +288,5 @@ public class Helper {
 		AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 		return audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 	}
+	
 }

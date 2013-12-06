@@ -37,7 +37,7 @@ public class MemoDetailsFragment extends Fragment implements IMemoPagerFragment 
 		View contentView = inflater.inflate(R.layout.memo_details, container, false);
 
 		ResourceManager resources = new ResourceManager(getActivity());
-		Typeface thinFont = resources.getThinFont();
+		Typeface thinFont = resources.getLightFont();
 
 		m_chbEnabled = (CheckBox) contentView.findViewById(R.id.memo_chbEnabled);
 		m_chbEnabled.setTypeface(thinFont);

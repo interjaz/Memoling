@@ -50,6 +50,21 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 		ArrayList<Schedule> schedules = scheduleAdapter.getOnTime(new Date());
 
+		// Get ones ones without MemoBase
+		ArrayList<Schedule> schedulesToDelete = new ArrayList<Schedule>();
+		for(Schedule schedule : schedules) {
+			if(memoBaseAdapter.get(schedule.getMemoBaseId()) == null) {
+				schedulesToDelete.add(schedule);
+			}
+		}
+		
+		// Remove old ones
+		for(Schedule schedule : schedulesToDelete) {
+			scheduleAdapter.deleteForMemoBaseId(schedule.getMemoBaseId());
+			schedules.remove(schedule);
+		}
+				
+		// Schedule rest
 		for (int i = 0; i < schedules.size(); i++) {
 
 			String memoBaseId = schedules.get(i).getMemoBaseId();

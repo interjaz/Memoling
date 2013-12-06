@@ -1,43 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="#282828"
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp">
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/theme_dark_select"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="10dp"
+        android:paddingBottom="2dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="2dp" >
+
+        <TextView
+            android:id="@+id/download_preview_lblWordA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textColor="#F1F1F1"
+            android:maxLines="1"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/download_preview_lblWordB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:text="TextView"
+            android:maxLines="1"
+            android:textColor="#F1F1F1"
+            android:textSize="20sp" />
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/download_preview_lblWordA"
+        android:id="@+id/download_preview_lblLanguageB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:textSize="20sp"
-        android:text="TextView" />
+        android:layout_alignParentRight="true"
+        android:paddingRight="2dp"
+        android:background="@color/background"
+        android:text="TextView"
+        android:layout_marginRight="2dp"
+        android:layout_alignTop="@id/linearLayout1"
+        android:layout_marginTop="-5dp"
+        android:textColor="#222222" />
 
     <TextView
-        android:id="@+id/memo_lblLang"
+        android:id="@+id/download_preview_lblLanguageA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/download_preview_lblWordA"
-        android:text="@string/download_preview_language" />
+        android:paddingLeft="2dp"
+        android:layout_toLeftOf="@id/download_preview_lblLanguageB"
+        android:background="@color/background"
+        android:layout_alignTop="@id/linearLayout1"
+        android:layout_marginTop="-5dp"
+        android:text="TextView"
+        android:textColor="#222222" />
 
-    <TextView
-        android:id="@+id/download_preview_lblWordB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/download_preview_lblWordA"
-        android:layout_marginLeft="10dp"
-        android:textSize="20sp"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/download_preview_lblLanguage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/memo_lblLang"
-        android:layout_alignBottom="@+id/memo_lblLang"
-        android:layout_toRightOf="@+id/memo_lblLang"
-        android:layout_marginLeft="10dp"
-        android:text="TextView" />
-    
 </RelativeLayout>

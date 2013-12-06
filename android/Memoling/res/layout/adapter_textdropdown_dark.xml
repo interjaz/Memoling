@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/memo_lblLang"
+    style="@style/Theme.Darktheme.TextView.Dark"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="5dp"
+    android:paddingLeft="10dp"
+    android:paddingTop="5dp"
+    android:background="@drawable/theme_dark_select"
+    android:text="15dp" />
+
+<!-- This background balue is a hack for not working android:spinnerMode option under Android v.10 -->
