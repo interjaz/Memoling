@@ -2,6 +2,7 @@ package app.memoling.android.wordoftheday.resolver;
 
 import java.net.URI;
 
+import android.content.Context;
 import app.memoling.android.helper.AppLog;
 import app.memoling.android.webrequest.HttpGetRequestTask;
 import app.memoling.android.webrequest.IHttpRequestTaskComplete;
@@ -11,8 +12,8 @@ public abstract class HttpResolver extends ResolverBase {
 
 	private int m_timeout = 15000;
 	
-	public HttpResolver(Provider provider) {
-		super(provider);
+	public HttpResolver(Context context, Provider provider) {
+		super(context, provider);
 	}
 
 	@Override

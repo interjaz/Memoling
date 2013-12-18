@@ -30,6 +30,13 @@ public abstract class SqliteAdapter {
 		m_persistant = persistant;
 	}
 
+	public SqliteAdapter(Context context, String databaseName, int version, boolean persistant) {
+		m_context = context;
+		m_databaseName = databaseName;
+		m_version = version;
+		m_persistant = persistant;
+	}
+
 	public SQLiteDatabase getDatabase() {
 		try {
 			TableHandle handle;
@@ -90,11 +97,11 @@ public abstract class SqliteAdapter {
 	public final void invalidateGlobalCache() {
 		onInvalidateGlobalCache();
 	}
-	
+
 	protected void onInvalidateLocalCache() {
 		SqliteSync.localSyncTokenSet(this.getClass(), SqliteSync.globalSyncToken());
 	}
-	
+
 	protected void onInvalidateGlobalCache() {
 		SqliteSync.localSyncTokenSet(this.getClass(), SqliteSync.globalSyncTokenGetAndIncrement());
 	}

@@ -8,13 +8,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import android.content.Context;
 import app.memoling.android.helper.AppLog;
 import app.memoling.android.wordoftheday.provider.Provider;
 
 public class XmlResolver extends HttpResolver {
 
-	public XmlResolver(Provider provider) {
-		super(provider);
+	public XmlResolver(Context context, Provider provider) {
+		super(context, provider);
 	}
 
 	@Override

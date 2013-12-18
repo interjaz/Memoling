@@ -6,17 +6,14 @@ import app.memoling.android.wordoftheday.provider.Provider;
 
 public class DatabaseResolver extends ResolverBase {
 
-	private Context m_context;
-
-	public DatabaseResolver(Provider provider, Context context) {
-		super(provider);
-		m_context = context;
+	public DatabaseResolver(Context context, Provider provider) {
+		super(context, provider);
 	}
 
 	@Override
 	protected void fetchRaw() {
 
-		WordListAdapter adapter = new WordListAdapter(m_context);
+		WordListAdapter adapter = new WordListAdapter(getContext());
 		String word = adapter.getRandom(m_provider.getBaseLanguage());
 		
 		onFetchRawComplete(word);

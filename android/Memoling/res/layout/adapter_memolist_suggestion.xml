@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="2dp"
@@ -7,35 +7,73 @@
     android:paddingRight="5dp"
     android:paddingTop="2dp">
 
-<LinearLayout
+<RelativeLayout
+    android:id="@+id/relativeLayout1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="5dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
     android:background="@drawable/theme_light_select" >
     
     <TextView
         android:id="@+id/memolist_suggestion_txtWord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="2dp"
+        android:paddingBottom="0dp"
         android:paddingLeft="5dp"
         android:paddingRight="0dp"
-        android:paddingTop="2dp"
+        android:paddingTop="0dp"
         android:text="TextView"
         android:textColor="#FF000000"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/memolist_suggestion_txtTranslation"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/memolist_suggestion_txtWord"
+        android:paddingBottom="0dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="5dp"
+        android:paddingTop="0dp"
+        android:text="TextView"
+        android:textColor="#FF000000"
+        android:textSize="22sp" />
+    
+    <TextView
+        android:id="@+id/memolist_suggestion_txtDefinition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/memolist_suggestion_txtTranslation"
+        android:paddingBottom="0dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="0dp"
+        android:text="TextView"
+        android:maxLines="2"
+        android:textColor="#FF000000"
+        android:textSize="18sp"
+        android:textStyle="italic" />
+
+</RelativeLayout>
+    
+    <TextView
+        android:id="@+id/memolist_suggestion_txtSource"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="2dp"
-        android:paddingLeft="0dp"
+        android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:paddingTop="2dp"
         android:text="TextView"
-        android:textColor="#FF000000"
-        android:textSize="20sp" />
-
-</LinearLayout>
-</FrameLayout>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:textColor="#FFFFFFFF"
+        android:background="@color/background_dark"
+        android:textSize="12sp"/>
+</RelativeLayout>

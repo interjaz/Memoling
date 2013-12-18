@@ -14,8 +14,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="5dp"
-            android:padding="5dp"
-            android:background="@color/content_background"
             android:layout_weight="1"
             android:fillViewport="true" >
 
@@ -26,7 +24,9 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:background="@color/content_background"
+                    android:padding="5dp" >
 
                     <TextView
                         android:id="@+id/wordofadayreceiver_lblSource"
@@ -57,28 +57,34 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
+                        android:paddingLeft="7dp"
+                        android:paddingRight="7dp"
                         android:text="@string/wordofthedayreceiver_btnSource"
                         android:textSize="15sp" />
                 </RelativeLayout>
 
                 <TextView
                     android:id="@+id/wordofadayreceiver_lblWordFrom"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:background="@color/content_background"
+                    android:padding="5dp"
                     android:text="@string/wordofthedayreceiver_lblWordFrom"
                     android:textSize="22sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="horizontal" >
+                    android:background="@color/content_background"
+                    android:orientation="horizontal"
+                    android:padding="5dp" >
 
                     <TextView
                         android:id="@+id/wordofadayreceiver_txtWordFrom"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
                         android:layout_marginRight="2dp"
                         android:layout_weight="1"
                         android:textSize="19sp" />
@@ -92,23 +98,31 @@
 
                 <TextView
                     android:id="@+id/wordofadayreceiver_lblWordTo"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/content_background_dark"
+                    android:padding="5dp"
                     android:text="@string/wordofthedayreceiver_lblWordTo"
+                    android:textColor="#CCCCCC"
                     android:textSize="22sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="horizontal" >
+                    android:background="@color/content_background_dark"
+                    android:orientation="horizontal"
+                    android:padding="5dp"
+                    android:textColor="#CCCCCC" >
 
                     <TextView
                         android:id="@+id/wordofadayreceiver_txtWordTo"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
                         android:layout_marginRight="2dp"
                         android:layout_weight="1"
+                        android:textColor="#CCCCCC"
                         android:textSize="19sp" />
 
                     <ImageButton
@@ -120,39 +134,51 @@
 
                 <TextView
                     android:id="@+id/wordofadayreceiver_lblDescriptionFrom"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/wordofthedayreceiver_lblDescriptionFrom"
-                    android:textSize="22sp" />
+                    android:background="@color/content_background"
+                    android:padding="5dp"
+                    android:textSize="22sp" 
+                    android:layout_marginTop="5dp"/>
 
                 <TextView
                     android:id="@+id/wordofadayreceiver_txtDescriptionFrom"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginLeft="10dp"
+                    android:paddingLeft="10dp"
                     android:layout_weight="1"
                     android:gravity="top"
                     android:text=""
-                    android:textSize="15sp" />
+                    android:textSize="15sp" 
+                    android:background="@color/content_background"
+                    android:padding="5dp"/>
 
                 <TextView
                     android:id="@+id/wordofadayreceiver_lblDescriptionTo"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/wordofthedayreceiver_lblDescriptionTo"
-                    android:textSize="22sp" />
+                    android:background="@color/content_background_dark"
+                    android:padding="5dp"
+                    android:textSize="22sp"
+                    android:textColor="#CCCCCC" 
+                    android:layout_marginTop="5dp"/>
 
                 <TextView
                     android:id="@+id/wordofadayreceiver_txtDescriptionTo"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginLeft="10dp"
+                    android:paddingLeft="10dp"
                     android:layout_weight="1"
                     android:gravity="top"
                     android:inputType="none"
                     android:minLines="2"
                     android:text=""
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:background="@color/content_background_dark"
+                    android:textColor="#CCCCCC"
+                    android:padding="5dp" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

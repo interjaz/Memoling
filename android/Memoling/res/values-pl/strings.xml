@@ -5,7 +5,15 @@
 		Jeśli chciałbyś/ąs przetłumaczyć applikację na inny język, 
 		  zażyczyć nową funkcjonalność albo być na bieżąco z aplikacją odwiedź jej stronę (link w ustawieniach)\n
 		\n
-		Changes v.1.7.0\n
+		Brak reklam do końca stycznia 2014\n
+		Jeśli Ci się podoba aplikacja, oceń ją.\n
+		\n
+		\n
+		Zmiany v.1.8.0\n
+		1. Wigdet - Słówko dnia\n
+		2. Nowy wygląd\n
+		3. Słowniki offline\n
+		Zmainy v.1.7.0\n
 		1. Lepsze wsparcie dla logowanie do Facebooka\n
 		2. Dodano możliwość udostępniania słówek\n
 		3. Memoling teraz także czyta słówka\n
@@ -72,7 +80,17 @@
 	<string name="memolist_sentencesTraining">Trening z użyciem zdań</string>
 	<string name="memolist_audioTraining">Trening audio</string>
     <string name="memolist_details">Szczegóły</string>
+    <string name="memolist_openScheduler">Ustaw trening</string>
     <string name="memolist_voiceSearch">Szukanie głosowe</string>
+    <string name="memolist_pendingText">Szukam</string>
+    <string name="memolist_wiktionary">Słowniki offline</string>
+    <string name="memolist_wiktionary_lblName">Nazwa</string>
+    <string name="memolist_wiktionary_lblDescription">Opis</string>
+    <string name="memolist_wiktionary_lblDownloadSize">Rozmiar do ściągnięcia</string>
+    <string name="memolist_wiktionary_lblRealSize">Rozmiar ostateczny</string>
+    <string name="memolist_wiktionary_downloadStarted">Rozpoczęto ściąganie</string>
+    <string name="memolist_wiktionary_getError">Problem z połączeniem</string>
+    <string name="memolist_wiktionary_back">Cofnij</string>
 
     <!-- MemoBaseList Fragment -->
     <string name="memobaselist_title">Biblioteki</string>
@@ -117,11 +135,15 @@
     <string name="memo_abbrDictionary">Sł</string>
 	<string name="memo_description">Opis</string>
     <string name="memo_sentences">Zdania</string>
+    <string name="memo_synonyms">Synonimy</string>
     <string name="memo_sentencesDownloading">Pobieram &#8230;</string>
+    <string name="memo_sentencesSearching">Szukam &#8230;</string>
     <string name="memo_notFound">Nie znaleziono</string>
+    <string name="memo_wikitonaryNotInstalled">Nieznaleziono słownika offline</string>
 	<string name="memo_sharefacebook">Share over Facebook</string>
 	<string name="memo_share">Udostępnij link</string>
 	<string name="memo_backToList">Powrót do listy</string>
+	
 	
 	<!-- Common share -->
 	<string name="share_message">%1$s udotępnił(-a) tobie wyrażenie %2$s . Otwórz link aby zobaczyć szczegóły: %3$s</string>
@@ -132,6 +154,10 @@
 	<string name="share_fbGettingFriends">Szukam twoich przyjaciół</string>
 	<string name="share_fbGettingFriendsError">Wystąpił błąd podczas szukania Facebookowych przyjaciół</string>
     
+    <!-- Text to Speech -->
+    <string name="texttospeech_languageNotSupported">Język nie obsługiwany</string>
+    <string name="texttospeech_missingData">Dodatkowe pliki są wymagane do poprawnego działania syntezatora</string>
+    <string name="texttospeech_muted">Urządzenie jest wyciszone</string>
   
     <!-- MemoBase Fragment -->
     <string name="memobase_title">Biblioteka</string>
@@ -159,7 +185,6 @@
     <string name="memobase_lblLibraryName">Nazwa biblioteki</string>
     <string name="memobase_lblGenre">Gatunek</string>
     <string name="memobase_lblDescription">Opis</string>
-    <string name="memobase_btnUpload">Wyślij na serwer</string>
     <string name="memobase_btnUpload">Opublikuj</string>
     <string name="memobase_lblOpenScheduler">Ustaw trening</string>
 
@@ -330,6 +355,11 @@
         Pod koniec możesz przetestować konfiguracjię by zobczyć czy otrzymałeś/aś to co oczekiwałeś/aś.
      </string>
 
+    <string name="wordoftheday_widget_title">Memoling - Słówko dnia</string>
+    <string name="wordofthedaywidgetconfiguration_title">Konfiguracja Widget-u</string>
+    <string name="wordofthedaywidgetconfiguration_memoBase">Biblioteka</string>
+    <string name="wordofthedaywidgetconfiguration_save">Zapisz</string>
+
     <string-array name="wordoftheday_modes">
         <item>Z internetu (nowe słówka)</item>
         <item>Z internetu i z mojej biblioteki</item>
@@ -382,6 +412,20 @@
 	<string name="downloadlink_lblWord">Wyrażenie</string>
 	<string name="downloadlink_errorUrlMalformed">Nieprawidłowy link</string>
 	<string name="downloadlink_errorDownload">Błąd połączenia</string>
+
+    <!-- Wiktionary -->
+    <string name="wiktionary_providerError_alreadyDownloading">Błąd: Plik jest właśnie pobierany</string>
+    <string name="wiktionary_providerError_wsOffline">Błąd: Nie można nawiązać połączenia z serwerem</string>
+    <string name="wiktionary_providerError_downloadError">Błąd: Pobieranie zakończone niepowodzeniem</string>
+    <string name="wiktionary_providerDownloading">Pobieram wiktionary</string>
+    <string name="wiktionary_providerSuccess">Pomyślnie zainstalowano wiktionary</string>
+    <string name="wiktionary_providerFailure">Wystąpił błąd podczas instalacji wiktionary</string>
+    
+    <!-- WiktionaryDownloadCancel -->
+    <string name="wiktionarydownloadmanager_title">Wiktionary Download Manager</string>
+    <string name="wiktionarydownloadmanager_dialogTitle">Czy chcesz anulować wszystkie pobierane pliki?</string>
+    <string name="wiktionarydownloadmanager_dialogYes">Tak</string>
+    <string name="wiktionarydownloadmanager_dialogNo">Nie</string>
     
     <!-- General -->
     <string name="dummy_content">DUMMY\nCONTENT</string>

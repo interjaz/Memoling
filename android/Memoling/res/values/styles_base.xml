@@ -173,7 +173,7 @@
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_darktheme</item>
     </style>
 
-    <style name="Theme.Darktheme.DropDownListView" parent="@style/Widget.Sherlock.ListView.DropDown">
+    <style name="Theme.Darktheme.DropDownListView.Base" parent="@style/Widget.Sherlock.ListView.DropDown">
         <item name="android:listSelector">@drawable/selectable_background_darktheme</item>
     </style>
 

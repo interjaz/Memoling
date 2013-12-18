@@ -2,8 +2,16 @@
 <resources>
 
     <string name="memolist_whatsNewContent">		If you would like to translate the application to other language, 
-		request a feature or just be up to date visit/follow application page (link Settings).\n
+		request a feature or just be up to date visit/follow application page (link in Settings).\n
 		\n
+		No ads till the end of Jan 2014!\n
+		If you like application please rate the app.\n
+		\n 
+		\n
+		Changes v.1.8.0\n
+		1. Word of the day Widget\n
+		2. New UI\n
+		3. Downloadable offline dictionaries\n 
 		Changes v.1.7.0\n
 		1. Better support for Facebook login\n
 		2. Added Expression sharing mechanism\n
@@ -78,6 +86,15 @@
     <string name="memolist_details">Details</string>
     <string name="memolist_openScheduler">Set Training</string>
     <string name="memolist_voiceSearch">Voice Search</string>
+    <string name="memolist_pendingText">Searching</string>
+    <string name="memolist_wiktionary">Offline Dictionary</string>
+    <string name="memolist_wiktionary_lblName">Name</string>
+    <string name="memolist_wiktionary_lblDescription">Description</string>
+    <string name="memolist_wiktionary_lblDownloadSize">Download Size</string>
+    <string name="memolist_wiktionary_lblRealSize">Real Size</string>
+    <string name="memolist_wiktionary_downloadStarted">Download started</string>
+    <string name="memolist_wiktionary_getError">Connection error</string>
+    <string name="memolist_wiktionary_back">Back</string>
     <string name="memolist_swap">⇄</string>
 
     <!-- MemoBaseList Fragment -->
@@ -123,12 +140,16 @@
     <string name="memo_abbrDictionary">Dc</string>
     <string name="memo_description">Description</string>
     <string name="memo_sentences">Sentences</string>
+    <string name="memo_synonyms">Synonyms</string>
     <string name="memo_sentencesDownloading">Downloading &#8230;</string>
+    <string name="memo_sentencesSearching">Searching &#8230;</string>
     <string name="memo_definitionsMemoling">Memoling</string>
     <string name="memo_definitionsQuizlet">Powered by Quizlet.com</string>
+    <string name="memo_definitionsWiktionary">Wiktionary</string>
     <string name="memo_sentencesTatoeba">Tatoeba.org</string>
     <string name="memo_sentencesQuizlet">Powered by Quizlet.com</string>
     <string name="memo_notFound">Not found</string>
+    <string name="memo_wikitonaryNotInstalled">Offline dictionary not found</string>
     <string name="memo_sharefacebook">Share via Facebook</string>
     <string name="memo_share">Share via Application</string>
     <string name="memo_backToList">Back to List</string>
@@ -337,13 +358,13 @@
         To make things easier to understand here are examples.\n
         1. I want to receive new words in English with translation in Spanish. Check \'Do you&#8230;\', then select notification source to Merriam-Webster and set translation to Spanish.\n\n
         2. I want to receive new words in Greek with translation in Finish.  Check \'Do you&#8230;\', then select notification source to Merriam-Webster, chcek \'Would you&#8230;\', select pre translate to Greek and translate to Finish.\n\n
-        At the end of setting up notification you can test it to see whether it meets you needs.</string>
-	<string name="wordoftheday_widget_title">Memoling Word of the Day</string>
+        At the end of setting up notification you can test it to see whether it meets you needs.	</string>
 
-	<string name="wordofthedaywidgetconfiguration_title">Configure Widget</string>
-	<string name="wordofthedaywidgetconfiguration_memoBase">Library</string>
-	<string name="wordofthedaywidgetconfiguration_save">Save</string>
-	
+    <string name="wordoftheday_widget_title">Memoling Word of the Day</string>
+    <string name="wordofthedaywidgetconfiguration_title">Configure Widget</string>
+    <string name="wordofthedaywidgetconfiguration_memoBase">Library</string>
+    <string name="wordofthedaywidgetconfiguration_save">Save</string>
+
     <string-array name="wordoftheday_modes">
         <item>Online source (new words)</item>
         <item>Online source and my library</item>
@@ -397,14 +418,26 @@
     <string name="wordofthedayreceiver_saved">Saved</string>
     <string name="wordofthedayreceiver_deleted">Deleted</string>
 
+    <!-- Wiktionary -->
+    <string name="wiktionary_providerError_alreadyDownloading">Error: File is already being downloaded</string>
+    <string name="wiktionary_providerError_wsOffline">Error: Cannot connect to webservice</string>
+    <string name="wiktionary_providerError_downloadError">Error: Download failed</string>
+    <string name="wiktionary_providerDownloading">Downloading wiktionary</string>
+    <string name="wiktionary_providerSuccess">Successfully installed wiktionary</string>
+    <string name="wiktionary_providerFailure">Error occurred during wiktionary installation</string>
+    
+    <!-- WiktionaryDownloadCancel -->
+    <string name="wiktionarydownloadmanager_title">Wiktionary Download Manager</string>
+    <string name="wiktionarydownloadmanager_dialogTitle">Do you want to cancel ALL downloads?</string>
+    <string name="wiktionarydownloadmanager_dialogYes">Yes</string>
+    <string name="wiktionarydownloadmanager_dialogNo">No</string>
+
     <!-- General -->
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_ui_tes_fragmentt">UiTesFragmenttActivity</string>
-    <string name="title_activity_application">ApplicationActivity</string>
     <string name="title_activity_quizlet">QuizletActivity</string>
     <string name="title_activity_word_of_the_day_widget_configuration">WordOfTheDayWidgetConfigurationActivity</string>
 

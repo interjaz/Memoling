@@ -1215,3 +1215,25 @@
 20-10-13 23:44:03¦IP:192.168.1.66¦P:FLOW¦MSG:Method invoked: get¦EX:
 22-10-13 22:06:36¦IP:127.0.0.1¦P:HIGH¦MSG:Failed to delete PublishedMemoBase¦EX:exception 'SqlException' with message 'Failed to delete Memo' in C:\Users\Bartosz\Documents\source\Memoling\www\v2\adapter\MemoAdapter.php:189\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\v2\adapter\MemoBaseAdapter.php(110): MemoAdapter::deleteDb(Object(SafePDO), '0079e18b-da35-4...')\n#1 C:\Users\Bartosz\Documents\source\Memoling\www\v2\adapter\PublishedMemoBaseAdapter.php(293): MemoBaseAdapter::deleteDb(Object(SafePDO), 'f364a9fb-7f73-4...')\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\v2\adapter\PublishedMemoBaseAdapter.php(273): PublishedMemoBaseAdapter::deleteDb(Object(SafePDO), 'ef75ef7e-b619-4...')\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\v2\webservice\admin\library.php(18): PublishedMemoBaseAdapter->delete('ef75ef7e-b619-4...')\n#4 {main}\nSqlErrorCode:NULL\nSqlErrorInfo:NULL
 22-10-13 22:10:39¦IP:127.0.0.1¦P:HIGH¦MSG:Failed to delete PublishedMemoBase¦EX:exception 'SqlException' with message 'Failed to delete Memo' in C:\Users\Bartosz\Documents\source\Memoling\www\v2\adapter\MemoAdapter.php:189\nStack trace:\n#0 C:\Users\Bartosz\Documents\source\Memoling\www\v2\adapter\MemoBaseAdapter.php(110): MemoAdapter::deleteDb(Object(SafePDO), '0079e18b-da35-4...')\n#1 C:\Users\Bartosz\Documents\source\Memoling\www\v2\adapter\PublishedMemoBaseAdapter.php(293): MemoBaseAdapter::deleteDb(Object(SafePDO), NULL)\n#2 C:\Users\Bartosz\Documents\source\Memoling\www\v2\adapter\PublishedMemoBaseAdapter.php(273): PublishedMemoBaseAdapter::deleteDb(Object(SafePDO), 'ef75ef7e-b619-4...')\n#3 C:\Users\Bartosz\Documents\source\Memoling\www\v2\webservice\admin\library.php(18): PublishedMemoBaseAdapter->delete('ef75ef7e-b619-4...')\n#4 {main}\nSqlErrorCode:NULL\nSqlErrorInfo:NULL
+16-12-13 21:51:40¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: get¦EX:
+16-12-13 21:53:15¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: get¦EX:
+16-12-13 21:53:16¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: get¦EX:
+16-12-13 21:54:03¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: get¦EX:
+18-12-13 17:51:11¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: get¦EX:
+18-12-13 17:57:44¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: isCurrent¦EX:
+18-12-13 17:58:42¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: isCurrent¦EX:
+18-12-13 17:59:10¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: isCurrent¦EX:
+18-12-13 17:59:11¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: isCurrent¦EX:
+18-12-13 17:59:11¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: isCurrent¦EX:
+18-12-13 17:59:28¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: isCurrent¦EX:
+18-12-13 17:59:43¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: isCurrent¦EX:
+18-12-13 17:59:51¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: isCurrent¦EX:
+18-12-13 18:00:02¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: isCurrent¦EX:
+18-12-13 18:00:16¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: isCurrent¦EX:
+18-12-13 18:00:31¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: isCurrent¦EX:
+18-12-13 18:00:41¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: isCurrent¦EX:
+18-12-13 18:00:44¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: isCurrent¦EX:
+18-12-13 18:01:16¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: isCurrent¦EX:
+18-12-13 18:01:20¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: isCurrent¦EX:
+18-12-13 18:05:17¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: get¦EX:
+18-12-13 20:12:13¦IP:127.0.0.1¦P:FLOW¦MSG:Method invoked: get¦EX:

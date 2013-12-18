@@ -11,9 +11,9 @@ public class ResolverFactory {
 		case XML:
 		case RSS:
 		default:
-			return new XmlResolver(provider);
+			return new XmlResolver(context, provider);
 		case DB:
-			return new DatabaseResolver(provider, context);
+			return new DatabaseResolver(context, provider);
 		}
 	}
 

@@ -169,6 +169,12 @@ public class WordOfTheDayReceiverActivity extends AdActivity {
 		m_txtWordFrom.setText(m_memo.getWordA().getWord());
 		m_txtWordTo.setText(m_memo.getWordB().getWord());
 
+		if (word.getUri() == null || word.getUri().equals("")) {
+			m_btnSource.setEnabled(false);
+		} else {
+			m_btnSource.setEnabled(true);
+		}
+
 		String description;
 		description = m_memo.getWordA().getDescription();
 		if (description.equals("")) {

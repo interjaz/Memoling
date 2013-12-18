@@ -16,7 +16,7 @@ import app.memoling.android.ui.fragment.MemoListFragment;
 
 public class WordOfTheDayWidgetProvider extends AppWidgetProvider {
 
-	private static final int DescriptionLength = 100;
+	private static final int DescriptionLength = 150;
 
 	public static void update(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		final int n = appWidgetIds.length;

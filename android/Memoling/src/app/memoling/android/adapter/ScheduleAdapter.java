@@ -245,7 +245,7 @@ public class ScheduleAdapter extends SqliteAdapter {
 			}
 
 			// Case of non or one schedule which is today and now.
-			if (schedules.size() == 0) {
+			if (schedules.size() == 1) {
 				return schedules.get(0);
 			}
 

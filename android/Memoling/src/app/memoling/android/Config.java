@@ -1,5 +1,7 @@
 package app.memoling.android;
 
+import java.util.Date;
+
 import android.os.Environment;
 
 public class Config {
@@ -42,7 +44,9 @@ public class Config {
 	//
 	// Ads
 	//
-	public final static boolean EnableAds = false;
+	//public final static boolean EnableAds = false;
+	private final static long EnableAdsFirstOfFebruary = 1391212800000L;
+	public static boolean EnableAds = new Date().after(new Date(EnableAdsFirstOfFebruary));
 	public final static String AdUnitId = "a151d4995a52331";
 	public final static String AdTestDeviceId = "1D422D9852675CECF96B500DB4EC80F3";
 		

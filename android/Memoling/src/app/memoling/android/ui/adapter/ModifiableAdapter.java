@@ -11,12 +11,11 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-public abstract class ModifiableAdapter<T> extends BaseAdapter implements
-		Filterable {
+public abstract class ModifiableAdapter<T> extends BaseAdapter implements Filterable {
 
 	private Context m_context;
 	private Filter m_filter;
-	
+
 	protected Object m_lock;
 	protected ArrayList<T> m_data;
 	protected int m_resourceId;
@@ -31,8 +30,7 @@ public abstract class ModifiableAdapter<T> extends BaseAdapter implements
 		m_data = data;
 		m_resourceId = resourceId;
 		m_filter = new ArrayFilter();
-		m_inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		m_inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		m_lock = new Object();
 	}
 
@@ -110,10 +108,18 @@ public abstract class ModifiableAdapter<T> extends BaseAdapter implements
 	}
 
 	public void clear() {
+		clear(true);
+	}
+
+	public void clear(boolean notifyUi) {
+
 		synchronized (m_lock) {
 			m_data.clear();
 		}
-		notifyDataSetChanged();
+
+		if (notifyUi) {
+			notifyDataSetChanged();
+		}
 	}
 
 	@Override
@@ -121,9 +127,8 @@ public abstract class ModifiableAdapter<T> extends BaseAdapter implements
 		return getViewDefinition(position, convertView, parent);
 	}
 
-	protected abstract View getViewDefinition(int position,
-			View convertView, ViewGroup parent);
-	
+	protected abstract View getViewDefinition(int position, View convertView, ViewGroup parent);
+
 	/**
 	 * <p>
 	 * An array filter constrains the content of the array adapter with a
@@ -174,17 +179,16 @@ public abstract class ModifiableAdapter<T> extends BaseAdapter implements
 				results.values = newValues;
 				results.count = newValues.size();
 			}
-			
+
 			return results;
 		}
 
 		@SuppressWarnings("unchecked")
 		@Override
-		protected void publishResults(CharSequence constraint,
-				FilterResults results) {
-			
+		protected void publishResults(CharSequence constraint, FilterResults results) {
+
 			synchronized (m_lock) {
-				if(results.values == null) {
+				if (results.values == null) {
 					m_data.clear();
 				} else {
 					m_data = (ArrayList<T>) results.values;

@@ -14,6 +14,7 @@ import app.memoling.android.entity.MemoBase;
 import app.memoling.android.entity.MemoSentence;
 import app.memoling.android.entity.PublishedMemo;
 import app.memoling.android.entity.PublishedMemoBase;
+import app.memoling.android.entity.WiktionaryInfo;
 import app.memoling.android.entity.Word;
 import app.memoling.android.facebook.FacebookUser;
 import app.memoling.android.helper.AppLog;
@@ -239,7 +240,27 @@ class CanonicalConverter {
 			return sentence;
 
 		} catch (Exception ex) {
-			AppLog.e("WsSentcence", "parseMemoSentence", ex);
+			AppLog.e("CanonicalConverter", "parseMemoSentence", ex);
+			return null;
+		}
+	}
+	
+	static WiktionaryInfo parseWiktionaryInfo(JSONObject json) {
+		try {
+			WiktionaryInfo wiktionaryInfo = new WiktionaryInfo();
+			
+			wiktionaryInfo.setDescription(json.getString("description"));
+			wiktionaryInfo.setDownloadUrl(json.getString("downloadUrl"));
+			wiktionaryInfo.setDownloadSize(json.getLong("downloadSize"));
+			wiktionaryInfo.setLanguage(Language.parse(json.getString("language")));
+			wiktionaryInfo.setName(json.getString("name"));
+			wiktionaryInfo.setRealSize(json.getLong("realSize"));
+			wiktionaryInfo.setVersion(json.optInt("version", 0));
+			wiktionaryInfo.setWiktionaryInfoId(json.getString("wiktionaryInfoId"));
+			
+			return wiktionaryInfo;
+		} catch(Exception ex) {
+			AppLog.e("CanonicalConverter", "parseWiktionaryInfo", ex);
 			return null;
 		}
 	}

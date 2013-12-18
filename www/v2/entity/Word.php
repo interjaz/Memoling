@@ -1,6 +1,7 @@
 <?php
 
 class Word {
+	
 	public $WordId;
 	public $Word;
 	public $LanguageIso639;	

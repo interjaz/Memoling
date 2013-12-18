@@ -1,6 +1,7 @@
 package app.memoling.android.ui.fragment;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -25,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
@@ -34,27 +36,36 @@ import android.widget.Toast;
 import app.memoling.android.R;
 import app.memoling.android.adapter.DictionaryAdapter;
 import app.memoling.android.adapter.ThesaurusAdapter;
+import app.memoling.android.adapter.WikiDefinitionAdapter;
+import app.memoling.android.adapter.WikiSynonymAdapter;
+import app.memoling.android.adapter.WikiTranslationAdapter;
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoSentence;
 import app.memoling.android.entity.QuizletDefinition;
+import app.memoling.android.entity.WikiDefinition;
+import app.memoling.android.entity.WikiSynonym;
+import app.memoling.android.entity.WikiTranslation;
 import app.memoling.android.entity.Word;
 import app.memoling.android.helper.Helper;
 import app.memoling.android.helper.TextToSpeechHelper;
-import app.memoling.android.translator.ITranslateComplete;
+import app.memoling.android.thread.WorkerThread;
+import app.memoling.android.translator.IAllTranslatorComplete;
 import app.memoling.android.translator.Translator;
 import app.memoling.android.translator.TranslatorResult;
 import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.fragment.MemoFragment.IMemoPagerFragment;
+import app.memoling.android.wiktionary.WiktionaryDb;
 
-public class MemoWordFragment extends Fragment implements OnEditorActionListener, ITranslateComplete,
+public class MemoWordFragment extends Fragment implements OnEditorActionListener, IAllTranslatorComplete,
 		IMemoPagerFragment {
 
 	private ScrollView m_layScrollView;
 	private TextView m_txtLanguage;
-	private EditText m_txtWord;
+	protected EditText m_txtWord;
 	private EditText m_txtDescriptionMemoling;
 	private TextView m_lblDescriptionQuizlet;
+	private WebView m_vwDescriptionWiktionary;
 	private TextView m_lblSentencesTatoeba;
 	private TextView m_lblSentencesQuizlet;
 	private ImageButton m_btnSearchWord;
@@ -62,10 +73,12 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 	private ImageButton m_btnSpeech;
 	private Button m_btnThesaurusWord;
 	private Button m_btnDictionaryWord;
+	private LinearLayout m_laySynonyms;
+	private TextView m_txtSynonyms;
 	private FrameLayout m_layWebSearch;
 	private WebView m_webSearch;
 
-	private Memo m_memo;
+	protected Memo m_memo;
 	private Runnable m_memoDelayedRunnable;
 	private Runnable m_sentenceDelayedRunnable;
 	private Runnable m_quizletDefinitionsRunnable;
@@ -83,7 +96,7 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 		Typeface thinFont = resources.getLightFont();
 
 		m_layScrollView = (ScrollView) contentView.findViewById(R.id.memo_layScrollView);
-		
+
 		m_txtLanguage = (TextView) contentView.findViewById(R.id.memo_txtLang);
 
 		m_btnSearchWord = (ImageButton) contentView.findViewById(R.id.memo_btnSearchWord);
@@ -104,9 +117,13 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 		m_txtDescriptionMemoling.addTextChangedListener(new TxtDescriptionEventHandler());
 
 		m_lblDescriptionQuizlet = (TextView) contentView.findViewById(R.id.memo_lblDescriptionQuizlet);
+		m_vwDescriptionWiktionary = (WebView) contentView.findViewById(R.id.memo_vwDefinitionWiktionary);
 
 		m_lblSentencesTatoeba = (TextView) contentView.findViewById(R.id.memo_lblSentencesTatoeba);
 		m_lblSentencesQuizlet = (TextView) contentView.findViewById(R.id.memo_lblSentencesQuizlet);
+
+		m_laySynonyms = (LinearLayout) contentView.findViewById(R.id.memo_laySynonyms);
+		m_txtSynonyms = (TextView) contentView.findViewById(R.id.memo_txtSynonyms);
 
 		m_webSearch = (WebView) contentView.findViewById(R.id.memo_webSearch);
 		m_layWebSearch = (FrameLayout) contentView.findViewById(R.id.memo_layWebSearch);
@@ -139,6 +156,11 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 		tabSpec.setIndicator(getString(R.string.memo_definitionsQuizlet));
 		tabHost.addTab(tabSpec);
 
+		tabSpec = tabHost.newTabSpec("TAB2");
+		tabSpec.setContent(R.id.memo_tabDefinitionWiktionary);
+		tabSpec.setIndicator(getString(R.string.memo_definitionsWiktionary));
+		tabHost.addTab(tabSpec);
+
 		// Sentence tabs
 		tabHost = (TabHost) contentView.findViewById(R.id.memo_tabSentences);
 		tabHost.setup();
@@ -159,10 +181,12 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 		resources.setFont(contentView, R.id.memo_lblLang, thinFont);
 		resources.setFont(contentView, R.id.textView1, thinFont);
 		resources.setFont(contentView, R.id.textView2, thinFont);
+		resources.setFont(contentView, R.id.textView3, thinFont);
 		resources.setFont(contentView, R.id.memo_txtDescriptionMemoling, thinFont);
 		resources.setFont(contentView, R.id.memo_lblDescriptionQuizlet, thinFont);
 		resources.setFont(contentView, R.id.memo_lblSentencesTatoeba, thinFont);
 		resources.setFont(contentView, R.id.memo_lblSentencesQuizlet, thinFont);
+		resources.setFont(contentView, R.id.memo_txtSynonyms, thinFont);
 
 		resources.setFont(contentView, R.id.memo_lblWord, thinFont);
 		resources.setFont(contentView, R.id.memo_txtWord, thinFont);
@@ -180,7 +204,7 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 		}
 
 		m_textToSpeechHelper = new TextToSpeechHelper(getActivity());
-		
+
 		return contentView;
 	}
 
@@ -210,7 +234,7 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 			Language fromLang = m_memo.getWordA().getLanguage();
 			Language toLang = m_memo.getWordB().getLanguage();
 			Toast.makeText(getActivity(), R.string.memo_selectTranslationProgress, Toast.LENGTH_SHORT).show();
-			new Translator(from, fromLang, toLang, MemoWordFragment.this);
+			new Translator(getActivity(), from, fromLang, toLang, null, MemoWordFragment.this);
 		}
 	}
 
@@ -256,30 +280,30 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 	}
 
 	@Override
-	public void onTranslateComplete(TranslatorResult result) {
+	public void onAllTranslatorComplete(ArrayList<TranslatorResult> results) {
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		String wordB = m_memo.getWordB().getWord();
-		int size = result.TranslatedSuggestions.size();
-		size = wordB.equals("") ? size : size + 1;
 
-		final CharSequence[] words = new CharSequence[size];
+		ArrayList<CharSequence> words = new ArrayList<CharSequence>();
 
-		int i = 0;
-		if (!wordB.equals("")) {
-			words[i++] = wordB;
+		for (TranslatorResult result : results) {
+			for (Word word : result.Translated) {
+				if (!word.getWord().equals("") && !words.contains(word.getWord())) {
+					words.add(word.getWord().toLowerCase());
+				}
+			}
 		}
 
-		for (Word word : result.TranslatedSuggestions) {
-			words[i++] = word.getWord().toLowerCase();
-		}
+		final CharSequence[] arrayWords = words.toArray(new CharSequence[words.size()]);
 
 		builder.setTitle(getString(R.string.memo_selectTranslationTitle)).setCancelable(true)
-				.setItems(words, new DialogInterface.OnClickListener() {
+				.setItems(arrayWords, new DialogInterface.OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						m_memo.getWordB().setWord(words[which].toString());
+						m_memo.getWordB().setWord(arrayWords[which].toString());
+						MemoSecondFragment.notifyDataChange(m_memo);
 					}
 
 				}).create().show();
@@ -322,6 +346,8 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 				m_btnThesaurusWord.setEnabled(ThesaurusAdapter.isSupported(getWord().getLanguage()));
 				m_btnDictionaryWord.setEnabled(ThesaurusAdapter.isSupported(getWord().getLanguage()));
 
+				setMemoWiktionary();
+
 				m_layScrollView.fullScroll(ScrollView.FOCUS_UP);
 			};
 		};
@@ -330,6 +356,121 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 			runnable.run();
 		}
 		m_memoDelayedRunnable = runnable;
+	}
+
+	private void setMemoWiktionary() {
+
+		if (!WiktionaryDb.IsAvailable()) {
+			m_vwDescriptionWiktionary.loadData(getString(R.string.memo_wikitonaryNotInstalled), "text/html", "utf-8");
+			return;
+		}
+
+		new WorkerThread<Void, Void, Void>() {
+
+			private String m_synonyms;
+
+			@Override
+			protected Void doInBackground(Void... params) {
+
+				WikiSynonymAdapter synonymAdapter = new WikiSynonymAdapter(getActivity());
+				ArrayList<WikiSynonym> wikiSynonyms = synonymAdapter.get(getWord().getWord(), getWord().getLanguage());
+
+				HashSet<String> synonyms = new HashSet<String>();
+				if (wikiSynonyms != null) {
+					for (WikiSynonym synonym : wikiSynonyms) {
+						synonyms.add(synonym.getExpressionB());
+					}
+
+					StringBuilder sb = new StringBuilder();
+					if (synonyms.size() > 0) {
+						for (String synonym : synonyms) {
+							sb.append(synonym + ", ");
+						}
+						sb.setLength(sb.length() - 2);
+						m_synonyms = sb.toString();
+					}
+				}
+
+				return null;
+			}
+
+			@Override
+			protected void onPostExecute(Void result) {
+
+				if (m_txtSynonyms == null || m_laySynonyms == null) {
+					// Closed before onPostExecute has been called
+					return;
+				}
+
+				if (m_synonyms != null) {
+					m_txtSynonyms.setText(m_synonyms);
+					m_laySynonyms.setVisibility(View.VISIBLE);
+				} else {
+					m_laySynonyms.setVisibility(View.GONE);
+				}
+			}
+
+		}.execute();
+
+		// Definitions
+		new WorkerThread<Void, Void, Void>() {
+
+			private HashSet<String> m_meanings;
+			private WikiDefinition m_wikiDefinition;
+
+			@Override
+			protected Void doInBackground(Void... params) {
+
+				WikiTranslationAdapter wikiTranslationAdapter = new WikiTranslationAdapter(getActivity());
+				ArrayList<WikiTranslation> wikiTranslations = wikiTranslationAdapter.get(getWord().getWord(), getWord()
+						.getLanguage());
+
+				m_meanings = new HashSet<String>();
+				if (wikiTranslations != null) {
+					for (WikiTranslation translation : wikiTranslations) {
+						if (translation.getWikiTranslationMeaning() != null)
+							m_meanings.add(translation.getWikiTranslationMeaning().getMeaning());
+					}
+				}
+
+				WikiDefinitionAdapter wikiDefinitionAdapter = new WikiDefinitionAdapter(getActivity());
+				m_wikiDefinition = wikiDefinitionAdapter.get(getWord().getWord(), getWord().getLanguage());
+
+				return null;
+			}
+
+			@Override
+			protected void onPostExecute(Void result) {
+				StringBuilder wikiDefBuilder = new StringBuilder();
+				String styles = "<style type=\"text/css\">@font-face { font-family: 'light-font'; src: url('Roboto-Light.ttf');} body { font-size: 0.8em; font-family: 'light-font';  }</style>\n";
+				wikiDefBuilder.append(styles);
+
+				for (String meaning : m_meanings) {
+					wikiDefBuilder.append(meaning + "; ");
+				}
+				wikiDefBuilder.append("<br />&nbsp;<br />");
+
+				if (m_wikiDefinition != null) {
+					wikiDefBuilder.append(m_wikiDefinition.getHtmlDefinition());
+				}
+
+				if (wikiDefBuilder.length() == 0) {
+					wikiDefBuilder.append(getString(R.string.memo_notFound));
+				}
+
+				if (m_vwDescriptionWiktionary == null) {
+					// Closed before onPostExecute has been called
+					return;
+				}
+
+				m_vwDescriptionWiktionary.loadDataWithBaseURL("file:///android_asset/", wikiDefBuilder.toString(),
+						"text/html", "utf-8", null);
+				m_vwDescriptionWiktionary.setBackgroundColor(getActivity().getResources().getColor(
+						R.color.content_background));
+			}
+
+		}.execute();
+
 	}
 
 	@Override
@@ -480,5 +621,6 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 			m_textToSpeechHelper.shutdown();
 		}
 	}
+	
 
 }

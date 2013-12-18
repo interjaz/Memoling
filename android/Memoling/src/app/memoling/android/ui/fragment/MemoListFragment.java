@@ -1,6 +1,8 @@
 package app.memoling.android.ui.fragment;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -34,6 +36,7 @@ import app.memoling.android.db.DatabaseHelper.Order;
 import app.memoling.android.db.SqliteUpdater;
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Memo;
+import app.memoling.android.entity.WiktionaryInfo;
 import app.memoling.android.entity.Word;
 import app.memoling.android.helper.AppLog;
 import app.memoling.android.helper.Helper;
@@ -42,7 +45,7 @@ import app.memoling.android.helper.ShareHelper;
 import app.memoling.android.helper.VoiceInputHelper;
 import app.memoling.android.preference.custom.MemoListPreference;
 import app.memoling.android.thread.WorkerThread;
-import app.memoling.android.translator.ITranslateComplete;
+import app.memoling.android.translator.ITranslatorComplete;
 import app.memoling.android.translator.Translator;
 import app.memoling.android.translator.TranslatorResult;
 import app.memoling.android.ui.ApplicationActivity;
@@ -52,6 +55,7 @@ import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.activity.PreferenceLegacyActivity;
 import app.memoling.android.ui.activity.ReviewActivity;
 import app.memoling.android.ui.adapter.DrawerAdapter;
+import app.memoling.android.ui.adapter.ModifiableComplexTextAdapter;
 import app.memoling.android.ui.adapter.ModifiableInjectableAdapter;
 import app.memoling.android.ui.adapter.ScrollableModifiableComplexTextAdapter;
 import app.memoling.android.ui.adapter.ScrollableModifiableComplexTextAdapter.OnScrollFinishedListener;
@@ -60,6 +64,10 @@ import app.memoling.android.ui.view.DrawerView;
 import app.memoling.android.ui.view.LanguageView;
 import app.memoling.android.ui.view.MemoView;
 import app.memoling.android.ui.view.TranslatedView;
+import app.memoling.android.ui.view.WiktionaryInfoView;
+import app.memoling.android.webservice.WsWiktionary;
+import app.memoling.android.webservice.WsWiktionary.IGetComplete;
+import app.memoling.android.wiktionary.WiktionaryProviderService;
 import app.memoling.android.wordlist.IWordsFindComplete;
 import app.memoling.android.wordlist.WordsFindResult;
 import app.memoling.android.wordlist.WordsFinder;
@@ -67,7 +75,7 @@ import app.memoling.android.wordlist.WordsFinder;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 
-public class MemoListFragment extends FacebookFragment implements ITranslateComplete, IWordsFindComplete {
+public class MemoListFragment extends FacebookFragment implements ITranslatorComplete, IWordsFindComplete {
 
 	public final static String MemoBaseId = "MemoBaseId";
 	public final static String NotificationId = "NotificationId";
@@ -81,7 +89,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 	private EditText m_txtAddTranslated;
 	private ListView m_lstWords;
 
-	private ScrollableModifiableComplexTextAdapter<TranslatedView> m_suggestionAdapter;
+	private ModifiableInjectableAdapter<TranslatedView> m_suggestionAdapter;
 	private WordsFinder m_wordsFinder;
 	private DelayedLookup m_lastLookup;
 	private int m_delayedLookupDelay = 500;
@@ -113,6 +121,8 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 	private FragmentState m_fragmentState;
 
 	private ShareHelper m_shareHelper;
+
+	private SuggestionComparator m_suggestionComparator;
 
 	//
 	// Base class implementation
@@ -154,10 +164,9 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 
 		m_lstSuggestions = (ListView) contentView.findViewById(R.id.memolist_lstSuggestions);
 		LstSuggestionEventHandler lstSuggestionEventHandler = new LstSuggestionEventHandler();
-		m_suggestionAdapter = new ScrollableModifiableComplexTextAdapter<TranslatedView>(getActivity(),
-				R.layout.adapter_memolist_suggestion, new int[] { R.id.memolist_suggestion_txtWord,
-						R.id.memolist_suggestion_txtTranslation }, new Typeface[] { blackFont, thinFont });
-		m_suggestionAdapter.setOnScrollListener(lstSuggestionEventHandler);
+		m_suggestionAdapter = new ModifiableInjectableAdapter<TranslatedView>(getActivity(),
+				R.layout.adapter_memolist_suggestion, resources, false);
+		// m_suggestionAdapter.setOnScrollListener(lstSuggestionEventHandler);
 		m_lstSuggestions.setAdapter(m_suggestionAdapter);
 		m_lstSuggestions.setOnItemClickListener(lstSuggestionEventHandler);
 
@@ -204,6 +213,8 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 				}
 			}
 		}
+
+		m_suggestionComparator = new SuggestionComparator();
 
 		return contentView;
 	}
@@ -317,26 +328,38 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 
 	@SuppressLint("DefaultLocale")
 	@Override
-	public synchronized void onTranslateComplete(TranslatorResult result) {
+	public synchronized void onTranslatorComplete(TranslatorResult result) {
 		String entry = m_txtAdd.getText().toString().trim().toLowerCase();
 
-		if (result.AutoCompleteWord.getWord().startsWith(entry)) {
+		boolean modified = false;
+		for (int i = 0; i < result.Translated.size(); i++) {
 
-			for (Word word : result.TranslatedSuggestions) {
-				word.setWord(word.getWord().toLowerCase());
+			Word original = result.Originals.get(i);
+			Word translated = result.Translated.get(i);
 
-				TranslatedView searchedView = new TranslatedView(result.AutoCompleteWord);
-				TranslatedView wordView = new TranslatedView(result.AutoCompleteWord, word);
+			if (original.getWord().startsWith(entry)) {
 
-				int wordPosition = m_suggestionAdapter.getPosition(searchedView);
+				original.setWord(original.getWord().toLowerCase());
+				translated.setWord(translated.getWord().toLowerCase());
+
+				String strPending = getString(R.string.memolist_pendingText);
+				TranslatedView translatedView = new TranslatedView(original, translated, result.Source);
+
+				int wordPosition = removeSuggestion(strPending, original);
 
 				if (wordPosition == -1) {
-					m_suggestionAdapter.add(wordView);
+					m_suggestionAdapter.add(translatedView);
 				} else {
-					m_suggestionAdapter.remove(searchedView);
-					m_suggestionAdapter.insert(wordView, wordPosition);
+					m_suggestionAdapter.remove(wordPosition);
+					m_suggestionAdapter.insert(translatedView, wordPosition);
 				}
+
+				modified = true;
 			}
+		}
+
+		if (modified) {
+			sortSuggestions();
 		}
 	}
 
@@ -362,7 +385,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 		Language toLang = ((LanguageView) m_spLanguageTo.getSelectedItem()).getLanguage();
 
 		if (result.Result.size() == 0) {
-			new Translator(new Word(currentStr.trim().toLowerCase()), fromLang, toLang, this);
+			new Translator(getActivity(), new Word(currentStr.trim().toLowerCase()), fromLang, toLang, this);
 		} else {
 			ArrayList<TranslatedView> tViews = new ArrayList<TranslatedView>(result.Result.size());
 
@@ -380,15 +403,16 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 			}
 
 			for (Word word : words) {
-				word.setWord(currentStrBase.toString() + word.getWord());
-				tViews.add(new TranslatedView(word));
+				word.setWord((currentStrBase.toString() + word.getWord()).toLowerCase());
+				tViews.add(TranslatedView.PendingView(word, getString(R.string.memolist_pendingText)));
 			}
 
 			m_suggestionAdapter.addAll(tViews);
 
 			if (fromLang != toLang) {
 				for (int i = 0; i < result.Result.size(); i++) {
-					new Translator(result.Result.get(i), fromLang, toLang, this);
+					result.Result.get(i).setWord(result.Result.get(i).getWord().toLowerCase());
+					new Translator(getActivity(), result.Result.get(i), fromLang, toLang, this);
 				}
 			}
 		}
@@ -690,6 +714,39 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 		}.execute();
 	}
 
+	private synchronized int removeSuggestion(String strPending, Word original) {
+
+		for (int i = 0; i < m_suggestionAdapter.getCount(); i++) {
+			TranslatedView view = m_suggestionAdapter.getItem(i);
+			if (view.source().equals(strPending) && view.from().getWord().equals(original.getWord())) {
+				return i;
+			}
+		}
+
+		return -1;
+	}
+
+	private synchronized void sortSuggestions() {
+		ArrayList<TranslatedView> views = new ArrayList<TranslatedView>();
+		for (int i = 0; i < m_suggestionAdapter.getCount(); i++) {
+			views.add(m_suggestionAdapter.getItem(i));
+		}
+
+		Collections.sort(views, m_suggestionComparator);
+
+		m_suggestionAdapter.clear(false);
+		m_suggestionAdapter.addAll(views);
+	}
+
+	private class SuggestionComparator implements Comparator<TranslatedView> {
+
+		@Override
+		public int compare(TranslatedView lhs, TranslatedView rhs) {
+			return lhs.from().getWord().compareTo(rhs.from().getWord());
+		}
+
+	}
+
 	private Helper.Pair<Language, Language> getPreferedLanguages() {
 
 		MemoListPreference pref = getPreferences().getMemoListPreference(m_memoBaseId);
@@ -781,6 +838,57 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 	private void voiceSearch() {
 		Intent intent = VoiceInputHelper.buildIntent(m_spLanguageFrom.getSelectedLanguage().getLanguage());
 		getActivity().startActivityForResult(intent, VoiceInputRequestCode);
+	}
+
+	private void getWikitonaryInfos() {
+		new WsWiktionary().get(new IGetComplete() {
+
+			@Override
+			public void getComplete(ArrayList<WiktionaryInfo> wiktionaryInfos) {
+
+				if (wiktionaryInfos == null) {
+					Toast.makeText(getActivity(), R.string.memolist_wiktionary_getError, Toast.LENGTH_SHORT).show();
+					return;
+				}
+
+				ResourceManager resources = getResourceManager();
+				Typeface thinFont = resources.getLightFont();
+				Typeface blackFont = resources.getBlackFont();
+
+				final ModifiableComplexTextAdapter<WiktionaryInfoView> wiktionaryAdapter = new ModifiableComplexTextAdapter<WiktionaryInfoView>(
+						getActivity(), R.layout.adapter_memolist_wiktionary, new int[] {
+								R.id.memolist_wiktionary_lblName, R.id.memolist_wiktionary_lblDescription,
+								R.id.memolist_wiktionary_lblDownloadSize, R.id.memolist_wiktionary_lblRealSize,
+								R.id.memolist_wiktionary_lblLanguage }, new Typeface[] { thinFont, thinFont, thinFont,
+								thinFont, blackFont }, false);
+
+				wiktionaryAdapter.addAll(WiktionaryInfoView.getAll(wiktionaryInfos));
+
+				AlertDialog dialog = new AlertDialog.Builder(getActivity())
+						.setAdapter(wiktionaryAdapter, new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+
+								Toast.makeText(getActivity(), R.string.memolist_wiktionary_downloadStarted,
+										Toast.LENGTH_SHORT).show();
+								
+								WiktionaryInfo wiktionaryInfo = wiktionaryAdapter.getItem(which).get();
+								WiktionaryProviderService.download(getActivity(), wiktionaryInfo.getWiktionaryInfoId(),
+										wiktionaryInfo.getDownloadUrl());
+							}
+
+						}).setCancelable(true).setNegativeButton(getString(R.string.memolist_wiktionary_back), null)
+						.create();
+
+				dialog.getListView().setDivider(null);
+				dialog.getListView().setDividerHeight(0);
+
+				dialog.show();
+
+			}
+
+		});
 	}
 
 	//
@@ -925,6 +1033,13 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 			}
 		}));
 
+		drawer.add(new DrawerView(R.drawable.ic_wiktionary, R.string.memolist_wiktionary, new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getWikitonaryInfos();
+			}
+		}));
+
 		drawer.add(new DrawerView(R.drawable.ic_statistics, R.string.memobaselist_setting_statistics,
 				new Lazy<ApplicationFragment>() {
 					public ApplicationFragment create() {
@@ -967,17 +1082,17 @@ public class MemoListFragment extends FacebookFragment implements ITranslateComp
 							.cancel(notificationId);
 				}
 			}
-			
+
 			if (intent.hasExtra(MemoBaseId)) {
 				m_memoBaseId = intent.getStringExtra(MemoBaseId);
 				intent.removeExtra(MemoBaseId);
 			}
-						
+
 			// Go to MemoFragemnt
-			if(intent.hasExtra(MemoId)) {
+			if (intent.hasExtra(MemoId)) {
 				String memoId = intent.getStringExtra(MemoId);
 				intent.removeExtra(MemoId);
-				
+
 				ApplicationFragment fragment = new MemoFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString(MemoFragment.MemoId, memoId);

@@ -47,10 +47,20 @@ public class Preferences {
 	private String get(String key) {
 		return m_sharedPreferences.getString(key, null);
 	}
+	
+	private boolean get(String key, boolean defValue) {
+		return m_sharedPreferences.getBoolean(key, defValue);
+	}
 
 	private void set(String key, String value) {
 		Editor editor = m_sharedPreferences.edit();
 		editor.putString(key, value);
+		editor.commit();
+	}
+	
+	private void set(String key, boolean value) {
+		Editor editor = m_sharedPreferences.edit();
+		editor.putBoolean(key, value);
 		editor.commit();
 	}
 

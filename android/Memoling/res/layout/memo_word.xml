@@ -63,8 +63,8 @@
                     android:layout_marginRight="10dp"
                     android:layout_toLeftOf="@+id/memo_btnSpeech"
                     android:minWidth="0dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
+                    android:paddingLeft="7dp"
+                    android:paddingRight="7dp"
                     android:src="@drawable/ic_menu_refresh"
                     android:text="@string/memo_abbrDictionary" />
 
@@ -78,8 +78,8 @@
                     android:layout_marginRight="10dp"
                     android:layout_toLeftOf="@+id/memo_btnDictionaryWord"
                     android:minWidth="0dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
+                    android:paddingLeft="7dp"
+                    android:paddingRight="7dp"
                     android:src="@drawable/ic_menu_refresh"
                     android:text="@string/memo_abbrThesaurus" />
 
@@ -120,10 +120,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
+                    android:layout_below="@id/memo_lblLang"
                     android:layout_marginTop="5dp"
                     android:imeOptions="actionDone"
                     android:inputType="text"
-                    android:layout_below="@id/memo_lblLang"
                     android:textSize="18sp" >
 
                     <requestFocus />
@@ -142,9 +142,9 @@
                     android:id="@+id/textView1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/memo_description"
                     android:layout_marginBottom="3dp"
                     android:layout_marginTop="-2dp"
+                    android:text="@string/memo_description"
                     android:textSize="20sp" />
 
                 <TabHost
@@ -198,8 +198,24 @@
                                     android:id="@+id/memo_lblDescriptionQuizlet"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/memo_sentencesDownloading"
                                     android:minLines="2"
+                                    android:text="@string/memo_sentencesDownloading"
+                                    android:textSize="15sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/memo_tabDefinitionWiktionary"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="5dp"
+                                android:orientation="vertical" >
+
+                                <WebView
+                                    android:id="@+id/memo_vwDefinitionWiktionary"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="#00000000"
+                                    android:text="@string/memo_sentencesSearching"
                                     android:textSize="15sp" />
                             </LinearLayout>
                         </FrameLayout>
@@ -220,9 +236,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="@string/memo_sentences"
                     android:layout_marginBottom="3dp"
                     android:layout_marginTop="-2dp"
+                    android:text="@string/memo_sentences"
                     android:textSize="20sp" />
 
                 <TabHost
@@ -281,6 +297,35 @@
                     </LinearLayout>
                 </TabHost>
             </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/memo_laySynonyms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/content_background"
+                android:orientation="vertical"
+                android:padding="5dp"
+                android:visibility="gone" >
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="-2dp"
+                    android:text="@string/memo_synonyms"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/memo_txtSynonyms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="-2dp"
+                    android:text="@string/memo_sentencesSearching"
+                    android:textSize="15sp" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

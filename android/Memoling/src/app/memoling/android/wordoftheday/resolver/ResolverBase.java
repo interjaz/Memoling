@@ -1,11 +1,14 @@
 package app.memoling.android.wordoftheday.resolver;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Word;
-import app.memoling.android.translator.ITranslateComplete;
+import app.memoling.android.translator.IAllTranslatorComplete;
+import app.memoling.android.translator.ITranslatorComplete;
 import app.memoling.android.translator.Translator;
 import app.memoling.android.translator.TranslatorResult;
 import app.memoling.android.wordoftheday.IFetchComplete;
@@ -18,18 +21,24 @@ public abstract class ResolverBase {
 	protected IFetchComplete m_onFetchComplete;
 	protected Provider m_provider;
 
+	private Context m_context;
 	private String m_wordFrom;
 	private String m_descriptionFrom;
 	private String m_wordTo;
 	private String m_descriptionTo;
 
-	public ResolverBase(Provider provider) {
+	public ResolverBase(Context context, Provider provider) {
+		m_context = context;
 		m_provider = provider;
 	}
 
 	public final void fetch(IFetchComplete onFetchComplete) {
 		m_onFetchComplete = onFetchComplete;
 		fetchRaw();
+	}
+
+	protected Context getContext() {
+		return m_context;
 	}
 
 	protected final void onFetchRawComplete(String raw) {
@@ -48,41 +57,44 @@ public abstract class ResolverBase {
 		}
 
 		if (m_provider.getPreTranslateToLanguage() != null) {
-			new Translator(new Word(wd.getWord()), m_provider.getBaseLanguage(),
-					m_provider.getPreTranslateToLanguage(), new PreTranslateWordFrom());
+			new Translator(m_context, new Word(wd.getWord()), m_provider.getBaseLanguage(),
+					m_provider.getPreTranslateToLanguage(), null, new PreTranslateWordFrom());
 
 			if (wd.getDescription() != null && !wd.getDescription().equals("")) {
-				new Translator(new Word(wd.getDescription()), m_provider.getBaseLanguage(),
-						m_provider.getPreTranslateToLanguage(), new PreTranslateDescriptionFrom());
+				new Translator(m_context, new Word(wd.getDescription()), m_provider.getBaseLanguage(),
+						m_provider.getPreTranslateToLanguage(),new PreTranslateDescriptionFrom());
 			} else {
-				m_descriptionFrom = "";				
+				m_descriptionFrom = "";
 			}
 
 		} else {
 			m_wordFrom = wd.getWord();
-			if( wd.getDescription() != null) {
-				m_descriptionFrom = wd.getDescription(); 
-			} else{
+			if (wd.getDescription() != null) {
+				m_descriptionFrom = wd.getDescription();
+			} else {
 				m_descriptionFrom = "";
 			}
 		}
 
-		new Translator(new Word(wd.getWord()), m_provider.getBaseLanguage(), m_provider.getTranslateToLanguage(),
-				new TranslateWordTo());
+		new Translator(m_context, new Word(wd.getWord()), m_provider.getBaseLanguage(),
+				m_provider.getTranslateToLanguage(), null, new TranslateWordTo());
 
 		if (wd.getDescription() != null && !wd.getDescription().equals("")) {
-			new Translator(new Word(wd.getDescription()), m_provider.getBaseLanguage(),
+			new Translator(m_context, new Word(wd.getDescription()), m_provider.getBaseLanguage(),
 					m_provider.getTranslateToLanguage(), new TranslateDescriptionTo());
 		} else {
 			m_descriptionTo = "";
 		}
 	}
 
-	public class PreTranslateWordFrom implements ITranslateComplete {
+	public class PreTranslateWordFrom implements IAllTranslatorComplete {
+		
 		@Override
-		public void onTranslateComplete(TranslatorResult result) {
-			if (result.TranslatedSuggestions.size() > 0) {
-				m_wordFrom = result.TranslatedSuggestions.get(0).getWord();
+		public void onAllTranslatorComplete(ArrayList<TranslatorResult> translatorResults) {
+			TranslatorResult result = Translator.getMostAccurate(translatorResults);
+			
+			if (result.Translated.size() > 0) {
+				m_wordFrom = result.Translated.get(0).getWord();
 				m_wordFrom = m_wordFrom.toLowerCase();
 			} else {
 				m_wordFrom = "";
@@ -91,11 +103,12 @@ public abstract class ResolverBase {
 		}
 	}
 
-	public class PreTranslateDescriptionFrom implements ITranslateComplete {
+	public class PreTranslateDescriptionFrom implements ITranslatorComplete {
 		@Override
-		public void onTranslateComplete(TranslatorResult result) {
-			if (result.TranslatedSuggestions.size() > 0) {
-				m_descriptionFrom = result.TranslatedSuggestions.get(0).getWord();
+		public void onTranslatorComplete(TranslatorResult result) {
+			
+			if (result.Translated.size() > 0) {
+				m_descriptionFrom = result.Translated.get(0).getWord();
 			} else {
 				m_descriptionFrom = "";
 			}
@@ -103,11 +116,14 @@ public abstract class ResolverBase {
 		}
 	}
 
-	public class TranslateWordTo implements ITranslateComplete {
+	public class TranslateWordTo implements IAllTranslatorComplete {
+		
 		@Override
-		public void onTranslateComplete(TranslatorResult result) {
-			if (result.TranslatedSuggestions.size() > 0) {
-				m_wordTo = result.TranslatedSuggestions.get(0).getWord();
+		public void onAllTranslatorComplete(ArrayList<TranslatorResult> translatorResults) {
+			TranslatorResult result = Translator.getMostAccurate(translatorResults);
+			
+			if (result.Translated.size() > 0) {
+				m_wordTo = result.Translated.get(0).getWord();
 				m_wordTo = m_wordTo.toLowerCase();
 			} else {
 				m_wordTo = "";
@@ -116,11 +132,11 @@ public abstract class ResolverBase {
 		}
 	}
 
-	public class TranslateDescriptionTo implements ITranslateComplete {
+	public class TranslateDescriptionTo implements ITranslatorComplete {
 		@Override
-		public void onTranslateComplete(TranslatorResult result) {
-			if (result.TranslatedSuggestions.size() > 0) {
-				m_descriptionTo = result.TranslatedSuggestions.get(0).getWord();
+		public void onTranslatorComplete(TranslatorResult result) {
+			if (result.Translated.size() > 0) {
+				m_descriptionTo = result.Translated.get(0).getWord();
 			} else {
 				m_descriptionTo = "";
 			}
