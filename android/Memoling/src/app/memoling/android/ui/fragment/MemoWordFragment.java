@@ -360,7 +360,7 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 
 	private void setMemoWiktionary() {
 
-		if (!WiktionaryDb.IsAvailable()) {
+		if (!WiktionaryDb.isAvailable()) {
 			m_vwDescriptionWiktionary.loadData(getString(R.string.memo_wikitonaryNotInstalled), "text/html", "utf-8");
 			return;
 		}

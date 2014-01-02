@@ -64,6 +64,7 @@ public abstract class ApplicationFragment extends Fragment {
 		activity.requestInvalidateOptionsMenu();
 
 		// Enable drawer by default
+		activity.getDrawerAdapter().clear();
 		setDrawerEnabled(true);
 
 		return contentView;
@@ -75,7 +76,6 @@ public abstract class ApplicationFragment extends Fragment {
 
 		ApplicationActivity appActivity = (ApplicationActivity) this.getActivity();
 		DrawerAdapter drawer = appActivity.getDrawerAdapter();
-		drawer.clear();
 		onPopulateDrawer(drawer);
 		m_savedInstanceState = savedInstanceState;
 	}

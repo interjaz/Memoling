@@ -12,8 +12,9 @@ import app.memoling.android.wiktionary.WiktionaryDb;
 public class WikiTranslationMeaningAdapter extends WiktionaryDb {
 
 	private static int m_cacheSize = 100;
-	private static CacheHelper<Integer, WikiTranslationMeaning> m_cache = new CacheHelper<Integer, WikiTranslationMeaning>(m_cacheSize);
-	
+	private static CacheHelper<Integer, WikiTranslationMeaning> m_cache = new CacheHelper<Integer, WikiTranslationMeaning>(
+			m_cacheSize);
+
 	public WikiTranslationMeaningAdapter(Context context) {
 		super(context);
 	}
@@ -23,7 +24,7 @@ public class WikiTranslationMeaningAdapter extends WiktionaryDb {
 		if (m_cache.containsKey(meaningId)) {
 			return m_cache.get(meaningId);
 		}
-		
+
 		SQLiteDatabase db = null;
 
 		try {
@@ -40,10 +41,9 @@ public class WikiTranslationMeaningAdapter extends WiktionaryDb {
 		if (m_cache.containsKey(meaningId)) {
 			return m_cache.get(meaningId);
 		}
-		
-		String query = "SELECT MeaningId, Meaning " 
-				+ "FROM wiki_TranslationMeanings " 
-				+ "WHERE MeaningId = " + Integer.toString(meaningId);
+
+		String query = "SELECT MeaningId, Meaning " + "FROM wiki_TranslationMeanings " + "WHERE MeaningId = "
+				+ Integer.toString(meaningId);
 
 		Cursor cursor = db.rawQuery(query, null);
 
@@ -56,7 +56,7 @@ public class WikiTranslationMeaningAdapter extends WiktionaryDb {
 				translationMeaning.setMeaning(DatabaseHelper.getString(cursor, "Meaning"));
 
 				m_cache.put(meaningId, translationMeaning);
-				
+
 				return translationMeaning;
 			}
 		} finally {
@@ -67,7 +67,7 @@ public class WikiTranslationMeaningAdapter extends WiktionaryDb {
 
 		return null;
 	}
-	
+
 	public void createIndexes() {
 
 		SQLiteDatabase db = null;
@@ -80,5 +80,34 @@ public class WikiTranslationMeaningAdapter extends WiktionaryDb {
 			closeDatabase();
 		}
 
+	}
+
+	public boolean isOk() {
+
+		SQLiteDatabase db = null;
+
+		try {
+			db = getDatabase();
+
+			String query = "SELECT MeaningId, Meaning FROM wiki_TranslationMeanings LIMIT 1";
+
+			Cursor cursor = db.rawQuery(query, null);
+
+			try {
+
+				cursor.moveToFirst();
+
+			} finally {
+				if (cursor != null && !cursor.isClosed()) {
+					cursor.close();
+				}
+			}
+
+			return true;
+		} catch (Exception ex) {
+			return false;
+		} finally {
+			closeDatabase();
+		}
 	}
 }

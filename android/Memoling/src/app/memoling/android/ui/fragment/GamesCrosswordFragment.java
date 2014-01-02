@@ -55,7 +55,7 @@ public class GamesCrosswordFragment extends GamesMatrixGame {
 
 	@Override
 	protected String getTitle() {
-		return getActivity().getString(R.string.games_crossword);
+		return getActivity().getString(R.string.memolist_crossword);
 	}
 	
 	@Override

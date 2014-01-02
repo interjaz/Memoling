@@ -9,6 +9,12 @@
 		Jeśli Ci się podoba aplikacja, oceń ją.\n
 		\n
 		\n
+		Zmiany v.1.8.1\n
+		1. Wiktionary działa teraz także na androidach starchy od 2.3.7\n
+		2. Poprawiono mechanizm uczenia\n
+		3. Usunięto kilka błędów z planowania treningów\n
+		4. Usunięto błąd zmiany języka podczas szukania słówka\n
+		5. (UI) Pogrupowano opcje w kategorie\n
 		Zmiany v.1.8.0\n
 		1. Wigdet - Słówko dnia\n
 		2. Nowy wygląd\n
@@ -55,8 +61,6 @@
     <!-- MemoList Fragment -->
     <string name="memolist_title">Wyrażenia</string>
     <string name="memolist_btnSave">Zapisz</string>
-    <string name="memolist_from">Z</string>
-    <string name="memolist_to">Na</string>
     <string name="memolist_saveErrorMessage">Wystąpił problem podczas zapisu</string>
     <string name="memolist_ctxmenu_deactivate">Deaktywuj</string>
     <string name="memolist_ctxmenu_activate">Aktywuj</string>
@@ -64,12 +68,10 @@
     <string name="memolist_ctxmenu_deleteTitle">Uwaga!</string>
     <string name="memolist_ctxmenu_deleteQuestion">Na pewno? Raz usunięte memo, nie może zostać przywrócone. Zalecana deaktywacja.</string>
     <string name="memolist_ctxmenu_deleteYes">Tak, na pewno.</string>
-    <string name="memolist_ctxmenu_deleteNo">Nie, zmieniłem/am zdanie.</string>
-	<string name="memolist_ctxmenu_sharefacebook">Udostępinij przez Facebooka</string>
-	<string name="memolist_ctxmenu_share">Udostępnij innej aplikacji</string>
     <string name="memolist_missingWords">Fraza nie może być pusta</string>
     <string name="memolist_goToLibraries">Biblioteka</string>
     <string name="memolist_settings">Ustawienia</string>
+    <string name="memolist_train">Trening</string>
     <string name="memolist_startTraining">Zacznij trening</string>
     <string name="memolist_whatsNewTitle">Aktualizacja (v. %s)</string>
     <string name="memolist_whatsNewOk">OK</string>
@@ -83,6 +85,7 @@
     <string name="memolist_openScheduler">Ustaw trening</string>
     <string name="memolist_voiceSearch">Szukanie głosowe</string>
     <string name="memolist_pendingText">Szukam</string>
+    <string name="memolist_more">Więcej</string>
     <string name="memolist_wiktionary">Słowniki offline</string>
     <string name="memolist_wiktionary_lblName">Nazwa</string>
     <string name="memolist_wiktionary_lblDescription">Opis</string>
@@ -90,14 +93,13 @@
     <string name="memolist_wiktionary_lblRealSize">Rozmiar ostateczny</string>
     <string name="memolist_wiktionary_downloadStarted">Rozpoczęto ściąganie</string>
     <string name="memolist_wiktionary_getError">Problem z połączeniem</string>
+    <string name="memolist_hangman">Szubienica</string>
+    <string name="memolist_crossword">Krzyżówka</string>
+    <string name="memolist_findword">Znajdź słowo</string>
     <string name="memolist_wiktionary_back">Cofnij</string>
 
     <!-- MemoBaseList Fragment -->
     <string name="memobaselist_title">Biblioteki</string>
-    <string name="memobaselist_listview_lblCreated">Utworzono</string>
-    <string name="memobaselist_listview_lblMemos">Mema</string>
-    <string name="memobaselist_setting_settings">Ustawienia</string>
-    <string name="memobaselist_setting_newLibrary">Nowa biblioteka</string>
     <string name="memobaselist_ctxmenu_deactivate">Deaktywuj</string>
     <string name="memobaselist_ctxmenu_activate">Aktywuj</string>
     <string name="memobaselist_ctxmenu_delete">Usuń bibliotekę</string>
@@ -111,7 +113,6 @@
     <string name="memobaselist_ctxmenu_shareApplication">Udostępnij innej aplikacji</string>
     <string name="memobaselist_ctxmenu_shareFacebook">Udostępnij przez Facebook</string>
     <string name="memobaselist_setting_about">O aplikacji</string>
-    <string name="memobaselist_fbFailed">Problem podczas uwierzytelniania.</string>
     <string name="memobaselist_setting_statistics">Statystyki</string>
     <string name="memobaselist_addMemoBase">Nowa Biblioteka</string>
     <string name="memobaselist_downloadMemoBase">Pobierz Bibliotekę</string>
@@ -256,15 +257,9 @@
 
     <!-- Download Fragment -->
     <string name="download_title">Online biblioteki</string>
-	<string name="download_published_genre">Gatunek</string>
-	<string name="download_published_memos">Mema</string>
 	<string name="download_published_downloads">Ściągnięć</string>
-	<string name="download_published_language">Główny jęz.</string>
-	<string name="download_preview_language">Język</string>
     <string name="download_phrase">Fraza</string>
     <string name="download_genre">Gatunek</string>
-    <string name="download_langA">Język 1</string>
-	<string name="download_langB">Język 2</string>
 	<string name="download_search">Szukaj</string>
 	<string name="download_search_error">Wystąpił błąd</string>
 	<string name="download_search_noMore">Nie ma więcej bibliotek</string>
@@ -367,10 +362,6 @@
     </string-array>
 
 	<!-- Games -->
-    <string name="games_title">Gry językowe</string>
-    <string name="games_hangman">Szubienica</string>
-    <string name="games_crossword">Krzyżówka</string>
-    <string name="games_findword">Znajdź słowo</string>
     <string name="games_win">Wygrałeś</string>
     <string name="games_lost">Przegrałeś</string>
     <string name="games_score">Wynik</string>
@@ -414,12 +405,21 @@
 	<string name="downloadlink_errorDownload">Błąd połączenia</string>
 
     <!-- Wiktionary -->
+    <string name="wiktionary_title">Wiktionary</string>
     <string name="wiktionary_providerError_alreadyDownloading">Błąd: Plik jest właśnie pobierany</string>
     <string name="wiktionary_providerError_wsOffline">Błąd: Nie można nawiązać połączenia z serwerem</string>
     <string name="wiktionary_providerError_downloadError">Błąd: Pobieranie zakończone niepowodzeniem</string>
     <string name="wiktionary_providerDownloading">Pobieram wiktionary</string>
     <string name="wiktionary_providerSuccess">Pomyślnie zainstalowano wiktionary</string>
     <string name="wiktionary_providerFailure">Wystąpił błąd podczas instalacji wiktionary</string>
+    <string name="wiktionary_lblInstalled">Zainstalowany</string>
+    <string name="wiktionary_lblSize">Zajęta przestrzeń</string>
+    <string name="wiktionary_lblIsOk">Wszystko OK</string>
+    <string name="wiktionary_ok">OK</string>
+    <string name="wiktionary_error">Błąd. Spróbuj zainstalować ponownie</string>
+    <string name="wiktionary_notInstalled">Nie zainstalowano</string>
+    <string name="wiktionary_installed">Zainstalowano</string>
+    <string name="wiktionary_lblUninstall">Odninstaluj</string>
     
     <!-- WiktionaryDownloadCancel -->
     <string name="wiktionarydownloadmanager_title">Wiktionary Download Manager</string>

@@ -475,32 +475,32 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 	@Override
 	protected void onPopulateDrawer(DrawerAdapter drawer) {
 
-		drawer.add(new DrawerView(R.drawable.ic_back, R.string.memobase_backToList));
+		drawer.addGroup(new DrawerView(R.drawable.ic_back, R.string.memobase_backToList));
 
-		drawer.add(new DrawerView(R.drawable.ic_scheduler, R.string.memobase_lblOpenScheduler, new OnClickListener() {
+		drawer.addGroup(new DrawerView(R.drawable.ic_scheduler, R.string.memobase_lblOpenScheduler, new DrawerView.OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(DrawerView v) {
 				openScheduler();
 			}
 		}));
 		
-		drawer.add(new DrawerView(R.drawable.ic_import, R.string.memobase_lblImport, new OnClickListener() {
+		drawer.addGroup(new DrawerView(R.drawable.ic_import, R.string.memobase_lblImport, new DrawerView.OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(DrawerView v) {
 				importMemoBase();
 			}
 		}));
 
-		drawer.add(new DrawerView(R.drawable.ic_export, R.string.memobase_lblExport, new OnClickListener() {
+		drawer.addGroup(new DrawerView(R.drawable.ic_export, R.string.memobase_lblExport, new DrawerView.OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(DrawerView v) {
 				exportMemoBase();
 			}
 		}));
 
-		drawer.add(new DrawerView(R.drawable.ic_publish, R.string.memobase_lblPublish, new OnClickListener() {
+		drawer.addGroup(new DrawerView(R.drawable.ic_publish, R.string.memobase_lblPublish, new DrawerView.OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(DrawerView v) {
 				publishMemoBase();
 			}
 		}));

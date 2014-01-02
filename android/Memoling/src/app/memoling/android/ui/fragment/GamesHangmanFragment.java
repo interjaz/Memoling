@@ -73,7 +73,7 @@ public class GamesHangmanFragment extends ApplicationFragment implements TextWat
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View contentView = super.onCreateView(inflater, container, savedInstanceState,
 				inflater.inflate(R.layout.games_hangman, container, false));
-		setTitle(getActivity().getString(R.string.games_hangman));
+		setTitle(getActivity().getString(R.string.memolist_hangman));
 
 		m_originalOrientation = getActivity().getRequestedOrientation();
 		getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

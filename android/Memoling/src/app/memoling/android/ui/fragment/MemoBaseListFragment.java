@@ -227,19 +227,19 @@ public class MemoBaseListFragment extends ApplicationFragment {
 
 	protected void onPopulateDrawer(DrawerAdapter drawer) {
 
-		drawer.add(new DrawerView(R.drawable.ic_back, R.string.memobaselist_backToList));
+		drawer.addGroup(new DrawerView(R.drawable.ic_back, R.string.memobaselist_backToList));
 
-		drawer.add(new DrawerView(R.drawable.ic_library_add, R.string.memobaselist_addMemoBase, new OnClickListener() {
+		drawer.addGroup(new DrawerView(R.drawable.ic_library_add, R.string.memobaselist_addMemoBase, new DrawerView.OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(DrawerView v) {
 				openNewMemoBase();
 			}
 		}));
 
-		drawer.add(new DrawerView(R.drawable.ic_download, R.string.memobaselist_downloadMemoBase,
-				new OnClickListener() {
+		drawer.addGroup(new DrawerView(R.drawable.ic_download, R.string.memobaselist_downloadMemoBase,
+				new DrawerView.OnClickListener() {
 					@Override
-					public void onClick(View v) {
+					public void onClick(DrawerView v) {
 						openDownloadMemoBase();
 					}
 				}));

@@ -13,7 +13,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
 import app.memoling.android.R;
 import app.memoling.android.ui.adapter.DrawerAdapter;
 import app.memoling.android.ui.fragment.MemoListFragment;
@@ -28,7 +28,7 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 
 	private String m_title;
 	private DrawerLayout m_layDrawer;
-	private ListView m_lstDrawer;
+	private ExpandableListView m_lstDrawer;
 	private DrawerAdapter m_adapterDrawer;
 	private ActionBarDrawerToggle m_toggleDrawer;
 	private FragmentManager m_fragmentManager;
@@ -52,10 +52,12 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 		m_layDrawer.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 		m_layDrawer.setScrimColor(0x22000000);
 
-		m_adapterDrawer = new DrawerAdapter(this, R.layout.adapter_drawer, new ResourceManager(this));
+		m_adapterDrawer = new DrawerAdapter(this, new ResourceManager(this));
 
-		m_lstDrawer = (ListView) findViewById(R.id.application_lstDrawer);
-		m_lstDrawer.setOnItemClickListener(new LayDrawerEventHandler());
+		m_lstDrawer = (ExpandableListView) findViewById(R.id.application_lstDrawer);
+		LayDrawerEventHandler lstDrawerHandler = new LayDrawerEventHandler();
+		m_lstDrawer.setOnGroupClickListener(lstDrawerHandler);
+		m_lstDrawer.setOnChildClickListener(lstDrawerHandler);
 		m_lstDrawer.setAdapter(m_adapterDrawer);
 
 		// ActionBarDrawerToggle ties together the the proper interactions
@@ -71,14 +73,22 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 
 		// Select first fragment
 		if (savedInstanceState == null) {
-			selectDrawerItem(0);
+			selectDrawerItem(0, DrawerAdapter.GroupPosition);
 		}
 	}
 
-	private class LayDrawerEventHandler implements ListView.OnItemClickListener {
+	private class LayDrawerEventHandler implements ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener {
+
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			selectDrawerItem(position);
+		public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+			selectDrawerItem(groupPosition, childPosition);
+			return false;
+		}
+
+		@Override
+		public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+			selectDrawerItem(groupPosition, DrawerAdapter.GroupPosition);
+			return false;
 		}
 	}
 
@@ -153,6 +163,7 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 	public void setDrawerToggleEnabled(boolean enabled) {
 		m_toggleDrawer.setDrawerIndicatorEnabled(enabled);
 		m_layDrawer.setDrawerLockMode(enabled ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+		m_layDrawer.invalidate();
 	}
 
 	public void requestFragmentReplace(ApplicationFragment fragment) {
@@ -182,16 +193,16 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 	}
 
 	/** Swaps fragments in the main content view */
-	private void selectDrawerItem(int position) {
+	private void selectDrawerItem(int groupPosition, int childPosition) {
 		// Create a new fragment and specify the planet to show based on
 		// position
 		ApplicationFragment fragment = null;
-		OnClickListener onClickListener = null;
+		DrawerView.OnClickListener onClickListener = null;
 		DrawerView view = null;
 
-		if (m_adapterDrawer.getCount() != 0) {
-			view = m_adapterDrawer.getItem(position);
-			fragment = m_adapterDrawer.getItem(position).getFragment();
+		if (m_adapterDrawer.getGroupCount() != 0) {
+			view = m_adapterDrawer.getItem(groupPosition, childPosition);
+			fragment = view.getFragment();
 			onClickListener = view.getOnClickListener();
 		}
 
@@ -209,20 +220,23 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 					.commit();
 
 		} else if (onClickListener != null) {
-			onClickListener.onClick(m_lstDrawer.getChildAt(position));
+			onClickListener.onClick(view);
 		} else {
 			// Remove current fragment
 			m_fragmentManager.popBackStack();
 		}
-
+		
 		// Highlight the selected item, update the title, and close the drawer
-		m_lstDrawer.setItemChecked(position, true);
+		//m_lstDrawer.setItemChecked(position, true);
 
 		// Do stuff here
 		// setTitle(mPlanetTitles[position]);
 		//
 
-		m_layDrawer.closeDrawer(m_lstDrawer);
+		if(childPosition != DrawerAdapter.GroupPosition || 
+		  m_adapterDrawer.getChildrenCount(groupPosition) == 0) {
+			m_layDrawer.closeDrawer(m_lstDrawer);	
+		}
 	}
 
 	@Override
@@ -254,7 +268,7 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_MENU) {
 
-			if (m_adapterDrawer != null && m_adapterDrawer.getCount() > 0) {
+			if (m_adapterDrawer != null && m_adapterDrawer.getGroupCount() > 0) {
 				if (m_layDrawer.isDrawerOpen(m_lstDrawer)) {
 					m_layDrawer.closeDrawer(m_lstDrawer);
 				} else {

@@ -31,7 +31,12 @@ public class MemoView implements IInject {
 		
 		int correct = m_memo.getCorrectAnsweredWordA() + m_memo.getCorrectAnsweredWordB();
 		int incorrect = m_memo.getDisplayed() - correct;
-		incorrect = incorrect == 0 ? 1 : incorrect;
+		
+		if(correct == 0 && incorrect == 0) 
+		{
+			correct = 1;
+			incorrect = 1;
+		}
 
 		setProgressWeight(holder.m_progressBar, correct);
 		setProgressWeight(holder.m_progressReminder, incorrect);
@@ -42,15 +47,11 @@ public class MemoView implements IInject {
 		holder.m_languageB.setText(m_memo.getWordB().getLanguage().getCode());
 		
 		if (!m_memo.getActive()) {
-			holder.m_original.setPaintFlags(holder.m_original.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-			holder.m_translate.setPaintFlags(holder.m_translate.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-			holder.m_languageA.setPaintFlags(holder.m_languageA.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-			holder.m_languageB.setPaintFlags(holder.m_languageB.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+			holder.m_original.setTextColor(0xFF999999);
+			holder.m_translate.setTextColor(0xFF999999);
 		} else {
-			holder.m_original.setPaintFlags(holder.m_original.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
-			holder.m_translate.setPaintFlags(holder.m_translate.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
-			holder.m_languageA.setPaintFlags(holder.m_languageA.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
-			holder.m_languageB.setPaintFlags(holder.m_languageB.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+			holder.m_original.setTextColor(0xFF000000);
+			holder.m_translate.setTextColor(0xFF000000);
 		}
 	}
 	

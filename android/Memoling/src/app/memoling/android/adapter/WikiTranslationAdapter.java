@@ -104,8 +104,7 @@ public class WikiTranslationAdapter extends WiktionaryDb {
 		String query = "SELECT ExpressionA, ExpressionB, LanguageA, LanguageB, MeaningId " + "FROM wiki_Translations "
 				+ "WHERE (ExpressionA = ? AND LanguageA = ?)";
 
-		Cursor cursor = db.rawQuery(query,
-				new String[] { expression, languageFrom.getCode() });
+		Cursor cursor = db.rawQuery(query, new String[] { expression, languageFrom.getCode() });
 
 		try {
 
@@ -128,7 +127,7 @@ public class WikiTranslationAdapter extends WiktionaryDb {
 				translation.setExpressionB(exprB);
 				translation.setLanguageA(langA);
 				translation.setLanguageB(langB);
-				
+
 				translation.setMeaningId(DatabaseHelper.getInt(cursor, "MeaningId"));
 				translation.setWikiTranslationMeaning(WikiTranslationMeaningAdapter.get(adapter, db,
 						translation.getMeaningId()));
@@ -159,5 +158,35 @@ public class WikiTranslationAdapter extends WiktionaryDb {
 			closeDatabase();
 		}
 
+	}
+
+	public boolean isOk() {
+
+		SQLiteDatabase db = null;
+
+		try {
+			db = getDatabase();
+
+			String query = "SELECT ExpressionA, ExpressionB, LanguageA, LanguageB, MeaningId "
+					+ "FROM wiki_Translations LIMIT 1";
+
+			Cursor cursor = db.rawQuery(query, null);
+
+			try {
+
+				cursor.moveToFirst();
+
+			} finally {
+				if (cursor != null && !cursor.isClosed()) {
+					cursor.close();
+				}
+			}
+
+			return true;
+		} catch (Exception ex) {
+			return false;
+		} finally {
+			closeDatabase();
+		}
 	}
 }

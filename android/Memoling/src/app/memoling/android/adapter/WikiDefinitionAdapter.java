@@ -30,22 +30,21 @@ public class WikiDefinitionAdapter extends WiktionaryDb {
 
 	public static WikiDefinition get(SqliteAdapter adapter, SQLiteDatabase db, String expression, Language language) {
 
-		String query = "SELECT Expression, Language, PartOfSpeech, Definition " 
-				+ "FROM wiki_Definitions "
+		String query = "SELECT Expression, Language, PartOfSpeech, Definition " + "FROM wiki_Definitions "
 				+ "WHERE Expression = ? AND Language = ?";
 
 		Cursor cursor = db.rawQuery(query, new String[] { expression, language.getCode() });
 
 		try {
 			if (cursor.moveToNext()) {
-				
+
 				WikiDefinition definition = new WikiDefinition();
-				
+
 				definition.setExpression(DatabaseHelper.getString(cursor, "Expression"));
 				definition.setLanguage(Language.parse(DatabaseHelper.getString(cursor, "Language")));
 				definition.setPartOfSpeech(DatabaseHelper.getString(cursor, "PartOfSpeech"));
 				definition.setDefinition(DatabaseHelper.getString(cursor, "Definition"));
-				
+
 				return definition;
 			}
 		} finally {
@@ -68,6 +67,35 @@ public class WikiDefinitionAdapter extends WiktionaryDb {
 		} finally {
 			closeDatabase();
 		}
-		
+
+	}
+
+	public boolean isOk() {
+
+		SQLiteDatabase db = null;
+
+		try {
+			db = getDatabase();
+
+			String query = "SELECT  Expression, Language, PartOfSpeech, Definition FROM wiki_Definitions LIMIT 1";
+
+			Cursor cursor = db.rawQuery(query, null);
+
+			try {
+
+				cursor.moveToFirst();
+
+			} finally {
+				if (cursor != null && !cursor.isClosed()) {
+					cursor.close();
+				}
+			}
+
+			return true;
+		} catch (Exception ex) {
+			return false;
+		} finally {
+			closeDatabase();
+		}
 	}
 }

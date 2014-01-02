@@ -55,8 +55,8 @@ public class ShareHelper implements IPublishedMemoUpload {
 	}
 
 	public void onPopulateDrawerMemo(DrawerAdapter drawer) {
-		drawer.add(new DrawerView(R.drawable.ic_sharefacebook, R.string.memo_sharefacebook, m_facebookShareEventHandler));
-		drawer.add(new DrawerView(R.drawable.ic_share, R.string.memo_share, m_applicationShareEventHandler));
+		drawer.addGroup(new DrawerView(R.drawable.ic_sharefacebook, R.string.memo_sharefacebook, m_facebookShareEventHandler));
+		drawer.addGroup(new DrawerView(R.drawable.ic_share, R.string.memo_share, m_applicationShareEventHandler));
 	}
 
 	public void shareFacebook(String id) {
@@ -178,17 +178,17 @@ public class ShareHelper implements IPublishedMemoUpload {
 		Toast.makeText(m_facebookFragment.getActivity(), R.string.share_error, Toast.LENGTH_SHORT).show();
 	}
 
-	private class FacebookShareEventHandler implements OnClickListener {
+	private class FacebookShareEventHandler implements DrawerView.OnClickListener {
 		@Override
-		public void onClick(View v) {
+		public void onClick(DrawerView v) {
 			shareFacebook(m_id);
 		}
 
 	}
 
-	private class ShareApplicationEventHandler implements OnClickListener {
+	private class ShareApplicationEventHandler implements DrawerView.OnClickListener {
 		@Override
-		public void onClick(View v) {
+		public void onClick(DrawerView v) {
 			shareApplication(m_id);
 		}
 

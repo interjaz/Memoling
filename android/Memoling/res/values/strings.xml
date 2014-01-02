@@ -8,6 +8,12 @@
 		If you like application please rate the app.\n
 		\n 
 		\n
+		Changes v.1.8.1\n
+		1. Fixed wiktionaries for android lower than 2.3.7\n
+		2. Impoved teaching mechanism\n
+		3. Fixed scheduling bugs\n
+		4. Fixed bug with language swaping\n
+		5. (UI) Grouped items in Expression list screen\n
 		Changes v.1.8.0\n
 		1. Word of the day Widget\n
 		2. New UI\n
@@ -22,30 +28,7 @@
 		1. Added Quizlet definitions and words\n
 		Changes v.1.6.0\n
 		1. Added Games\n
-		2. Fixed spanish words suggestions\n
-		Changes v.1.5\n
-		1. Added sentences (see in expression details)\n
-		2. Added sentence training\n
-		3. Added definitions to the expressions\n
-		4. Changed expression page layout\n
-		Changes v.1.4\n
-		1. Added Word Of the Day feature\n
-		Chagnes v.1.3.3\n
-		1. Bug fixes\n
-		Changes v.1.3.2\n
-		1. Bug fixes\n
-		2. Made ads less annoying\n
-		Changes v.1.3.1\n
-		1. Bug fixes\n
-		Changes v.1.3.0\n
-		1. Changed UI\n
-		2. Removed Ads from low res devices\n
-		3. Added more thesauruses and dictionaries\n
-		4. Added settings window\n
-		5. Added word search\n
-		6. Fixed language preferences bug\n
-		7. Fixed training bug\n
-		8. Improved performance</string>
+		2. Fixed spanish words suggestions\n</string>
 
     <!-- General -->
     <string name="app_name">Memoling</string>
@@ -59,8 +42,6 @@
     <!-- MemoList Fragment -->
     <string name="memolist_title">Expressions</string>
     <string name="memolist_btnSave">Save</string>
-    <string name="memolist_from">From</string>
-    <string name="memolist_to">To</string>
     <string name="memolist_saveErrorMessage">Failed to save memo</string>
     <string name="memolist_ctxmenu_deactivate">Deactivate</string>
     <string name="memolist_ctxmenu_activate">Activate</string>
@@ -68,12 +49,10 @@
     <string name="memolist_ctxmenu_deleteTitle">Warning!</string>
     <string name="memolist_ctxmenu_deleteQuestion">Are you sure? Once deleted, it will not be possible to recover old memo. Consider deactivating.</string>
     <string name="memolist_ctxmenu_deleteYes">Yes, I am sure.</string>
-    <string name="memolist_ctxmenu_deleteNo">No, I have changed my mind.</string>
-    <string name="memolist_ctxmenu_sharefacebook">Share via Facebook</string>
-    <string name="memolist_ctxmenu_share">Share via Application</string>
     <string name="memolist_missingWords">Expression is missing or empty.</string>
     <string name="memolist_goToLibraries">Go to Libraries</string>
     <string name="memolist_settings">Settings</string>
+    <string name="memolist_train">Training</string>
     <string name="memolist_startTraining">Start Training</string>
     <string name="memolist_whatsNewTitle">What\'s new (v. %s)</string>
     <string name="memolist_whatsNewOk">OK</string>
@@ -87,6 +66,7 @@
     <string name="memolist_openScheduler">Set Training</string>
     <string name="memolist_voiceSearch">Voice Search</string>
     <string name="memolist_pendingText">Searching</string>
+    <string name="memolist_more">More</string>
     <string name="memolist_wiktionary">Offline Dictionary</string>
     <string name="memolist_wiktionary_lblName">Name</string>
     <string name="memolist_wiktionary_lblDescription">Description</string>
@@ -95,14 +75,13 @@
     <string name="memolist_wiktionary_downloadStarted">Download started</string>
     <string name="memolist_wiktionary_getError">Connection error</string>
     <string name="memolist_wiktionary_back">Back</string>
+    <string name="memolist_hangman">Hangman</string>
+    <string name="memolist_crossword">Crossword</string>
+    <string name="memolist_findword">Find word</string>
     <string name="memolist_swap">⇄</string>
 
     <!-- MemoBaseList Fragment -->
     <string name="memobaselist_title">Libraries</string>
-    <string name="memobaselist_listview_lblCreated">Created</string>
-    <string name="memobaselist_listview_lblMemos">Memos</string>
-    <string name="memobaselist_setting_settings">Settings</string>
-    <string name="memobaselist_setting_newLibrary">New library</string>
     <string name="memobaselist_ctxmenu_deactivate">Deactivate</string>
     <string name="memobaselist_ctxmenu_activate">Activate</string>
     <string name="memobaselist_ctxmenu_delete">Delete library</string>
@@ -116,7 +95,6 @@
     <string name="memobaselist_ctxmenu_shareApplication">Share via Application</string>
     <string name="memobaselist_ctxmenu_shareFacebook">Share via Facebook</string>
     <string name="memobaselist_setting_about">About</string>
-    <string name="memobaselist_fbFailed">Failed to obtain credentials.</string>
     <string name="memobaselist_setting_statistics">Statistics</string>
     <string name="memobaselist_addMemoBase">New Library</string>
     <string name="memobaselist_downloadMemoBase">Download Library</string>
@@ -265,15 +243,9 @@
 
     <!-- Download Fragment -->
     <string name="download_title">Online Libraries</string>
-    <string name="download_published_genre">Genre</string>
-    <string name="download_published_memos">Memos</string>
     <string name="download_published_downloads">Downloads</string>
-    <string name="download_published_language">Pri. Lang.</string>
-    <string name="download_preview_language">Language</string>
     <string name="download_phrase">Phrase</string>
     <string name="download_genre">Genre</string>
-    <string name="download_langA">Language 1</string>
-    <string name="download_langB">Language 2</string>
     <string name="download_search">Search</string>
     <string name="download_search_error">Error occurred</string>
     <string name="download_search_noMore">No more libraries</string>
@@ -372,10 +344,6 @@
     </string-array>
 
     <!-- Games -->
-    <string name="games_title">Games</string>
-    <string name="games_hangman">Hangman</string>
-    <string name="games_crossword">Crossword</string>
-    <string name="games_findword">Find word</string>
     <string name="games_win">You win</string>
     <string name="games_lost">You lost</string>
     <string name="games_score">Score</string>
@@ -419,12 +387,21 @@
     <string name="wordofthedayreceiver_deleted">Deleted</string>
 
     <!-- Wiktionary -->
+    <string name="wiktionary_title">Wiktionary</string>
     <string name="wiktionary_providerError_alreadyDownloading">Error: File is already being downloaded</string>
     <string name="wiktionary_providerError_wsOffline">Error: Cannot connect to webservice</string>
     <string name="wiktionary_providerError_downloadError">Error: Download failed</string>
     <string name="wiktionary_providerDownloading">Downloading wiktionary</string>
     <string name="wiktionary_providerSuccess">Successfully installed wiktionary</string>
     <string name="wiktionary_providerFailure">Error occurred during wiktionary installation</string>
+    <string name="wiktionary_lblInstalled">Is Installed</string>
+    <string name="wiktionary_lblSize">Disk Size</string>
+    <string name="wiktionary_lblIsOk">Is OK</string>
+    <string name="wiktionary_ok">OK</string>
+    <string name="wiktionary_error">Error. Try reinstalling</string>
+    <string name="wiktionary_notInstalled">Not installed</string>
+    <string name="wiktionary_installed">Installed</string>
+    <string name="wiktionary_lblUninstall">Uninstall</string>
     
     <!-- WiktionaryDownloadCancel -->
     <string name="wiktionarydownloadmanager_title">Wiktionary Download Manager</string>

@@ -2,19 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#282828"
     android:orientation="vertical"
-    android:paddingBottom="7dp">
+    android:paddingBottom="3dp">
 
     <RelativeLayout
         android:id="@id/relativeLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="2dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/theme_dark_select"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/theme_light_select"
         android:orientation="vertical"
         android:padding="5dp" >
 
@@ -22,8 +21,7 @@
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/memolist_wiktionary_lblName"
-            android:textColor="#CCCCCC" />
+            android:text="@string/memolist_wiktionary_lblName" />
 
         <TextView
             android:id="@+id/memolist_wiktionary_lblName"
@@ -31,31 +29,27 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/textView1"
             android:layout_toRightOf="@id/textView1"
-            android:paddingLeft="2dp"
-            android:textColor="#CCCCCC" />
+            android:paddingLeft="2dp"/>
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/textView1"
-            android:text="@string/memolist_wiktionary_lblDescription"
-            android:textColor="#CCCCCC" />
+            android:text="@string/memolist_wiktionary_lblDescription" />
 
         <TextView
             android:id="@+id/memolist_wiktionary_lblDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textView2"
-            android:textColor="#CCCCCC" />
+            android:layout_below="@id/textView2" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/memolist_wiktionary_lblDescription"
-            android:text="@string/memolist_wiktionary_lblDownloadSize"
-            android:textColor="#CCCCCC" />
+            android:text="@string/memolist_wiktionary_lblDownloadSize" />
 
         <TextView
             android:id="@+id/memolist_wiktionary_lblDownloadSize"
@@ -64,16 +58,14 @@
             android:layout_alignBaseline="@id/textView3"
             android:layout_toRightOf="@id/textView3"
             android:text="5.12 MB"
-            android:paddingLeft="2dp"
-            android:textColor="#CCCCCC" />
+            android:paddingLeft="2dp"/>
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/textView3"
-            android:text="@string/memolist_wiktionary_lblRealSize"
-            android:textColor="#CCCCCC" />
+            android:text="@string/memolist_wiktionary_lblRealSize"/>
 
         <TextView
             android:id="@+id/memolist_wiktionary_lblRealSize"
@@ -82,8 +74,7 @@
             android:layout_alignBaseline="@id/textView4"
             android:layout_toRightOf="@id/textView4"
             android:text="10.0 MB"
-            android:paddingLeft="2dp"
-            android:textColor="#CCCCCC" />
+            android:paddingLeft="2dp"/>
     </RelativeLayout>
 
     <TextView
@@ -92,11 +83,12 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/relativeLayout1"
         android:layout_alignParentRight="true"
-        android:background="#CECECE"
-        android:layout_marginRight="10dp"
+        android:background="#222222"
+        android:layout_marginRight="5dp"
         android:layout_marginTop="-5dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
+        android:textColor="#CCCCCC"
         android:text="EN" />
 
 </RelativeLayout>

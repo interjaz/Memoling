@@ -43,7 +43,7 @@ public class GamesFindwordFragment extends GamesMatrixGame {
 
 	@Override
 	protected String getTitle() {
-		return getActivity().getString(R.string.games_findword);
+		return getActivity().getString(R.string.memolist_findword);
 	}
 
 	@Override

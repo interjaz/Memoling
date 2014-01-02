@@ -19,7 +19,7 @@ public class WiktionaryTranslator {
 	public WiktionaryTranslator(final Context context, final Word word, final Language from, final Language to,
 			final ITranslatorComplete onTranslatorResult) {
 		
-		if(!WiktionaryDb.IsAvailable()) {
+		if(!WiktionaryDb.isAvailable()) {
 			return;
 		}
 		

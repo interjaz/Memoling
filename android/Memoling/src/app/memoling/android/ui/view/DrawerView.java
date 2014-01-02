@@ -1,6 +1,5 @@
 package app.memoling.android.ui.view;
 
-import android.view.View.OnClickListener;
 import app.memoling.android.helper.Lazy;
 import app.memoling.android.ui.ApplicationFragment;
 
@@ -58,4 +57,7 @@ public class DrawerView {
 		m_isBack = true;
 	}
 	
+	public interface OnClickListener {
+		void onClick(DrawerView view);
+	}
 }

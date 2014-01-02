@@ -88,4 +88,33 @@ public class WikiSynonymAdapter extends WiktionaryDb {
 		}
 		
 	}
+
+	public boolean isOk() {
+
+		SQLiteDatabase db = null;
+
+		try {
+			db = getDatabase();
+
+			String query = "SELECT  ExpressionA, ExpressionB, Language FROM wiki_Synonyms LIMIT 1";
+
+			Cursor cursor = db.rawQuery(query, null);
+
+			try {
+
+				cursor.moveToFirst();
+
+			} finally {
+				if (cursor != null && !cursor.isClosed()) {
+					cursor.close();
+				}
+			}
+
+			return true;
+		} catch (Exception ex) {
+			return false;
+		} finally {
+			closeDatabase();
+		}
+	}
 }

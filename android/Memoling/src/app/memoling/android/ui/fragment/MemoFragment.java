@@ -265,7 +265,7 @@ public class MemoFragment extends FacebookFragment {
 
 	@Override
 	protected void onPopulateDrawer(DrawerAdapter drawer) {
-		drawer.add(new DrawerView(R.drawable.ic_back, R.string.memo_backToList));
+		drawer.addGroup(new DrawerView(R.drawable.ic_back, R.string.memo_backToList));
 		m_shareHelper.onPopulateDrawerMemo(drawer);
 	}
 

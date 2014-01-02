@@ -25,32 +25,36 @@
                 android:gravity="right"
                 android:orientation="vertical" >
 
-            <RelativeLayout
-                android:id="@+id/memolist_layListSwitcher"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1.0">
-	            <ListView
-	                android:id="@+id/memolist_list"
-	                android:layout_width="match_parent"
-	                android:layout_height="match_parent"
-	                tools:listitem="@layout/adapter_memolist_listview"
-	                android:visibility="gone"  />
-	            <ListView
-	                android:id="@+id/memolist_lstSuggestions"
-	                android:layout_width="match_parent"
-	                android:layout_height="match_parent"
-	                tools:listitem="@layout/adapter_memolist_suggestion" />
-            </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/memolist_layListSwitcher"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.0" >
+
+                    <ListView
+                        android:id="@+id/memolist_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        tools:listitem="@layout/adapter_memolist_listview" />
+
+                    <ListView
+                        android:id="@+id/memolist_lstSuggestions"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="@null"
+                        android:dividerHeight="0dp"
+                        tools:listitem="@layout/adapter_memolist_suggestion" />
+                </RelativeLayout>
             </LinearLayout>
 
             <ScrollView
                 android:layout_width="180dp"
                 android:layout_height="match_parent"
+                android:background="#FF222222"
                 android:orientation="vertical"
                 android:paddingBottom="3dp"
-                android:paddingTop="3dp"
-                android:background="#FF222222" >
+                android:paddingTop="3dp" >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -59,6 +63,7 @@
 
                     <EditText
                         android:id="@+id/memolist_txtAddMemo"
+                        style="@style/Theme.Darktheme.EditText.Dark"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text" >
@@ -68,6 +73,7 @@
 
                     <EditText
                         android:id="@+id/memolist_txtAddMemoTranslated"
+                        style="@style/Theme.Darktheme.EditText.Dark"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false"
@@ -81,11 +87,12 @@
 
                         <app.memoling.android.ui.control.LanguageSpinner
                             android:id="@+id/memolist_spLanguageFrom"
+                            style="@style/Theme.Darktheme.Spinner.Dark"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             langaugeSpinner:bold="true"
-                            tools:listitem="@layout/adapter_textdropdown" />
+                            tools:listitem="@layout/adapter_textdropdown_dark" />
                     </LinearLayout>
 
                     <Button
@@ -106,20 +113,21 @@
 
                         <app.memoling.android.ui.control.LanguageSpinner
                             android:id="@+id/memolist_spLanguageTo"
+                            style="@style/Theme.Darktheme.Spinner.Dark"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            tools:listitem="@layout/adapter_textdropdown" />
+                            tools:listitem="@layout/adapter_textdropdown_dark" />
                     </LinearLayout>
 
                     <Button
                         android:id="@+id/memolist_btnSave"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="10dp"
                         android:enabled="false"
                         android:text="@string/memolist_btnSave" />
                 </LinearLayout>

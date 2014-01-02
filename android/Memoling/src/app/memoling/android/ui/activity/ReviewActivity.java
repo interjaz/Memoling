@@ -261,7 +261,13 @@ public class ReviewActivity extends AdActivity {
 			@Override
 			public void run() {
 				float target = (float) (m_uiCurrentMemo+1) / m_trainingSetSize;
-				m_uiProgress += Math.min(0.02, target);
+				
+				float thershold = 0.02f;
+				if((m_uiProgress + thershold) > target) {
+					m_uiProgress = target;
+				} else {
+					m_uiProgress += thershold;
+				}
 
 				// Normalize our progress along the progress bar's scale
 				int progress = (int) ((Window.PROGRESS_END - Window.PROGRESS_START) * m_uiProgress);

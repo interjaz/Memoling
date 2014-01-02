@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:orientation="horizontal" >
+    android:layout_height="40dp"
+    android:orientation="horizontal"
+    android:background="#AA111111" >
 
     <ImageView
         android:id="@+id/drawer_adapter_icon"
@@ -11,18 +12,18 @@
         android:layout_gravity="center"
         android:minHeight="32dp"
         android:minWidth="32dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="26dp"
         android:src="@drawable/ab_background_textured_darktheme" />
 
     <TextView
-        style="@style/Theme.Darktheme.TextView.Dark"
         android:id="@+id/drawer_adapter_text"
+        style="@style/Theme.Darktheme.TextView.Dark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="56dp"
         android:text="TextView"
-        android:textSize="15sp" />
+        android:textSize="17sp" />
 
 </LinearLayout>

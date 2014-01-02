@@ -12,7 +12,7 @@ class Wiktionary extends  Webservice {
 		$w = new WiktionaryInfo();
 		$w->WiktionaryInfoId = "02c7d17b-7f63-4c09-96d5-d73b067d75c0";
 		$w->Description = "English wikitonary with translations, basic definitions and synonyms.";
-		$w->DownloadUrl = "https://dl.dropboxusercontent.com/u/31079067/02c7d17b-7f63-4c09-96d5-d73b067d75c0.sqlite.gz";
+		$w->DownloadUrl = "http://dl.dropboxusercontent.com/u/31079067/02c7d17b-7f63-4c09-96d5-d73b067d75c0.sqlite.gz";
 		$w->Language = "en";
 		$w->Name = "Wiktionary";
 		$w->Version = 0;
@@ -23,7 +23,7 @@ class Wiktionary extends  Webservice {
 		$w = new WiktionaryInfo();
 		$w->WiktionaryInfoId = "d4a85889-32ec-484a-aa75-362ef4a5419b";
 		$w->Description = "English wikitonary with translations, complex definitions and synonyms.";
-		$w->DownloadUrl = "https://dl.dropboxusercontent.com/u/31079067/d4a85889-32ec-484a-aa75-362ef4a5419b.sqlite.gz";
+		$w->DownloadUrl = "http://dl.dropboxusercontent.com/u/31079067/d4a85889-32ec-484a-aa75-362ef4a5419b.sqlite.gz";
 		$w->Language = "en";
 		$w->Name = "Wiktionary with Definitions";
 		$w->Version = 0;

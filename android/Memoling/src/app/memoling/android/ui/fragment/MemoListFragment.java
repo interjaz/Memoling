@@ -480,6 +480,9 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 			int to = m_spLanguageTo.getSelectedItemPosition();
 			m_spLanguageTo.setSelection(from);
 			m_spLanguageFrom.setSelection(to);
+			
+			m_lastLookup = new DelayedLookup();
+			m_lastLookup.execute(m_txtAdd.getText().toString());
 		}
 	}
 
@@ -840,57 +843,6 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 		getActivity().startActivityForResult(intent, VoiceInputRequestCode);
 	}
 
-	private void getWikitonaryInfos() {
-		new WsWiktionary().get(new IGetComplete() {
-
-			@Override
-			public void getComplete(ArrayList<WiktionaryInfo> wiktionaryInfos) {
-
-				if (wiktionaryInfos == null) {
-					Toast.makeText(getActivity(), R.string.memolist_wiktionary_getError, Toast.LENGTH_SHORT).show();
-					return;
-				}
-
-				ResourceManager resources = getResourceManager();
-				Typeface thinFont = resources.getLightFont();
-				Typeface blackFont = resources.getBlackFont();
-
-				final ModifiableComplexTextAdapter<WiktionaryInfoView> wiktionaryAdapter = new ModifiableComplexTextAdapter<WiktionaryInfoView>(
-						getActivity(), R.layout.adapter_memolist_wiktionary, new int[] {
-								R.id.memolist_wiktionary_lblName, R.id.memolist_wiktionary_lblDescription,
-								R.id.memolist_wiktionary_lblDownloadSize, R.id.memolist_wiktionary_lblRealSize,
-								R.id.memolist_wiktionary_lblLanguage }, new Typeface[] { thinFont, thinFont, thinFont,
-								thinFont, blackFont }, false);
-
-				wiktionaryAdapter.addAll(WiktionaryInfoView.getAll(wiktionaryInfos));
-
-				AlertDialog dialog = new AlertDialog.Builder(getActivity())
-						.setAdapter(wiktionaryAdapter, new DialogInterface.OnClickListener() {
-
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-
-								Toast.makeText(getActivity(), R.string.memolist_wiktionary_downloadStarted,
-										Toast.LENGTH_SHORT).show();
-								
-								WiktionaryInfo wiktionaryInfo = wiktionaryAdapter.getItem(which).get();
-								WiktionaryProviderService.download(getActivity(), wiktionaryInfo.getWiktionaryInfoId(),
-										wiktionaryInfo.getDownloadUrl());
-							}
-
-						}).setCancelable(true).setNegativeButton(getString(R.string.memolist_wiktionary_back), null)
-						.create();
-
-				dialog.getListView().setDivider(null);
-				dialog.getListView().setDividerHeight(0);
-
-				dialog.show();
-
-			}
-
-		});
-	}
-
 	//
 	// Internal classes
 	//
@@ -944,7 +896,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 	@Override
 	protected void onPopulateDrawer(DrawerAdapter drawer) {
 
-		drawer.add(new DrawerView(R.drawable.ic_libraries, R.string.memolist_goToLibraries,
+		drawer.addGroup(new DrawerView(R.drawable.ic_libraries, R.string.memolist_goToLibraries,
 				new Lazy<ApplicationFragment>() {
 					public ApplicationFragment create() {
 						ApplicationFragment fragment = new MemoBaseListFragment();
@@ -952,52 +904,51 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 					}
 				}));
 
-		drawer.add(new DrawerView(R.drawable.ic_details, R.string.memolist_details, new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				openDetails();
-			}
-		}));
-
-		drawer.add(new DrawerView(R.drawable.ic_scheduler, R.string.memolist_openScheduler, new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				openScheduler();
-			}
-		}));
-
-		drawer.add(new DrawerView(R.drawable.ic_voice_search, R.string.memolist_voiceSearch, new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				voiceSearch();
-			}
-		}));
-
-		drawer.add(new DrawerView(R.drawable.ic_training, R.string.memolist_startTraining, new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), ReviewActivity.class);
-				intent.putExtra(ReviewActivity.MemoBaseId, m_memoBaseId);
-				intent.putExtra(ReviewActivity.Mode, ReviewActivity.WordMode);
-				startActivity(intent);
-			}
-		}));
-
-		drawer.add(new DrawerView(R.drawable.ic_repeat_all, R.string.memolist_repeatAll, new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), ReviewActivity.class);
-				intent.putExtra(ReviewActivity.MemoBaseId, m_memoBaseId);
-				intent.putExtra(ReviewActivity.RepeatAll, true);
-				intent.putExtra(ReviewActivity.Mode, ReviewActivity.WordMode);
-				startActivity(intent);
-			}
-		}));
-
-		drawer.add(new DrawerView(R.drawable.ic_training_sentences, R.string.memolist_sentencesTraining,
-				new OnClickListener() {
+		drawer.addGroup(new DrawerView(R.drawable.ic_details, R.string.memolist_details,
+				new DrawerView.OnClickListener() {
 					@Override
-					public void onClick(View v) {
+					public void onClick(DrawerView v) {
+						openDetails();
+					}
+				}));
+
+		drawer.addGroup(new DrawerView(R.drawable.ic_voice_search, R.string.memolist_voiceSearch,
+				new DrawerView.OnClickListener() {
+					@Override
+					public void onClick(DrawerView v) {
+						voiceSearch();
+					}
+				}));
+
+		int reviewGroupId = drawer.addGroup(new DrawerView(R.drawable.ic_train_group, R.string.memolist_train));
+
+		drawer.addChild(reviewGroupId, new DrawerView(R.drawable.ic_training, R.string.memolist_startTraining,
+				new DrawerView.OnClickListener() {
+					@Override
+					public void onClick(DrawerView v) {
+						Intent intent = new Intent(getActivity(), ReviewActivity.class);
+						intent.putExtra(ReviewActivity.MemoBaseId, m_memoBaseId);
+						intent.putExtra(ReviewActivity.Mode, ReviewActivity.WordMode);
+						startActivity(intent);
+					}
+				}));
+
+		drawer.addChild(reviewGroupId, new DrawerView(R.drawable.ic_repeat_all, R.string.memolist_repeatAll,
+				new DrawerView.OnClickListener() {
+					@Override
+					public void onClick(DrawerView v) {
+						Intent intent = new Intent(getActivity(), ReviewActivity.class);
+						intent.putExtra(ReviewActivity.MemoBaseId, m_memoBaseId);
+						intent.putExtra(ReviewActivity.RepeatAll, true);
+						intent.putExtra(ReviewActivity.Mode, ReviewActivity.WordMode);
+						startActivity(intent);
+					}
+				}));
+
+		drawer.addChild(reviewGroupId, new DrawerView(R.drawable.ic_training_sentences,
+				R.string.memolist_sentencesTraining, new DrawerView.OnClickListener() {
+					@Override
+					public void onClick(DrawerView v) {
 						Intent intent = new Intent(getActivity(), ReviewActivity.class);
 						intent.putExtra(ReviewActivity.MemoBaseId, m_memoBaseId);
 						intent.putExtra(ReviewActivity.Mode, ReviewActivity.SentenceMode);
@@ -1005,17 +956,54 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 					}
 				}));
 
-		drawer.add(new DrawerView(R.drawable.ic_training_audio, R.string.memolist_audioTraining, new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), ReviewActivity.class);
-				intent.putExtra(ReviewActivity.MemoBaseId, m_memoBaseId);
-				intent.putExtra(ReviewActivity.Mode, ReviewActivity.AudioMode);
-				startActivity(intent);
-			}
-		}));
+		drawer.addChild(reviewGroupId, new DrawerView(R.drawable.ic_training_audio, R.string.memolist_audioTraining,
+				new DrawerView.OnClickListener() {
+					@Override
+					public void onClick(DrawerView v) {
+						Intent intent = new Intent(getActivity(), ReviewActivity.class);
+						intent.putExtra(ReviewActivity.MemoBaseId, m_memoBaseId);
+						intent.putExtra(ReviewActivity.Mode, ReviewActivity.AudioMode);
+						startActivity(intent);
+					}
+				}));
 
-		drawer.add(new DrawerView(R.drawable.ic_wordoftheday, R.string.memolist_wordOfTheDay,
+		drawer.addChild(reviewGroupId, new DrawerView(R.drawable.ic_scheduler, R.string.memolist_openScheduler,
+				new DrawerView.OnClickListener() {
+					@Override
+					public void onClick(DrawerView v) {
+						openScheduler();
+					}
+				}));
+
+		int gamesGroupId = drawer.addGroup(new DrawerView(R.drawable.ic_game, R.string.memolist_games));
+
+		drawer.addChild(gamesGroupId, new DrawerView(R.drawable.ic_hangman, R.string.memolist_hangman,
+				new Lazy<ApplicationFragment>() {
+					public ApplicationFragment create() {
+						ApplicationFragment fragment = new GamesHangmanFragment();
+						return fragment;
+					}
+				}));
+
+		drawer.addChild(gamesGroupId, new DrawerView(R.drawable.ic_crossword, R.string.memolist_crossword,
+				new Lazy<ApplicationFragment>() {
+					public ApplicationFragment create() {
+						ApplicationFragment fragment = new GamesCrosswordFragment();
+						return fragment;
+					}
+				}));
+
+		drawer.addChild(gamesGroupId, new DrawerView(R.drawable.ic_findword, R.string.memolist_findword,
+				new Lazy<ApplicationFragment>() {
+					public ApplicationFragment create() {
+						ApplicationFragment fragment = new GamesFindwordFragment();
+						return fragment;
+					}
+				}));
+
+		int moreGroupId = drawer.addGroup(new DrawerView(R.drawable.ic_more, R.string.memolist_more));
+
+		drawer.addChild(moreGroupId, new DrawerView(R.drawable.ic_wordoftheday, R.string.memolist_wordOfTheDay,
 				new Lazy<ApplicationFragment>() {
 					public ApplicationFragment create() {
 						ApplicationFragment fragment = new WordOfTheDayFragment();
@@ -1026,21 +1014,15 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 					}
 				}));
 
-		drawer.add(new DrawerView(R.drawable.ic_game, R.string.memolist_games, new Lazy<ApplicationFragment>() {
-			public ApplicationFragment create() {
-				ApplicationFragment fragment = new GamesFragment();
-				return fragment;
-			}
-		}));
+		drawer.addChild(moreGroupId, new DrawerView(R.drawable.ic_wiktionary, R.string.memolist_wiktionary,
+				new Lazy<ApplicationFragment>() {
+					public ApplicationFragment create() {
+						ApplicationFragment fragment = new WiktionaryFragment();
+						return fragment;
+					}
+				}));
 
-		drawer.add(new DrawerView(R.drawable.ic_wiktionary, R.string.memolist_wiktionary, new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				getWikitonaryInfos();
-			}
-		}));
-
-		drawer.add(new DrawerView(R.drawable.ic_statistics, R.string.memobaselist_setting_statistics,
+		drawer.addChild(moreGroupId, new DrawerView(R.drawable.ic_statistics, R.string.memobaselist_setting_statistics,
 				new Lazy<ApplicationFragment>() {
 					public ApplicationFragment create() {
 						ApplicationFragment fragment = new StatisticsFragment();
@@ -1048,15 +1030,16 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 					}
 				}));
 
-		drawer.add(new DrawerView(R.drawable.ic_preferences, R.string.memolist_settings, new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), PreferenceLegacyActivity.class);
-				startActivity(intent);
-			}
-		}));
+		drawer.addChild(moreGroupId, new DrawerView(R.drawable.ic_preferences, R.string.memolist_settings,
+				new DrawerView.OnClickListener() {
+					@Override
+					public void onClick(DrawerView v) {
+						Intent intent = new Intent(getActivity(), PreferenceLegacyActivity.class);
+						startActivity(intent);
+					}
+				}));
 
-		drawer.add(new DrawerView(R.drawable.ic_info, R.string.memobaselist_setting_about,
+		drawer.addChild(moreGroupId, new DrawerView(R.drawable.ic_info, R.string.memobaselist_setting_about,
 				new Lazy<ApplicationFragment>() {
 					public ApplicationFragment create() {
 						ApplicationFragment fragment = new AboutFragment();

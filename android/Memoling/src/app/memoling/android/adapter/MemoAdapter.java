@@ -353,7 +353,7 @@ public class MemoAdapter extends SqliteAdapter {
 					+ "FROM Memos  AS M " + "JOIN MemoBases AS B ON M.MemoBaseId = B.MemoBaseId "
 					+ "JOIN Words AS WA ON M.WordAId = WA.WordId " + "JOIN Words AS WB ON M.WordBId = WB.WordId "
 					+ "WHERE M.MemoBaseId = ? AND " + "M.Active = 1 AND "
-					+ "(M.CorrectAnsweredWordA + M.CorrectAnsweredWordB)/M.Displayed > 0.7 "
+					+ "((M.CorrectAnsweredWordA + M.CorrectAnsweredWordB)*1.0)/(M.Displayed+1) > 0.6 "
 					+ "ORDER BY M_LastReviewed " + "LIMIT ?";
 
 			cursor = db.rawQuery(query, new String[] { memoBaseId, Integer.toString(known) });
@@ -403,7 +403,7 @@ public class MemoAdapter extends SqliteAdapter {
 					+ "FROM Memos  AS M " + "JOIN MemoBases AS B ON M.MemoBaseId = B.MemoBaseId "
 					+ "JOIN Words AS WA ON M.WordAId = WA.WordId " + "JOIN Words AS WB ON M.WordBId = WB.WordId "
 					+ "WHERE M.MemoBaseId = ? AND " + "M.Active = 1 AND " + "M_MemoId NOT IN (" + foundMemos + ") "
-					+ "ORDER BY ((M.CorrectAnsweredWordA + M.CorrectAnsweredWordB)*1.0)/(M.Displayed+1) ASC "
+					+ "ORDER BY ((M.CorrectAnsweredWordA + M.CorrectAnsweredWordB)*1.0)/(M.Displayed+1) ASC, RANDOM() "
 					+ "LIMIT ?";
 
 			// If not found 'known' number try fill with unknown

@@ -43,15 +43,25 @@ public class Schedule {
 	public boolean[] getDays() {
 		return m_days;
 	}
-	
+
 	public int getNextDay() {
 		int now = DateHelper.normalizeCalendarDays(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
-		for(int i=now;i<now+7;i++) {
-			if(m_days[i%7]) {
+		int nowHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+		int nowMinutes = Calendar.getInstance().get(Calendar.MINUTE);
+
+		for (int i = now; i < now + 7; i++) {
+			if (m_days[i % 7]) {
+
+				boolean isEarlierToday = getHours() < nowHour || (getHours() == nowHour && getMinutes() < nowMinutes);
+
+				if (i == now && isEarlierToday) {
+					continue;
+				}
+
 				return i;
 			}
 		}
-		
+
 		return -1;
 	}
 
@@ -66,7 +76,7 @@ public class Schedule {
 	public void setDays(boolean[] days) {
 		m_days = days;
 	}
-	
+
 	public long millsToTask(Schedule schedule) {
 
 		int d = schedule.getNextDay() - getNextDay();
@@ -90,7 +100,7 @@ public class Schedule {
 	public JSONObject serialize() throws JSONException {
 		JSONObject json = new JSONObject();
 		JSONArray jsonArray = new JSONArray();
-		
+
 		json.put("m_scheduleId", m_scheduleId);
 		json.put("m_memoBaseId", m_memoBaseId);
 		json.put("m_hours", m_hours);
@@ -118,7 +128,7 @@ public class Schedule {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			days[i] = jsonArray.getBoolean(i);
 		}
-		
+
 		m_days = days;
 
 		return this;

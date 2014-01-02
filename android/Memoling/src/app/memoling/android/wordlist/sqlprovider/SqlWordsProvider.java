@@ -32,7 +32,7 @@ public final class SqlWordsProvider implements IWordsProvider {
 	public ArrayList<Word> findWordStartingWith(Word word, Language language, int limitFrom, int limitTo) {
 
 		ArrayList<Word> words = null;
-		String key = word.getWord() + Integer.toString(limitFrom) + Integer.toString(limitTo);
+		String key = word.getWord() + language.getCode() + Integer.toString(limitFrom) + Integer.toString(limitTo);
 
 		if (m_cache.containsKey(key)) {
 			return m_cache.get(key);

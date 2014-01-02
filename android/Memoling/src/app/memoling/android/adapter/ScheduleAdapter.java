@@ -206,7 +206,7 @@ public class ScheduleAdapter extends SqliteAdapter {
 		Cursor cursor = db.rawQuery(query, null);
 		try {
 			ArrayList<Schedule> schedules = new ArrayList<Schedule>();
-			if (cursor.moveToNext()) {
+			while (cursor.moveToNext()) {
 				Schedule schedule = new Schedule();
 
 				boolean[] days = new boolean[7];
