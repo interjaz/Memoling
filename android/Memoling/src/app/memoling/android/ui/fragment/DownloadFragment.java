@@ -126,6 +126,8 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 		resources.setFont(R.layout.adapter_download_publishedview, R.id.textView1, thinFont);
 		resources.setFont(m_layPreview, R.id.textView1, thinFont);
 
+		m_btnDownloadEventHandler = new BtnDownloadEventHandler();
+		
 		bindData();
 
 		return contentView;

@@ -20,6 +20,7 @@ public class WiktionaryTranslator {
 			final ITranslatorComplete onTranslatorResult) {
 		
 		if(!WiktionaryDb.isAvailable()) {
+			onTranslatorResult.onTranslatorComplete(null);
 			return;
 		}
 		

@@ -3,7 +3,6 @@ package app.memoling.android.translator;
 import java.util.ArrayList;
 
 import app.memoling.android.entity.Language;
-import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.Word;
 
 public class TranslatorResult {

@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import app.memoling.android.Config;
-import app.memoling.android.entity.MemoSentence;
 import app.memoling.android.entity.WiktionaryInfo;
 import app.memoling.android.helper.AppLog;
 import app.memoling.android.webrequest.HttpGetRequestTask;

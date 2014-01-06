@@ -167,7 +167,7 @@
         android:background="#DD000000"
         android:padding="10dp"
         android:stretchColumns="1"
-        android:visibility="gone" >
+        android:visibility="gone">
 
         <TableRow
             android:layout_width="match_parent"
@@ -204,8 +204,11 @@
 
             <Spinner
                 android:id="@+id/memobase_cbxGenre"
+                style="@style/Theme.Darktheme.Spinner.Dark"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/adapter_textdropdown_dark" />
+
         </TableRow>
 
         <TableRow
@@ -229,7 +232,8 @@
                 android:inputType="textMultiLine"
                 android:lines="3"
                 android:scrollHorizontally="false"
-                android:singleLine="false" />
+                android:singleLine="false"
+                android:textColor="#CCC" />
 
         </TableRow>
 

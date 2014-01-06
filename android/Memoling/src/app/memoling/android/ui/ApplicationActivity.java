@@ -115,6 +115,10 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 
 	@Override
 	public void setTitle(CharSequence title) {
+		if(title == null) {
+			return;
+		}
+		
 		m_title = title.toString();
 		getSupportActionBar().setTitle(m_title);
 	}

@@ -14,10 +14,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import app.memoling.android.Config;
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Word;
 import app.memoling.android.helper.AppLog;
+import app.memoling.android.helper.Helper;
 import app.memoling.android.translator.ITranslatorComplete;
 import app.memoling.android.translator.TranslatorResult;
 import app.memoling.android.webrequest.HttpGetRequestTask;
@@ -57,7 +59,12 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 
 	private static ArrayList<BingTranslator> m_pendingTranslations = new ArrayList<BingTranslator>();
 
-	public BingTranslator(Word word, Language from, Language to, ITranslatorComplete onTranslatorResult) {
+	public BingTranslator(Context context, Word word, Language from, Language to, ITranslatorComplete onTranslatorResult) {
+
+		if (!Helper.hasInternetAccess(context)) {
+			onTranslatorResult.onTranslatorComplete(null);
+			return;
+		}
 
 		BingLanguage bFrom = BingLanguage.getBingLangauge(from);
 		BingLanguage bTo = BingLanguage.getBingLangauge(to);
@@ -140,10 +147,9 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 
 			@Override
 			public void onHttpRequestTimeout(Exception ex) {
-				AppLog.w("BingTranslator", "obtainToken - timeout", ex);				
+				AppLog.w("BingTranslator", "obtainToken - timeout", ex);
 			}
-			
-			
+
 		}, m_timeout).execute(new BasicNameValuePair("client_id", Config.BingTranslateClientId),
 				new BasicNameValuePair("client_secret", Config.BingTranslateClientSecret), new BasicNameValuePair(
 						"scope", m_scope), new BasicNameValuePair("grant_type", m_grantType));
@@ -173,17 +179,17 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 
 		ArrayList<Word> original = new ArrayList<Word>();
 		ArrayList<Word> translated = parseJson(response);
-		
-		if(translated != null && translated.size() > 0) {
-			for(int i=0;i<translated.size();i++) {
+
+		if (translated != null && translated.size() > 0) {
+			for (int i = 0; i < translated.size(); i++) {
 				original.add(m_word);
 			}
 		} else {
 			original.add(m_word);
 		}
-		
-		TranslatorResult result = new TranslatorResult(m_from.toLanguage(), m_to.toLanguage(),
-				original, translated, Source);
+
+		TranslatorResult result = new TranslatorResult(m_from.toLanguage(), m_to.toLanguage(), original, translated,
+				Source);
 
 		m_onTranslateComplete.onTranslatorComplete(result);
 	}

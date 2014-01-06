@@ -125,7 +125,7 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 
 		m_cbxGenre = (Spinner) contentView.findViewById(R.id.memobase_cbxGenre);
 		m_genreAdapter = new ModifiableComplexTextAdapter<MemoBaseGenreView>(getActivity(),
-				R.layout.adapter_textdropdown, new int[] { R.id.memo_lblLang }, new Typeface[] { thinFont });
+				R.layout.adapter_textdropdown_dark, new int[] { R.id.memo_lblLang }, new Typeface[] { thinFont });
 		m_cbxGenre.setAdapter(m_genreAdapter);
 
 		m_genreDataAdapter = new MemoBaseGenreAdapter(getActivity());
@@ -335,6 +335,10 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 			public void onComplete(boolean result) {
 				Context context = getActivity();
 
+				if(context == null) {
+					return;
+				}
+				
 				if (!result) {
 					String strResult = String.format(context.getString(R.string.memobase_importFailed), path);
 					Toast.makeText(context, strResult, Toast.LENGTH_LONG).show();

@@ -282,6 +282,11 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 	@Override
 	public void onAllTranslatorComplete(ArrayList<TranslatorResult> results) {
 
+		if(results == null) {
+			Toast.makeText(getActivity(), R.string.memo_notFound, Toast.LENGTH_SHORT).show();
+			return;
+		}
+		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		String wordB = m_memo.getWordB().getWord();
 

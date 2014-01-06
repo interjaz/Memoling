@@ -19,7 +19,6 @@ import app.memoling.android.adapter.WikiSynonymAdapter;
 import app.memoling.android.adapter.WikiTranslationAdapter;
 import app.memoling.android.adapter.WikiTranslationMeaningAdapter;
 import app.memoling.android.helper.AppLog;
-import app.memoling.android.preference.Preferences;
 import app.memoling.android.thread.WorkerThread;
 
 public class WiktionaryProvider {
@@ -41,9 +40,14 @@ public class WiktionaryProvider {
 
 		// Files
 		m_wikiDb = new File(Config.AppPath + "/db/Wiktionary.sqlite");
+		File tmp_dir = new File(Config.AppPath + "/wiki_tmp");
 		m_tmp = new File(Config.AppPath + "/wiki_tmp/" + wiktionaryId + ".sqlite");
 		m_pkg = new File(Config.AppPath + "/wiki_tmp/" + m_wiktionaryId + ".sqlite.gz");
 
+		if(!tmp_dir.exists()) {
+			tmp_dir.mkdir();
+		}
+		
 		if (!m_tmp.exists()) {
 			try {
 				m_tmp.createNewFile();

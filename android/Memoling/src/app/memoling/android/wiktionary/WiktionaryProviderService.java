@@ -2,12 +2,14 @@ package app.memoling.android.wiktionary;
 
 import java.util.Hashtable;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.widget.Toast;
 import app.memoling.android.R;
+import app.memoling.android.helper.NotificationHelper;
 
 public class WiktionaryProviderService extends Service {
 
@@ -18,6 +20,8 @@ public class WiktionaryProviderService extends Service {
 	private static final int Download = 0;
 	private static final int Install = 1;
 	private static final int Finish = 2;
+
+	private static final int WiktionaryProviderServiceNotificationId = 743;
 
 	private WiktionaryProvider m_wiktionaryProvider;
 
@@ -73,6 +77,10 @@ public class WiktionaryProviderService extends Service {
 			m_wiktionaryProvider = new WiktionaryProvider(this, wiktionaryId, wiktionaryUrl);
 
 			if (step == Download) {
+				Notification notification = new NotificationHelper().createNotification(this,
+						R.drawable.ic_notification, "Memoling", getString(R.string.wiktionary_providerInstallation), null);
+
+				startForeground(WiktionaryProviderServiceNotificationId, notification);
 				download();
 			} else if (step == Install) {
 				install();

@@ -83,6 +83,10 @@ public class Schedule {
 		int h = schedule.getHours() - getHours();
 		int m = schedule.getMinutes() - getMinutes();
 
+		if(d == 0 && h == 0 && m == 0) {
+			return 0L;
+		}
+		
 		return ((d * 24 * 60 + h * 60 + m) * 60 - Calendar.getInstance().get(Calendar.SECOND)) * 1000L;
 	}
 

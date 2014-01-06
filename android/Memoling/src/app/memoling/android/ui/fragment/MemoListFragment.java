@@ -36,7 +36,6 @@ import app.memoling.android.db.DatabaseHelper.Order;
 import app.memoling.android.db.SqliteUpdater;
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Memo;
-import app.memoling.android.entity.WiktionaryInfo;
 import app.memoling.android.entity.Word;
 import app.memoling.android.helper.AppLog;
 import app.memoling.android.helper.Helper;
@@ -55,7 +54,6 @@ import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.activity.PreferenceLegacyActivity;
 import app.memoling.android.ui.activity.ReviewActivity;
 import app.memoling.android.ui.adapter.DrawerAdapter;
-import app.memoling.android.ui.adapter.ModifiableComplexTextAdapter;
 import app.memoling.android.ui.adapter.ModifiableInjectableAdapter;
 import app.memoling.android.ui.adapter.ScrollableModifiableComplexTextAdapter;
 import app.memoling.android.ui.adapter.ScrollableModifiableComplexTextAdapter.OnScrollFinishedListener;
@@ -64,10 +62,6 @@ import app.memoling.android.ui.view.DrawerView;
 import app.memoling.android.ui.view.LanguageView;
 import app.memoling.android.ui.view.MemoView;
 import app.memoling.android.ui.view.TranslatedView;
-import app.memoling.android.ui.view.WiktionaryInfoView;
-import app.memoling.android.webservice.WsWiktionary;
-import app.memoling.android.webservice.WsWiktionary.IGetComplete;
-import app.memoling.android.wiktionary.WiktionaryProviderService;
 import app.memoling.android.wordlist.IWordsFindComplete;
 import app.memoling.android.wordlist.WordsFindResult;
 import app.memoling.android.wordlist.WordsFinder;
@@ -411,7 +405,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 
 			if (fromLang != toLang) {
 				for (int i = 0; i < result.Result.size(); i++) {
-					result.Result.get(i).setWord(result.Result.get(i).getWord().toLowerCase());
+					result.Result.get(i).setWord(currentStrBase + result.Result.get(i).getWord().toLowerCase());
 					new Translator(getActivity(), result.Result.get(i), fromLang, toLang, this);
 				}
 			}

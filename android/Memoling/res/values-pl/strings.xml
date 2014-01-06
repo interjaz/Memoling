@@ -8,7 +8,13 @@
 		Brak reklam do końca stycznia 2014\n
 		Jeśli Ci się podoba aplikacja, oceń ją.\n
 		\n
+		Jeżeli zauważyłeś/aś błąd, proszę napisz o nim na fb aplikacji. Dzięki!\n
 		\n
+		Zmainy v.1.8.2\n
+		1. Poprawiono mechanizm pobierania wiktionary - znowu\n
+		2. Usunięto wilokrotne powiadomienia o treningu\n
+		3. Biblioteki znowu mogą być ściągane\n
+		4. Znowu można wyszukiwać wielowyrazowe wyrażenia\n
 		Zmiany v.1.8.1\n
 		1. Wiktionary działa teraz także na androidach starchy od 2.3.7\n
 		2. Poprawiono mechanizm uczenia\n
@@ -412,6 +418,7 @@
     <string name="wiktionary_providerDownloading">Pobieram wiktionary</string>
     <string name="wiktionary_providerSuccess">Pomyślnie zainstalowano wiktionary</string>
     <string name="wiktionary_providerFailure">Wystąpił błąd podczas instalacji wiktionary</string>
+    <string name="wiktionary_providerInstallation">Instalacja w toku</string>
     <string name="wiktionary_lblInstalled">Zainstalowany</string>
     <string name="wiktionary_lblSize">Zajęta przestrzeń</string>
     <string name="wiktionary_lblIsOk">Wszystko OK</string>

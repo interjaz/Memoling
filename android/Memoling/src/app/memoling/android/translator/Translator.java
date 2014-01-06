@@ -8,7 +8,6 @@ import android.content.Context;
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Word;
 import app.memoling.android.helper.CacheHelper;
-import app.memoling.android.thread.WorkerThread;
 import app.memoling.android.translator.service.BingTranslator;
 import app.memoling.android.translator.service.WiktionaryTranslator;
 
@@ -71,19 +70,14 @@ public class Translator implements ITranslatorComplete {
 			}
 		} else {
 
-			new WorkerThread<Void, Void, Void>() {
+			if (m_context.get() != null) {
+				new BingTranslator(m_context.get(), m_word, m_from, m_to, Translator.this);
+			}
 
-				@Override
-				protected Void doInBackground(Void... params) {
-					new BingTranslator(m_word, m_from, m_to, Translator.this);
-					if (m_context.get() != null) {
-						new WiktionaryTranslator(m_context.get(), m_word, m_from, m_to, Translator.this);
-					}
+			if (m_context.get() != null) {
+				new WiktionaryTranslator(m_context.get(), m_word, m_from, m_to, Translator.this);
+			}
 
-					return null;
-				}
-
-			}.execute();
 		}
 	}
 
@@ -91,18 +85,20 @@ public class Translator implements ITranslatorComplete {
 	public void onTranslatorComplete(TranslatorResult result) {
 
 		ArrayList<TranslatorResult> cachedResult = null;
-		synchronized (m_cache) {
-			String cacheKey = m_word.getWord() + m_from.getCode() + m_to.getCode();
-
-			if (m_cache.containsKey(cacheKey)) {
-				cachedResult = m_cache.get(cacheKey);
-			} else {
-				cachedResult = new ArrayList<TranslatorResult>();
-				m_cache.put(cacheKey, cachedResult);
-			}
-		}
 
 		if (result != null && result.Translated.size() > 0) {
+			
+			synchronized (m_cache) {
+				String cacheKey = m_word.getWord() + m_from.getCode() + m_to.getCode();
+
+				if (m_cache.containsKey(cacheKey)) {
+					cachedResult = m_cache.get(cacheKey);
+				} else {
+					cachedResult = new ArrayList<TranslatorResult>();
+					m_cache.put(cacheKey, cachedResult);
+				}
+			}
+
 			cachedResult.add(result);
 		}
 
@@ -118,17 +114,17 @@ public class Translator implements ITranslatorComplete {
 	}
 
 	public static TranslatorResult getMostAccurate(ArrayList<TranslatorResult> translatorResults) {
-		if(translatorResults == null) {
+		if (translatorResults == null) {
 			return null;
 		}
 
-		for(int i=0;i<translatorResults.size();i++) {
+		for (int i = 0; i < translatorResults.size(); i++) {
 			TranslatorResult result = translatorResults.get(i);
-			if(result.Source.equals(WiktionaryTranslator.Source)) {
+			if (result.Source.equals(WiktionaryTranslator.Source)) {
 				return result;
 			}
 		}
-		
+
 		return translatorResults.get(0);
 	}
 }

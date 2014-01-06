@@ -7,7 +7,13 @@
 		No ads till the end of Jan 2014!\n
 		If you like application please rate the app.\n
 		\n 
+		If you spot a bug, please write a post on application fb site. Thanks!\n
 		\n
+		Changes v.1.8.2\n
+		1. Fixed wiktionary - again\n
+		2. Fixed multiple training notifications\n
+		3. Fixed library download issue\n
+		4. Complex expression searching works again\n
 		Changes v.1.8.1\n
 		1. Fixed wiktionaries for android lower than 2.3.7\n
 		2. Impoved teaching mechanism\n
@@ -394,6 +400,7 @@
     <string name="wiktionary_providerDownloading">Downloading wiktionary</string>
     <string name="wiktionary_providerSuccess">Successfully installed wiktionary</string>
     <string name="wiktionary_providerFailure">Error occurred during wiktionary installation</string>
+    <string name="wiktionary_providerInstallation">Installation in Progress</string>
     <string name="wiktionary_lblInstalled">Is Installed</string>
     <string name="wiktionary_lblSize">Disk Size</string>
     <string name="wiktionary_lblIsOk">Is OK</string>

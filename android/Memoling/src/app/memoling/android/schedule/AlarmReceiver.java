@@ -106,7 +106,23 @@ public class AlarmReceiver extends BroadcastReceiver {
 			PendingIntent intent = PendingIntent.getBroadcast(context, 0, timerIntent,
 					PendingIntent.FLAG_CANCEL_CURRENT);
 
-			long due = new Date().getTime() + schedule.millsToTask();
+			long millsToTask = 0;
+			int safeStop = 10;
+			for(int i=0;i<safeStop+1;i++) {
+				millsToTask = schedule.millsToTask();
+				
+				if(millsToTask != 0) {
+					break;
+				}
+				
+				Thread.sleep(1000);
+				
+				if(i == safeStop) {
+					throw new RuntimeException("Memoling - sheduler got in wierd state");
+				}
+			}
+			
+			long due = new Date().getTime() + millsToTask;
 			long dueUTC = due + Calendar.getInstance().get(Calendar.ZONE_OFFSET);
 
 			AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

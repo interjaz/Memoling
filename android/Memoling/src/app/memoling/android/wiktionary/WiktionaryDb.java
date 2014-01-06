@@ -4,7 +4,6 @@ import java.io.File;
 
 import android.content.Context;
 import app.memoling.android.Config;
-import app.memoling.android.adapter.WikiDefinitionAdapter;
 import app.memoling.android.db.SqliteAdapter;
 
 public class WiktionaryDb extends SqliteAdapter {
