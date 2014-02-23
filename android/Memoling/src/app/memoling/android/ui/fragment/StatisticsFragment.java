@@ -44,11 +44,11 @@ public class StatisticsFragment extends ApplicationFragment {
 	@Override
 	protected boolean onCreateOptionsMenu() {
 		MenuItem item;
-		item = createMenuItem(0,"Yearly").setIcon(R.drawable.ic_statistics_365);
+		item = createMenuItem(0,getString(R.string.statisitcs_yearly)).setIcon(R.drawable.ic_statistics_365);
 		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);		
-		item = createMenuItem(1,"Monthly").setIcon(R.drawable.ic_statistics_31);
+		item = createMenuItem(1,getString(R.string.statisitcs_monthly)).setIcon(R.drawable.ic_statistics_31);
 		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);		
-		item = createMenuItem(2,"Details").setIcon(R.drawable.ic_details);
+		item = createMenuItem(2,getString(R.string.statisitcs_details)).setIcon(R.drawable.ic_details);
 		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);		
 		
 		return true;

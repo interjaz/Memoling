@@ -22,7 +22,9 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
@@ -30,6 +32,8 @@ import app.memoling.android.R;
 import app.memoling.android.adapter.MemoAdapter;
 import app.memoling.android.adapter.MemoAdapter.Sort;
 import app.memoling.android.adapter.MemoSentenceAdapter;
+import app.memoling.android.audio.TextToSpeechHelper;
+import app.memoling.android.audio.VoiceInputHelper;
 import app.memoling.android.db.DatabaseHelper.Order;
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Memo;
@@ -37,8 +41,6 @@ import app.memoling.android.entity.MemoSentence;
 import app.memoling.android.entity.Word;
 import app.memoling.android.helper.SentenceProvider;
 import app.memoling.android.helper.SentenceProvider.IGetManyComplete;
-import app.memoling.android.helper.TextToSpeechHelper;
-import app.memoling.android.helper.VoiceInputHelper;
 import app.memoling.android.preference.Preferences;
 import app.memoling.android.ui.AdActivity;
 import app.memoling.android.ui.ResourceManager;
@@ -71,6 +73,8 @@ public class ReviewActivity extends AdActivity {
 
 	private static ResourceManager m_resources;
 
+	private LinearLayout m_layResult;
+	private LinearLayout m_layNegativeOptions;
 	private TextView m_lblResult;
 	private TextView m_txtMemo1;
 	private EditText m_txtMemo2;
@@ -144,6 +148,21 @@ public class ReviewActivity extends AdActivity {
 		m_lblLang2 = (TextView) findViewById(R.id.review_lblMemo2Lang);
 		m_lblLang2.setTypeface(m_resources.getLightFont());
 
+		m_layResult = (LinearLayout) findViewById(R.id.review_layResult);
+		m_layNegativeOptions = (LinearLayout) findViewById(R.id.review_layNegativeOptions);
+		
+		Button btnCorrect = (Button) findViewById(R.id.review_btnCorrect);
+		btnCorrect.setTypeface(m_resources.getLightFont());
+		btnCorrect.setOnClickListener(new BtnCorrectEventHandler());
+		
+		Button btnIncorrect = (Button) findViewById(R.id.review_btnIncorrect);
+		btnIncorrect.setTypeface(m_resources.getLightFont());
+		btnIncorrect.setOnClickListener(new BtnIncorrectEventHandler());
+		
+		Button btnDeactivate = (Button) findViewById(R.id.review_btnDeactive);
+		btnDeactivate.setTypeface(m_resources.getLightFont());
+		btnDeactivate.setOnClickListener(new BtnDeactivateEventHandler());
+		
 		m_inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
 		m_random = new Random();
@@ -173,12 +192,12 @@ public class ReviewActivity extends AdActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		if (VoiceInputHelper.isSupported(this)) {
-			MenuItem item = menu.add(1, 1, Menu.NONE, "Voice");
+			MenuItem item = menu.add(1, 1, Menu.NONE, getString(R.string.review_voiceInput));
 			item.setIcon(R.drawable.ic_voice_search);
 			item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		}
 
-		MenuItem submit = menu.add(1, 0, Menu.NONE, "Submit");
+		MenuItem submit = menu.add(1, 0, Menu.NONE, getString(R.string.review_submit));
 		submit.setIcon(R.drawable.ic_submit);
 		submit.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
@@ -249,12 +268,12 @@ public class ReviewActivity extends AdActivity {
 			wordMode(visible, toGuess);
 		} else if ((m_mode & AudioMode) == AudioMode) {
 			audioMode(visible, toGuess);
-		}
-
+		} 
+		
 		setTitle(getString(R.string.review_title) + " " + Integer.toString(m_currentMemo+1) + "/" + Integer.toString(m_trainingSetSize));
 		
-		m_lblLang1.setText(visible.getLanguage().getName());
-		m_lblLang2.setText(toGuess.getLanguage().getName());
+		m_lblLang1.setText(visible.getLanguage().getName(this));
+		m_lblLang2.setText(toGuess.getLanguage().getName(this));
 		animateNew();
 
 		new Runnable() {
@@ -386,17 +405,6 @@ public class ReviewActivity extends AdActivity {
 
 		m_answerCorrect = user.equals(original);
 
-		m_memo.setDisplayed(m_memo.getDisplayed() + 1);
-		m_memo.setLastReviewed(new Date());
-		if (m_answerCorrect) {
-			if (m_toGuessItem == 0) {
-				m_memo.setCorrectAnsweredWordA(m_memo.getCorrectAnsweredWordA() + 1);
-			} else {
-				m_memo.setCorrectAnsweredWordB(m_memo.getCorrectAnsweredWordB() + 1);
-			}
-		}
-		m_memoAdapter.update(m_memo);
-
 		animateAnswer(m_toGuess.trim());
 	}
 
@@ -474,7 +482,7 @@ public class ReviewActivity extends AdActivity {
 		m_toGuess = b.getWord();
 		m_textToSpeechHelper.readText(a.getWord(), a.getLanguage());
 	}
-	
+		
 	private class TextMemo1EventHandler implements OnClickListener {
 
 		@Override
@@ -528,27 +536,9 @@ public class ReviewActivity extends AdActivity {
 
 		@Override
 		public void onAnimationEnd(Animation arg0) {
-
-			if (!m_answerCorrect) {
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-					// Do nothing
-				}
+			if (m_answerCorrect) {
+				startFadeOutAnimation(true, true);
 			}
-
-			m_fadeOutAnswer.reset();
-			m_fadeOutAnswer.start();
-			m_lblResult.clearAnimation();
-			m_lblResult.setAnimation(m_fadeOutAnswer);
-			m_txtMemo1.clearAnimation();
-			m_txtMemo1.setAnimation(m_fadeOutAnswer);
-			m_lblLang1.clearAnimation();
-			m_lblLang1.setAnimation(m_fadeOutAnswer);
-			m_txtMemo2.clearAnimation();
-			m_txtMemo2.setAnimation(m_fadeOutAnswer);
-			m_lblLang2.clearAnimation();
-			m_lblLang2.setAnimation(m_fadeOutAnswer);
 		}
 
 		@Override
@@ -600,12 +590,70 @@ public class ReviewActivity extends AdActivity {
 	private void animateAnswer(String correct) {
 		if (m_answerCorrect) {
 			m_lblResult.setText(R.string.review_lblCorrect);
+			m_layNegativeOptions.setVisibility(View.GONE);
 		} else {
 			String strResult = String.format(getString(R.string.review_lblIncorrect), correct);
 			m_lblResult.setText(strResult);
+			m_layNegativeOptions.setVisibility(View.VISIBLE);
 		}
 
 		m_fadeInAnswer.reset();
-		m_lblResult.startAnimation(m_fadeInAnswer);
+		m_fadeInAnswer.setFillAfter(!m_answerCorrect);
+		m_layResult.startAnimation(m_fadeInAnswer);
+	}
+
+	private class BtnIncorrectEventHandler implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			startFadeOutAnimation(m_answerCorrect, true);
+		}
+		
+	}
+	
+	private class BtnCorrectEventHandler implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			startFadeOutAnimation(true, true);
+		}
+		
+	}
+	
+	private class BtnDeactivateEventHandler implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			startFadeOutAnimation(m_answerCorrect, false);
+		}
+		
+	}
+	
+	private void startFadeOutAnimation(boolean correct, boolean active) {
+
+		m_memo.setDisplayed(m_memo.getDisplayed() + 1);
+		m_memo.setLastReviewed(new Date());
+		m_memo.setActive(active);
+		if (correct) {
+			if (m_toGuessItem == 0) {
+				m_memo.setCorrectAnsweredWordA(m_memo.getCorrectAnsweredWordA() + 1);
+			} else {
+				m_memo.setCorrectAnsweredWordB(m_memo.getCorrectAnsweredWordB() + 1);
+			}
+		}
+		m_memoAdapter.update(m_memo);
+		
+		m_fadeOutAnswer.reset();
+		m_fadeOutAnswer.start();
+		m_layResult.clearAnimation();
+		m_layResult.setAnimation(m_fadeOutAnswer);
+		m_txtMemo1.clearAnimation();
+		m_txtMemo1.setAnimation(m_fadeOutAnswer);
+		m_lblLang1.clearAnimation();
+		m_lblLang1.setAnimation(m_fadeOutAnswer);
+		m_txtMemo2.clearAnimation();
+		m_txtMemo2.setAnimation(m_fadeOutAnswer);
+		m_lblLang2.clearAnimation();
+		m_lblLang2.setAnimation(m_fadeOutAnswer);
 	}
 }

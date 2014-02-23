@@ -24,6 +24,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="56dp"
         android:text="TextView"
-        android:textSize="17sp" />
+        android:textSize="15sp" />
 
 </LinearLayout>

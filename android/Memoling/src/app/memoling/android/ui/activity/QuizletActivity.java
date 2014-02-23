@@ -1,5 +1,7 @@
 package app.memoling.android.ui.activity;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,4 +22,15 @@ public class QuizletActivity extends Activity {
 		return true;
 	}
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
+	}
 }

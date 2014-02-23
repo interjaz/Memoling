@@ -88,11 +88,11 @@ public class DownloadLinkActivity extends AdActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		
-		MenuItem save = menu.add(1, 0, Menu.NONE, "Save");
+		MenuItem save = menu.add(1, 0, Menu.NONE, getString(R.string.downloadlink_save));
 		save.setIcon(R.drawable.ic_save);
 		save.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-		MenuItem delete = menu.add(1, 1, Menu.NONE, "Delete");
+		MenuItem delete = menu.add(1, 1, Menu.NONE, getString(R.string.downloadlink_delete));
 		delete.setIcon(R.drawable.ic_delete);
 		delete.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 

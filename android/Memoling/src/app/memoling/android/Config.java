@@ -9,7 +9,7 @@ public class Config {
 	//
 	// Environment
 	//	
-	public final static boolean Debug = true;
+	public final static boolean Debug = false;
 	public final static String AppPath = Environment.getExternalStorageDirectory() + "/memoling";
 	
 	public final static String DatabaseName = "TranslateMemo";
@@ -45,8 +45,8 @@ public class Config {
 	// Ads
 	//
 	//public final static boolean EnableAds = true;
-	private final static long EnableAdsFirstOfFebruary = 1391212800000L;
-	public static boolean EnableAds = new Date().after(new Date(EnableAdsFirstOfFebruary));
+	private final static long EnableAdsFirstOfApril = 1396310400000L;
+	public static boolean EnableAds = new Date().after(new Date(EnableAdsFirstOfApril));
 	public final static String AdUnitId = "a151d4995a52331";
 	public final static String AdTestDeviceId = "1D422D9852675CECF96B500DB4EC80F3";
 		

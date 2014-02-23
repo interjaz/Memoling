@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,7 @@ import app.memoling.android.adapter.ThesaurusAdapter;
 import app.memoling.android.adapter.WikiDefinitionAdapter;
 import app.memoling.android.adapter.WikiSynonymAdapter;
 import app.memoling.android.adapter.WikiTranslationAdapter;
+import app.memoling.android.audio.TextToSpeechHelper;
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoSentence;
@@ -48,7 +50,6 @@ import app.memoling.android.entity.WikiSynonym;
 import app.memoling.android.entity.WikiTranslation;
 import app.memoling.android.entity.Word;
 import app.memoling.android.helper.Helper;
-import app.memoling.android.helper.TextToSpeechHelper;
 import app.memoling.android.thread.WorkerThread;
 import app.memoling.android.translator.IAllTranslatorComplete;
 import app.memoling.android.translator.Translator;
@@ -141,39 +142,38 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 		m_btnDictionaryWord.setOnClickListener(new BtnDictionaryEventHandler());
 
 		TabHost tabHost = null;
-		TabSpec tabSpec = null;
+		int fontSize = Helper.dipToPixels(getActivity(), 8);
+		int minHeight = Helper.dipToPixels(getActivity(), 40);
+		int color = 0xFFFFFFFF;
+		Typeface typeface = thinFont;
+		
 		// Definition tabs
 		tabHost = (TabHost) contentView.findViewById(R.id.memo_tabDefinitions);
 		tabHost.setup();
 
-		tabSpec = tabHost.newTabSpec("TAB0");
-		tabSpec.setContent(R.id.memo_tabDefinitionMemoling);
-		tabSpec.setIndicator(getString(R.string.memo_definitionsMemoling));
-		tabHost.addTab(tabSpec);
+		createTab(tabHost, "TAB0", 
+				R.string.memo_definitionsMemoling, R.id.memo_tabDefinitionMemoling,
+				typeface, fontSize, color, minHeight);
 
-		tabSpec = tabHost.newTabSpec("TAB1");
-		tabSpec.setContent(R.id.memo_tabDefinitionQuizlet);
-		tabSpec.setIndicator(getString(R.string.memo_definitionsQuizlet));
-		tabHost.addTab(tabSpec);
+		createTab(tabHost, "TAB1", 
+				R.string.memo_definitionsQuizlet, R.id.memo_tabDefinitionQuizlet,
+				typeface, fontSize, color, minHeight);
 
-		tabSpec = tabHost.newTabSpec("TAB2");
-		tabSpec.setContent(R.id.memo_tabDefinitionWiktionary);
-		tabSpec.setIndicator(getString(R.string.memo_definitionsWiktionary));
-		tabHost.addTab(tabSpec);
+		createTab(tabHost, "TAB2", 
+				R.string.memo_definitionsWiktionary, R.id.memo_tabDefinitionWiktionary,
+				typeface, fontSize, color, minHeight);
 
 		// Sentence tabs
 		tabHost = (TabHost) contentView.findViewById(R.id.memo_tabSentences);
 		tabHost.setup();
 
-		tabSpec = tabHost.newTabSpec("TAB0");
-		tabSpec.setContent(R.id.memo_tabSentencesTatoeba);
-		tabSpec.setIndicator(getString(R.string.memo_sentencesTatoeba));
-		tabHost.addTab(tabSpec);
+		createTab(tabHost, "TAB0", 
+				R.string.memo_sentencesTatoeba, R.id.memo_tabSentencesTatoeba,
+				typeface, fontSize, color, minHeight);
 
-		tabSpec = tabHost.newTabSpec("TAB1");
-		tabSpec.setContent(R.id.memo_tabSentencesQuizlet);
-		tabSpec.setIndicator(getString(R.string.memo_sentencesQuizlet));
-		tabHost.addTab(tabSpec);
+		createTab(tabHost, "TAB1", 
+				R.string.memo_sentencesQuizlet, R.id.memo_tabSentencesQuizlet,
+				typeface, fontSize, color, minHeight);
 
 		resources.setFont(m_btnThesaurusWord, thinFont);
 		resources.setFont(m_btnDictionaryWord, thinFont);
@@ -227,6 +227,21 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 		return true;
 	}
 
+	private void createTab(TabHost tabHost, String tag, int title, int content, Typeface typeface, int titleTextSize, int titleTextColor, int minHeight) {
+		TabSpec tabSpec = tabHost.newTabSpec(tag);
+		TextView textTab = new TextView(getActivity());
+		textTab.setText(getString(title));
+		textTab.setTextSize(titleTextSize);
+		textTab.setTextColor(titleTextColor);
+		textTab.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+		textTab.setTypeface(typeface);
+		textTab.setMinHeight(minHeight);
+		textTab.setBackgroundResource(R.drawable.theme_dark_button);
+		tabSpec.setIndicator(textTab);
+		tabSpec.setContent(content);
+		tabHost.addTab(tabSpec);
+	}
+	
 	private class BtnSearchWordAEventHandler implements OnClickListener {
 		@Override
 		public void onClick(View v) {
@@ -346,7 +361,7 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 
 				m_btnThesaurusWord.setEnabled(ThesaurusAdapter.isSupported(getWord().getLanguage()));
 				m_btnDictionaryWord.setEnabled(ThesaurusAdapter.isSupported(getWord().getLanguage()));
-				m_txtLanguage.setText(getWord().getLanguage().getName());
+				m_txtLanguage.setText(getWord().getLanguage().getName(getActivity()));
 
 				m_btnThesaurusWord.setEnabled(ThesaurusAdapter.isSupported(getWord().getLanguage()));
 				m_btnDictionaryWord.setEnabled(ThesaurusAdapter.isSupported(getWord().getLanguage()));

@@ -8,7 +8,7 @@ class UrlShortcutAdapter extends DbAdapter {
 	public function getUrl($shortcut) {
 		$db = parent::connect();
 		
-		$stm = $db->prepare("SELECT Url FROM memoling_UrlShortcuts WHERE Shortcut = :Shortcut");
+		$stm = $db->prepare("SELECT Url FROM memoling_UrlShortcuts WHERE BINARY Shortcut = :Shortcut");
 		$stm->bindParam("Shortcut", $shortcut);
 		$stm->execute();
 		

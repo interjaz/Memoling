@@ -49,21 +49,20 @@
                     android:id="@+id/wordotheday_layMode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone" >
+                    android:orientation="vertical" 
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/wordoftheday_lblMode"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:minHeight="50dp"
                         android:text="@string/wordoftheday_lblMode"
                         android:textSize="20sp" />
 
                     <Spinner
                         android:id="@+id/wordoftheday_spMode"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         tools:listitem="@layout/adapter_textdropdown" />
                 </LinearLayout>
@@ -72,18 +71,13 @@
                     android:id="@+id/wordotheday_laySource"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone" >
+                      android:orientation="vertical" 
+                    android:visibility="gone">
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical" >
 
                         <TextView
                             android:id="@+id/wordoftheday_lblSource"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/wordoftheday_lblSource"
                             android:textSize="20sp" />
@@ -94,11 +88,10 @@
                             android:layout_height="wrap_content"
                             android:text="@string/wordoftheday_lblSourceHint"
                             android:textSize="15sp" />
-                    </LinearLayout>
 
                     <Spinner
                         android:id="@+id/wordoftheday_spSource"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         tools:listitem="@layout/adapter_textdropdown" />
                 </LinearLayout>
@@ -106,9 +99,9 @@
                 <LinearLayout
                     android:id="@+id/wordotheday_layFrom"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" >
-
+                    android:layout_height="wrap_content" 
+                    android:visibility="gone">
+                    
                     <TextView
                         android:id="@+id/wordoftheday_lblLanguageFrom"
                         android:layout_width="0dp"
@@ -129,11 +122,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:visibility="gone" >
+                    android:visibility="gone">
 
                     <app.memoling.android.ui.control.LanguageSpinner
                         android:id="@+id/wordofthelist_spLanguageFrom"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:light_theme="true"
                         tools:listitem="@layout/adapter_textdropdown" />
@@ -143,21 +136,20 @@
                     android:id="@+id/wordotheday_layTo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone" >
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/wordoftheday_lblLanguageTo"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:minHeight="50dp"
                         android:text="@string/wordoftheday_lblLanguageTo"
                         android:textSize="20sp" />
 
                     <app.memoling.android.ui.control.LanguageSpinner
                         android:id="@+id/wordofthelist_spLanguageTo"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:light_theme="true"
                         tools:listitem="@layout/adapter_textdropdown" />
@@ -168,7 +160,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:visibility="gone" >
+                    android:visibility="gone">
 
                     <Button
                         android:id="@+id/wordoftheday_btnTest"

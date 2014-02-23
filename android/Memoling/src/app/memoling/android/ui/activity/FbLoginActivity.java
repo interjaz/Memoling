@@ -1,5 +1,7 @@
 package app.memoling.android.ui.activity;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -81,4 +83,15 @@ public class FbLoginActivity extends Activity {
 
 	}
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
+	}
 }

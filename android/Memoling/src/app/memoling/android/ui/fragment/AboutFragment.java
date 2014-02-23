@@ -94,9 +94,9 @@ public class AboutFragment extends ApplicationFragment {
 	@Override
 	protected boolean onCreateOptionsMenu() {
 		MenuItem item;
-		item = createMenuItem(0, "Rate").setIcon(R.drawable.ic_star);
+		item = createMenuItem(0, getString(R.string.about_rate)).setIcon(R.drawable.ic_star);
 		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		item = createMenuItem(1, "Home").setIcon(R.drawable.ic_home);
+		item = createMenuItem(1, getString(R.string.about_homePage)).setIcon(R.drawable.ic_home);
 		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		
 		return true;

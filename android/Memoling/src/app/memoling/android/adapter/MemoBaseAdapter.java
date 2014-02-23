@@ -3,6 +3,7 @@ package app.memoling.android.adapter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -199,6 +200,7 @@ public class MemoBaseAdapter extends SqliteAdapter {
 		if (inSync() && m_memoBaseInfoCache.containsKey(memoBaseId)) {
 			return m_memoBaseInfoCache.get(memoBaseId);
 		}
+		
 
 		try {
 			MemoBaseInfo memoBaseInfo = null;
@@ -241,7 +243,7 @@ public class MemoBaseAdapter extends SqliteAdapter {
 				cursor.close();
 				cursor = db.rawQuery(query, new String[] { memoBaseId });
 	
-				ArrayList<Language> languages = new ArrayList<Language>();
+				HashSet<Language> languages = new HashSet<Language>();
 				while (cursor.moveToNext()) {
 					languages.add(Language.parse(DatabaseHelper.getString(cursor, "LanguageIso639")));
 				} 

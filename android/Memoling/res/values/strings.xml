@@ -1,53 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="memolist_whatsNewContent">		If you would like to translate the application to other language, 
-		request a feature or just be up to date visit/follow application page (link in Settings).\n
-		\n
-		No ads till the end of Jan 2014!\n
+    
+    <string name="memolist_whatsNewContent">		
+		No ads till the end of April 2014!\n
 		If you like application please rate the app.\n
 		\n 
 		If you spot a bug, please write a post on application fb site. Thanks!\n
 		\n
+		Changes v.1.9.1\n
+		1. Improved games a little bit\n
+		Changes v.1.9.0\n
+		1. Bug fixes\n
+		2. Added Audio Replay\n
+		Changes v.1.8.3\n
+		1. Bug fixes\n
 		Changes v.1.8.2\n
 		1. Fixed wiktionary - again\n
 		2. Fixed multiple training notifications\n
 		3. Fixed library download issue\n
-		4. Complex expression searching works again\n
-		Changes v.1.8.1\n
-		1. Fixed wiktionaries for android lower than 2.3.7\n
-		2. Impoved teaching mechanism\n
-		3. Fixed scheduling bugs\n
-		4. Fixed bug with language swaping\n
-		5. (UI) Grouped items in Expression list screen\n
-		Changes v.1.8.0\n
-		1. Word of the day Widget\n
-		2. New UI\n
-		3. Downloadable offline dictionaries\n 
-		Changes v.1.7.0\n
-		1. Better support for Facebook login\n
-		2. Added Expression sharing mechanism\n
-		3. Added text to speech support\n
-		4. Added audio training\n
-		5. Changed where searched words are displayed\n
-		Changes v.1.7.0 beta\n
-		1. Added Quizlet definitions and words\n
-		Changes v.1.6.0\n
-		1. Added Games\n
-		2. Fixed spanish words suggestions\n</string>
-
-    <!-- General -->
-    <string name="app_name">Memoling</string>
-    <string name="app_facebook_appId">620366261326135</string>
-
-    <!-- Application Activity -->
-    <string name="application_title">Memoling</string>
-    <string name="application_drawerOpen">Open</string>
-    <string name="application_drawerClose">Close</string>
+		4. Complex expression searching works again\n	</string>
 
     <!-- MemoList Fragment -->
-    <string name="memolist_title">Expressions</string>
     <string name="memolist_btnSave">Save</string>
+    <string name="memolist_search">Search</string>
+    <string name="memolist_voiceInput">Use voice</string>
     <string name="memolist_saveErrorMessage">Failed to save memo</string>
     <string name="memolist_ctxmenu_deactivate">Deactivate</string>
     <string name="memolist_ctxmenu_activate">Activate</string>
@@ -68,6 +44,7 @@
     <string name="memolist_repeatAll">Repeat All</string>
     <string name="memolist_sentencesTraining">Sentences Training</string>
     <string name="memolist_audioTraining">Audio Training</string>
+    <string name="memolist_audioReplay">Audio Replay</string>
     <string name="memolist_details">Details</string>
     <string name="memolist_openScheduler">Set Training</string>
     <string name="memolist_voiceSearch">Voice Search</string>
@@ -84,13 +61,14 @@
     <string name="memolist_hangman">Hangman</string>
     <string name="memolist_crossword">Crossword</string>
     <string name="memolist_findword">Find word</string>
-    <string name="memolist_swap">⇄</string>
 
     <!-- MemoBaseList Fragment -->
     <string name="memobaselist_title">Libraries</string>
+    <string name="memobaselist_newMemoBase">New Library</string>
+    <string name="memobaselist_onlineMemoBase">Online Libraries</string>
     <string name="memobaselist_ctxmenu_deactivate">Deactivate</string>
     <string name="memobaselist_ctxmenu_activate">Activate</string>
-    <string name="memobaselist_ctxmenu_delete">Delete library</string>
+    <string name="memobaselist_ctxmenu_delete">Delete Library</string>
     <string name="memobaselist_ctxmenu_deleteImpossible">You need to have at least one library!</string>
     <string name="memobaselist_ctxmenu_deleteImpossibleOK">OK</string>
     <string name="memobaselist_ctxmenu_deleteTitle">Warning!</string>
@@ -112,11 +90,14 @@
     <string name="memo_lblLastReviewed">Last reviewed:</string>
     <string name="memo_lblDisplayed">Displayed:</string>
     <string name="memo_lblCorrectAnswered">Correctly answered:</string>
+    <string name="memo_first">First</string>
     <string name="memo_lblWordA">First part:</string>
     <string name="memo_lblLangA">First part language:</string>
+    <string name="memo_second">Second</string>
     <string name="memo_lblWordB">Second part:</string>
     <string name="memo_lblLangB">Second part language:</string>
     <string name="memo_lblActive">Active</string>
+    <string name="memo_details">Details</string>
     <string name="memo_copied">Copied</string>
     <string name="memo_selectTranslationTitle">Select translation</string>
     <string name="memo_selectTranslationProgress">Looking for translations</string>
@@ -127,11 +108,6 @@
     <string name="memo_synonyms">Synonyms</string>
     <string name="memo_sentencesDownloading">Downloading &#8230;</string>
     <string name="memo_sentencesSearching">Searching &#8230;</string>
-    <string name="memo_definitionsMemoling">Memoling</string>
-    <string name="memo_definitionsQuizlet">Powered by Quizlet.com</string>
-    <string name="memo_definitionsWiktionary">Wiktionary</string>
-    <string name="memo_sentencesTatoeba">Tatoeba.org</string>
-    <string name="memo_sentencesQuizlet">Powered by Quizlet.com</string>
     <string name="memo_notFound">Not found</string>
     <string name="memo_wikitonaryNotInstalled">Offline dictionary not found</string>
     <string name="memo_sharefacebook">Share via Facebook</string>
@@ -151,9 +127,11 @@
     <string name="texttospeech_languageNotSupported">Language not supported</string>
     <string name="texttospeech_missingData">Some files need downloading for proper text to speech functionality</string>
     <string name="texttospeech_muted">Device is muted</string>
+    <string name="texttospeech_error">Replay error</string>
 
     <!-- MemoBase Fragment -->
     <string name="memobase_title">Library</string>
+    <string name="memobase_scheduler">Scheduler</string>
     <string name="memobase_backToList">Back to list</string>
     <string name="memobase_lblImport">Import</string>
     <string name="memobase_lblExport">Export</string>
@@ -210,6 +188,8 @@
 
     <!-- Review Activity -->
     <string name="review_title">Review</string>
+    <string name="review_voiceInput">Use Voice</string>
+    <string name="review_submit">Submit</string>
     <string name="review_lblCorrect">Correct</string>
     <string name="review_lblIncorrect">Incorrect. Answer:\n%s</string>
     <string name="review_lblLanguage">Language</string>
@@ -218,9 +198,15 @@
     <string name="review_sentenceNotSupported">Sentence review does not support word the same language as it translation</string>
     <string name="review_emptyTranslation">No translation sentence found, skipping</string>
     <string name="review_replay">Press to Replay</string>
+    <string name="review_btnCorrect">Mark as Correct</string>
+    <string name="review_btnIncorrect">Mark as Incorrect</string>
+    <string name="review_btnDeactivate">Deactivate</string>
 
     <!-- Statistics Fragment -->
     <string name="statistics_title">Statistics</string>
+    <string name="statisitcs_yearly">Yearly</string>
+    <string name="statisitcs_monthly">Monthly</string>
+    <string name="statisitcs_details">Details</string>
     <string name="statisitcs_yearTitle">Memos added in current year</string>
     <string name="statisitcs_monthTitle">Number of revision per month in current year</string>
     <string name="statistics_tabcombined_statistics">Statistics</string>
@@ -237,6 +223,8 @@
 
     <!-- About Fragment -->
     <string name="about_title">About</string>
+    <string name="about_rate">Rate</string>
+    <string name="about_homePage">App Page</string>
     <string name="about_donatePlease">Please donate</string>
     <string name="about_donateReason">Why donate?\n1. So <b>you</b> can use it - covers translations and hosting costs.\n2. Keep application ad-free and up to date.\n3. So <b>I</b> can get filthy rich.</string>
     <string name="about_lblDonate">Donate</string>
@@ -310,15 +298,11 @@
     <string name="preferences_wordOfTheDay_summary">Set when notification should arrive</string>
     <string name="preferences_facebookLogout">Logged out</string>
     <string name="preferences_languageAccent_title">Text To Speech Accent</string>
-    <string name="preferences_languageAccent_summary">Only English accents are supproted</string>
+    <string name="preferences_languageAccent_summary">Only English accents are supported</string>
 
     <string-array name="preferences_languageAccent_entries">
         <item>USA</item>
         <item>UK</item>
-    </string-array>
-    <string-array name="preferences_languageAccent_values">
-        <item>0</item>
-        <item>1</item>
     </string-array>
 
     <!-- Word of the day Fragment -->
@@ -328,15 +312,18 @@
     <string name="wordoftheday_lblLanguageFrom">Would you like to pretranslate word to other language first?</string>
     <string name="wordoftheday_lblLanguageTo">Translate new words to</string>
     <string name="wordoftheday_lblSource">Notification source</string>
-    <string name="wordoftheday_lblSourceHint">Word\'s native language is in brakets. It is better to use native source one then using pretranslation - more accurate.</string>
+    <string name="wordoftheday_lblSourceHint">Word\'s native language is in brackets. It is better to use native source one then using pretranslation - more accurate.</string>
     <string name="wordoftheday_test">Test configuration</string>
+    <string name="wordoftheday_helpBtn">Help</string>
     <string name="wordoftheday_help">        Word of the Day Help\n\n
         Word of the Day is advanced tool which allows you to customize the words you receive.\n\n
         You can choose between words you have added and new words.\n\n
         To make things easier to understand here are examples.\n
         1. I want to receive new words in English with translation in Spanish. Check \'Do you&#8230;\', then select notification source to Merriam-Webster and set translation to Spanish.\n\n
-        2. I want to receive new words in Greek with translation in Finish.  Check \'Do you&#8230;\', then select notification source to Merriam-Webster, chcek \'Would you&#8230;\', select pre translate to Greek and translate to Finish.\n\n
+        2. I want to receive new words in Greek with translation in Finish.  Check \'Do you&#8230;\', then select notification source to Merriam-Webster, check \'Would you&#8230;\', select pre translate to Greek and translate to Finish.\n\n
         At the end of setting up notification you can test it to see whether it meets you needs.	</string>
+    <string name="wordoftheday_soruceLibrary">Library</string>
+    <string name="wordoftheday_sourceOnline">Online</string>
 
     <string name="wordoftheday_widget_title">Memoling Word of the Day</string>
     <string name="wordofthedaywidgetconfiguration_title">Configure Widget</string>
@@ -372,6 +359,8 @@
 
     <!-- Download Link Activity -->
     <string name="downloadlink_title">Memoling Share</string>
+    <string name="downloadlink_save">Save</string>
+    <string name="downloadlink_delete">Delete</string>
     <string name="downloadlink_lblMemoBase">Library</string>
     <string name="downloadlink_lblMemo">Expression</string>
     <string name="downloadlink_lblPartA">First Part</string>
@@ -389,6 +378,8 @@
     <string name="wordofthedayreceiver_lblWordTo">Word translation</string>
     <string name="wordofthedayreceiver_lblDescriptionFrom">Description</string>
     <string name="wordofthedayreceiver_lblDescriptionTo">Desc. translation</string>
+    <string name="wordofthedayreceiver_save">Save</string>
+    <string name="wordofthedayreceiver_delete">Delete</string>
     <string name="wordofthedayreceiver_saved">Saved</string>
     <string name="wordofthedayreceiver_deleted">Deleted</string>
 
@@ -416,13 +407,12 @@
     <string name="wiktionarydownloadmanager_dialogYes">Yes</string>
     <string name="wiktionarydownloadmanager_dialogNo">No</string>
 
-    <!-- General -->
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_test">TestActivity</string>
+    <!-- AudioReplay Activity -->
+    <string name="audioreplay_title">Audio Replay</string>
+	<string name="audioreplay_shouldStop">Should stop the replay?</string>
+	<string name="audioreplay_yes">Yes</string>
+	<string name="audioreplay_no">No</string>
+    
     <string name="action_settings">Settings</string>
-    <string name="title_activity_quizlet">QuizletActivity</string>
-    <string name="title_activity_word_of_the_day_widget_configuration">WordOfTheDayWidgetConfigurationActivity</string>
-
+    
 </resources>

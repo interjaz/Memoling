@@ -2,14 +2,19 @@ package app.memoling.android.ui.fragment;
 
 import java.util.Random;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.text.InputFilter;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -23,12 +28,14 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class GamesCrosswordFragment extends GamesMatrixGame {
 
+	private LinearLayout m_dialogView;
+	private LinearLayout m_layWordSelect;
+	private LinearLayout m_layWords;
+	private LinearLayout m_layWord1;
+	private LinearLayout m_layWord2;
 	private Button m_btnHorizontal;
 	private Button m_btnVertical;
-	private Button m_btnSubmit;
-	private EditText m_txtWord;
-	private LinearLayout m_layInput;
-
+	
 	private int m_itemHeight;
 	private int m_itemWidth;
 	private int m_itemStartHeight;
@@ -43,6 +50,7 @@ public class GamesCrosswordFragment extends GamesMatrixGame {
 
 	private MatrixWord m_hWord;
 	private MatrixWord m_vWord;
+	private MatrixWord m_currentWord;
 	
 	private Paint m_txtPaint;
 	private Paint m_borderPaint;
@@ -63,21 +71,6 @@ public class GamesCrosswordFragment extends GamesMatrixGame {
 
 		ResourceManager resources = getResourceManager();
 		Typeface thinFont = resources.getLightFont();
-
-		m_btnVertical = (Button) contentView.findViewById(R.id.crossword_btnVertical);
-		m_btnVertical.setOnClickListener(new BtnVerticalEventHandler());
-		m_btnHorizontal = (Button) contentView.findViewById(R.id.crossword_btnHorizontal);
-		m_btnHorizontal.setOnClickListener(new BtnHorizontalEventHandler());
-		m_btnSubmit = (Button) contentView.findViewById(R.id.crossword_btnSubmit);
-		m_btnSubmit.setOnClickListener(new BtnSubmitEventHandler());
-		m_txtWord = (EditText) contentView.findViewById(R.id.crossword_txtWord);
-		m_layInput = (LinearLayout) contentView.findViewById(R.id.crossword_layInput);
-
-		resources.setFont(m_btnVertical, thinFont);
-		resources.setFont(m_btnHorizontal, thinFont);
-		resources.setFont(m_btnSubmit, thinFont);
-		resources.setFont(m_txtWord, thinFont);
-		resources.setFont(contentView, R.id.textView1, thinFont);
 		
 		m_txtPaint = new Paint();
 		m_txtPaint.setStyle(Style.STROKE);
@@ -87,6 +80,17 @@ public class GamesCrosswordFragment extends GamesMatrixGame {
 		m_borderPaint.setStyle(Style.STROKE);
 		m_borderPaint.setColor(0xFF1F1F1F);
 		m_borderPaint.setStrokeWidth(Helper.dipToPixels(getActivity(), 2f));
+		
+		m_dialogView = (LinearLayout)getActivity().getLayoutInflater().inflate(R.layout.crossword_dialog, null);
+		m_layWords = (LinearLayout)m_dialogView.findViewById(R.id.crossword_dialog_layWords);
+		m_layWord1 = (LinearLayout)m_dialogView.findViewById(R.id.crossword_dialog_layWord1);
+		m_layWord2 = (LinearLayout)m_dialogView.findViewById(R.id.crossword_dialog_layWord2);
+		m_layWordSelect = (LinearLayout)m_dialogView.findViewById(R.id.crossword_dialog_layWordSelect);
+		m_btnHorizontal = (Button)m_dialogView.findViewById(R.id.crossword_dialog_btnHorizontal);
+		m_btnVertical = (Button)m_dialogView.findViewById(R.id.crossword_dialog_btnVertical);
+		
+		m_btnHorizontal.setOnClickListener(new BtnHorizontalEventHandler());
+		m_btnVertical.setOnClickListener(new BtnVerticalEventHandler());
 		
 		m_rectangle = new Rect();
 	}
@@ -123,17 +127,6 @@ public class GamesCrosswordFragment extends GamesMatrixGame {
 		}
 
 		return true;
-	}
-
-	@Override
-	public boolean onBackPressed() {
-
-		if (m_layInput.getVisibility() == View.VISIBLE) {
-			m_layInput.setVisibility(View.GONE);
-			return false;
-		}
-
-		return super.onBackPressed();
 	}
 
 	@Override
@@ -186,7 +179,7 @@ public class GamesCrosswordFragment extends GamesMatrixGame {
 
 		m_itemWidth = itemWidth;
 		m_itemHeight = itemHeight;
-		m_itemStartWidth = paddingWidth + itemWidth;
+		m_itemStartWidth = itemWidth;
 		m_itemStartHeight = (int) ((itemHeight + itemPadding) * 0.8 + paddingHeight);
 		m_itemTxtHeight = Helper.determineMaxTextSize("W", 0.8f * itemWidth);
 
@@ -302,31 +295,63 @@ public class GamesCrosswordFragment extends GamesMatrixGame {
 		}
 
 		if (m_hWord != null || m_vWord != null) {
-			fillInput(true);
-			m_layInput.setVisibility(View.VISIBLE);
+			showDialog();
 		}
 	}
 
-	private void fillInput(boolean horizontal) {
-		m_btnHorizontal.setVisibility(View.GONE);
-		m_btnVertical.setVisibility(View.GONE);
-
-		String word = "";
-		if (m_hWord != null && m_vWord != null) {
-			if (horizontal) {
-				m_btnVertical.setVisibility(View.VISIBLE);
-				word = getVisiblePart(m_hWord);
-			} else {
-				m_btnHorizontal.setVisibility(View.VISIBLE);
-				word = getVisiblePart(m_vWord);
-			}
-		} else if (m_hWord != null) {
-			word = getVisiblePart(m_hWord);
-		} else if (m_vWord != null) {
-			word = getVisiblePart(m_vWord);
+	private void showDialog() {
+		
+		if(m_hWord != null && m_vWord != null) {
+			m_layWordSelect.setVisibility(View.VISIBLE);
+		} else {
+			m_layWordSelect.setVisibility(View.GONE);
 		}
+		
+		MatrixWord mWord = m_hWord != null ? m_hWord : m_vWord;
+		fillDialog(mWord);
+		
+		if(m_dialogView.getParent() != null) {
+			((ViewGroup)(m_dialogView.getParent())).removeView(m_dialogView);
+		}
+		
+		new AlertDialog.Builder(getActivity())
+		.setView(m_dialogView)
+		.setTitle(getString(R.string.crossword_enterWord))
+		.setPositiveButton(getString(R.string.crossword_submit), new BtnSubmitEventHandler())
+		.create().show();
+		
+	}
+	
+	private void fillDialog(MatrixWord mWord) {
+		m_currentWord = mWord;
+		String word = getVisiblePart(mWord);
 
-		m_txtWord.setText(word);
+		m_layWord1.removeAllViews();
+		m_layWord2.removeAllViews();
+		
+		int i = 0;
+		int maxPerLine = 9;
+		
+		for(char letter : word.toCharArray()) {
+			LinearLayout layWord = m_layWord1;
+			
+			if(i++ >= maxPerLine) {
+				layWord = m_layWord2;
+			}
+			
+			EditText txtLetter = new EditText(getActivity());
+			if(letter != ' ') {
+				txtLetter.setEnabled(false);
+				txtLetter.setText(String.valueOf(letter));
+			}
+
+			txtLetter.setBackgroundResource(R.drawable.letter_box);
+			txtLetter.setTextColor(Color.WHITE);
+			InputFilter[] filters = new InputFilter[1];
+			filters[0] = new InputFilter.LengthFilter(1);
+			txtLetter.setFilters(filters);
+			layWord.addView(txtLetter);
+		}
 	}
 
 	private String getVisiblePart(MatrixWord word) {
@@ -351,6 +376,10 @@ public class GamesCrosswordFragment extends GamesMatrixGame {
 
 	private boolean isGameFinished() {
 
+		if(m_grid == null || isLoading()) {
+			return false;
+		}
+		
 		for (MatrixWord word : m_words.words) {
 			for (int y = word.from.y; y <= word.to.y; y++) {
 				for (int x = word.from.x; x <= word.to.x; x++) {
@@ -363,50 +392,49 @@ public class GamesCrosswordFragment extends GamesMatrixGame {
 
 		return true;
 	}
-
+	
 	private class BtnHorizontalEventHandler implements OnClickListener {
 		@Override
-		public void onClick(View v) {
-			fillInput(true);
+		public void onClick(View arg0) {
+			fillDialog(m_hWord);
 		}
 	}
-
+	
 	private class BtnVerticalEventHandler implements OnClickListener {
 		@Override
 		public void onClick(View v) {
-			fillInput(false);
+			fillDialog(m_vWord);
+			
 		}
 	}
 
-	private class BtnSubmitEventHandler implements OnClickListener {
+	private class BtnSubmitEventHandler implements DialogInterface.OnClickListener {
+		
 		@Override
-		public void onClick(View v) {
-			MatrixWord word;
-			if (m_hWord == null) {
-				word = m_vWord;
-			} else if (m_vWord == null) {
-				word = m_hWord;
-			} else {
-				if (m_btnVertical.getVisibility() == View.VISIBLE) {
-					word = m_hWord;
-				} else {
-					word = m_vWord;
+		public void onClick(DialogInterface dialog, int which) {
+
+			StringBuilder providedWord = new StringBuilder();
+			
+			for(int i=0;i<m_layWords.getChildCount();i++) {
+				LinearLayout layWord = (LinearLayout)m_layWords.getChildAt(i);
+				for(int j=0;j<layWord.getChildCount();j++) {
+					EditText txtInput = (EditText)layWord.getChildAt(j);
+					providedWord.append(txtInput.getText());
 				}
 			}
-
-			if (word.word.toUpperCase().equals(m_txtWord.getText().toString().toUpperCase())) {
-				for (int y = word.from.y; y <= word.to.y; y++) {
-					for (int x = word.from.x; x <= word.to.x; x++) {
+			
+			if (m_currentWord.word.toUpperCase().equals(providedWord.toString().toUpperCase())) {
+				for (int y = m_currentWord.from.y; y <= m_currentWord.to.y; y++) {
+					for (int x = m_currentWord.from.x; x <= m_currentWord.to.x; x++) {
 						m_letterGrid[y][x] = true;
 					}
 				}
 			}
 
-			m_layInput.setVisibility(View.GONE);
-
 			if (isGameFinished()) {
 				endGame();
 			}
+			
 		}
 	}
 

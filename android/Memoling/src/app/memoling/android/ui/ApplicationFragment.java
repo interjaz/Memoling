@@ -8,7 +8,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import app.memoling.android.helper.AppLog;
@@ -20,6 +24,9 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.google.ads.AdView;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.MapBuilder;
 
 public abstract class ApplicationFragment extends Fragment {
 
@@ -28,7 +35,8 @@ public abstract class ApplicationFragment extends Fragment {
 	private AdView m_adView;
 	private ResourceManager m_resourceManager;
 	private Preferences m_preferences;
-
+	private EasyTracker m_analyticsTracker;
+	
 	private Bundle m_savedInstanceState;
 
 	private Menu m_menu;
@@ -63,10 +71,19 @@ public abstract class ApplicationFragment extends Fragment {
 		m_adView = AdCommon.onCreate_Ads(activity, contentView);
 		activity.requestInvalidateOptionsMenu();
 
+		// Get analytics tracker
+		m_analyticsTracker = activity.getAnalyticsTracker();
+		m_analyticsTracker.send(
+				MapBuilder.
+				createAppView().
+				set(Fields.SCREEN_NAME, this.getClass().getName()).
+				build()
+			);
+		
 		// Enable drawer by default
 		activity.getDrawerAdapter().clear();
 		setDrawerEnabled(true);
-
+		
 		return contentView;
 	}
 
@@ -118,8 +135,12 @@ public abstract class ApplicationFragment extends Fragment {
 	}
 
 	protected MenuItem createMenuItem(int id, String title) {
+		Spannable spanTitle = new SpannableString(title);        
+		spanTitle.setSpan(new ForegroundColorSpan(0xFFCCCCCC), 0, spanTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		
 		// By default group 1
-		MenuItem item = m_menu.add(1, id, Menu.NONE, title);
+		MenuItem item = m_menu.add(1, id, Menu.NONE, spanTitle);
+		
 		m_menuItems.add(id);
 		return item;
 	}
@@ -250,5 +271,6 @@ public abstract class ApplicationFragment extends Fragment {
 				}
 			}
 		});
-	}
+	} 
+	
 }

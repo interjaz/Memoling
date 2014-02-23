@@ -85,11 +85,10 @@ public class Translator implements ITranslatorComplete {
 	public void onTranslatorComplete(TranslatorResult result) {
 
 		ArrayList<TranslatorResult> cachedResult = null;
+		String cacheKey = m_word.getWord() + m_from.getCode() + m_to.getCode();
 
 		if (result != null && result.Translated.size() > 0) {
-			
 			synchronized (m_cache) {
-				String cacheKey = m_word.getWord() + m_from.getCode() + m_to.getCode();
 
 				if (m_cache.containsKey(cacheKey)) {
 					cachedResult = m_cache.get(cacheKey);
@@ -102,13 +101,18 @@ public class Translator implements ITranslatorComplete {
 			cachedResult.add(result);
 		}
 
-		m_translationCompleted.incrementAndGet();
-
 		if (result != null && m_onTranslateComplete != null) {
 			m_onTranslateComplete.onTranslatorComplete(result);
 		}
 
-		if (m_translationCompleted.get() == TranslatorsCount && m_onAllTranslateComplete != null) {
+		if (m_translationCompleted.incrementAndGet() == TranslatorsCount && m_onAllTranslateComplete != null) {
+			// Check if there is other result in cache (could be set by other provider)
+			synchronized (m_cache) {
+				if (m_cache.containsKey(cacheKey)) {
+					cachedResult = m_cache.get(cacheKey);
+				}
+			}
+			
 			m_onAllTranslateComplete.onAllTranslatorComplete(cachedResult);
 		}
 	}

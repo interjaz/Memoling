@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -313,11 +314,11 @@ public class GamesHangmanFragment extends ApplicationFragment implements TextWat
 		int txtHorizontalPadding = Helper.dipToPixels(getActivity(), 5);
 		for (int i = 0; i < m_word.length(); i++) {
 			TextView tv = new TextView(getActivity());
-			tv.setText("   ");
+			tv.setText(" ");
 			tv.setTextSize(txtSize);
 			tv.setPadding(txtHorizontalPadding, 0, txtHorizontalPadding, 0);
-			tv.setPaintFlags(tv.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			getResourceManager().setFont(tv, m_thinFont);
+			tv.setBackgroundResource(R.drawable.letter_box_black);
 			m_txtLetters[i] = tv;
 			if(i < 8) {
 				m_layLettersL1.addView(tv);

@@ -191,7 +191,7 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 	@Override
 	protected boolean onCreateOptionsMenu() {
 		MenuItem item;
-		item = createMenuItem(0,"Scheduler").setIcon(R.drawable.ic_scheduler);
+		item = createMenuItem(0, getString(R.string.memobase_scheduler)).setIcon(R.drawable.ic_scheduler);
 		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);		
 		return true;
 	}

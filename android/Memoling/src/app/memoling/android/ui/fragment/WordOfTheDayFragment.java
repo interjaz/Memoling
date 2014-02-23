@@ -123,7 +123,7 @@ public class WordOfTheDayFragment extends ApplicationFragment {
 
 		MenuItem item;
 
-		item = createMenuItem(0, "Help").setIcon(R.drawable.ic_help);
+		item = createMenuItem(0, getString(R.string.wordoftheday_helpBtn)).setIcon(R.drawable.ic_help);
 		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
 		return true;
@@ -147,8 +147,8 @@ public class WordOfTheDayFragment extends ApplicationFragment {
 		int providerId = -1;
 		int modePos = -1;
 
-		m_spLanguageFrom.bindData();
-		m_spLanguageTo.bindData();
+		m_spLanguageFrom.bindData(getActivity());
+		m_spLanguageTo.bindData(getActivity());
 
 		m_memoBaseId = getArguments().getString(MemoBaseId);
 

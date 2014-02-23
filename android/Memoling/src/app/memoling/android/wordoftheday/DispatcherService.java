@@ -128,8 +128,17 @@ public class DispatcherService extends Service {
 		}
 
 		try {
+			int sourceRes;
+			if(online) {
+				sourceRes = R.string.wordoftheday_sourceOnline;
+			} else {
+				sourceRes = R.string.wordoftheday_sourceLibrary;
+			}
+			
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-					.setSmallIcon(R.drawable.ic_notification).setContentTitle("Memoling")
+					.setSmallIcon(R.drawable.ic_notification)
+					.setContentTitle("Memoling")
+					.setContentInfo(context.getString(sourceRes))
 					.setContentText(memo.getWordA().getWord() + " - " + memo.getWordB().getWord());
 
 			if (online) {
@@ -143,6 +152,7 @@ public class DispatcherService extends Service {
 			} else {
 				Intent appIntent = new Intent(context, ApplicationActivity.class);
 				appIntent.putExtra(MemoListFragment.MemoBaseId, memo.getMemoBaseId());
+				appIntent.putExtra(MemoListFragment.MemoId, memo.getMemoId());
 				appIntent.putExtra(MemoListFragment.NotificationId, m_notificationId);
 				PendingIntent pendigIntent = PendingIntent.getActivity(context, m_notificationId, appIntent,
 						PendingIntent.FLAG_UPDATE_CURRENT);

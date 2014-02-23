@@ -24,7 +24,7 @@
         android:layout_marginRight="10dp"
         android:layout_weight="1"
         android:text="TextView"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 
     <ImageView
         android:id="@+id/drawer_adapter_expand_icon"

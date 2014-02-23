@@ -33,6 +33,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="15dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/memo_btnSearchWord"
                     android:text="@string/memo_lblWordA"
                     android:textSize="20sp" />
 
@@ -109,10 +111,10 @@
                     android:layout_alignBaseline="@id/memo_lblLang"
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_toRightOf="@id/memo_lblLang"
                     android:gravity="right"
-                    android:textSize="18sp" />
+                    android:textSize="18sp" 
+                    android:text="English"/>
 
                 <app.memoling.android.ui.control.EditTextActionDone
                     android:id="@+id/memo_txtWord"
@@ -142,6 +144,8 @@
                     android:id="@+id/textView1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/memo_tabDefinitions"
+                    android:layout_alignRight="@+id/memo_tabDefinitions"
                     android:layout_marginBottom="3dp"
                     android:layout_marginTop="-2dp"
                     android:text="@string/memo_description"
@@ -236,6 +240,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_alignRight="@+id/memo_tabSentences"
                     android:layout_marginBottom="3dp"
                     android:layout_marginTop="-2dp"
                     android:text="@string/memo_sentences"

@@ -45,6 +45,7 @@ public class AdCommon {
 
 		// Create the adView
 		adView = new AdView(activity, AdSize.BANNER, Config.AdUnitId);
+		adView.setBackgroundColor(activity.getResources().getColor(R.color.background_dark));
 
 		if (Helper.hasInternetAccess(activity)) {
 			adView.setMinimumHeight((int) (density * 50f));

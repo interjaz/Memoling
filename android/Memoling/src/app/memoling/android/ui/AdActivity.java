@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.google.ads.AdView;
+import com.google.analytics.tracking.android.EasyTracker;
 
 public class AdActivity extends SherlockActivity {
 
@@ -23,4 +24,18 @@ public class AdActivity extends SherlockActivity {
 		AdCommon.onDestroy_Ad(m_adView);
 		super.onDestroy();
 	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		EasyTracker.getInstance(this).activityStop(this);
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+	
+	
 }

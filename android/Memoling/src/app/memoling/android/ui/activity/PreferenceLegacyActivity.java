@@ -1,5 +1,7 @@
 package app.memoling.android.ui.activity;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
@@ -102,6 +104,18 @@ public class PreferenceLegacyActivity extends PreferenceActivity {
 		fm.beginTransaction().replace(R.id.preferenceLegacy_layContent, fragment).commit();
 	}
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
+	}
+	
 	@SuppressLint("NewApi")
 	public static class PreferenceNewFragment extends PreferenceFragment {
 

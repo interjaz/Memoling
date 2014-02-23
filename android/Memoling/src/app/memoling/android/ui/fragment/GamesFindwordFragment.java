@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,8 +35,15 @@ public class GamesFindwordFragment extends GamesMatrixGame {
 
 	private Paint m_txtPaint;
 	private Paint m_foundPaint;
+	private Paint m_foundStrokePaint;
 	private Paint m_touchPaint;
 
+	@Override
+	protected boolean getAllowDiagonal() {
+		//TODO: when there is a word from right to left it looks ugly
+		return false;
+	}
+	
 	@Override
 	protected int getLayout() {
 		return R.layout.games_findword;
@@ -70,10 +78,15 @@ public class GamesFindwordFragment extends GamesMatrixGame {
 		m_touchPaint.setAlpha(0xCC);
 
 		m_foundPaint = new Paint();
-		m_foundPaint.setStyle(Style.STROKE);
+		m_foundPaint.setStyle(Style.FILL);
 		m_foundPaint.setColor(0xFFFFFF);
-		m_foundPaint.setStrokeWidth(Helper.dipToPixels(getActivity(), 20));
 		m_foundPaint.setAlpha(0x77);
+		
+		m_foundStrokePaint = new Paint();
+		m_foundStrokePaint.setStyle(Style.STROKE);
+		m_foundStrokePaint.setColor(0xFFFFFF);
+		m_foundStrokePaint.setStrokeWidth(Helper.dipToPixels(getActivity(), 20));
+		m_foundStrokePaint.setAlpha(0x77);
 	}
 
 	@Override
@@ -130,50 +143,24 @@ public class GamesFindwordFragment extends GamesMatrixGame {
 		synchronized (m_found) {
 			for (MatrixWord word : m_found) {
 
-				int y0 = (int) ((itemHeight + itemPadding) * (word.from.y + 0.2f) + paddingHeight);
-				int x0 = (itemWidth + itemPadding) * word.from.x + paddingWidth;
-				int y1 = (int) ((itemHeight + itemPadding) * (word.to.y + 0.2f) + paddingHeight);
-				int x1 = (itemWidth + itemPadding) * word.to.x + paddingWidth;
+				int x0 = (int)((itemWidth + itemPadding) * (word.from.x - 0.2) + paddingWidth);
+				int x1 = (int)((itemWidth + itemPadding) * (word.to.x + 0.7) + paddingWidth);
+				
+				int y0 = (int) ((itemHeight + itemPadding) * (word.from.y - 0.5) + paddingHeight);
+				int y1 = (int) ((itemHeight + itemPadding) * (word.to.y + 0.4) + paddingHeight);
 
-				int tmp;
-				if (x1 == x0 || y0 == y1) {
-					if (y0 > y1) {
-						tmp = y0;
-						y0 = y1;
-						y1 = tmp;
-					}
-					if (x0 > x1) {
-						tmp = x0;
-						x0 = x1;
-						x1 = tmp;
-					}
+				if(word.from.x == word.to.x || word.from.y == word.to.y) {
+					RectF rect = new RectF();
+					rect.left = x0;
+					rect.right = x1;
+					rect.top = y0;
+					rect.bottom = y1;
+					
+					c.drawRect(rect, m_foundPaint);
+				} else {
+					c.drawLine(x0, y0, x1, y1, m_foundStrokePaint);
 				}
-
-				// Make it pretty
-				if (y0 < y1 && x0 == x1) {
-					y0 -= m_itemTxtHeight;
-					y1 += m_itemTxtHeight / 2.2;
-					x0 += m_itemTxtHeight / 2.5;
-					x1 += m_itemTxtHeight / 2.5;
-				} else if (y0 == y1 && x0 < x1) {
-					y0 -= m_itemTxtHeight / 3;
-					y1 -= m_itemTxtHeight / 3;
-					x0 -= m_itemTxtHeight / 4;
-					x1 += m_itemTxtHeight;
-				} else if (y0 < y1 && x0 < x1) {
-					y0 -= m_itemTxtHeight * 0.7;
-					y1 -= m_itemTxtHeight * 0;
-					x0 += m_itemTxtHeight / 4;
-					x1 += m_itemTxtHeight / 2;
-				} else if (y0 < y1 && x0 > x1) {
-					y0 -= m_itemTxtHeight;
-					y1 += m_itemTxtHeight / 2;
-					x0 += m_itemTxtHeight * 3 / 4;
-					x1 -= m_itemTxtHeight / 4;
-				}
-
-				c.drawLine(x0, y0, x1, y1, m_foundPaint);
-
+				
 			}
 		}
 

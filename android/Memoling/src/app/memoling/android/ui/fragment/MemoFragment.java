@@ -155,11 +155,11 @@ public class MemoFragment extends FacebookFragment {
 	@Override
 	protected boolean onCreateOptionsMenu() {
 		MenuItem item;
-		item = createMenuItem(0, "Yearly").setIcon(R.drawable.ic_1);
+		item = createMenuItem(0, getString(R.string.memo_first)).setIcon(R.drawable.ic_1);
 		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		item = createMenuItem(1, "Monthly").setIcon(R.drawable.ic_2);
+		item = createMenuItem(1, getString(R.string.memo_second)).setIcon(R.drawable.ic_2);
 		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-		item = createMenuItem(2, "Details").setIcon(R.drawable.ic_details);
+		item = createMenuItem(2, getString(R.string.memo_details)).setIcon(R.drawable.ic_details);
 		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
 		return true;

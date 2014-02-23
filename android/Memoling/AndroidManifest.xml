@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="app.memoling.android"
-    android:versionCode="16"
-    android:versionName="1.8.2" >
+    android:versionCode="19"
+    android:versionName="1.9.1" >
 
     <uses-sdk
         android:minSdkVersion="10"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -108,6 +108,11 @@
             android:label="@string/wiktionarydownloadmanager_title" 
             android:theme="@style/Theme.Darktheme.WidgetConfiguration" >
         </activity>
+        <activity
+            android:name="app.memoling.android.ui.activity.AudioReplayActivity"
+            android:label="@string/audioreplay_title" 
+            android:theme="@style/Theme.Darktheme.WidgetConfiguration" >
+        </activity>
 
         <!-- Receivers -->
         <receiver
@@ -154,6 +159,8 @@
         <service android:name="app.memoling.android.wordoftheday.DispatcherService" >
         </service>
         <service android:name="app.memoling.android.wiktionary.WiktionaryProviderService" >
+        </service>
+        <service android:name="app.memoling.android.audio.AudioReplayService" >
         </service>
 
         <!-- Meta Config -->

@@ -148,10 +148,10 @@ public class MemoBaseListFragment extends ApplicationFragment {
 	protected boolean onCreateOptionsMenu() {
 		MenuItem item;
 
-		item = createMenuItem(0, "NewMemo").setIcon(R.drawable.ic_library_add);
+		item = createMenuItem(0, getString(R.string.memobaselist_newMemoBase)).setIcon(R.drawable.ic_library_add);
 		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-		item = createMenuItem(1, "OnlineMemo").setIcon(R.drawable.ic_download);
+		item = createMenuItem(1, getString(R.string.memobaselist_onlineMemoBase)).setIcon(R.drawable.ic_download);
 		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
 		return true;

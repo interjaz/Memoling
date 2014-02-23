@@ -11,8 +11,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import app.memoling.android.R;
 import app.memoling.android.ui.adapter.DrawerAdapter;
@@ -23,6 +21,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
+import com.google.analytics.tracking.android.EasyTracker;
 
 public class ApplicationActivity extends SherlockFragmentActivity {
 
@@ -32,8 +31,8 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 	private DrawerAdapter m_adapterDrawer;
 	private ActionBarDrawerToggle m_toggleDrawer;
 	private FragmentManager m_fragmentManager;
-	
-	public final static int FragmentContainerId = R.id.application_layContent; 
+
+	public final static int FragmentContainerId = R.id.application_layContent;
 
 	private Bundle m_onRequestFinishFragmentResult;
 
@@ -77,7 +76,8 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 		}
 	}
 
-	private class LayDrawerEventHandler implements ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener {
+	private class LayDrawerEventHandler implements ExpandableListView.OnGroupClickListener,
+			ExpandableListView.OnChildClickListener {
 
 		@Override
 		public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
@@ -115,10 +115,10 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 
 	@Override
 	public void setTitle(CharSequence title) {
-		if(title == null) {
+		if (title == null) {
 			return;
 		}
-		
+
 		m_title = title.toString();
 		getSupportActionBar().setTitle(m_title);
 	}
@@ -172,8 +172,7 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 
 	public void requestFragmentReplace(ApplicationFragment fragment) {
 		m_layDrawer.closeDrawers();
-		m_fragmentManager.beginTransaction().replace(FragmentContainerId, fragment).addToBackStack(null)
-				.commit();
+		m_fragmentManager.beginTransaction().replace(FragmentContainerId, fragment).addToBackStack(null).commit();
 	}
 
 	public void requestFinishFragment(Bundle result) {
@@ -191,8 +190,7 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 	}
 
 	private ApplicationFragment getCurrentFragment() {
-		ApplicationFragment fragment = (ApplicationFragment) m_fragmentManager
-				.findFragmentById(FragmentContainerId);
+		ApplicationFragment fragment = (ApplicationFragment) m_fragmentManager.findFragmentById(FragmentContainerId);
 		return fragment;
 	}
 
@@ -220,8 +218,7 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 		} else if (fragment != null) {
 
 			// Insert the fragment
-			m_fragmentManager.beginTransaction().replace(FragmentContainerId, fragment).addToBackStack(null)
-					.commit();
+			m_fragmentManager.beginTransaction().replace(FragmentContainerId, fragment).addToBackStack(null).commit();
 
 		} else if (onClickListener != null) {
 			onClickListener.onClick(view);
@@ -229,17 +226,16 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 			// Remove current fragment
 			m_fragmentManager.popBackStack();
 		}
-		
+
 		// Highlight the selected item, update the title, and close the drawer
-		//m_lstDrawer.setItemChecked(position, true);
+		// m_lstDrawer.setItemChecked(position, true);
 
 		// Do stuff here
 		// setTitle(mPlanetTitles[position]);
 		//
 
-		if(childPosition != DrawerAdapter.GroupPosition || 
-		  m_adapterDrawer.getChildrenCount(groupPosition) == 0) {
-			m_layDrawer.closeDrawer(m_lstDrawer);	
+		if (childPosition != DrawerAdapter.GroupPosition || m_adapterDrawer.getChildrenCount(groupPosition) == 0) {
+			m_layDrawer.closeDrawer(m_lstDrawer);
 		}
 	}
 
@@ -285,4 +281,19 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 		return super.onKeyUp(keyCode, event);
 	}
 
+	@Override
+	protected void onStop() {
+		super.onStop();
+		getAnalyticsTracker().activityStop(this);
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		getAnalyticsTracker().activityStart(this);
+	}
+
+	public EasyTracker getAnalyticsTracker() {
+		return EasyTracker.getInstance(this);
+	}
 }

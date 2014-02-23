@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- General -->
+    <string translatable="false" name="app_name">Memoling</string>
+    <string translatable="false" name="app_facebook_appId">620366261326135</string>
+        
+    <!-- Application Activity -->
+    <string translatable="false" name="application_title">Memoling</string>
+    <string translatable="false" name="application_drawerOpen">Open</string>
+    <string translatable="false" name="application_drawerClose">Close</string>
+    
+    <!-- MemoList Fragment -->
+    <string translatable="false" name="memolist_swap">⇄</string>
+    
+    <!-- Memo Fragment -->
+    <string translatable="false" name="memo_definitionsMemoling">Memoling</string>
+    <string translatable="false" name="memo_definitionsQuizlet">Powered by Quizlet.com</string>
+    <string translatable="false" name="memo_definitionsWiktionary">Wiktionary</string>
+    <string translatable="false" name="memo_sentencesTatoeba">Tatoeba.org</string>
+    <string translatable="false" name="memo_sentencesQuizlet">Powered by Quizlet.com</string>
+    
+   	
+   	<string-array translatable="false" name="preferences_languageAccent_values">
+   	    <item>0</item>
+   	    <item>1</item>
+   	</string-array>
+    
+    <!-- General -->
+    <string translatable="false" name="hello_world">Hello world!</string>
+    <string translatable="false" name="title_activity_test">TestActivity</string>
+    <string translatable="false" name="title_activity_quizlet">QuizletActivity</string>
+    <string translatable="false" name="title_activity_word_of_the_day_widget_configuration">WordOfTheDayWidgetConfigurationActivity</string>
+    
+</resources>

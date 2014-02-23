@@ -44,13 +44,17 @@ public abstract class ModifiableAdapter<T> extends BaseAdapter implements Filter
 	@Override
 	public T getItem(int position) {
 		synchronized (m_lock) {
+			if(m_data == null || m_data.size() <= position) {
+				return null;
+			}
+			
 			return m_data.get(position);
 		}
 	}
 
 	@Override
 	public long getItemId(int position) {
-		synchronized (m_lock) {
+		synchronized (m_lock) {			
 			return m_data.get(position).hashCode();
 		}
 	}

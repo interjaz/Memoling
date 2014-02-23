@@ -2,6 +2,8 @@ package app.memoling.android.ui.activity;
 
 import java.util.ArrayList;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
@@ -66,4 +68,15 @@ public class WiktionaryDownloadManagerActivity extends Activity {
 				}).create().show();
 	}
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
+	}
 }

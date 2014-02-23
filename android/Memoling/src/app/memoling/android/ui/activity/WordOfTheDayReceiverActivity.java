@@ -17,8 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import app.memoling.android.R;
 import app.memoling.android.adapter.MemoAdapter;
+import app.memoling.android.audio.TextToSpeechHelper;
 import app.memoling.android.helper.AppLog;
-import app.memoling.android.helper.TextToSpeechHelper;
 import app.memoling.android.ui.AdActivity;
 import app.memoling.android.ui.ApplicationActivity;
 import app.memoling.android.ui.ResourceManager;
@@ -91,11 +91,11 @@ public class WordOfTheDayReceiverActivity extends AdActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
-		MenuItem save = menu.add(1, 0, Menu.NONE, "Save");
+		MenuItem save = menu.add(1, 0, Menu.NONE, getString(R.string.wordofthedayreceiver_save));
 		save.setIcon(R.drawable.ic_save);
 		save.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-		MenuItem delete = menu.add(1, 1, Menu.NONE, "Delete");
+		MenuItem delete = menu.add(1, 1, Menu.NONE, getString(R.string.wordofthedayreceiver_delete));
 		delete.setIcon(R.drawable.ic_delete);
 		delete.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 

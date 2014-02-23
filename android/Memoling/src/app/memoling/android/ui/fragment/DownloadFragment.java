@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
-import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -144,9 +143,9 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 	private void bindData() {
 
 		// Bind languages
-		m_spLanguageA.bindData();
+		m_spLanguageA.bindData(getActivity());
 		m_spLanguageA.setSelection(Language.Unsupported);
-		m_spLanguageB.bindData();
+		m_spLanguageB.bindData(getActivity());
 		m_spLanguageB.setSelection(Language.Unsupported);
 
 		// Bind genres

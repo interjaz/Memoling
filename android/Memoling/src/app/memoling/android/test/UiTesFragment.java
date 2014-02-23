@@ -34,7 +34,7 @@ public class UiTesFragment extends Fragment {
 
 		m_button = (Button) contentView.findViewById(R.id.button1);
 		m_languageSpinner = (LanguageSpinner) contentView.findViewById(R.id.languageSpinner1);
-		m_languageSpinner.bindData();
+		m_languageSpinner.bindData(getActivity());
 		registerForContextMenu(m_button);
 		
 		m_autoCompleteTextView = (AutoCompleteTextView) contentView.findViewById(R.id.autoCompleteTextView1);

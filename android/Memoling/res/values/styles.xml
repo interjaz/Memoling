@@ -29,7 +29,6 @@
         <item name="spinnerDropDownItemStyle">@style/Theme.Darktheme.SpinnerDropDownItem</item>
         <item name="spinnerItemStyle">@style/Theme.Darktheme.SpinnerItem</item>
         
-        
         <item name="android:actionBarItemBackground">@drawable/selectable_background_darktheme</item>
         <item name="android:popupMenuStyle">@style/Theme.Darktheme.PopupMenu</item>
         <item name="android:dropDownListViewStyle">@style/Theme.Darktheme.DropDownListView</item>

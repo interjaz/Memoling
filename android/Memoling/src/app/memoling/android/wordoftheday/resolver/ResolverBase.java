@@ -93,7 +93,7 @@ public abstract class ResolverBase {
 		public void onAllTranslatorComplete(ArrayList<TranslatorResult> translatorResults) {
 			TranslatorResult result = Translator.getMostAccurate(translatorResults);
 			
-			if (result.Translated.size() > 0) {
+			if (result != null && result.Translated.size() > 0) {
 				m_wordFrom = result.Translated.get(0).getWord();
 				m_wordFrom = m_wordFrom.toLowerCase();
 			} else {
@@ -107,7 +107,7 @@ public abstract class ResolverBase {
 		@Override
 		public void onTranslatorComplete(TranslatorResult result) {
 			
-			if (result.Translated.size() > 0) {
+			if (result != null && result.Translated.size() > 0) {
 				m_descriptionFrom = result.Translated.get(0).getWord();
 			} else {
 				m_descriptionFrom = "";
@@ -122,7 +122,7 @@ public abstract class ResolverBase {
 		public void onAllTranslatorComplete(ArrayList<TranslatorResult> translatorResults) {
 			TranslatorResult result = Translator.getMostAccurate(translatorResults);
 			
-			if (result.Translated.size() > 0) {
+			if (result != null && result.Translated.size() > 0) {
 				m_wordTo = result.Translated.get(0).getWord();
 				m_wordTo = m_wordTo.toLowerCase();
 			} else {
@@ -135,7 +135,7 @@ public abstract class ResolverBase {
 	public class TranslateDescriptionTo implements ITranslatorComplete {
 		@Override
 		public void onTranslatorComplete(TranslatorResult result) {
-			if (result.Translated.size() > 0) {
+			if (result != null && result.Translated.size() > 0) {
 				m_descriptionTo = result.Translated.get(0).getWord();
 			} else {
 				m_descriptionTo = "";

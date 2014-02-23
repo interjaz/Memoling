@@ -32,7 +32,7 @@
     <style name="Theme.Darktheme.TextView.Base.Dark" parent="@android:style/Widget.TextView">
         <item name="android:textColor">#CCCCCC</item>
     </style>
-
+	
     <style name="Theme.Darktheme.EditText.Base" parent="@android:style/Widget.EditText">
         <item name="background">@drawable/edit_text_holo_light</item>
         <item name="android:background">@drawable/edit_text_holo_light</item>

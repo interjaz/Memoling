@@ -1,5 +1,6 @@
 package app.memoling.android.ui.view;
 
+import android.content.Context;
 import app.memoling.android.entity.Language;
 import app.memoling.android.ui.adapter.IGet;
 
@@ -14,9 +15,9 @@ public class LanguageView implements IGet<String> {
 		m_name = "";
 	}
 	
-	public LanguageView(Language language) {
+	public LanguageView(Language language, Context context) {
 		m_language = language;
-		m_name = language.getName();
+		m_name = language.getName(context);
 	}
 	
 	@Override

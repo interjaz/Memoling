@@ -51,7 +51,7 @@ public class LanguageSpinner extends Spinner implements AdapterView.OnItemSelect
 		setOnItemSelectedListener(this);
 	}
 	
-	public void loadData() {
+	public void loadData(Context context) {
 		String languagePreferences = m_preferences.getLanguagePreferences();
 		m_laguageViews = new ArrayList<LanguageView>();
 		
@@ -68,7 +68,7 @@ public class LanguageSpinner extends Spinner implements AdapterView.OnItemSelect
 				boolean isOrdered = false;
 				for(int i=0;i<langs.length;i++) {
 					if(langs[i] == lang) {
-						ordered[i] = new LanguageView(lang);
+						ordered[i] = new LanguageView(lang, context);
 						break;
 					}
 				}
@@ -76,7 +76,7 @@ public class LanguageSpinner extends Spinner implements AdapterView.OnItemSelect
 					continue;
 				}
 				
-				m_laguageViews.add(new LanguageView(lang));
+				m_laguageViews.add(new LanguageView(lang, context));
 			}
 			
 			for(int i=0;i<ordered.length;i++) {
@@ -84,16 +84,16 @@ public class LanguageSpinner extends Spinner implements AdapterView.OnItemSelect
 			}
 		} else {
 			for(Language lang : Language.values()) {
-				m_laguageViews.add(new LanguageView(lang));
+				m_laguageViews.add(new LanguageView(lang, context));
 			}
 		}
 		
 		m_loaded = true;
 	}
 
-	public void bindData() {
+	public void bindData(Context context) {
 		if(!m_loaded) {
-			loadData();
+			loadData(context);
 		}
 
 		m_spLanguageAdapter.clear();

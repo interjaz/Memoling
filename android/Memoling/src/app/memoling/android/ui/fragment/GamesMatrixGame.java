@@ -53,7 +53,7 @@ public abstract class GamesMatrixGame extends ApplicationFragment implements OnT
 	private boolean m_showProgress = false;
 	private boolean m_wordsLoading = false;
 	private int m_wordsLoadingEffect = 0;
-
+	
 	protected int m_sizeX = 12;
 	protected int m_sizeY = 12;
 
@@ -74,6 +74,10 @@ public abstract class GamesMatrixGame extends ApplicationFragment implements OnT
 	protected abstract void onDraw(Canvas c);
 
 	protected abstract void onMatrixFound(app.memoling.android.crossword.Matrix words);
+	
+	protected boolean getAllowDiagonal() {
+		return false;
+	}
 
 	//
 	// Fragment
@@ -327,7 +331,7 @@ public abstract class GamesMatrixGame extends ApplicationFragment implements OnT
 		m_wordsLoadingEffect = 0;
 
 		SolverThread th = new SolverThread();
-		th.start(false, false, m_sizeY, m_sizeX, this);
+		th.start(getAllowDiagonal(), false, m_sizeY, m_sizeX, this);
 		m_showProgress = true;
 	}
 
