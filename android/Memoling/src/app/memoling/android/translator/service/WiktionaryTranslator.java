@@ -53,8 +53,10 @@ public class WiktionaryTranslator {
 					Word wordA = new Word();
 					wordA.setWord(translation.getExpressionA());
 					wordA.setLanguage(translation.getLanguageA());
-					wordA.setDescription(translation.getWikiTranslationMeaning().getMeaning());
-
+					if(translation.getWikiTranslationMeaning() != null) {
+						wordA.setDescription(translation.getWikiTranslationMeaning().getMeaning());
+					}
+					
 					Word wordB = new Word();
 					wordB.setWord(translation.getExpressionB());
 					wordB.setLanguage(translation.getLanguageB());

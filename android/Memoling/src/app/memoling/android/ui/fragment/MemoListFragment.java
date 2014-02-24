@@ -114,6 +114,8 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 	private TextView m_lblWhatsNewTitle;
 	private TextView m_lblWhatsNewContent;
 	private Button m_btnWhatsNew;
+	
+	private TextView m_lblTextWarning;
 
 	private String m_saveErrorMessage;
 
@@ -191,6 +193,10 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 		// m_lstWords.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
 		m_lstWords.setStackFromBottom(true);
 
+		// Warnings
+		m_lblTextWarning = (TextView)contentView.findViewById(R.id.memolist_lblWordWarning);
+		resources.setFont(m_lblTextWarning, thinFont);
+		
 		// Word finder
 		m_wordsFinder = new WordsFinder(getActivity());
 
@@ -343,7 +349,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 	@Override
 	public synchronized void onTranslatorComplete(TranslatorResult result) {
 		String entry = m_txtAdd.getText().toString().trim().toLowerCase();
-
+		
 		boolean modified = false;
 		for (int i = 0; i < result.Translated.size(); i++) {
 
@@ -359,6 +365,9 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 				TranslatedView translatedView = new TranslatedView(original, translated, result.Source);
 
 				int wordPosition = removeSuggestion(strPending, original);
+				if(wordPosition == -1) {
+					wordPosition = removeSame(translatedView);
+				}
 
 				if (wordPosition == -1) {
 					m_suggestionAdapter.add(translatedView);
@@ -423,9 +432,8 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 			m_suggestionAdapter.addAll(tViews);
 
 			if (fromLang != toLang) {
-				for (int i = 0; i < result.Result.size(); i++) {
-					result.Result.get(i).setWord(currentStrBase + result.Result.get(i).getWord().toLowerCase());
-					new Translator(getActivity(), result.Result.get(i), fromLang, toLang, this);
+				for (Word word : words) {
+					new Translator(getActivity(), word, fromLang, toLang, this);
 				}
 			}
 		}
@@ -524,6 +532,8 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 
 				m_lstWords.setVisibility(View.GONE);
 				m_lstSuggestions.setVisibility(View.VISIBLE);
+				
+				checkForWord(s.toString());
 
 			} else {
 				m_lstWords.setVisibility(View.VISIBLE);
@@ -541,6 +551,34 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
 			// Nothing
 		}
+		
+		private void checkForWord(String txtWord) {
+			boolean exists = false;
+			txtWord = txtWord.toLowerCase();
+			
+			for(Memo memo : m_memos) {
+
+				if(memo.getWordA() != null && memo.getWordA().getWord() != null && 
+					memo.getWordA().getWord().toLowerCase().equals(txtWord)) {
+					exists = true;
+					break;
+				}
+				
+				if(memo.getWordB() != null && memo.getWordB().getWord() != null &&
+					memo.getWordB().getWord().toLowerCase().equals(txtWord)) {
+					exists = true;
+					break;
+				}
+			}
+			
+			if(exists) {
+				// Found
+				m_lblTextWarning.setVisibility(View.VISIBLE);
+			} else {
+				m_lblTextWarning.setVisibility(View.GONE);
+			}
+		}
+		
 	}
 
 	private class LstSuggestionEventHandler implements OnItemClickListener, OnScrollListener, OnScrollFinishedListener {
@@ -667,6 +705,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 			}
 
 			m_laySearch.hide();
+			m_lblTextWarning.setVisibility(View.GONE);
 		}
 	}
 
@@ -812,6 +851,26 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 		for (int i = 0; i < m_suggestionAdapter.getCount(); i++) {
 			TranslatedView view = m_suggestionAdapter.getItem(i);
 			if (view.source().equals(strPending) && view.from().getWord().equals(original.getWord())) {
+				return i;
+			}
+		}
+
+		return -1;
+	}
+	
+	private synchronized int removeSame(TranslatedView word) {
+
+		for (int i = 0; i < m_suggestionAdapter.getCount(); i++) {
+			TranslatedView view = m_suggestionAdapter.getItem(i);
+			
+			boolean sameSource = view.source().equals(word.source());
+			boolean sameFrom = view.from().hashCode() == word.from().hashCode();
+			boolean sameTo = (view.to() == null && word.to() == null) ||
+				(view.to() != null && word.to() != null && view.to().hashCode() == word.to().hashCode());
+			
+			boolean same = sameSource && sameFrom && sameTo;
+			
+			if (same) {
 				return i;
 			}
 		}

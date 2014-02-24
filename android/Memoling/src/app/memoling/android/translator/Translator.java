@@ -96,9 +96,9 @@ public class Translator implements ITranslatorComplete {
 					cachedResult = new ArrayList<TranslatorResult>();
 					m_cache.put(cacheKey, cachedResult);
 				}
+				
+				cachedResult.add(result);
 			}
-
-			cachedResult.add(result);
 		}
 
 		if (result != null && m_onTranslateComplete != null) {

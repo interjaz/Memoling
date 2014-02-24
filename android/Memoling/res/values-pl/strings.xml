@@ -7,6 +7,8 @@
 		\n
 		Jeżeli zauważyłeś/aś błąd, proszę napisz o nim na fb aplikacji. Dzięki!\n
 		\n
+		Zmainy v.1.9.2\n
+		1. Usunięto kilka błędów\n
 		Zmainy v.1.9.1\n
 		1. Poprawiono grywalność gier\n
 		Zmainy v.1.9.0\n
@@ -62,6 +64,7 @@
     <string name="memolist_findword">Znajdź słowo</string>
     <string name="memolist_wiktionary_back">Cofnij</string>
     <string name="memolist_audioReplay">Audio Powtórka</string>
+    <string name="memolist_wordExists">Słowo już jest w bibliotece</string>
 
     <!-- MemoBaseList Fragment -->
     <string name="memobaselist_title">Biblioteki</string>

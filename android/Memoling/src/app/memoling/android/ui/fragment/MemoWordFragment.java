@@ -58,8 +58,8 @@ import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.fragment.MemoFragment.IMemoPagerFragment;
 import app.memoling.android.wiktionary.WiktionaryDb;
 
-public class MemoWordFragment extends Fragment implements OnEditorActionListener, IAllTranslatorComplete,
-		IMemoPagerFragment {
+public class MemoWordFragment extends Fragment implements
+		OnEditorActionListener, IAllTranslatorComplete, IMemoPagerFragment {
 
 	private ScrollView m_layScrollView;
 	private TextView m_txtLanguage;
@@ -88,19 +88,23 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 
 	private TextToSpeechHelper m_textToSpeechHelper;
 
-	public View onCreateView(boolean isWordA, LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View contentView = inflater.inflate(R.layout.memo_word, container, false);
+	public View onCreateView(boolean isWordA, LayoutInflater inflater,
+			ViewGroup container, Bundle savedInstanceState) {
+		View contentView = inflater.inflate(R.layout.memo_word, container,
+				false);
 
 		m_isWordA = isWordA;
 
 		ResourceManager resources = new ResourceManager(getActivity());
 		Typeface thinFont = resources.getLightFont();
 
-		m_layScrollView = (ScrollView) contentView.findViewById(R.id.memo_layScrollView);
+		m_layScrollView = (ScrollView) contentView
+				.findViewById(R.id.memo_layScrollView);
 
 		m_txtLanguage = (TextView) contentView.findViewById(R.id.memo_txtLang);
 
-		m_btnSearchWord = (ImageButton) contentView.findViewById(R.id.memo_btnSearchWord);
+		m_btnSearchWord = (ImageButton) contentView
+				.findViewById(R.id.memo_btnSearchWord);
 		m_btnSearchWord.setOnClickListener(new BtnSearchWordAEventHandler());
 
 		m_txtWord = (EditText) contentView.findViewById(R.id.memo_txtWord);
@@ -108,26 +112,37 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 		m_txtWord.setTypeface(thinFont);
 		m_txtWord.addTextChangedListener(new TxtWordAEventHandler());
 
-		m_btnCopyWord = (ImageButton) contentView.findViewById(R.id.memo_btnCopyWord);
+		m_btnCopyWord = (ImageButton) contentView
+				.findViewById(R.id.memo_btnCopyWord);
 		m_btnCopyWord.setOnClickListener(new BtnCopyWordEventHandler());
 
-		m_btnSpeech = (ImageButton) contentView.findViewById(R.id.memo_btnSpeech);
+		m_btnSpeech = (ImageButton) contentView
+				.findViewById(R.id.memo_btnSpeech);
 		m_btnSpeech.setOnClickListener(new BtnSpeechEventHandler());
 
-		m_txtDescriptionMemoling = (EditText) contentView.findViewById(R.id.memo_txtDescriptionMemoling);
-		m_txtDescriptionMemoling.addTextChangedListener(new TxtDescriptionEventHandler());
+		m_txtDescriptionMemoling = (EditText) contentView
+				.findViewById(R.id.memo_txtDescriptionMemoling);
+		m_txtDescriptionMemoling
+				.addTextChangedListener(new TxtDescriptionEventHandler());
 
-		m_lblDescriptionQuizlet = (TextView) contentView.findViewById(R.id.memo_lblDescriptionQuizlet);
-		m_vwDescriptionWiktionary = (WebView) contentView.findViewById(R.id.memo_vwDefinitionWiktionary);
+		m_lblDescriptionQuizlet = (TextView) contentView
+				.findViewById(R.id.memo_lblDescriptionQuizlet);
+		m_vwDescriptionWiktionary = (WebView) contentView
+				.findViewById(R.id.memo_vwDefinitionWiktionary);
 
-		m_lblSentencesTatoeba = (TextView) contentView.findViewById(R.id.memo_lblSentencesTatoeba);
-		m_lblSentencesQuizlet = (TextView) contentView.findViewById(R.id.memo_lblSentencesQuizlet);
+		m_lblSentencesTatoeba = (TextView) contentView
+				.findViewById(R.id.memo_lblSentencesTatoeba);
+		m_lblSentencesQuizlet = (TextView) contentView
+				.findViewById(R.id.memo_lblSentencesQuizlet);
 
-		m_laySynonyms = (LinearLayout) contentView.findViewById(R.id.memo_laySynonyms);
-		m_txtSynonyms = (TextView) contentView.findViewById(R.id.memo_txtSynonyms);
+		m_laySynonyms = (LinearLayout) contentView
+				.findViewById(R.id.memo_laySynonyms);
+		m_txtSynonyms = (TextView) contentView
+				.findViewById(R.id.memo_txtSynonyms);
 
 		m_webSearch = (WebView) contentView.findViewById(R.id.memo_webSearch);
-		m_layWebSearch = (FrameLayout) contentView.findViewById(R.id.memo_layWebSearch);
+		m_layWebSearch = (FrameLayout) contentView
+				.findViewById(R.id.memo_layWebSearch);
 		m_webSearch.getSettings().setJavaScriptEnabled(true);
 		m_webSearch.setWebViewClient(new WebViewClient() {
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -136,9 +151,11 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 			}
 		});
 
-		m_btnThesaurusWord = (Button) contentView.findViewById(R.id.memo_btnThesaurusWord);
+		m_btnThesaurusWord = (Button) contentView
+				.findViewById(R.id.memo_btnThesaurusWord);
 		m_btnThesaurusWord.setOnClickListener(new BtnThesaurusEventHandler());
-		m_btnDictionaryWord = (Button) contentView.findViewById(R.id.memo_btnDictionaryWord);
+		m_btnDictionaryWord = (Button) contentView
+				.findViewById(R.id.memo_btnDictionaryWord);
 		m_btnDictionaryWord.setOnClickListener(new BtnDictionaryEventHandler());
 
 		TabHost tabHost = null;
@@ -146,34 +163,34 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 		int minHeight = Helper.dipToPixels(getActivity(), 40);
 		int color = 0xFFFFFFFF;
 		Typeface typeface = thinFont;
-		
+
 		// Definition tabs
 		tabHost = (TabHost) contentView.findViewById(R.id.memo_tabDefinitions);
 		tabHost.setup();
 
-		createTab(tabHost, "TAB0", 
-				R.string.memo_definitionsMemoling, R.id.memo_tabDefinitionMemoling,
-				typeface, fontSize, color, minHeight);
+		createTab(tabHost, "TAB0", R.string.memo_definitionsMemoling,
+				R.id.memo_tabDefinitionMemoling, typeface, fontSize, color,
+				minHeight);
 
-		createTab(tabHost, "TAB1", 
-				R.string.memo_definitionsQuizlet, R.id.memo_tabDefinitionQuizlet,
-				typeface, fontSize, color, minHeight);
+		createTab(tabHost, "TAB1", R.string.memo_definitionsQuizlet,
+				R.id.memo_tabDefinitionQuizlet, typeface, fontSize, color,
+				minHeight);
 
-		createTab(tabHost, "TAB2", 
-				R.string.memo_definitionsWiktionary, R.id.memo_tabDefinitionWiktionary,
-				typeface, fontSize, color, minHeight);
+		createTab(tabHost, "TAB2", R.string.memo_definitionsWiktionary,
+				R.id.memo_tabDefinitionWiktionary, typeface, fontSize, color,
+				minHeight);
 
 		// Sentence tabs
 		tabHost = (TabHost) contentView.findViewById(R.id.memo_tabSentences);
 		tabHost.setup();
 
-		createTab(tabHost, "TAB0", 
-				R.string.memo_sentencesTatoeba, R.id.memo_tabSentencesTatoeba,
-				typeface, fontSize, color, minHeight);
+		createTab(tabHost, "TAB0", R.string.memo_sentencesTatoeba,
+				R.id.memo_tabSentencesTatoeba, typeface, fontSize, color,
+				minHeight);
 
-		createTab(tabHost, "TAB1", 
-				R.string.memo_sentencesQuizlet, R.id.memo_tabSentencesQuizlet,
-				typeface, fontSize, color, minHeight);
+		createTab(tabHost, "TAB1", R.string.memo_sentencesQuizlet,
+				R.id.memo_tabSentencesQuizlet, typeface, fontSize, color,
+				minHeight);
 
 		resources.setFont(m_btnThesaurusWord, thinFont);
 		resources.setFont(m_btnDictionaryWord, thinFont);
@@ -182,8 +199,10 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 		resources.setFont(contentView, R.id.textView1, thinFont);
 		resources.setFont(contentView, R.id.textView2, thinFont);
 		resources.setFont(contentView, R.id.textView3, thinFont);
-		resources.setFont(contentView, R.id.memo_txtDescriptionMemoling, thinFont);
-		resources.setFont(contentView, R.id.memo_lblDescriptionQuizlet, thinFont);
+		resources.setFont(contentView, R.id.memo_txtDescriptionMemoling,
+				thinFont);
+		resources.setFont(contentView, R.id.memo_lblDescriptionQuizlet,
+				thinFont);
 		resources.setFont(contentView, R.id.memo_lblSentencesTatoeba, thinFont);
 		resources.setFont(contentView, R.id.memo_lblSentencesQuizlet, thinFont);
 		resources.setFont(contentView, R.id.memo_txtSynonyms, thinFont);
@@ -195,12 +214,16 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 
 		if (m_isWordA) {
 			m_btnSearchWord.setVisibility(View.VISIBLE);
-			((TextView) contentView.findViewById(R.id.memo_lblWord)).setText(R.string.memo_lblWordA);
-			((TextView) contentView.findViewById(R.id.memo_lblLang)).setText(R.string.memo_lblLangA);
+			((TextView) contentView.findViewById(R.id.memo_lblWord))
+					.setText(R.string.memo_lblWordA);
+			((TextView) contentView.findViewById(R.id.memo_lblLang))
+					.setText(R.string.memo_lblLangA);
 		} else {
 			m_btnSearchWord.setVisibility(View.GONE);
-			((TextView) contentView.findViewById(R.id.memo_lblWord)).setText(R.string.memo_lblWordB);
-			((TextView) contentView.findViewById(R.id.memo_lblLang)).setText(R.string.memo_lblLangB);
+			((TextView) contentView.findViewById(R.id.memo_lblWord))
+					.setText(R.string.memo_lblWordB);
+			((TextView) contentView.findViewById(R.id.memo_lblLang))
+					.setText(R.string.memo_lblLangB);
 		}
 
 		m_textToSpeechHelper = new TextToSpeechHelper(getActivity());
@@ -211,7 +234,8 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 	@Override
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 		if (actionId == EditorInfo.IME_ACTION_DONE) {
-			InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+			InputMethodManager imm = (InputMethodManager) v.getContext()
+					.getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 			return true;
 		}
@@ -219,7 +243,8 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 	}
 
 	public boolean onBackPressed() {
-		if (m_layWebSearch != null && m_layWebSearch.getVisibility() == View.VISIBLE) {
+		if (m_layWebSearch != null
+				&& m_layWebSearch.getVisibility() == View.VISIBLE) {
 			m_layWebSearch.setVisibility(View.GONE);
 			return false;
 		}
@@ -227,7 +252,9 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 		return true;
 	}
 
-	private void createTab(TabHost tabHost, String tag, int title, int content, Typeface typeface, int titleTextSize, int titleTextColor, int minHeight) {
+	private void createTab(TabHost tabHost, String tag, int title, int content,
+			Typeface typeface, int titleTextSize, int titleTextColor,
+			int minHeight) {
 		TabSpec tabSpec = tabHost.newTabSpec(tag);
 		TextView textTab = new TextView(getActivity());
 		textTab.setText(getString(title));
@@ -241,15 +268,18 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 		tabSpec.setContent(content);
 		tabHost.addTab(tabSpec);
 	}
-	
+
 	private class BtnSearchWordAEventHandler implements OnClickListener {
 		@Override
 		public void onClick(View v) {
 			Word from = new Word(m_txtWord.getText().toString().trim());
 			Language fromLang = m_memo.getWordA().getLanguage();
 			Language toLang = m_memo.getWordB().getLanguage();
-			Toast.makeText(getActivity(), R.string.memo_selectTranslationProgress, Toast.LENGTH_SHORT).show();
-			new Translator(getActivity(), from, fromLang, toLang, null, MemoWordFragment.this);
+			Toast.makeText(getActivity(),
+					R.string.memo_selectTranslationProgress, Toast.LENGTH_SHORT)
+					.show();
+			new Translator(getActivity(), from, fromLang, toLang, null,
+					MemoWordFragment.this);
 		}
 	}
 
@@ -257,8 +287,10 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 
 		@Override
 		public void onClick(View v) {
-			Helper.copyToClipboard(getActivity(), m_txtWord.getText().toString());
-			Toast.makeText(getActivity(), R.string.memo_copied, Toast.LENGTH_SHORT).show();
+			Helper.copyToClipboard(getActivity(), m_txtWord.getText()
+					.toString());
+			Toast.makeText(getActivity(), R.string.memo_copied,
+					Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -266,7 +298,8 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 
 		@Override
 		public void onClick(View v) {
-			m_textToSpeechHelper.readText(getWord().getWord(), getWord().getLanguage());
+			m_textToSpeechHelper.readText(getWord().getWord(), getWord()
+					.getLanguage());
 		}
 	}
 
@@ -274,8 +307,8 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 
 		@Override
 		public void onClick(View v) {
-			String searchUrl = String.format(ThesaurusAdapter.get(getWord().getLanguage()), m_txtWord.getText()
-					.toString());
+			String searchUrl = String.format(ThesaurusAdapter.get(getWord()
+					.getLanguage()), m_txtWord.getText().toString());
 
 			m_layWebSearch.setVisibility(View.VISIBLE);
 			m_webSearch.loadUrl(searchUrl);
@@ -286,8 +319,8 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 
 		@Override
 		public void onClick(View v) {
-			String searchUrl = String.format(DictionaryAdapter.get(getWord().getLanguage()), m_txtWord.getText()
-					.toString());
+			String searchUrl = String.format(DictionaryAdapter.get(getWord()
+					.getLanguage()), m_txtWord.getText().toString());
 
 			m_layWebSearch.setVisibility(View.VISIBLE);
 			m_webSearch.loadUrl(searchUrl);
@@ -297,11 +330,12 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 	@Override
 	public void onAllTranslatorComplete(ArrayList<TranslatorResult> results) {
 
-		if(results == null) {
-			Toast.makeText(getActivity(), R.string.memo_notFound, Toast.LENGTH_SHORT).show();
+		if (results == null) {
+			Toast.makeText(getActivity(), R.string.memo_notFound,
+					Toast.LENGTH_SHORT).show();
 			return;
 		}
-		
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		String wordB = m_memo.getWordB().getWord();
 
@@ -309,15 +343,18 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 
 		for (TranslatorResult result : results) {
 			for (Word word : result.Translated) {
-				if (!word.getWord().equals("") && !words.contains(word.getWord())) {
+				if (!word.getWord().equals("")
+						&& !words.contains(word.getWord())) {
 					words.add(word.getWord().toLowerCase());
 				}
 			}
 		}
 
-		final CharSequence[] arrayWords = words.toArray(new CharSequence[words.size()]);
+		final CharSequence[] arrayWords = words.toArray(new CharSequence[words
+				.size()]);
 
-		builder.setTitle(getString(R.string.memo_selectTranslationTitle)).setCancelable(true)
+		builder.setTitle(getString(R.string.memo_selectTranslationTitle))
+				.setCancelable(true)
 				.setItems(arrayWords, new DialogInterface.OnClickListener() {
 
 					@Override
@@ -359,12 +396,17 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 				m_txtWord.setText(getWord().getWord());
 				m_txtWord.clearFocus();
 
-				m_btnThesaurusWord.setEnabled(ThesaurusAdapter.isSupported(getWord().getLanguage()));
-				m_btnDictionaryWord.setEnabled(ThesaurusAdapter.isSupported(getWord().getLanguage()));
-				m_txtLanguage.setText(getWord().getLanguage().getName(getActivity()));
+				m_btnThesaurusWord.setEnabled(ThesaurusAdapter
+						.isSupported(getWord().getLanguage()));
+				m_btnDictionaryWord.setEnabled(ThesaurusAdapter
+						.isSupported(getWord().getLanguage()));
+				m_txtLanguage.setText(getWord().getLanguage().getName(
+						getActivity()));
 
-				m_btnThesaurusWord.setEnabled(ThesaurusAdapter.isSupported(getWord().getLanguage()));
-				m_btnDictionaryWord.setEnabled(ThesaurusAdapter.isSupported(getWord().getLanguage()));
+				m_btnThesaurusWord.setEnabled(ThesaurusAdapter
+						.isSupported(getWord().getLanguage()));
+				m_btnDictionaryWord.setEnabled(ThesaurusAdapter
+						.isSupported(getWord().getLanguage()));
 
 				setMemoWiktionary();
 
@@ -381,7 +423,9 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 	private void setMemoWiktionary() {
 
 		if (!WiktionaryDb.isAvailable()) {
-			m_vwDescriptionWiktionary.loadData(getString(R.string.memo_wikitonaryNotInstalled), "text/html", "utf-8");
+			m_vwDescriptionWiktionary.loadData(
+					getString(R.string.memo_wikitonaryNotInstalled),
+					"text/html", "utf-8");
 			return;
 		}
 
@@ -392,8 +436,10 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 			@Override
 			protected Void doInBackground(Void... params) {
 
-				WikiSynonymAdapter synonymAdapter = new WikiSynonymAdapter(getActivity());
-				ArrayList<WikiSynonym> wikiSynonyms = synonymAdapter.get(getWord().getWord(), getWord().getLanguage());
+				WikiSynonymAdapter synonymAdapter = new WikiSynonymAdapter(
+						getActivity());
+				ArrayList<WikiSynonym> wikiSynonyms = synonymAdapter.get(
+						getWord().getWord(), getWord().getLanguage());
 
 				HashSet<String> synonyms = new HashSet<String>();
 				if (wikiSynonyms != null) {
@@ -402,9 +448,10 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 					}
 
 					StringBuilder sb = new StringBuilder();
+					int i = 1;
 					if (synonyms.size() > 0) {
 						for (String synonym : synonyms) {
-							sb.append(synonym + ", ");
+							sb.append(String.format("%d. %s\n", i++, synonym));
 						}
 						sb.setLength(sb.length() - 2);
 						m_synonyms = sb.toString();
@@ -441,20 +488,24 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 			@Override
 			protected Void doInBackground(Void... params) {
 
-				WikiTranslationAdapter wikiTranslationAdapter = new WikiTranslationAdapter(getActivity());
-				ArrayList<WikiTranslation> wikiTranslations = wikiTranslationAdapter.get(getWord().getWord(), getWord()
-						.getLanguage());
+				WikiTranslationAdapter wikiTranslationAdapter = new WikiTranslationAdapter(
+						getActivity());
+				ArrayList<WikiTranslation> wikiTranslations = wikiTranslationAdapter
+						.get(getWord().getWord(), getWord().getLanguage());
 
 				m_meanings = new HashSet<String>();
 				if (wikiTranslations != null) {
 					for (WikiTranslation translation : wikiTranslations) {
 						if (translation.getWikiTranslationMeaning() != null)
-							m_meanings.add(translation.getWikiTranslationMeaning().getMeaning());
+							m_meanings.add(translation
+									.getWikiTranslationMeaning().getMeaning());
 					}
 				}
 
-				WikiDefinitionAdapter wikiDefinitionAdapter = new WikiDefinitionAdapter(getActivity());
-				m_wikiDefinition = wikiDefinitionAdapter.get(getWord().getWord(), getWord().getLanguage());
+				WikiDefinitionAdapter wikiDefinitionAdapter = new WikiDefinitionAdapter(
+						getActivity());
+				m_wikiDefinition = wikiDefinitionAdapter.get(getWord()
+						.getWord(), getWord().getLanguage());
 
 				return null;
 			}
@@ -465,10 +516,15 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 				String styles = "<style type=\"text/css\">@font-face { font-family: 'light-font'; src: url('Roboto-Light.ttf');} body { font-size: 0.8em; font-family: 'light-font';  }</style>\n";
 				wikiDefBuilder.append(styles);
 
-				for (String meaning : m_meanings) {
-					wikiDefBuilder.append(meaning + "; ");
+				if (m_meanings.size() > 0) {
+					wikiDefBuilder.append("<ol style=\"padding-left:25px;\">");
+
+					for (String meaning : m_meanings) {
+						wikiDefBuilder.append("<li>" + meaning + "</li>");
+					}
+
+					wikiDefBuilder.append("</ol>");
 				}
-				wikiDefBuilder.append("<br />&nbsp;<br />");
 
 				if (m_wikiDefinition != null) {
 					wikiDefBuilder.append(m_wikiDefinition.getHtmlDefinition());
@@ -483,10 +539,11 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 					return;
 				}
 
-				m_vwDescriptionWiktionary.loadDataWithBaseURL("file:///android_asset/", wikiDefBuilder.toString(),
+				m_vwDescriptionWiktionary.loadDataWithBaseURL(
+						"file:///android_asset/", wikiDefBuilder.toString(),
 						"text/html", "utf-8", null);
-				m_vwDescriptionWiktionary.setBackgroundColor(getActivity().getResources().getColor(
-						R.color.content_background));
+				m_vwDescriptionWiktionary.setBackgroundColor(getActivity()
+						.getResources().getColor(R.color.content_background));
 			}
 
 		}.execute();
@@ -509,7 +566,9 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 				StringBuilder sb = new StringBuilder();
 				for (int i = 0; i < memoSentences.size(); i++) {
 					MemoSentence memoSentence = memoSentences.get(i);
-					sb.append(String.format("%d. %s\n", i + 1, memoSentence.getOriginalSentence()));
+					sb.append(String.format("%2d. %s%s", i + 1,
+							memoSentence.getOriginalSentence(),
+							i != memoSentences.size() - 1 ? "\n" : ""));
 				}
 
 				m_lblSentencesTatoeba.setText(sb.toString());
@@ -538,16 +597,20 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 
 				StringBuilder sbDesc = new StringBuilder();
 				StringBuilder sbSent = new StringBuilder();
-				int i = 0;
-				for (QuizletDefinition definition : definitions) {
-					i++;
-					sbDesc.append(String.format("%d. %s - %s\n", i, definition.getSpeechPart(),
-							Html.fromHtml(definition.getDefinition())));
 
-					int j = 0;
-					for (String sentence : definition.getExamples()) {
-						j++;
-						sbSent.append(String.format("%d.%d. %s\n", i, j, Html.fromHtml(sentence)));
+				for (int i = 0; i < definitions.size(); i++) {
+					QuizletDefinition definition = definitions.get(i);
+					sbDesc.append(String.format("%d. %s - %s%s", i + 1,
+							definition.getSpeechPart(),
+							Html.fromHtml(definition.getDefinition()),
+							i != definitions.size() - 1 ? "\n" : ""));
+
+					for (int j = 0; j < definition.getExamples().size(); j++) {
+						String sentence = definition.getExamples().get(j);
+						sbSent.append(String.format("%d.%d. %s%s", i + 1,
+								j + 1, Html.fromHtml(sentence), j != definition
+										.getExamples().size() - 1 ? "<br/>"
+										: ""));
 					}
 				}
 
@@ -556,7 +619,8 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 				if (sbSent.length() == 0) {
 					m_lblSentencesQuizlet.setText(R.string.memo_notFound);
 				} else {
-					m_lblSentencesQuizlet.setText(Html.fromHtml(sbSent.toString()));
+					m_lblSentencesQuizlet.setText(Html.fromHtml(sbSent
+							.toString()));
 				}
 			}
 		};
@@ -579,11 +643,13 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 		}
 
 		@Override
-		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
 		}
 
 		@Override
-		public void onTextChanged(CharSequence s, int start, int before, int count) {
+		public void onTextChanged(CharSequence s, int start, int before,
+				int count) {
 
 		}
 
@@ -599,11 +665,13 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 		}
 
 		@Override
-		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
 		}
 
 		@Override
-		public void onTextChanged(CharSequence s, int start, int before, int count) {
+		public void onTextChanged(CharSequence s, int start, int before,
+				int count) {
 
 		}
 
@@ -641,6 +709,5 @@ public class MemoWordFragment extends Fragment implements OnEditorActionListener
 			m_textToSpeechHelper.shutdown();
 		}
 	}
-	
 
 }

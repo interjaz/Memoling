@@ -7,6 +7,8 @@
 		\n 
 		If you spot a bug, please write a post on application fb site. Thanks!\n
 		\n
+		Changes v.1.9.2\n
+		1. Bug fixes\n
 		Changes v.1.9.1\n
 		1. Improved games a little bit\n
 		Changes v.1.9.0\n
@@ -61,6 +63,7 @@
     <string name="memolist_hangman">Hangman</string>
     <string name="memolist_crossword">Crossword</string>
     <string name="memolist_findword">Find word</string>
+    <string name="memolist_wordExists">Such word already exist in the library</string>
 
     <!-- MemoBaseList Fragment -->
     <string name="memobaselist_title">Libraries</string>

@@ -20,6 +20,18 @@
             android:orientation="vertical"
             android:paddingTop="5dp" >
 
+            <TextView
+                android:id="@+id/memolist_lblWordWarning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:padding="3dp"
+  				android:visibility="gone"
+                android:background="@color/content_background"
+                android:text="@string/memolist_wordExists"
+                android:textColor="#FFCF0000"
+                android:textSize="18sp" />
+
             <RelativeLayout
                 android:id="@+id/memolist_layListSwitcher"
                 android:layout_width="match_parent"
