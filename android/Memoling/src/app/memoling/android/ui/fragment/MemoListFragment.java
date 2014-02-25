@@ -7,7 +7,6 @@ import java.util.Date;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,10 +15,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextWatcher;
-import android.text.style.ForegroundColorSpan;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -467,13 +463,18 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 			if (m_memoAdapter.add(memo) == -1) {
 				Toast.makeText(getActivity(), m_saveErrorMessage, Toast.LENGTH_SHORT).show();
 				return;
+			} else {
+				MemoView memoView = new MemoView(memo); 
+
+				m_wordsAdapter.add(memoView);
+				m_wordsAdapter.notifyDataSetChanged();
+
+				m_memos.add(memo);
+				m_memosViews.add(memoView);
+				
+				m_txtAdd.setText("");
+				m_txtAddTranslated.setText("");
 			}
-
-			m_txtAdd.setText("");
-			m_txtAddTranslated.setText("");
-
-			m_wordsAdapter.add(new MemoView(memo));
-			m_wordsAdapter.notifyDataSetChanged();
 		}
 
 	}
@@ -968,7 +969,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 
 		return new Helper.Pair<Language, Language>(fLangMax, sLangMax);
 	}
-
+	
 	private void openDetails() {
 
 		ApplicationFragment fragment = new MemoBaseFragment();

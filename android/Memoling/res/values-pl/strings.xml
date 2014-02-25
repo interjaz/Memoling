@@ -407,7 +407,7 @@
     <string name="wiktionary_error">Błąd. Spróbuj zainstalować ponownie</string>
     <string name="wiktionary_notInstalled">Nie zainstalowano</string>
     <string name="wiktionary_installed">Zainstalowano</string>
-    <string name="wiktionary_lblUninstall">Odninstaluj</string>
+    <string name="wiktionary_lblUninstall">Odinstaluj</string>
     
     <!-- WiktionaryDownloadCancel -->
     <string name="wiktionarydownloadmanager_title">Wiktionary Download Manager</string>
