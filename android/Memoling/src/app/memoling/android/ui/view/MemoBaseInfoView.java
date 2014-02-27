@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.MemoBaseInfo;
-import app.memoling.android.helper.DateHelper;
-import app.memoling.android.helper.Helper;
 import app.memoling.android.ui.adapter.IActive;
 import app.memoling.android.ui.adapter.IGet;
 

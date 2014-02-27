@@ -1,10 +1,12 @@
 package app.memoling.android.ui.activity;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.GoogleAnalytics;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
+import app.memoling.android.Config;
 import app.memoling.android.R;
 
 public class QuizletActivity extends Activity {
@@ -13,6 +15,7 @@ public class QuizletActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_quizlet);
+		GoogleAnalytics.getInstance(this).setDryRun(Config.Debug);
 	}
 
 	@Override

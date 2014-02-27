@@ -557,6 +557,10 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 			boolean exists = false;
 			txtWord = txtWord.toLowerCase();
 			
+			if(m_memos == null) {
+				return;
+			}
+			
 			for(Memo memo : m_memos) {
 
 				if(memo.getWordA() != null && memo.getWordA().getWord() != null && 

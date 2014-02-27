@@ -2,7 +2,6 @@ package app.memoling.android.ui.view;
 
 import java.util.ArrayList;
 
-import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.view.View;
 import android.widget.LinearLayout;

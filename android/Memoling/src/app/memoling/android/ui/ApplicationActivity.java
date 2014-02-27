@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ExpandableListView;
+import app.memoling.android.Config;
 import app.memoling.android.R;
 import app.memoling.android.ui.adapter.DrawerAdapter;
 import app.memoling.android.ui.fragment.MemoListFragment;
@@ -22,6 +23,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.GoogleAnalytics;
 
 public class ApplicationActivity extends SherlockFragmentActivity {
 
@@ -294,6 +296,7 @@ public class ApplicationActivity extends SherlockFragmentActivity {
 	}
 
 	public EasyTracker getAnalyticsTracker() {
+		GoogleAnalytics.getInstance(this).setDryRun(Config.Debug);
 		return EasyTracker.getInstance(this);
 	}
 }

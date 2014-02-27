@@ -12,8 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import app.memoling.android.R;
-import app.memoling.android.R.id;
-import app.memoling.android.R.layout;
 import app.memoling.android.ui.control.LanguageSpinner;
 
 public class UiTesFragment extends Fragment {

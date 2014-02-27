@@ -6,10 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import app.memoling.android.db.DatabaseHelper;
 import app.memoling.android.db.SqliteAdapter;
-import app.memoling.android.entity.Language;
-import app.memoling.android.entity.WordOfTheDay;
 import app.memoling.android.entity.WordOfTheDayWidget;
-import app.memoling.android.wordoftheday.WordOfTheDayMode;
 
 public class WordOfTheDayWidgetAdapter extends SqliteAdapter {
 

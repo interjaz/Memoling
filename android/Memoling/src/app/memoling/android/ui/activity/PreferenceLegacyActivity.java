@@ -1,6 +1,7 @@
 package app.memoling.android.ui.activity;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.GoogleAnalytics;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
@@ -9,6 +10,7 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
+import app.memoling.android.Config;
 import app.memoling.android.R;
 import app.memoling.android.preference.Preferences;
 import app.memoling.android.preference.PreferencesCommon;
@@ -24,6 +26,8 @@ public class PreferenceLegacyActivity extends PreferenceActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		GoogleAnalytics.getInstance(this).setDryRun(Config.Debug);
 		
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 			initLegacy();

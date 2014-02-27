@@ -3,8 +3,6 @@ package app.memoling.android.entity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.text.Html;
-import android.text.Spanned;
 import app.memoling.android.wiktionary.WiktionaryMark;
 
 public class WikiDefinition {

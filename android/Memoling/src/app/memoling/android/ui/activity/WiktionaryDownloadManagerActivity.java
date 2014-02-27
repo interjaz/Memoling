@@ -3,6 +3,7 @@ package app.memoling.android.ui.activity;
 import java.util.ArrayList;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.GoogleAnalytics;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,6 +14,7 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
 import android.os.Bundle;
+import app.memoling.android.Config;
 import app.memoling.android.R;
 import app.memoling.android.wiktionary.WiktionaryProviderService;
 
@@ -22,6 +24,7 @@ public class WiktionaryDownloadManagerActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_wiktionarydownloadmanager);
+		GoogleAnalytics.getInstance(this).setDryRun(Config.Debug);
 
 		new AlertDialog.Builder(this).setTitle(R.string.wiktionarydownloadmanager_dialogTitle)
 				.setNegativeButton(getString(R.string.wiktionarydownloadmanager_dialogYes), new OnClickListener() {

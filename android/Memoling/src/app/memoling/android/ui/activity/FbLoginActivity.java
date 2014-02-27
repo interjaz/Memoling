@@ -1,6 +1,7 @@
 package app.memoling.android.ui.activity;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.GoogleAnalytics;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -40,6 +41,8 @@ public class FbLoginActivity extends Activity {
 		m_webView.setHorizontalScrollBarEnabled(false);
 		m_webView.setWebViewClient(new FbWebClient());
 
+		GoogleAnalytics.getInstance(this).setDryRun(Config.Debug);
+		
 		m_webView.loadUrl(facebookLoginUrl);
 	}
 

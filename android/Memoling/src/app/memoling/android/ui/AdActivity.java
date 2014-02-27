@@ -1,10 +1,12 @@
 package app.memoling.android.ui;
 
 import android.os.Bundle;
+import app.memoling.android.Config;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.google.ads.AdView;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.GoogleAnalytics;
 
 public class AdActivity extends SherlockActivity {
 
@@ -13,6 +15,7 @@ public class AdActivity extends SherlockActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		GoogleAnalytics.getInstance(this).setDryRun(Config.Debug);
 	}
 
 	protected void onCreate_Ads() {
