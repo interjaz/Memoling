@@ -1,0 +1,3 @@
+[submodule "tools/MemolingTools/Wiktionary"]
+	path = tools/MemolingTools/Wiktionary
+	url = https://github.com/interjaz/WiktionaryMapper.git
