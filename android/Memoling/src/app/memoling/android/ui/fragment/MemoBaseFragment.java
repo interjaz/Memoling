@@ -61,6 +61,7 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 	public final static int RequestMemolingFile = 1;
 	public final static int RequestCsvFile = 2;
 	public final static int RequestEvernote = 3;
+	public final static int RequestAnkiFile = 4;
 
 	private String m_memoBaseId;
 
@@ -164,6 +165,10 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 			case RequestCsvFile:
 				path = Helper.getPathFromIntent(ctx, data);
 				importCsvFile(path);
+				break;
+			case RequestAnkiFile:
+				path = Helper.getPathFromIntent(ctx, data);
+				importAnkiFile(path);
 				break;
 			}
 
@@ -372,9 +377,27 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 
 				MemoBaseFragment.this.bindData();
 			}
-
 		});
+	}
+	
+	private void importAnkiFile(final String path) {
+		Import.importAnkiFile(m_memoBaseId, getActivity(), path, m_memoConflictResolve, new OnSyncComplete() {
+			@Override
+			public void onComplete(boolean result) {
+				Context context = getActivity();
 
+				if (!result) {
+					String strResult = String.format(context.getString(R.string.memobase_importFailed), path);
+					Toast.makeText(context, strResult, Toast.LENGTH_LONG).show();
+					return;
+				}
+
+				String strResult = String.format(context.getString(R.string.memobase_importCompleted), path);
+				Toast.makeText(context, strResult, Toast.LENGTH_LONG).show();
+
+				MemoBaseFragment.this.bindData();
+			}
+		});
 	}
 
 	private String createMemoBase() {

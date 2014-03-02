@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import app.memoling.android.adapter.MemoAdapter;
 import app.memoling.android.adapter.MemoAdapter.Sort;
 import app.memoling.android.db.DatabaseHelper;
@@ -194,5 +195,12 @@ public class Import {
 			AppLog.w("Import", "importCsvFile", ex);
 			onComplete.onComplete(false);
 		}
+	}
+	
+
+	public static void importAnkiFile(final String destinationMemoBaseId, final Context context, final String path,
+			final OnConflictResolveHaltable<Memo> onConflictMemo, final OnSyncComplete onComplete) {
+		// TODO Auto-generated method stub
+		
 	}
 }
