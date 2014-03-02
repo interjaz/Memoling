@@ -27,7 +27,7 @@ public class Config {
 	
 
 	//
-	// Translator
+	// Translatoruruchomiony
 	//	
 	public final static String BingTranslateClientId = "TranslateMemo";
 	public final static String BingTranslateClientSecret = "87dfyqGFVxbTVyrqlo2YV+AF2An3gBIH2eOIgI8UPs4=";
