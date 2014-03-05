@@ -167,11 +167,13 @@
     <string-array name="memobase_exportList">
         <item>Plik Memoling (domyślne)</item>
         <item>Plik CSV (bardziej czytelny)</item>
+        <item>Plik Anki</item>
         <item>Evernote</item>
     </string-array>
     <string-array name="memobase_importList">
         <item>Plik Memoling (domyślne)</item>
         <item>Plik CSV</item>
+        <item>Plik Anki</item>
     </string-array>
 
     <string name="memobase_exportFailure">Nie udało się wyeksportować pliku.</string>

@@ -143,4 +143,9 @@ public class Export {
 		return noteText.toString();
 	}
 
+	public static String exportAnki(Context context, String[] strings) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

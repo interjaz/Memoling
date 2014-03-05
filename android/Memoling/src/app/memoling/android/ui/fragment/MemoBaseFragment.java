@@ -53,7 +53,8 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 
 	private static final int MemolingFile = 0;
 	private static final int CsvFile = 1;
-	private static final int Evernote = 2;
+	private static final int AnkiFile = 2;
+	private static final int Evernote = 3;
 
 	public final static String MemoBaseId = "MemoBaseId";
 	public final static String ActionCreate = "ActionCreate";
@@ -223,12 +224,20 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 				case MemolingFile:
 					intent = new Intent(Intent.ACTION_GET_CONTENT);
 					intent.setType("file/*");
-					getActivity().startActivityForResult(intent, RequestMemolingFile);
+//					getActivity().startActivityForResult(intent, RequestMemolingFile);
+					getActivity().startActivityForResult(Intent.createChooser(intent, "Open file:"), RequestMemolingFile);
 					break;
 				case CsvFile:
 					intent = new Intent(Intent.ACTION_GET_CONTENT);
 					intent.setType("file/*");
-					getActivity().startActivityForResult(intent, RequestCsvFile);
+//					getActivity().startActivityForResult(intent, RequestCsvFile);
+					getActivity().startActivityForResult(Intent.createChooser(intent, "Open file:"), RequestCsvFile);
+					break;
+				case AnkiFile:
+					intent = new Intent(Intent.ACTION_GET_CONTENT);
+					intent.setType("file/*");
+//					getActivity().startActivityForResult(intent, RequestAnkiFile);
+					getActivity().startActivityForResult(Intent.createChooser(intent, "Open file:"), RequestAnkiFile);
 					break;
 				case Evernote:
 					break;
@@ -286,6 +295,15 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 				case CsvFile:
 
 					result = Export.exportCsv(context, new String[] { m_memoBaseId });
+					if (result == null) {
+						result = context.getString(R.string.memobase_exportFailure);
+					} else {
+						result = context.getString(R.string.memobase_exportSuccess) + result;
+					}
+
+					break;
+				case AnkiFile:
+					result = Export.exportAnki(context, new String[] { m_memoBaseId });
 					if (result == null) {
 						result = context.getString(R.string.memobase_exportFailure);
 					} else {
@@ -366,6 +384,10 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 			public void onComplete(boolean result) {
 				Context context = getActivity();
 
+				if(context == null) {
+					return;
+				}
+				
 				if (!result) {
 					String strResult = String.format(context.getString(R.string.memobase_importFailed), path);
 					Toast.makeText(context, strResult, Toast.LENGTH_LONG).show();
@@ -386,6 +408,10 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 			public void onComplete(boolean result) {
 				Context context = getActivity();
 
+				if(context == null) {
+					return;
+				}
+				
 				if (!result) {
 					String strResult = String.format(context.getString(R.string.memobase_importFailed), path);
 					Toast.makeText(context, strResult, Toast.LENGTH_LONG).show();

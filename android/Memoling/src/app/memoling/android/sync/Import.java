@@ -1,14 +1,20 @@
 package app.memoling.android.sync;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
+import java.util.zip.GZIPInputStream;
 
 import android.content.Context;
-import android.support.v4.app.FragmentActivity;
 import app.memoling.android.adapter.MemoAdapter;
 import app.memoling.android.adapter.MemoAdapter.Sort;
+import app.memoling.android.anki.AnkiIOEngine;
 import app.memoling.android.db.DatabaseHelper;
 import app.memoling.android.db.DatabaseHelper.Order;
 import app.memoling.android.entity.Memo;
@@ -197,10 +203,10 @@ public class Import {
 		}
 	}
 	
-
 	public static void importAnkiFile(final String destinationMemoBaseId, final Context context, final String path,
 			final OnConflictResolveHaltable<Memo> onConflictMemo, final OnSyncComplete onComplete) {
 		// TODO Auto-generated method stub
 		
+		AnkiIOEngine.importFile(context, path);
 	}
 }

@@ -165,11 +165,13 @@
     <string-array name="memobase_exportList">
         <item>Memoling file (default)</item>
         <item>CSV file (more readable)</item>
+        <item>Anki file</item>
         <item>Evernote</item>
     </string-array>
     <string-array name="memobase_importList">
         <item>Memoling file (default)</item>
         <item>CSV file (more readable)</item>
+        <item>Anki file</item>
     </string-array>
 
     <string name="memobase_exportFailure">Failed to export file.</string>
