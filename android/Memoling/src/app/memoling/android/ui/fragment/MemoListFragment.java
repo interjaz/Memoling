@@ -154,7 +154,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 
 		// Save button
 		m_btnSave = (Button) contentView.findViewById(R.id.memolist_btnSave);
-		m_btnSave.setOnClickListener(new BtnSaveEventHanlder());
+		m_btnSave.setOnClickListener(new BtnSaveEventHandler());
 		m_btnSave.setTypeface(thinFont);
 
 		// AutoCompleteTextView
@@ -440,7 +440,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 	// Event Handlers
 	//
 
-	private class BtnSaveEventHanlder implements OnClickListener {
+	private class BtnSaveEventHandler implements OnClickListener {
 
 		@Override
 		public void onClick(View view) {

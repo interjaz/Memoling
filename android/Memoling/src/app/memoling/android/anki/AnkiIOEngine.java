@@ -37,17 +37,30 @@ public class AnkiIOEngine {
 			try {
 				// we want to unpack all files
 				while((ze = zis.getNextEntry()) != null) {		
+					
 					// we already know the filename
-					String filename = ze.getName();
-					// prepare a file with known filename in db catalogue
-					File m_tmp = new File(Config.AppPath + "/db/" + filename);
-					// initialize the output stream with file location 
-					os = new BufferedOutputStream(new FileOutputStream(m_tmp));		
-					// read file
-					byte[] buffer = new byte[4096];
-					int read = 0;
-					while ((read = zis.read(buffer, 0, buffer.length)) > 0) {
-						os.write(buffer, 0, read);
+					String originalFilename = ze.getName();
+					
+					// set the imported database name
+					if(getImportDatabaseName() == null) {
+						String[] originalFilenameSplitted = originalFilename.split("\\.");
+						if(originalFilenameSplitted[1].equals("anki")) {
+							setImportDatabaseVersion(0);
+						} else if(originalFilenameSplitted[1].equals("anki2")) {
+							setImportDatabaseVersion(1);
+						}
+						setImportDatabaseName(originalFilenameSplitted[0]);
+
+						// prepare a file with known filename in db catalogue
+						File m_tmp = new File(Config.AppPath + "/db/" + getImportDatabaseName() + ".sqlite");
+						// initialize the output stream with file location 
+						os = new BufferedOutputStream(new FileOutputStream(m_tmp));		
+						// read file
+						byte[] buffer = new byte[4096];
+						int read = 0;
+						while ((read = zis.read(buffer, 0, buffer.length)) > 0) {
+							os.write(buffer, 0, read);
+						}
 					}
 				}
 			} finally {
