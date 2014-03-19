@@ -7,13 +7,13 @@ public class AnkiCard {
 	// Database columns
 	
 	// database column: id
-	private int m_cardId;
+	private long m_cardId;
 	
 	// database column: nid
-	private int m_noteId;
+	private long m_noteId;
 	
 	// database column: did
-	private int m_deckId;
+	private long m_deckId;
 	
 	// database column: ord
 	private int m_ord;
@@ -68,27 +68,27 @@ public class AnkiCard {
 	// database column: data
 	private String m_data;
 
-	public int getCardId() {
+	public long getCardId() {
 		return m_cardId;
 	}
 
-	public void setCardId(int m_cardId) {
+	public void setCardId(long m_cardId) {
 		this.m_cardId = m_cardId;
 	}
 
-	public int getNoteId() {
+	public long getNoteId() {
 		return m_noteId;
 	}
 
-	public void setNoteId(int m_noteId) {
+	public void setNoteId(long m_noteId) {
 		this.m_noteId = m_noteId;
 	}
 
-	public int getDeckId() {
+	public long getDeckId() {
 		return m_deckId;
 	}
 
-	public void setDeckId(int m_deckId) {
+	public void setDeckId(long m_deckId) {
 		this.m_deckId = m_deckId;
 	}
 
