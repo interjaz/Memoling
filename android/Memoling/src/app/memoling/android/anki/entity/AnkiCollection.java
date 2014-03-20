@@ -13,7 +13,7 @@ public class AnkiCollection {
 	private long m_crt;
 	
 	// database column: mod
-	private Date m_lastModification;
+	private long m_lastModification;
 	
 	// database column: scm
 	private long m_scm;
@@ -57,15 +57,15 @@ public class AnkiCollection {
 		return m_crt;
 	}
 
-	public void setCrt(int m_crt) {
+	public void setCrt(long m_crt) {
 		this.m_crt = m_crt;
 	}
 
-	public Date getLastModification() {
+	public long getLastModification() {
 		return m_lastModification;
 	}
 
-	public void setLastModification(Date m_lastModification) {
+	public void setLastModification(long m_lastModification) {
 		this.m_lastModification = m_lastModification;
 	}
 

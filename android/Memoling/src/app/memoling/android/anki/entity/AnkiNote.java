@@ -7,16 +7,16 @@ public class AnkiNote {
 	// Database columns
 	
 	// database column: id
-	private int m_noteId;
+	private long m_noteId;
 	
 	// database column: guid
 	private String m_guid;
 	
 	// database column: mid
-	private int m_mid;
+	private long m_mid;
 	
 	// database column: mod
-	private Date m_lastModification;
+	private long m_lastModification;
 	
 	// database column: usn
 	// used for synchronization
@@ -32,7 +32,7 @@ public class AnkiNote {
 	private String m_sfld;
 	
 	// database column: csum
-	private int m_checksum;
+	private long m_checksum;
 	
 	// database column: flags
 	private int m_flags;
@@ -40,11 +40,11 @@ public class AnkiNote {
 	// database column: data
 	private String m_data;
 
-	public int getNoteId() {
+	public long getNoteId() {
 		return m_noteId;
 	}
 
-	public void setNoteId(int m_noteId) {
+	public void setNoteId(long m_noteId) {
 		this.m_noteId = m_noteId;
 	}
 
@@ -56,19 +56,19 @@ public class AnkiNote {
 		this.m_guid = m_guid;
 	}
 
-	public int getMid() {
+	public long getMid() {
 		return m_mid;
 	}
 
-	public void setMid(int m_mid) {
+	public void setMid(long m_mid) {
 		this.m_mid = m_mid;
 	}
 
-	public Date getLastModification() {
+	public long getLastModification() {
 		return m_lastModification;
 	}
 
-	public void setLastModification(Date m_lastModification) {
+	public void setLastModification(long m_lastModification) {
 		this.m_lastModification = m_lastModification;
 	}
 
@@ -104,11 +104,11 @@ public class AnkiNote {
 		this.m_sfld = m_sfld;
 	}
 
-	public int getChecksum() {
+	public long getChecksum() {
 		return m_checksum;
 	}
 
-	public void setChecksum(int m_checksum) {
+	public void setChecksum(long m_checksum) {
 		this.m_checksum = m_checksum;
 	}
 

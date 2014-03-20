@@ -20,7 +20,7 @@ public class AnkiCard {
 	
 	// database column: mod
 	// stands for date of last modification
-	private Date m_lastModification;
+	private long m_lastModification;
 	
 	// database column: usn
 	// used for synchronization
@@ -100,11 +100,11 @@ public class AnkiCard {
 		this.m_ord = m_ord;
 	}
 
-	public Date getLastModification() {
+	public long getLastModification() {
 		return m_lastModification;
 	}
 
-	public void setLastModification(Date m_lastModification) {
+	public void setLastModification(long m_lastModification) {
 		this.m_lastModification = m_lastModification;
 	}
 

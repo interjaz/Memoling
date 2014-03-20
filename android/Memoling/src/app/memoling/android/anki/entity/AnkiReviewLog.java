@@ -5,10 +5,10 @@ public class AnkiReviewLog {
 	// Database columns
 	
 	// database column: id
-	private int m_reviewLogId;
+	private long m_reviewLogId;
 	
 	// database column: cid
-	private int m_cardId;
+	private long m_cardId;
 	
 	// database column: usn
 	// used for synchronization
@@ -41,19 +41,19 @@ public class AnkiReviewLog {
 	// 2 - forgotten and again repeated
 	private int m_type;
 
-	public int getReviewLogId() {
+	public long getReviewLogId() {
 		return m_reviewLogId;
 	}
 
-	public void setReviewLogId(int m_reviewLogId) {
+	public void setReviewLogId(long m_reviewLogId) {
 		this.m_reviewLogId = m_reviewLogId;
 	}
 
-	public int getCardId() {
+	public long getCardId() {
 		return m_cardId;
 	}
 
-	public void setCardId(int m_cardId) {
+	public void setCardId(long m_cardId) {
 		this.m_cardId = m_cardId;
 	}
 

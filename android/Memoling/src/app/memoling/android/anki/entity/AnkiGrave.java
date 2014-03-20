@@ -11,7 +11,7 @@ public class AnkiGrave {
 	private int m_universalSerialNumber;
 	
 	// database column: oid
-	private int m_oid;
+	private long m_oid;
 	
 	// database column: type
 	// 0 - not learned
@@ -35,11 +35,11 @@ public class AnkiGrave {
 		this.m_universalSerialNumber = m_universalSerialNumber;
 	}
 
-	public int getOid() {
+	public long getOid() {
 		return m_oid;
 	}
 
-	public void setOid(int m_oid) {
+	public void setOid(long m_oid) {
 		this.m_oid = m_oid;
 	}
 
