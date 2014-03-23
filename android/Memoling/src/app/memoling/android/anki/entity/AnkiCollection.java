@@ -1,6 +1,11 @@
 package app.memoling.android.anki.entity;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class AnkiCollection {
 
@@ -149,4 +154,41 @@ public class AnkiCollection {
 		this.m_tags = m_tags;
 	}
 	
+	public static List<AnkiDeck> getDecksDescription(String decksDescription) {
+		List<AnkiDeck> ankiDeckList = new ArrayList<AnkiDeck>();
+		
+		try {
+			JSONObject ankiDecks = new JSONObject(decksDescription);
+			JSONArray ankiDecksNames = ankiDecks.names();
+			
+			for (int i = 0; i < ankiDecksNames.length(); i++) {
+				JSONObject newObject = ankiDecks.getJSONObject(ankiDecksNames.getString(i));
+				AnkiDeck ankiDeck = new AnkiDeck().deserialize(newObject);
+				ankiDeckList.add(ankiDeck);
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return ankiDeckList;
+	}
+
+	public static List<AnkiModel> getModelsDescription(String modelsDescription) {
+		return null;
+
+	}
+
+	public static AnkiConfiguration getConfigurationDescription(String configurationDescription) {
+		try {
+			JSONObject ankiConfigurationJSON = new JSONObject(configurationDescription);
+			AnkiConfiguration ankiConfiguration = new AnkiConfiguration().deserialize(ankiConfigurationJSON);
+			return ankiConfiguration;
+				
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

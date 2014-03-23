@@ -1,6 +1,7 @@
 package app.memoling.android.anki.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import app.memoling.android.adapter.MemoAdapter.Sort;
@@ -8,8 +9,11 @@ import app.memoling.android.anki.AnkiIOEngine;
 import app.memoling.android.anki.AnkiImportAdapter;
 import app.memoling.android.anki.entity.AnkiCard;
 import app.memoling.android.anki.entity.AnkiCollection;
+import app.memoling.android.anki.entity.AnkiConfiguration;
+import app.memoling.android.anki.entity.AnkiDeck;
 import app.memoling.android.anki.entity.AnkiGrave;
 import app.memoling.android.anki.entity.AnkiIndexStat;
+import app.memoling.android.anki.entity.AnkiModel;
 import app.memoling.android.anki.entity.AnkiNote;
 import app.memoling.android.anki.entity.AnkiReviewLog;
 import app.memoling.android.db.DatabaseHelper.Order;
@@ -45,6 +49,26 @@ public class AnkiImporter {
 				
 				final ArrayList<AnkiCollection> ankiCollections = ankiImportAdapter.getAllAnkiCollections(0, Sort.CreatedDate, Order.ASC);
 				
+				if(!ankiCollections.isEmpty()) {
+					// parse 'conf' column
+					AnkiConfiguration ankiConfiguration = AnkiCollection.getConfigurationDescription(ankiCollections.get(0).getConfiguration());
+					
+					// parse 'models' column
+//					List<AnkiModel> ankiModels = AnkiCollection.getModelsDescription(ankiCollections.get(0).getModels());
+					
+					// parse 'decks' column
+					List<AnkiDeck> ankiDecks = AnkiCollection.getDecksDescription(ankiCollections.get(0).getDecks());
+										
+					// parse 'dconf' column
+					AnkiConfiguration ankiDefaultConfiguration = AnkiCollection.getConfigurationDescription(ankiCollections.get(0).getDefaultConfiguration());
+					
+					// parse 'tags' column
+				}
+				
+				// open Memoling database
+				
+				// create or update Memobases
+
 				return null;
 			}
 
