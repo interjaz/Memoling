@@ -1,14 +1,16 @@
 package app.memoling.android.anki.entity;
 
+import java.util.Date;
+
 public class AnkiReviewLog {
 
 	// Database columns
 	
 	// database column: id
-	private long m_reviewLogId;
+	private Date m_reviewLogId;
 	
 	// database column: cid
-	private long m_cardId;
+	private Date m_cardId;
 	
 	// database column: usn
 	// used for synchronization
@@ -41,19 +43,19 @@ public class AnkiReviewLog {
 	// 2 - forgotten and again repeated
 	private int m_type;
 
-	public long getReviewLogId() {
+	public Date getReviewLogId() {
 		return m_reviewLogId;
 	}
 
-	public void setReviewLogId(long m_reviewLogId) {
+	public void setReviewLogId(Date m_reviewLogId) {
 		this.m_reviewLogId = m_reviewLogId;
 	}
 
-	public long getCardId() {
+	public Date getCardId() {
 		return m_cardId;
 	}
 
-	public void setCardId(long m_cardId) {
+	public void setCardId(Date m_cardId) {
 		this.m_cardId = m_cardId;
 	}
 

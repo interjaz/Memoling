@@ -1,15 +1,9 @@
 package app.memoling.android.sync;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
-import java.util.zip.GZIPInputStream;
 
 import android.content.Context;
 import app.memoling.android.adapter.MemoAdapter;

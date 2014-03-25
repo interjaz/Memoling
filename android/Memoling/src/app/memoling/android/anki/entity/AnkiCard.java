@@ -7,20 +7,20 @@ public class AnkiCard {
 	// Database columns
 	
 	// database column: id
-	private long m_cardId;
+	private Date m_cardId;
 	
 	// database column: nid
-	private long m_noteId;
+	private Date m_noteId;
 	
 	// database column: did
-	private long m_deckId;
+	private Date m_deckId;
 	
 	// database column: ord
 	private int m_ord;
 	
 	// database column: mod
 	// stands for date of last modification
-	private long m_lastModification;
+	private Date m_lastModification;
 	
 	// database column: usn
 	// used for synchronization
@@ -68,27 +68,27 @@ public class AnkiCard {
 	// database column: data
 	private String m_data;
 
-	public long getCardId() {
+	public Date getCardId() {
 		return m_cardId;
 	}
 
-	public void setCardId(long m_cardId) {
+	public void setCardId(Date m_cardId) {
 		this.m_cardId = m_cardId;
 	}
 
-	public long getNoteId() {
+	public Date getNoteId() {
 		return m_noteId;
 	}
 
-	public void setNoteId(long m_noteId) {
+	public void setNoteId(Date m_noteId) {
 		this.m_noteId = m_noteId;
 	}
 
-	public long getDeckId() {
+	public Date getDeckId() {
 		return m_deckId;
 	}
 
-	public void setDeckId(long m_deckId) {
+	public void setDeckId(Date m_deckId) {
 		this.m_deckId = m_deckId;
 	}
 
@@ -100,11 +100,11 @@ public class AnkiCard {
 		this.m_ord = m_ord;
 	}
 
-	public long getLastModification() {
+	public Date getLastModification() {
 		return m_lastModification;
 	}
 
-	public void setLastModification(long m_lastModification) {
+	public void setLastModification(Date m_lastModification) {
 		this.m_lastModification = m_lastModification;
 	}
 

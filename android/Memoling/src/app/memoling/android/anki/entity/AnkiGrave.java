@@ -1,5 +1,7 @@
 package app.memoling.android.anki.entity;
 
+import java.util.Date;
+
 public class AnkiGrave {
 
 	// Database columns
@@ -11,7 +13,7 @@ public class AnkiGrave {
 	private int m_universalSerialNumber;
 	
 	// database column: oid
-	private long m_oid;
+	private Date m_oid;
 	
 	// database column: type
 	// 0 - not learned
@@ -35,11 +37,11 @@ public class AnkiGrave {
 		this.m_universalSerialNumber = m_universalSerialNumber;
 	}
 
-	public long getOid() {
+	public Date getOid() {
 		return m_oid;
 	}
 
-	public void setOid(long m_oid) {
+	public void setOid(Date m_oid) {
 		this.m_oid = m_oid;
 	}
 

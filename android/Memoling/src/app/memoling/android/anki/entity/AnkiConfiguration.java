@@ -1,5 +1,7 @@
 package app.memoling.android.anki.entity;
 
+import java.util.Date;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,7 +17,7 @@ public class AnkiConfiguration {
 	private boolean m_estTimes;
 	
 	// JSON field : activeDecks
-	private long[] m_activeDecks;
+	private Date[] m_activeDecks;
 	
 	// JSON field : sortType
 	private String m_sortType;
@@ -30,7 +32,7 @@ public class AnkiConfiguration {
 	private boolean m_addToCur;
 	
 	// JSON field : curDeck
-	private long m_curDeck; 
+	private Date m_curDeck; 
 	
 	// JSON field : newBury
 	private boolean m_newBury;
@@ -48,7 +50,7 @@ public class AnkiConfiguration {
 	private boolean m_dueCounts;
 	
 	// JSON field : curModel
-	private long m_curModel;
+	private Date m_curModel;
 	
 	// JSON field : newSpread
 	private int m_newSpread;
@@ -61,9 +63,9 @@ public class AnkiConfiguration {
 
 	public void setEstTimes(boolean estTimes) { m_estTimes = estTimes; }
 
-	public long[] getActiveDecks() {  return m_activeDecks; }
+	public Date[] getActiveDecks() {  return m_activeDecks; }
 
-	public void setActiveDecks(long[] activeDecks) { m_activeDecks = activeDecks; }
+	public void setActiveDecks(Date[] activeDecks) { m_activeDecks = activeDecks; }
 
 	public String getSortType() {  return m_sortType; }
 
@@ -81,9 +83,9 @@ public class AnkiConfiguration {
 
 	public void setAddToCur(boolean addTocur) { m_addToCur = addTocur; }
 
-	public long getCurDeck() {  return m_curDeck; }
+	public Date getCurDeck() {  return m_curDeck; }
 
-	public void setCurDeck(long curDeck) { m_curDeck = curDeck; }
+	public void setCurDeck(Date curDeck) { m_curDeck = curDeck; }
 
 	public boolean getNewBury() {  return m_newBury; }
 	
@@ -105,9 +107,9 @@ public class AnkiConfiguration {
 
 	public void setDueCounts(boolean m_dueCounts) {	this.m_dueCounts = m_dueCounts; }
 
-	public long getCurModel() {  return m_curModel; }
+	public Date getCurModel() {  return m_curModel; }
 
-	public void setCurModel(long curModel) { m_curModel = curModel; }
+	public void setCurModel(Date curModel) { m_curModel = curModel; }
 
 	public int getNewSpread() {  return m_newSpread; }
 
@@ -122,7 +124,7 @@ public class AnkiConfiguration {
 		if(m_activeDecks != null) {
 			JSONArray array = new JSONArray();
 			for (int i = 0; i < m_activeDecks.length; i++) {
-				array.put(m_activeDecks[i]);
+				array.put(m_activeDecks[i].getTime());
 			}
 			json.put("activeDecks", array);
 		}
@@ -131,7 +133,7 @@ public class AnkiConfiguration {
 		json.put("timeLim", m_timeLimit);
 		json.put("sortBackwards", m_sortBackwards);
 		json.put("addToCur", m_addToCur);
-		json.put("curDeck", m_curDeck);
+		json.put("curDeck", m_curDeck.getTime());
 		json.put("newBury", m_newBury);
 		json.put("lastUnburied", m_lastUnburied);
 		json.put("collapseTime", m_collapseTime);
@@ -145,7 +147,7 @@ public class AnkiConfiguration {
 		}
 		
 		json.put("dueCounts", m_dueCounts);
-		json.put("curModel", m_curModel);
+		json.put("curModel", m_curModel.getTime());
 		json.put("newSpread", m_newSpread);
 
 		return json.toString();
@@ -158,9 +160,9 @@ public class AnkiConfiguration {
 		
 		if(json.has("activeDecks")) {
 			JSONArray array = json.getJSONArray("activeDecks");
-			m_activeDecks = new long[array.length()];
+			m_activeDecks = new Date[array.length()];
 			for(int i=0;i<array.length();i++) {
-				m_activeDecks[i] = array.getLong(i);
+				m_activeDecks[i] = new Date(array.getLong(i));
 			}
 		}
 		
@@ -168,7 +170,7 @@ public class AnkiConfiguration {
 		m_timeLimit = json.getInt("timeLim");
 		m_sortBackwards = json.getInt("sortBackwards");
 		m_addToCur = json.getBoolean("addToCur");
-		m_curDeck = json.getLong("curDeck");
+		m_curDeck = new Date(json.getLong("curDeck"));
 		m_newBury = json.getBoolean("newBury");
 		m_lastUnburied = json.getInt("lastUnburied");
 		m_collapseTime = json.getInt("collapseTime");
@@ -182,7 +184,7 @@ public class AnkiConfiguration {
 		}
 		
 		m_dueCounts = json.getBoolean("dueCounts");
-		m_curModel = json.getLong("curModel");
+		m_curModel = new Date(json.getLong("curModel"));
 		m_newSpread = json.getInt("newSpread");
 
 		return this;

@@ -6,12 +6,24 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import android.content.Context;
 import app.memoling.android.Config;
+import app.memoling.android.adapter.MemoBaseAdapter;
+import app.memoling.android.anki.entity.AnkiCard;
+import app.memoling.android.anki.entity.AnkiDeck;
+import app.memoling.android.anki.entity.AnkiNote;
 import app.memoling.android.anki.service.AnkiImporter;
+import app.memoling.android.entity.Language;
+import app.memoling.android.entity.Memo;
+import app.memoling.android.entity.MemoBase;
+import app.memoling.android.entity.Word;
 import app.memoling.android.helper.AppLog;
 
 public class AnkiIOEngine {

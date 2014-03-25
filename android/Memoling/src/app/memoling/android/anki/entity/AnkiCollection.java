@@ -1,6 +1,7 @@
 package app.memoling.android.anki.entity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -15,13 +16,13 @@ public class AnkiCollection {
 	private int m_collectionId;
 	
 	// database column: crt
-	private long m_crt;
+	private Date m_crt;
 	
 	// database column: mod
-	private long m_lastModification;
+	private Date m_lastModification;
 	
 	// database column: scm
-	private long m_scm;
+	private Date m_scm;
 	
 	// database column: ver
 	private int m_version;
@@ -33,7 +34,7 @@ public class AnkiCollection {
 	private int m_universalSerialNumber;
 	
 	// database column: ls
-	private long m_lastSync;
+	private Date m_lastSync;
 	
 	// database column: conf
 	private String m_configuration;
@@ -58,27 +59,27 @@ public class AnkiCollection {
 		this.m_collectionId = m_collectionId;
 	}
 
-	public long getCrt() {
+	public Date getCrt() {
 		return m_crt;
 	}
 
-	public void setCrt(long m_crt) {
+	public void setCrt(Date m_crt) {
 		this.m_crt = m_crt;
 	}
 
-	public long getLastModification() {
+	public Date getLastModification() {
 		return m_lastModification;
 	}
 
-	public void setLastModification(long m_lastModification) {
+	public void setLastModification(Date m_lastModification) {
 		this.m_lastModification = m_lastModification;
 	}
 
-	public long getScm() {
+	public Date getScm() {
 		return m_scm;
 	}
 
-	public void setScm(long m_scm) {
+	public void setScm(Date m_scm) {
 		this.m_scm = m_scm;
 	}
 
@@ -106,11 +107,11 @@ public class AnkiCollection {
 		this.m_universalSerialNumber = m_universalSerialNumber;
 	}
 
-	public long getLastSync() {
+	public Date getLastSync() {
 		return m_lastSync;
 	}
 
-	public void setLastSync(long m_lastSync) {
+	public void setLastSync(Date m_lastSync) {
 		this.m_lastSync = m_lastSync;
 	}
 

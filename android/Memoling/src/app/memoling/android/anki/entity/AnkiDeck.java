@@ -1,8 +1,6 @@
 package app.memoling.android.anki.entity;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,10 +47,10 @@ public class AnkiDeck {
 	private int[] m_learnToday;
 	
 	// JSON field : id
-	private long m_deckId;
+	private Date m_deckId;
 	
 	// JSON field : mod
-	private long m_lastModification;
+	private Date m_lastModification;
 
 	public String getDescription() {  return m_description; }
 
@@ -102,13 +100,13 @@ public class AnkiDeck {
 
 	public void setLearnToday(int[] learnToday) { m_learnToday = learnToday; }
 
-	public long getDeckId() {  return m_deckId; }
+	public Date getDeckId() {  return m_deckId; }
 
-	public void setDeckId(long deckId) { m_deckId = deckId; }
+	public void setDeckId(Date deckId) { m_deckId = deckId; }
 
-	public long getLastModification() {  return m_lastModification; }
+	public Date getLastModification() {  return m_lastModification; }
 
-	public void setLastModification(long lastModification) { m_lastModification = lastModification; }
+	public void setLastModification(Date lastModification) { m_lastModification = lastModification; }
 
 	public String serialize() throws JSONException {
 		JSONObject json = new JSONObject();
@@ -155,8 +153,8 @@ public class AnkiDeck {
 			json.put("learnToday", array);
 		}
 		
-		json.put("id", m_deckId);
-		json.put("mod", m_lastModification);
+		json.put("id", m_deckId.getTime());
+		json.put("mod", m_lastModification.getTime());
 
 		return json.toString();
 	}
@@ -205,8 +203,8 @@ public class AnkiDeck {
 			}
 		}
 		
-		m_deckId = json.getLong("id");
-		m_lastModification = json.getLong("mod");
+		m_deckId = new Date(json.getLong("id"));
+		m_lastModification = new Date(json.getLong("mod"));
 		
 		return this;
 	}

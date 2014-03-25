@@ -7,16 +7,16 @@ public class AnkiNote {
 	// Database columns
 	
 	// database column: id
-	private long m_noteId;
+	private Date m_noteId;
 	
 	// database column: guid
 	private String m_guid;
 	
 	// database column: mid
-	private long m_mid;
+	private Date m_mid;
 	
 	// database column: mod
-	private long m_lastModification;
+	private Date m_lastModification;
 	
 	// database column: usn
 	// used for synchronization
@@ -40,11 +40,11 @@ public class AnkiNote {
 	// database column: data
 	private String m_data;
 
-	public long getNoteId() {
+	public Date getNoteId() {
 		return m_noteId;
 	}
 
-	public void setNoteId(long m_noteId) {
+	public void setNoteId(Date m_noteId) {
 		this.m_noteId = m_noteId;
 	}
 
@@ -56,19 +56,19 @@ public class AnkiNote {
 		this.m_guid = m_guid;
 	}
 
-	public long getMid() {
+	public Date getMid() {
 		return m_mid;
 	}
 
-	public void setMid(long m_mid) {
+	public void setMid(Date m_mid) {
 		this.m_mid = m_mid;
 	}
 
-	public long getLastModification() {
+	public Date getLastModification() {
 		return m_lastModification;
 	}
 
-	public void setLastModification(long m_lastModification) {
+	public void setLastModification(Date m_lastModification) {
 		this.m_lastModification = m_lastModification;
 	}
 
