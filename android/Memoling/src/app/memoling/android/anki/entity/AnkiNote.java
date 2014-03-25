@@ -69,7 +69,7 @@ public class AnkiNote {
 	}
 
 	public void setLastModification(Date m_lastModification) {
-		this.m_lastModification = m_lastModification;
+		this.m_lastModification = new Date(m_lastModification.getTime()*1000);
 	}
 
 	public int getUniversalSerialNumber() {

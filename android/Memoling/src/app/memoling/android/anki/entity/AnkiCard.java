@@ -81,7 +81,7 @@ public class AnkiCard {
 	}
 
 	public void setNoteId(Date m_noteId) {
-		this.m_noteId = m_noteId;
+		this.m_noteId = new Date(m_noteId.getTime()*1000);
 	}
 
 	public Date getDeckId() {

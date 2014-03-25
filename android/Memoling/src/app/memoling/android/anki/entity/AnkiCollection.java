@@ -64,7 +64,7 @@ public class AnkiCollection {
 	}
 
 	public void setCrt(Date m_crt) {
-		this.m_crt = m_crt;
+		this.m_crt = new Date(m_crt.getTime()*1000);
 	}
 
 	public Date getLastModification() {
