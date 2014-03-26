@@ -403,7 +403,7 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 	}
 	
 	private void importAnkiFile(final String path) {
-		Import.importAnkiFile(m_memoBaseId, getActivity(), path, m_memoConflictResolve, new OnSyncComplete() {
+		Import.importAnkiFile(getActivity(), path, m_memoConflictResolve, new OnSyncComplete() {
 			@Override
 			public void onComplete(boolean result) {
 				Context context = getActivity();

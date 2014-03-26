@@ -81,7 +81,7 @@ public class AnkiCard {
 	}
 
 	public void setNoteId(Date m_noteId) {
-		this.m_noteId = new Date(m_noteId.getTime()*1000);
+		this.m_noteId = m_noteId;
 	}
 
 	public Date getDeckId() {
@@ -105,7 +105,7 @@ public class AnkiCard {
 	}
 
 	public void setLastModification(Date m_lastModification) {
-		this.m_lastModification = m_lastModification;
+		this.m_lastModification = new Date(m_lastModification.getTime()*1000);
 	}
 
 	public int getUniversalSerialNumber() {

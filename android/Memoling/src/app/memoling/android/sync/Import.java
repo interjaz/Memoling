@@ -197,10 +197,10 @@ public class Import {
 		}
 	}
 	
-	public static void importAnkiFile(final String destinationMemoBaseId, final Context context, final String path,
+	public static void importAnkiFile(final Context context, final String path,
 			final OnConflictResolveHaltable<Memo> onConflictMemo, final OnSyncComplete onComplete) {
 		// TODO Auto-generated method stub
 		
-		AnkiIOEngine.importFile(context, path);
+		AnkiIOEngine.importFile(context, path, onConflictMemo, onComplete);
 	}
 }

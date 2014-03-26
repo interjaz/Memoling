@@ -1,6 +1,7 @@
 package app.memoling.android.anki;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -51,13 +52,13 @@ public class AnkiImportAdapter extends AnkiDb {
 			while (cursor.moveToNext()) {
 				AnkiCollection ankiCollection = new AnkiCollection();
 				ankiCollection.setCollectionId(DatabaseHelper.getInt(cursor, "C_id"));
-				ankiCollection.setCrt(DatabaseHelper.getDate(cursor, "C_crt"));
-				ankiCollection.setLastModification(DatabaseHelper.getDate(cursor, "C_mod"));
-				ankiCollection.setScm(DatabaseHelper.getDate(cursor, "C_scm"));
+				ankiCollection.setCrt(new Date(DatabaseHelper.getLong(cursor, "C_crt")));
+				ankiCollection.setLastModification(new Date(DatabaseHelper.getLong(cursor, "C_mod")));
+				ankiCollection.setScm(new Date(DatabaseHelper.getLong(cursor, "C_scm")));
 				ankiCollection.setVersion(DatabaseHelper.getInt(cursor, "C_ver"));
 				ankiCollection.setDty(DatabaseHelper.getInt(cursor, "C_dty"));
 				ankiCollection.setUniversalSerialNumber(DatabaseHelper.getInt(cursor, "C_usn"));
-				ankiCollection.setLastSync(DatabaseHelper.getDate(cursor, "C_ls"));
+				ankiCollection.setLastSync(new Date(DatabaseHelper.getLong(cursor, "C_ls")));
 				ankiCollection.setConfiguration(DatabaseHelper.getString(cursor, "C_conf"));
 				ankiCollection.setModels(DatabaseHelper.getString(cursor, "C_models"));
 				ankiCollection.setDecks(DatabaseHelper.getString(cursor, "C_decks"));
@@ -139,7 +140,7 @@ public class AnkiImportAdapter extends AnkiDb {
 				AnkiGrave ankiGrave = new AnkiGrave();
 				ankiGrave.setGraveId(DatabaseHelper.getInt(cursor, "G_rowid"));
 				ankiGrave.setUniversalSerialNumber(DatabaseHelper.getInt(cursor, "G_usn"));
-				ankiGrave.setOid(DatabaseHelper.getDate(cursor, "G_oid"));
+				ankiGrave.setOid(new Date(DatabaseHelper.getLong(cursor, "C_oid")));
 				ankiGrave.setType(DatabaseHelper.getInt(cursor, "G_type"));
 				ankiGraves.add(ankiGrave);
 			}
@@ -178,8 +179,8 @@ public class AnkiImportAdapter extends AnkiDb {
 		try {
 			while (cursor.moveToNext()) {
 				AnkiReviewLog ankiReviewLog = new AnkiReviewLog();
-				ankiReviewLog.setReviewLogId(DatabaseHelper.getDate(cursor, "RL_id"));
-				ankiReviewLog.setCardId(DatabaseHelper.getDate(cursor, "RL_cid"));
+				ankiReviewLog.setReviewLogId(new Date(DatabaseHelper.getLong(cursor, "RL_id")));
+				ankiReviewLog.setCardId(new Date(DatabaseHelper.getLong(cursor, "RL_cid")));
 				ankiReviewLog.setUniversalSerialNumber(DatabaseHelper.getInt(cursor, "RL_usn"));
 				ankiReviewLog.setEase(DatabaseHelper.getInt(cursor, "RL_ease"));
 				ankiReviewLog.setInterval(DatabaseHelper.getInt(cursor, "RL_ivl"));
@@ -223,8 +224,8 @@ public class AnkiImportAdapter extends AnkiDb {
 		try {
 			while (cursor.moveToNext()) {
 				AnkiReviewLog ankiReviewLog = new AnkiReviewLog();
-				ankiReviewLog.setReviewLogId(DatabaseHelper.getDate(cursor, "RL_id"));
-				ankiReviewLog.setCardId(DatabaseHelper.getDate(cursor, "RL_cid"));
+				ankiReviewLog.setReviewLogId(new Date(DatabaseHelper.getLong(cursor, "RL_id")));
+				ankiReviewLog.setCardId(new Date(DatabaseHelper.getLong(cursor, "RL_cid")));
 				ankiReviewLog.setUniversalSerialNumber(DatabaseHelper.getInt(cursor, "RL_usn"));
 				ankiReviewLog.setEase(DatabaseHelper.getInt(cursor, "RL_ease"));
 				ankiReviewLog.setInterval(DatabaseHelper.getInt(cursor, "RL_ivl"));
@@ -268,10 +269,10 @@ public class AnkiImportAdapter extends AnkiDb {
 		try {
 			while (cursor.moveToNext()) {
 				AnkiNote ankiNote = new AnkiNote();
-				ankiNote.setNoteId(DatabaseHelper.getDate(cursor, "N_id"));
+				ankiNote.setNoteId(new Date(DatabaseHelper.getLong(cursor, "N_id")));
 				ankiNote.setGuid(DatabaseHelper.getString(cursor, "N_guid"));
-				ankiNote.setMid(DatabaseHelper.getDate(cursor, "N_mid"));
-				ankiNote.setLastModification(DatabaseHelper.getDate(cursor, "N_mod"));
+				ankiNote.setMid(new Date(DatabaseHelper.getLong(cursor, "N_mid")));
+				ankiNote.setLastModification(new Date(DatabaseHelper.getLong(cursor, "N_mod")));
 				ankiNote.setUniversalSerialNumber(DatabaseHelper.getInt(cursor, "N_usn"));
 				ankiNote.setTags(DatabaseHelper.getString(cursor, "N_tags"));				
 				ankiNote.setFlds(DatabaseHelper.getString(cursor, "N_flds"));
@@ -315,11 +316,11 @@ public class AnkiImportAdapter extends AnkiDb {
 		try {
 			while (cursor.moveToNext()) {
 				AnkiCard ankiCard = new AnkiCard();
-				ankiCard.setCardId(DatabaseHelper.getDate(cursor, "C_id"));
-				ankiCard.setNoteId(DatabaseHelper.getDate(cursor, "C_nid"));
-				ankiCard.setDeckId(DatabaseHelper.getDate(cursor, "C_did"));
+				ankiCard.setCardId(new Date(DatabaseHelper.getLong(cursor, "C_id")));
+				ankiCard.setNoteId(new Date(DatabaseHelper.getLong(cursor, "C_nid")));
+				ankiCard.setDeckId(new Date(DatabaseHelper.getLong(cursor, "C_did")));
 				ankiCard.setOrd(DatabaseHelper.getInt(cursor, "C_ord"));
-				ankiCard.setLastModification(DatabaseHelper.getDate(cursor, "C_mod"));
+				ankiCard.setLastModification(new Date(DatabaseHelper.getLong(cursor, "C_mod")));
 				ankiCard.setUniversalSerialNumber(DatabaseHelper.getInt(cursor, "C_usn"));
 				ankiCard.setType(DatabaseHelper.getInt(cursor, "C_type"));
 				ankiCard.setQueue(DatabaseHelper.getInt(cursor, "C_queue"));
@@ -362,19 +363,20 @@ public class AnkiImportAdapter extends AnkiDb {
 		String query = "SELECT C.id C_id, C.nid C_nid, C.did C_did, C.ord C_ord, C.mod C_mod, C.usn C_usn, " 
 				+ "C.type C_type, C.queue C_queue, C.due C_due, C.ivl C_ivl, C.factor C_factor, C.reps C_reps, " 
 				+ "C.lapses C_lapses, C.left C_left, C.odue C_odue, C.odid C_odid, C.flags C_flags, C.data C_data " 
-				+ "FROM cards AS C" 
-				+ "WHERE C.did = ?";
+				+ "FROM cards AS C " 
+				+ "WHERE C.did = ? " 
+				+ "ORDER BY C.id";
 		
 		Cursor cursor = db.rawQuery(query, new String[] {String.valueOf(ankiDeckId)});
 		
 		try {
 			while (cursor.moveToNext()) {
 				AnkiCard ankiCard = new AnkiCard();
-				ankiCard.setCardId(DatabaseHelper.getDate(cursor, "C_id"));
-				ankiCard.setNoteId(DatabaseHelper.getDate(cursor, "C_nid"));
-				ankiCard.setDeckId(DatabaseHelper.getDate(cursor, "C_did"));
+				ankiCard.setCardId(new Date(DatabaseHelper.getLong(cursor, "C_id")));
+				ankiCard.setNoteId(new Date(DatabaseHelper.getLong(cursor, "C_nid")));
+				ankiCard.setDeckId(new Date(DatabaseHelper.getLong(cursor, "C_did")));
 				ankiCard.setOrd(DatabaseHelper.getInt(cursor, "C_ord"));
-				ankiCard.setLastModification(DatabaseHelper.getDate(cursor, "C_mod"));
+				ankiCard.setLastModification(new Date(DatabaseHelper.getLong(cursor, "C_mod")));
 				ankiCard.setUniversalSerialNumber(DatabaseHelper.getInt(cursor, "C_usn"));
 				ankiCard.setType(DatabaseHelper.getInt(cursor, "C_type"));
 				ankiCard.setQueue(DatabaseHelper.getInt(cursor, "C_queue"));

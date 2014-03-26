@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import android.content.Context;
 import app.memoling.android.adapter.MemoAdapter.Sort;
+import app.memoling.android.adapter.MemoAdapter;
 import app.memoling.android.adapter.MemoBaseAdapter;
 import app.memoling.android.anki.AnkiIOEngine;
 import app.memoling.android.anki.AnkiImportAdapter;
@@ -15,19 +16,27 @@ import app.memoling.android.anki.entity.AnkiCollection;
 import app.memoling.android.anki.entity.AnkiConfiguration;
 import app.memoling.android.anki.entity.AnkiDeck;
 import app.memoling.android.anki.entity.AnkiNote;
+import app.memoling.android.db.DatabaseHelper;
 import app.memoling.android.db.DatabaseHelper.Order;
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoBase;
 import app.memoling.android.entity.Word;
+import app.memoling.android.sync.SupervisedSyncHaltable;
+import app.memoling.android.sync.ConflictResolve.OnConflictResolveHaltable;
+import app.memoling.android.sync.SupervisedSync.OnSyncComplete;
 import app.memoling.android.thread.WorkerThread;
 
 public class AnkiImporter {
 
-	public AnkiImporter(final Context context, final String path) {
+	public AnkiImporter(final Context context, final String path, final OnConflictResolveHaltable<Memo> onConflictMemo, final OnSyncComplete onComplete) {
 		// create new worker and execute it to work in background
 		new WorkerThread<Void, Void, Void>() {
 
+			protected void onProgressUpdate() {
+				
+			}
+			
 			@Override
 			protected Void doInBackground(Void... params) {				
 				// unpack the file *.apkg
@@ -64,37 +73,108 @@ public class AnkiImporter {
 					List<MemoBase> memoBases = memoBaseAdapter.getAll();
 
 					// current 
-					String destinationMemoBaseId;
+					String findDestinationMemoBaseId;
 					MemoBase destinationMemoBase;
+					boolean theDeckAlreadyExists;
 					
 					// for every anki deck
 					for (AnkiDeck ankiDeck : ankiDecks) {
-						destinationMemoBaseId = null;
+						findDestinationMemoBaseId = null;
 						destinationMemoBase = null;
 						// check if there is corresponding memoling deck
+						
+						theDeckAlreadyExists = false;
 						for (MemoBase memoBase : memoBases){
 							if(ankiDeck.getName().equals(memoBase.getName())) {
 								// if it is then we will be updating the content
-								destinationMemoBaseId = memoBase.getMemoBaseId();
+								findDestinationMemoBaseId = memoBase.getMemoBaseId();
 								destinationMemoBase = memoBase;
+								theDeckAlreadyExists = true;
 								break;
 							}
+						}
+						
+						if(!theDeckAlreadyExists) {
 							// if it is not then we will create new deck	
-							createMemoBase(context,ankiDeck);
-							destinationMemoBaseId = memoBase.getMemoBaseId();
-							destinationMemoBase = memoBase;
+							destinationMemoBase = createMemoBase(context,ankiDeck);
+							findDestinationMemoBaseId = destinationMemoBase.getMemoBaseId();
 						}
 						
 						// prepare cards for that deck, it will be best if this would be multithreaded and the cards in the list should be removed 
-						final ArrayList<AnkiCard> ankiCardsFromAnkiBase = ankiImportAdapter.getAnkiCards(Long.valueOf(destinationMemoBaseId), Sort.CreatedDate, Order.ASC);
+						final ArrayList<AnkiCard> ankiCardsFromAnkiBase = ankiImportAdapter.getAnkiCards(ankiDeck.getDeckId().getTime(), Sort.CreatedDate, Order.ASC);
 
 						// convert AnkiCard to Memo
-						List<Memo> convertedMemos = convertAnkiCardsIntoMemos(ankiCardsFromAnkiBase, ankiNotes, destinationMemoBaseId, destinationMemoBase);
+						final ArrayList<Memo> externalMemos = convertAnkiCardsIntoMemos(ankiCardsFromAnkiBase, ankiNotes, findDestinationMemoBaseId, destinationMemoBase);
+						
+						final MemoAdapter memoAdapter = new MemoAdapter(context, true);
+						final ArrayList<Memo> internalMemos = memoAdapter.getAll(findDestinationMemoBaseId, Sort.CreatedDate, Order.ASC);
+						final String destinationMemoBaseId = findDestinationMemoBaseId;
+						
+						SupervisedSyncHaltable<Memo> syncBase = new SupervisedSyncHaltable<Memo>(context, onConflictMemo,
+								onComplete) {
+
+							@Override
+							protected Memo contains(Memo object)
+									throws Exception {
+
+								for (Memo memo : internalMemos) {
+
+									if (memo.getMemoId().equals(object.getMemoId())) {
+										return memo;
+									}
+								}
+
+								return null;
+							}
+
+							@Override
+							protected ArrayList<Memo> getInternal() {
+								return internalMemos;
+							}
+
+							@Override
+							protected ArrayList<Memo> getExternal() {
+								return externalMemos;
+							}
+
+							@Override
+							protected Memo getNewer(Memo internal, Memo external) {
+								if (internal.getLastReviewed().compareTo(external.getLastReviewed()) > 0) {
+									return internal;
+								} else {
+									return external;
+								}
+							}
+
+							@Override
+							protected boolean submitTransaction(ArrayList<Memo> internalToDelete, ArrayList<Memo> externalToAdd) {
+
+								for (int i = 0; i < internalToDelete.size(); i++) {
+									Memo toDelete = internalToDelete.get(i);
+									memoAdapter.delete(toDelete.getMemoId());
+								}
+
+								for (int i = 0; i < externalToAdd.size(); i++) {
+									Memo toAdd = externalToAdd.get(i);
+									toAdd.setMemoBaseId(destinationMemoBaseId);
+									if(memoAdapter.add(toAdd) == DatabaseHelper.Error) {
+										return false;
+									}
+								}
+
+								return true;
+							}
+
+							@Override
+							protected void clean() throws Exception {
+								memoAdapter.closePersistant();
+							}
+						};
+						// perform sync of the deck
+						syncBase.sync();
 					}
 					
 					// when all lists of cards for decks are ready then assign it one by one with usage of SupervisedSyncHaltable<Memo> from Import.java
-					
-					
 				}
 				return null;
 			}
@@ -109,7 +189,7 @@ public class AnkiImporter {
 		}.execute();
 	}
 	
-	private void createMemoBase(final Context context, AnkiDeck ankiDeck) {
+	private MemoBase createMemoBase(final Context context, AnkiDeck ankiDeck) {
 		// there is a need of MemoBase adapter
 		MemoBaseAdapter memoBaseAdapter = new MemoBaseAdapter(context);
 		// create new MemoBase
@@ -126,33 +206,35 @@ public class AnkiImporter {
 		newMemoBase.setName(ankiDeck.getName());
 		// add newly created MemoBase to the database
 		memoBaseAdapter.add(newMemoBase);		
+		// return it for further use
+		return newMemoBase;
 	}
 	
-	private List<Memo> convertAnkiCardsIntoMemos(List<AnkiCard> ankiCards, List<AnkiNote> ankiNotes, String memoBaseId, MemoBase memoBase) {
+	private ArrayList<Memo> convertAnkiCardsIntoMemos(List<AnkiCard> ankiCards, List<AnkiNote> ankiNotes, String memoBaseId, MemoBase memoBase) {
 		// create empty list of Memos
-		List<Memo> memosFromAnkiDeck = new ArrayList<Memo>();
+		ArrayList<Memo> memosFromAnkiDeck = new ArrayList<Memo>();
 		
 		// for every AnkiCard try to find corresponding one AnkiNote
 		for (AnkiCard ankiCard : ankiCards) {	
 			// we process only cards that are the first from the pair
 			if(ankiCard.getOrd() != 0){
-				break;
+				continue;
 			}
 			
 			AnkiNote tmpAnkiNote = null;
 			// TODO change this maybe to map: m_NoteId => AnkiNote
 			for (AnkiNote ankiNote : ankiNotes) {
-				if(ankiCard.getNoteId() == ankiNote.getNoteId()) {
+				if(ankiCard.getNoteId().equals(ankiNote.getNoteId())) {
 					tmpAnkiNote = ankiNote;
 					break;
 				}
 			}
 			// check if there was AnkiNote found
 			if(tmpAnkiNote == null) {
-				break;
+				continue;
 			}
 			
-			// there is a need to cut out the initial wordB from wordA, strange
+			// TODO there is a need to cut out the initial wordB from wordA, strange
 			tmpAnkiNote.getFlds();
 			String ankiWordA = "";
 			String ankiWordB = tmpAnkiNote.getSfld();
@@ -162,24 +244,18 @@ public class AnkiImporter {
 			Word wordA = new Word(UUID.randomUUID().toString(), ankiWordA, Language.DE);
 			Word wordB = new Word(UUID.randomUUID().toString(), ankiWordB, Language.PL);
 			
-			// create new memo, there are some problems with converting information
 			Memo newMemo = new Memo(wordA, wordB, memoBaseId);
-			
 			// there is (all answers - wrong answers) of correct answers
 			newMemo.setCorrectAnsweredWordA(ankiCard.getNumberAllAnswers() - ankiCard.getNumberWrongAnswers());
-
-			// this is not straight to get the information about creation date
 			newMemo.setCreated(ankiCard.getCardId());
-			
-			// last reviewed is in seconds so we have to multiply it by 1000
-			newMemo.setLastReviewed(new Date(ankiCard.getLastModification().getTime()*1000));
+			newMemo.setLastReviewed(ankiCard.getLastModification());
 			newMemo.setMemoBase(memoBase);
 			
 			AnkiCard secondAnkiCard = null;
 			// get the index of current element
 			int indexOfAnkiCard = ankiCards.indexOf(ankiCard);
 			// check if the next one exists and if it has the same corresponding AnkiNote
-			if(indexOfAnkiCard + 1 <= ankiCards.size() && ankiCards.get(indexOfAnkiCard + 1).getNoteId() == ankiCard.getNoteId()) {
+			if(indexOfAnkiCard + 1 <= ankiCards.size() && ankiCards.get(indexOfAnkiCard + 1).getNoteId().equals(ankiCard.getNoteId())) {
 				secondAnkiCard = ankiCards.get(indexOfAnkiCard + 1);
 			}
 			if(secondAnkiCard != null) {

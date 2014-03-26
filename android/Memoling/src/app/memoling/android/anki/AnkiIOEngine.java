@@ -25,6 +25,8 @@ import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoBase;
 import app.memoling.android.entity.Word;
 import app.memoling.android.helper.AppLog;
+import app.memoling.android.sync.ConflictResolve.OnConflictResolveHaltable;
+import app.memoling.android.sync.SupervisedSync.OnSyncComplete;
 
 public class AnkiIOEngine {
 
@@ -94,8 +96,9 @@ public class AnkiIOEngine {
 		}	
 	}
 	
-	public static void importFile(Context context, String path) {
-		new AnkiImporter(context, path);
+	public static void importFile(Context context, String path, 
+			final OnConflictResolveHaltable<Memo> onConflictMemo, final OnSyncComplete onComplete) {
+		new AnkiImporter(context, path, onConflictMemo, onComplete);
 	}
 
 	public static void onAnkiImportComplete() {
