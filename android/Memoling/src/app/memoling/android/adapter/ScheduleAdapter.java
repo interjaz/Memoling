@@ -3,6 +3,7 @@ package app.memoling.android.adapter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -20,7 +21,7 @@ public class ScheduleAdapter extends SqliteAdapter {
 		super(context);
 	}
 
-	public ArrayList<Schedule> getByMemoBaseId(String memoBaseId) {
+	public List<Schedule> getByMemoBaseId(String memoBaseId) {
 
 		SQLiteDatabase db = null;
 
@@ -33,7 +34,7 @@ public class ScheduleAdapter extends SqliteAdapter {
 		}
 	}
 
-	public static ArrayList<Schedule> getByMemoBaseId(SqliteAdapter adapter, SQLiteDatabase db, String memoBaseId) {
+	public static List<Schedule> getByMemoBaseId(SqliteAdapter adapter, SQLiteDatabase db, String memoBaseId) {
 
 		String query = "SELECT ScheduleId, MemoBaseId, Hours, Minutes, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday "
 				+ "FROM Schedules " + "WHERE MemoBaseId = ? ";
@@ -41,7 +42,7 @@ public class ScheduleAdapter extends SqliteAdapter {
 		Cursor cursor = db.rawQuery(query, new String[] { memoBaseId });
 
 		try {
-			ArrayList<Schedule> schedules = new ArrayList<Schedule>();
+			List<Schedule> schedules = new ArrayList<Schedule>();
 
 			while (cursor.moveToNext()) {
 				Schedule schedule = new Schedule();
@@ -72,7 +73,7 @@ public class ScheduleAdapter extends SqliteAdapter {
 		}
 	}
 
-	public ArrayList<Schedule> getOnTime(Date date) {
+	public List<Schedule> getOnTime(Date date) {
 
 		SQLiteDatabase db = null;
 
@@ -85,7 +86,7 @@ public class ScheduleAdapter extends SqliteAdapter {
 		}
 	}
 
-	public static ArrayList<Schedule> getOnTime(SqliteAdapter adapter, SQLiteDatabase db, Date date) {
+	public static List<Schedule> getOnTime(SqliteAdapter adapter, SQLiteDatabase db, Date date) {
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
@@ -123,7 +124,7 @@ public class ScheduleAdapter extends SqliteAdapter {
 		Cursor cursor = db.rawQuery(query, new String[] { Integer.toString(hours), Integer.toString(minutes) });
 
 		try {
-			ArrayList<Schedule> schedules = new ArrayList<Schedule>();
+			List<Schedule> schedules = new ArrayList<Schedule>();
 
 			while (cursor.moveToNext()) {
 				Schedule schedule = new Schedule();
@@ -205,7 +206,7 @@ public class ScheduleAdapter extends SqliteAdapter {
 
 		Cursor cursor = db.rawQuery(query, null);
 		try {
-			ArrayList<Schedule> schedules = new ArrayList<Schedule>();
+			List<Schedule> schedules = new ArrayList<Schedule>();
 			while (cursor.moveToNext()) {
 				Schedule schedule = new Schedule();
 
@@ -257,7 +258,7 @@ public class ScheduleAdapter extends SqliteAdapter {
 		}
 	}
 
-	public void updateAllForMemoBase(ArrayList<Schedule> schedules, String memoBaseId) {
+	public void updateAllForMemoBase(List<Schedule> schedules, String memoBaseId) {
 		SQLiteDatabase db = null;
 
 		try {

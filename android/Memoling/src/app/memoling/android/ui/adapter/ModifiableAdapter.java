@@ -1,6 +1,7 @@
 package app.memoling.android.ui.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -17,7 +18,7 @@ public abstract class ModifiableAdapter<T> extends BaseAdapter implements Filter
 	private Filter m_filter;
 
 	protected Object m_lock;
-	protected ArrayList<T> m_data;
+	protected List<T> m_data;
 	protected int m_resourceId;
 	protected LayoutInflater m_inflater;
 
@@ -25,7 +26,7 @@ public abstract class ModifiableAdapter<T> extends BaseAdapter implements Filter
 		this(context, resourceId, new ArrayList<T>());
 	}
 
-	public ModifiableAdapter(Context context, int resourceId, ArrayList<T> data) {
+	public ModifiableAdapter(Context context, int resourceId, List<T> data) {
 		m_context = context;
 		m_data = data;
 		m_resourceId = resourceId;
@@ -81,7 +82,7 @@ public abstract class ModifiableAdapter<T> extends BaseAdapter implements Filter
 		notifyDataSetChanged();
 	}
 
-	public void addAll(ArrayList<T> objects) {
+	public void addAll(List<T> objects) {
 		synchronized (m_lock) {
 			for (T object : objects) {
 				m_data.add(object);
@@ -155,10 +156,10 @@ public abstract class ModifiableAdapter<T> extends BaseAdapter implements Filter
 			} else {
 				String prefixString = prefix.toString().toLowerCase();
 
-				final ArrayList<T> values = m_data;
+				final List<T> values = m_data;
 				final int count = values.size();
 
-				final ArrayList<T> newValues = new ArrayList<T>(count);
+				final List<T> newValues = new ArrayList<T>(count);
 
 				for (int i = 0; i < count; i++) {
 					final T value = values.get(i);
@@ -195,7 +196,7 @@ public abstract class ModifiableAdapter<T> extends BaseAdapter implements Filter
 				if (results.values == null) {
 					m_data.clear();
 				} else {
-					m_data = (ArrayList<T>) results.values;
+					m_data = (List<T>) results.values;
 				}
 			}
 

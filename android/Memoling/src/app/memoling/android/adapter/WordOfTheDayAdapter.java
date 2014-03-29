@@ -1,6 +1,7 @@
 package app.memoling.android.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -63,7 +64,7 @@ public class WordOfTheDayAdapter extends SqliteAdapter {
 		}
 	}
 
-	public ArrayList<WordOfTheDay> getAll() {
+	public List<WordOfTheDay> getAll() {
 		SQLiteDatabase db = null;
 
 		try {
@@ -75,9 +76,9 @@ public class WordOfTheDayAdapter extends SqliteAdapter {
 		}
 	}
 
-	public static ArrayList<WordOfTheDay> getAll(SqliteAdapter adapter, SQLiteDatabase db) {
+	public static List<WordOfTheDay> getAll(SqliteAdapter adapter, SQLiteDatabase db) {
 
-		ArrayList<WordOfTheDay> words = new ArrayList<WordOfTheDay>();
+		List<WordOfTheDay> words = new ArrayList<WordOfTheDay>();
 
 		String query = "SELECT " + "WordOfTheDayId, MemoBaseId, Mode, ProviderId, PreLanguageFrom, LanguageTo "
 				+ "FROM WordOfTheDay ";

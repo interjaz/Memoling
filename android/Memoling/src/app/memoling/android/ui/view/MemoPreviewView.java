@@ -1,6 +1,7 @@
 package app.memoling.android.ui.view;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import app.memoling.android.entity.Memo;
 import app.memoling.android.ui.adapter.IGet;
@@ -29,8 +30,8 @@ public class MemoPreviewView implements IGet<String> {
 		return null;
 	}
 
-	public static ArrayList<MemoPreviewView> getAll(ArrayList<Memo> memos) {
-		ArrayList<MemoPreviewView> list = new ArrayList<MemoPreviewView>();
+	public static List<MemoPreviewView> getAll(List<Memo> memos) {
+		List<MemoPreviewView> list = new ArrayList<MemoPreviewView>();
 
 		for (Memo memo : memos) {
 			list.add(new MemoPreviewView(memo));

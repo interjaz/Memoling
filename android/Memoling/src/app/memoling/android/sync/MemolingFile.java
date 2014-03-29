@@ -3,6 +3,7 @@ package app.memoling.android.sync;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,13 +23,13 @@ public class MemolingFile {
 		m_version = version;
 	}
 
-	private ArrayList<MemoBase> m_memoBases;
+	private List<MemoBase> m_memoBases;
 
-	public ArrayList<MemoBase> getMemoBases() {
+	public List<MemoBase> getMemoBases() {
 		return m_memoBases;
 	}
 
-	public void setMemoBases(ArrayList<MemoBase> memoBases) {
+	public void setMemoBases(List<MemoBase> memoBases) {
 		m_memoBases = memoBases;
 	}
 

@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.URI;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -26,7 +26,7 @@ public class HttpGetRequestTask extends WorkerThread<Void, Void, String> {
 
 	private IHttpRequestTaskComplete m_onHttpRequestTaskComplete;
 	private URI m_uri;
-	private ArrayList<NameValuePair> m_headers;
+	private List<NameValuePair> m_headers;
 	private int m_timeout;
 	private Exception m_exception;
 	
@@ -35,7 +35,7 @@ public class HttpGetRequestTask extends WorkerThread<Void, Void, String> {
 	}
 
 	public HttpGetRequestTask(URI uri, IHttpRequestTaskComplete onHttpRequestTaskComplete,
-			ArrayList<NameValuePair> headers, int timeout) {
+			List<NameValuePair> headers, int timeout) {
 		m_uri = uri;
 		m_onHttpRequestTaskComplete = onHttpRequestTaskComplete;
 		m_headers = headers;

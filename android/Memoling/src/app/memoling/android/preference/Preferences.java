@@ -1,6 +1,7 @@
 package app.memoling.android.preference;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import org.json.JSONException;
@@ -144,7 +145,7 @@ public class Preferences {
 
 	public MemoListPreference getMemoListPreference(String memoBaseId) {
 		try {
-			ArrayList<MemoListPreference> list = MemoListPreference.deserializeList(get(MEMOLIST_PREFERENCES));
+			List<MemoListPreference> list = MemoListPreference.deserializeList(get(MEMOLIST_PREFERENCES));
 
 			for (MemoListPreference pref : list) {
 				if (pref.getMemoBaseId().equals(memoBaseId)) {
@@ -166,7 +167,7 @@ public class Preferences {
 
 	public void setMemoListPreference(MemoListPreference preference) {
 		try {
-			ArrayList<MemoListPreference> list = MemoListPreference.deserializeList(get(MEMOLIST_PREFERENCES));
+			List<MemoListPreference> list = MemoListPreference.deserializeList(get(MEMOLIST_PREFERENCES));
 
 			MemoListPreference found = null;
 			for (MemoListPreference pref : list) {

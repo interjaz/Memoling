@@ -1,6 +1,7 @@
 package app.memoling.android.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import android.content.ContentValues;
@@ -25,7 +26,7 @@ public class MemoAdapter extends SqliteAdapter {
 	private static CacheHelper<String, Memo> m_memoCache = new CacheHelper<String, Memo>(m_memoCacheSize);
 
 	private static int m_memoListCacheSize = 5;
-	private static CacheHelper<String, ArrayList<Memo>> m_memoListCache = new CacheHelper<String, ArrayList<Memo>>(
+	private static CacheHelper<String, List<Memo>> m_memoListCache = new CacheHelper<String, List<Memo>>(
 			m_memoListCacheSize);
 
 	public enum Sort {
@@ -224,7 +225,7 @@ public class MemoAdapter extends SqliteAdapter {
 		return null;
 	}
 
-	public ArrayList<Memo> getAll(String memoBaseId, Sort sort, Order order) {
+	public List<Memo> getAll(String memoBaseId, Sort sort, Order order) {
 		SQLiteDatabase db = null;
 
 		String cacheKey = memoBaseId + sort.toString() + order.toString();
@@ -241,7 +242,7 @@ public class MemoAdapter extends SqliteAdapter {
 		}
 	}
 
-	public static ArrayList<Memo> getAll(SqliteAdapter adapter, SQLiteDatabase db, String memoBaseId, Sort sort,
+	public static List<Memo> getAll(SqliteAdapter adapter, SQLiteDatabase db, String memoBaseId, Sort sort,
 			Order order) {
 
 		String cacheKey = memoBaseId + sort.toString() + order.toString();
@@ -251,7 +252,7 @@ public class MemoAdapter extends SqliteAdapter {
 		}
 
 		MemoBase memoBase = null;
-		ArrayList<Memo> memos = new ArrayList<Memo>();
+		List<Memo> memos = new ArrayList<Memo>();
 
 		memoBase = MemoBaseAdapter.get(adapter, db, memoBaseId);
 
@@ -318,7 +319,7 @@ public class MemoAdapter extends SqliteAdapter {
 		return memos;
 	}
 
-	public ArrayList<Memo> getTrainSet(String memoBaseId, int size) {
+	public List<Memo> getTrainSet(String memoBaseId, int size) {
 		SQLiteDatabase db = null;
 		Cursor cursor = null;
 
@@ -328,7 +329,7 @@ public class MemoAdapter extends SqliteAdapter {
 
 		try {
 			MemoBase memoBase = null;
-			ArrayList<Memo> memos = new ArrayList<Memo>();
+			List<Memo> memos = new ArrayList<Memo>();
 
 			db = getDatabase();
 

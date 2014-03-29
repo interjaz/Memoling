@@ -1,6 +1,7 @@
 package app.memoling.android.ui.view;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import app.memoling.android.R;
@@ -25,9 +26,9 @@ public class GamesSourceView implements IGet<String> {
 		m_value = value;
 	}
 	
-	public static ArrayList<GamesSourceView> getSourceViewsWithMemos(Context ctx) {
+	public static List<GamesSourceView> getSourceViewsWithMemos(Context ctx) {
 		String[] input = ctx.getResources().getStringArray(R.array.games_source);
-		ArrayList<GamesSourceView> views = new ArrayList<GamesSourceView>();
+		List<GamesSourceView> views = new ArrayList<GamesSourceView>();
 		
 		for(int i=0;i<input.length;i++) {
 			views.add(new GamesSourceView(i, input[i]));
@@ -36,9 +37,9 @@ public class GamesSourceView implements IGet<String> {
 		return views;
 	}
 	
-	public static ArrayList<GamesSourceView> getSourceViews(Context ctx) {
+	public static List<GamesSourceView> getSourceViews(Context ctx) {
 		String[] input = ctx.getResources().getStringArray(R.array.games_source);
-		ArrayList<GamesSourceView> views = new ArrayList<GamesSourceView>();
+		List<GamesSourceView> views = new ArrayList<GamesSourceView>();
 		
 		// Here we take assumption that first is my memos
 		for(int i=1;i<input.length;i++) {

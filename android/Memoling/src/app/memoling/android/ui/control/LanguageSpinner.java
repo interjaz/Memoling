@@ -1,6 +1,7 @@
 package app.memoling.android.ui.control;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -19,7 +20,7 @@ public class LanguageSpinner extends Spinner implements AdapterView.OnItemSelect
 
 	ModifiableComplexTextAdapter<LanguageView> m_spLanguageAdapter;
 	private Preferences m_preferences;
-	private ArrayList<LanguageView> m_laguageViews;
+	private List<LanguageView> m_laguageViews;
 	
 	private boolean m_loaded;
 	

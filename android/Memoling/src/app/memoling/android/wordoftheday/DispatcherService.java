@@ -1,6 +1,7 @@
 package app.memoling.android.wordoftheday;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.json.JSONException;
@@ -44,12 +45,12 @@ public class DispatcherService extends Service {
 
 		WordOfTheDayAdapter wordAdapter = new WordOfTheDayAdapter(this);
 		MemoBaseAdapter memoBaseAdapter = new MemoBaseAdapter(this);
-		ArrayList<WordOfTheDay> words = wordAdapter.getAll();
+		List<WordOfTheDay> words = wordAdapter.getAll();
 
 		Random rand = new Random();
 		
 		// Check if still MemoBase exists
-		ArrayList<WordOfTheDay> wordOfTheDayToDelete =  new ArrayList<WordOfTheDay>();
+		List<WordOfTheDay> wordOfTheDayToDelete =  new ArrayList<WordOfTheDay>();
 		for(WordOfTheDay word : words) {
 			if(memoBaseAdapter.get(word.getMemoBaseId()) == null) {
 				wordOfTheDayToDelete.add(word);

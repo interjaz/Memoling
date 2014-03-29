@@ -3,6 +3,7 @@ package app.memoling.android.adapter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -32,7 +33,7 @@ public class MemoBaseAdapter extends SqliteAdapter {
 			m_memoBaseInfoCacheSize);
 
 	private final static int m_memoBaseListCacheSize = 2;
-	private static CacheHelper<String, ArrayList<MemoBase>> m_memoBaseListCache = new CacheHelper<String, ArrayList<MemoBase>>(
+	private static CacheHelper<String, List<MemoBase>> m_memoBaseListCache = new CacheHelper<String, List<MemoBase>>(
 			m_memoBaseListCacheSize);
 
 	public MemoBaseAdapter(Context context) {
@@ -144,7 +145,7 @@ public class MemoBaseAdapter extends SqliteAdapter {
 		return memoBase;
 	}
 
-	public ArrayList<MemoBase> getAll() {
+	public List<MemoBase> getAll() {
 		SQLiteDatabase db = null;
 		Cursor cursor = null;
 
@@ -157,7 +158,7 @@ public class MemoBaseAdapter extends SqliteAdapter {
 		}
 
 		try {
-			ArrayList<MemoBase> memoBases = new ArrayList<MemoBase>();
+			List<MemoBase> memoBases = new ArrayList<MemoBase>();
 
 			db = getDatabase();
 
@@ -274,7 +275,7 @@ public class MemoBaseAdapter extends SqliteAdapter {
 			db.beginTransaction();
 			
 			// Delete all children
-			ArrayList<Memo> memoList = MemoAdapter.getAll(this, db, memoBaseId, Sort.CreatedDate, Order.ASC);
+			List<Memo> memoList = MemoAdapter.getAll(this, db, memoBaseId, Sort.CreatedDate, Order.ASC);
 
 			if (memoList != null) {
 				for (int i = 0; i < memoList.size(); i++) {

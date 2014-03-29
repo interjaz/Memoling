@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -102,8 +103,8 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 	private Button m_btnLanguageSwap;
 
 	private MemoAdapter m_memoAdapter;
-	private ArrayList<Memo> m_memos;
-	private ArrayList<MemoView> m_memosViews;
+	private List<Memo> m_memos;
+	private List<MemoView> m_memosViews;
 	private String m_memoBaseId;
 
 	private LinearLayout m_layWhatsNew;
@@ -405,7 +406,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 		if (result.Result.size() == 0) {
 			new Translator(getActivity(), new Word(currentStr.trim().toLowerCase()), fromLang, toLang, this);
 		} else {
-			ArrayList<TranslatedView> tViews = new ArrayList<TranslatedView>(result.Result.size());
+			List<TranslatedView> tViews = new ArrayList<TranslatedView>(result.Result.size());
 
 			// Rebuild string
 			StringBuilder currentStrBase = new StringBuilder();
@@ -415,7 +416,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 			}
 
 			// Local copy
-			ArrayList<Word> words = new ArrayList<Word>();
+			List<Word> words = new ArrayList<Word>();
 			for (Word w : result.Result) {
 				words.add(new Word(w));
 			}
@@ -729,8 +730,8 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 		}
 
 		@SuppressLint("DefaultLocale")
-		private ArrayList<MemoView> filter(String filter) {
-			ArrayList<MemoView> filtered = new ArrayList<MemoView>();
+		private List<MemoView> filter(String filter) {
+			List<MemoView> filtered = new ArrayList<MemoView>();
 
 			if (filtered.equals("")) {
 				return m_memosViews;
@@ -884,7 +885,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 	}
 
 	private synchronized void sortSuggestions() {
-		ArrayList<TranslatedView> views = new ArrayList<TranslatedView>();
+		List<TranslatedView> views = new ArrayList<TranslatedView>();
 		for (int i = 0; i < m_suggestionAdapter.getCount(); i++) {
 			views.add(m_suggestionAdapter.getItem(i));
 		}
@@ -912,7 +913,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 					.getLanguageToCode()));
 		}
 
-		ArrayList<Helper.Pair<Language, Integer>> languages = new ArrayList<Helper.Pair<Language, Integer>>();
+		List<Helper.Pair<Language, Integer>> languages = new ArrayList<Helper.Pair<Language, Integer>>();
 
 		// Make a list of frequency
 

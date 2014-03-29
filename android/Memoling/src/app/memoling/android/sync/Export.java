@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import android.content.Context;
@@ -34,7 +35,7 @@ public class Export {
 			fw = new FileWriter(file);
 
 			MemolingFile memoFile = new MemolingFile();
-			ArrayList<MemoBase> memoBases = new ArrayList<MemoBase>();
+			List<MemoBase> memoBases = new ArrayList<MemoBase>();
 			memoFile.setMemoBases(memoBases);
 
 			for (String memoBaseId : memoBaseIds) {
@@ -75,7 +76,7 @@ public class Export {
 
 			fw = new FileWriter(file);
 
-			ArrayList<MemoBase> bases = new ArrayList<MemoBase>();
+			List<MemoBase> bases = new ArrayList<MemoBase>();
 			for (String memoBaseId : memoBaseIds) {
 				bases.add(baseAdapter.get(memoBaseId));
 			}
@@ -84,7 +85,7 @@ public class Export {
 
 			for (MemoBase base : bases) {
 				String line;
-				ArrayList<Memo> memos = memoAdapter.getAll(base.getMemoBaseId(), Sort.CreatedDate, Order.ASC);
+				List<Memo> memos = memoAdapter.getAll(base.getMemoBaseId(), Sort.CreatedDate, Order.ASC);
 
 				for (Memo memo : memos) {
 					line = CsvParser.MemoToString(base, memo);
@@ -116,14 +117,14 @@ public class Export {
 			MemoBaseAdapter baseAdapter = new MemoBaseAdapter(context);
 			MemoAdapter memoAdapter = new MemoAdapter(context);
 
-			ArrayList<MemoBase> bases = new ArrayList<MemoBase>();
+			List<MemoBase> bases = new ArrayList<MemoBase>();
 			for (String memoBaseId : memoBaseIds) {
 				bases.add(baseAdapter.get(memoBaseId));
 			}
 
 			for (MemoBase base : bases) {
 				String line;
-				ArrayList<Memo> memos = memoAdapter.getAll(base.getMemoBaseId(), Sort.CreatedDate, Order.ASC);
+				List<Memo> memos = memoAdapter.getAll(base.getMemoBaseId(), Sort.CreatedDate, Order.ASC);
 
 				noteText.append(String.format("Library %s\r\n", base.getName()));
 

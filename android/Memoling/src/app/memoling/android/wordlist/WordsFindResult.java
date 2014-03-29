@@ -1,15 +1,15 @@
 package app.memoling.android.wordlist;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import app.memoling.android.entity.Word;
 
 public class WordsFindResult {
 	
 	public Word Searched;
-	public ArrayList<Word> Result;
+	public List<Word> Result;
 	
-	public WordsFindResult(Word word, ArrayList<Word> words) {		
+	public WordsFindResult(Word word, List<Word> words) {		
 		Searched = word;
 		Result = words;
 	}

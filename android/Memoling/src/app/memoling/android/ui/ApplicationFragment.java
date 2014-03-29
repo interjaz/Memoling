@@ -1,6 +1,7 @@
 package app.memoling.android.ui;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -39,7 +40,7 @@ public abstract class ApplicationFragment extends Fragment {
 	private Bundle m_savedInstanceState;
 
 	private Menu m_menu;
-	private ArrayList<Integer> m_menuItems;
+	private List<Integer> m_menuItems;
 	private float m_uiProgress;
 
 	private Lazy<Handler> m_uiHandler = new Lazy<Handler>() {

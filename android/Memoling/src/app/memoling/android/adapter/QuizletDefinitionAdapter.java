@@ -1,6 +1,7 @@
 package app.memoling.android.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -14,7 +15,7 @@ import app.memoling.android.helper.CacheHelper;
 public class QuizletDefinitionAdapter extends SqliteAdapter {
 
 	private static int m_definitionListCacheSize = 20;
-	private static CacheHelper<String, ArrayList<QuizletDefinition>> m_definitionListCache = new CacheHelper<String, ArrayList<QuizletDefinition>>(
+	private static CacheHelper<String, List<QuizletDefinition>> m_definitionListCache = new CacheHelper<String, List<QuizletDefinition>>(
 			m_definitionListCacheSize);
 
 	public QuizletDefinitionAdapter(Context context) {
@@ -25,7 +26,7 @@ public class QuizletDefinitionAdapter extends SqliteAdapter {
 		super(context, persistant);
 	}
 
-	public ArrayList<QuizletDefinition> get(String word) {
+	public List<QuizletDefinition> get(String word) {
 
 		if (inSync() && m_definitionListCache.containsKey(word)) {
 			return m_definitionListCache.get(word);
@@ -42,7 +43,7 @@ public class QuizletDefinitionAdapter extends SqliteAdapter {
 		}
 	}
 
-	public static ArrayList<QuizletDefinition> get(SqliteAdapter adapter, SQLiteDatabase db, String word) {
+	public static List<QuizletDefinition> get(SqliteAdapter adapter, SQLiteDatabase db, String word) {
 		if (!adapter.inSync()) {
 			adapter.invalidateLocalCache();
 		}
@@ -57,7 +58,7 @@ public class QuizletDefinitionAdapter extends SqliteAdapter {
 		Cursor cursor = db.rawQuery(query, new String[] { word });
 
 		try {
-			ArrayList<QuizletDefinition> definitions = new ArrayList<QuizletDefinition>();
+			List<QuizletDefinition> definitions = new ArrayList<QuizletDefinition>();
 
 			while (cursor.moveToNext()) {
 

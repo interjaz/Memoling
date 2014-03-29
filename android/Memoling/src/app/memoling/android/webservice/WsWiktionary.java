@@ -2,6 +2,7 @@ package app.memoling.android.webservice;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,7 +19,7 @@ public class WsWiktionary {
 	private static final int m_timeout = 8000;
 
 	public static interface IGetComplete {
-		void getComplete(ArrayList<WiktionaryInfo> wiktionaryInfos);
+		void getComplete(List<WiktionaryInfo> wiktionaryInfos);
 	}
 
 	public void get(final IGetComplete onComplete) {
@@ -34,7 +35,7 @@ public class WsWiktionary {
 					try {
 						JSONArray array = new JSONArray(response);
 
-						ArrayList<WiktionaryInfo> wiktionaryInfos = new ArrayList<WiktionaryInfo>();
+						List<WiktionaryInfo> wiktionaryInfos = new ArrayList<WiktionaryInfo>();
 						for (int i = 0; i < array.length(); i++) {
 							WiktionaryInfo wiktionaryInfo = CanonicalConverter.parseWiktionaryInfo(array
 									.getJSONObject(i));

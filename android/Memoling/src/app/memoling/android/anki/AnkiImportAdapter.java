@@ -2,6 +2,7 @@ package app.memoling.android.anki;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -24,7 +25,7 @@ public class AnkiImportAdapter extends AnkiDb {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ArrayList<AnkiCollection> getAllAnkiCollections(Sort sort, Order order) {
+	public List<AnkiCollection> getAllAnkiCollections(Sort sort, Order order) {
 		SQLiteDatabase db = null;
 
 		try {
@@ -35,11 +36,11 @@ public class AnkiImportAdapter extends AnkiDb {
 		}
 	}	
 	
-	private ArrayList<AnkiCollection> getAllAnkiCollections(
+	private List<AnkiCollection> getAllAnkiCollections(
 			AnkiImportAdapter ankiImportAdapter, SQLiteDatabase db,
 			Sort sort, Order order) {
 		
-		ArrayList<AnkiCollection> ankiCollections = new ArrayList<AnkiCollection>();
+		List<AnkiCollection> ankiCollections = new ArrayList<AnkiCollection>();
 		
 		String query = "SELECT C.id C_id, C.crt C_crt, C.mod C_mod, C.scm C_scm, C.ver C_ver, C.dty C_dty, " 
 				+ " C.usn C_usn, C.ls C_ls, C.conf C_conf, C.models C_models, C.decks C_decks, C.dconf C_dconf, "
@@ -74,7 +75,7 @@ public class AnkiImportAdapter extends AnkiDb {
 		return ankiCollections;
 	}
 
-	public ArrayList<AnkiIndexStat> getAllAnkiIndexStats(Sort sort, Order order) {
+	public List<AnkiIndexStat> getAllAnkiIndexStats(Sort sort, Order order) {
 		SQLiteDatabase db = null;
 
 		try {
@@ -85,11 +86,11 @@ public class AnkiImportAdapter extends AnkiDb {
 		}
 	}	
 	
-	private ArrayList<AnkiIndexStat> getAllAnkiIndexStats(
+	private List<AnkiIndexStat> getAllAnkiIndexStats(
 			AnkiImportAdapter ankiImportAdapter, SQLiteDatabase db,
 			Sort sort, Order order) {
 
-		ArrayList<AnkiIndexStat> ankiIndexStats = new ArrayList<AnkiIndexStat>();
+		List<AnkiIndexStat> ankiIndexStats = new ArrayList<AnkiIndexStat>();
 		
 		String query = "SELECT S.rowid S_rowid, S.tbl S_tbl, S.idx S_idx, S.stat S_stat " 
 				+ "FROM sqlite_stat1 AS S";
@@ -113,7 +114,7 @@ public class AnkiImportAdapter extends AnkiDb {
 		return ankiIndexStats;
 	}
 
-	public ArrayList<AnkiGrave> getAllAnkiGraves(Sort sort, Order order) {
+	public List<AnkiGrave> getAllAnkiGraves(Sort sort, Order order) {
 		SQLiteDatabase db = null;
 
 		try {
@@ -124,11 +125,11 @@ public class AnkiImportAdapter extends AnkiDb {
 		}
 	}	
 	
-	private ArrayList<AnkiGrave> getAllAnkiGraves(
+	private List<AnkiGrave> getAllAnkiGraves(
 			AnkiImportAdapter ankiImportAdapter, SQLiteDatabase db,
 			Sort sort, Order order) {
  
-		ArrayList<AnkiGrave> ankiGraves = new ArrayList<AnkiGrave>();
+		List<AnkiGrave> ankiGraves = new ArrayList<AnkiGrave>();
 		
 		String query = "SELECT G.rowid G_rowid, G.usn G_usn, G.oid G_oid, G.type G_type " 
 				+ "FROM graves AS G";
@@ -152,7 +153,7 @@ public class AnkiImportAdapter extends AnkiDb {
 		return ankiGraves;
 	}
 
-	public ArrayList<AnkiReviewLog> getAnkiReviewLogs(long ankiDeckId, Sort sort, Order order) {
+	public List<AnkiReviewLog> getAnkiReviewLogs(long ankiDeckId, Sort sort, Order order) {
 		SQLiteDatabase db = null;
 
 		try {
@@ -163,11 +164,11 @@ public class AnkiImportAdapter extends AnkiDb {
 		}
 	}
 	
-	private ArrayList<AnkiReviewLog> getAnkiReviewLogs(
+	private List<AnkiReviewLog> getAnkiReviewLogs(
 			AnkiImportAdapter ankiImportAdapter, SQLiteDatabase db,
 			long ankiDeckId, Sort sort, Order order) {
 
-		ArrayList<AnkiReviewLog> ankiReviewLogs = new ArrayList<AnkiReviewLog>();
+		List<AnkiReviewLog> ankiReviewLogs = new ArrayList<AnkiReviewLog>();
 		
 		String query = "SELECT RL.id RL_id, RL.cid RL_cid, RL.usn RL_usn, RL.ease RL_ease, RL.ivl RL_ivl," 
 				+ "RL.lastIvl RL_lastIvl, RL.factor RL_factor, RL.time RL_time, RL.type RL_type " 
@@ -198,7 +199,7 @@ public class AnkiImportAdapter extends AnkiDb {
 		return ankiReviewLogs;
 	}
 
-	public ArrayList<AnkiReviewLog> getAllAnkiReviewLogs(Sort sort, Order order) {
+	public List<AnkiReviewLog> getAllAnkiReviewLogs(Sort sort, Order order) {
 		SQLiteDatabase db = null;
 
 		try {
@@ -209,11 +210,11 @@ public class AnkiImportAdapter extends AnkiDb {
 		}
 	}
 	
-	private ArrayList<AnkiReviewLog> getAllAnkiReviewLogs(
+	private List<AnkiReviewLog> getAllAnkiReviewLogs(
 			AnkiImportAdapter ankiImportAdapter, SQLiteDatabase db,
 			Sort sort, Order order) {
 
-		ArrayList<AnkiReviewLog> ankiReviewLogs = new ArrayList<AnkiReviewLog>();
+		List<AnkiReviewLog> ankiReviewLogs = new ArrayList<AnkiReviewLog>();
 		
 		String query = "SELECT RL.id RL_id, RL.cid RL_cid, RL.usn RL_usn, RL.ease RL_ease, RL.ivl RL_ivl," 
 				+ "RL.lastIvl RL_lastIvl, RL.factor RL_factor, RL.time RL_time, RL.type RL_type " 
@@ -243,7 +244,7 @@ public class AnkiImportAdapter extends AnkiDb {
 		return ankiReviewLogs;
 	}
 	
-	public ArrayList<AnkiNote> getAllAnkiNotes(Sort sort, Order order) {
+	public List<AnkiNote> getAllAnkiNotes(Sort sort, Order order) {
 		SQLiteDatabase db = null;
 
 		try {
@@ -254,11 +255,11 @@ public class AnkiImportAdapter extends AnkiDb {
 		}
 	}
 	
-	private ArrayList<AnkiNote> getAllAnkiNotes(
+	private List<AnkiNote> getAllAnkiNotes(
 			AnkiImportAdapter ankiImportAdapter, SQLiteDatabase db,
 			Sort sort, Order order) {
 		
-		ArrayList<AnkiNote> ankiNotes = new ArrayList<AnkiNote>();
+		List<AnkiNote> ankiNotes = new ArrayList<AnkiNote>();
 		
 		String query = "SELECT N.id N_id, N.guid N_guid, N.mid N_mid, N.mod N_mod, N.usn N_usn, " 
 				+ "N.tags N_tags, N.flds N_flds, N.sfld N_sfld, N.csum N_csum, N.flags N_flags, N.data N_data " 
@@ -290,7 +291,7 @@ public class AnkiImportAdapter extends AnkiDb {
 		return ankiNotes;
 	}
 
-	public ArrayList<AnkiCard> getAllAnkiCards(Sort sort, Order order) {
+	public List<AnkiCard> getAllAnkiCards(Sort sort, Order order) {
 		SQLiteDatabase db = null;
 
 		try {
@@ -301,10 +302,10 @@ public class AnkiImportAdapter extends AnkiDb {
 		}
 	}
 
-	private ArrayList<AnkiCard> getAllAnkiCards(AnkiImportAdapter ankiImportAdapter,
+	private List<AnkiCard> getAllAnkiCards(AnkiImportAdapter ankiImportAdapter,
 			SQLiteDatabase db, Sort sort, Order order) {
 		
-		ArrayList<AnkiCard> ankiCards = new ArrayList<AnkiCard>();
+		List<AnkiCard> ankiCards = new ArrayList<AnkiCard>();
 		
 		String query = "SELECT C.id C_id, C.nid C_nid, C.did C_did, C.ord C_ord, C.mod C_mod, C.usn C_usn, " 
 				+ "C.type C_type, C.queue C_queue, C.due C_due, C.ivl C_ivl, C.factor C_factor, C.reps C_reps, " 
@@ -344,7 +345,7 @@ public class AnkiImportAdapter extends AnkiDb {
 		return ankiCards;
 	}
 	
-	public ArrayList<AnkiCard> getAnkiCards(long ankiDeckId, Sort sort, Order order) {
+	public List<AnkiCard> getAnkiCards(long ankiDeckId, Sort sort, Order order) {
 		SQLiteDatabase db = null;
 
 		try {
@@ -355,10 +356,10 @@ public class AnkiImportAdapter extends AnkiDb {
 		}
 	}
 
-	private ArrayList<AnkiCard> getAnkiCards(AnkiImportAdapter ankiImportAdapter,
+	private List<AnkiCard> getAnkiCards(AnkiImportAdapter ankiImportAdapter,
 			SQLiteDatabase db, long ankiDeckId, Sort sort, Order order) {
 		
-		ArrayList<AnkiCard> ankiCards = new ArrayList<AnkiCard>();
+		List<AnkiCard> ankiCards = new ArrayList<AnkiCard>();
 		
 		String query = "SELECT C.id C_id, C.nid C_nid, C.did C_did, C.ord C_ord, C.mod C_mod, C.usn C_usn, " 
 				+ "C.type C_type, C.queue C_queue, C.due C_due, C.ivl C_ivl, C.factor C_factor, C.reps C_reps, " 

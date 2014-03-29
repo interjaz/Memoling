@@ -3,6 +3,7 @@ package app.memoling.android.crossword;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import android.util.Pair;
 
@@ -38,7 +39,7 @@ public class Solver {
 		return ((float)m_dualSolver1.operations + m_dualSolver2.operations) / (m_dualSolver1.maxOperations + m_dualSolver2.maxOperations); 
 	}
 
-    public static Matrix dualSolve(ArrayList<String> words, boolean allowDiagonal, boolean allowFitting, Matrix matrix)
+    public static Matrix dualSolve(List<String> words, boolean allowDiagonal, boolean allowFitting, Matrix matrix)
     {
     	// Descending
 		Collections.sort(words, new Comparator<String>() {
@@ -79,9 +80,9 @@ public class Solver {
         return matrix;
     }
 	
-	public Matrix solve(ArrayList<String> words, boolean allowDiagonal, Matrix matrix) {
+	public Matrix solve(List<String> words, boolean allowDiagonal, Matrix matrix) {
 		this.allowDiagonal = allowDiagonal;
-		ArrayList<Matrix> ms = new ArrayList<Matrix>();
+		List<Matrix> ms = new ArrayList<Matrix>();
 
 		int[] perm = new int[words.size()];
 		for (int i = 0; i < words.size(); i++) {
@@ -89,12 +90,12 @@ public class Solver {
 		}
 
 		do {
-			ArrayList<String> permWords = new ArrayList<String>();
+			List<String> permWords = new ArrayList<String>();
 			for (int i = 0; i < words.size(); i++) {
 				permWords.add(words.get(perm[i]));
 			}
 
-			ArrayList<Matrix> lms = lineSolve(permWords, matrix, true);
+			List<Matrix> lms = lineSolve(permWords, matrix, true);
 			if (lms != null) {
 				for (int i = 0; i < lms.size(); i++) {
 					ms.add(lms.get(i));
@@ -114,8 +115,8 @@ public class Solver {
 		return last;
 	}
 
-	public ArrayList<Matrix> lineSolve(ArrayList<String> words, Matrix matrix, boolean forward) {
-		ArrayList<Matrix> mxs = new ArrayList<Matrix>();
+	public List<Matrix> lineSolve(List<String> words, Matrix matrix, boolean forward) {
+		List<Matrix> mxs = new ArrayList<Matrix>();
 
 		if (stop() || words == null || words.size() == 0) {
 			found = true;
@@ -125,10 +126,10 @@ public class Solver {
 
 		for (int i = 0; i < words.size(); i++) {
 			String word = words.get(i);
-			ArrayList<String> vWords = Util.copy(words);
-			ArrayList<String> hWords = Util.copy(words);
-			ArrayList<String> dlWords = Util.copy(words);
-			ArrayList<String> drWords = Util.copy(words);
+			List<String> vWords = Util.copy(words);
+			List<String> hWords = Util.copy(words);
+			List<String> dlWords = Util.copy(words);
+			List<String> drWords = Util.copy(words);
 			vWords.remove(i);
 			vWords = vWords.size() == 0 ? null : vWords;
 			hWords.remove(i);
@@ -138,7 +139,7 @@ public class Solver {
 			drWords.remove(i);
 			drWords = drWords.size() == 0 ? null : drWords;
 
-			ArrayList<Matrix> ms;
+			List<Matrix> ms;
 			boolean fwd;
 			// Tunning parameter it seems that leaving it as true gives better
 			// result
@@ -190,8 +191,8 @@ public class Solver {
 		return mxs;
 	}
 
-	public ArrayList<Matrix> FitHorizontal(ArrayList<String> words, String word, Matrix matrix, boolean forward) {
-		ArrayList<Matrix> mxs = new ArrayList<Matrix>();
+	public List<Matrix> FitHorizontal(List<String> words, String word, Matrix matrix, boolean forward) {
+		List<Matrix> mxs = new ArrayList<Matrix>();
 
 		if (matrix.isEmpty) {
 			Point newPos = new Point(0, 0);
@@ -281,8 +282,8 @@ public class Solver {
 		return mxs;
 	}
 
-	public ArrayList<Matrix> FitVertical(ArrayList<String> words, String word, Matrix matrix, boolean forward) {
-		ArrayList<Matrix> mxs = new ArrayList<Matrix>();
+	public List<Matrix> FitVertical(List<String> words, String word, Matrix matrix, boolean forward) {
+		List<Matrix> mxs = new ArrayList<Matrix>();
 
 		if (matrix.isEmpty) {
 			Point newPos = new Point(0, 0);
@@ -371,8 +372,8 @@ public class Solver {
 		return mxs;
 	}
 
-	public ArrayList<Matrix> FitLDiagonal(ArrayList<String> words, String word, Matrix matrix, boolean forward) {
-		ArrayList<Matrix> mxs = new ArrayList<Matrix>();
+	public List<Matrix> FitLDiagonal(List<String> words, String word, Matrix matrix, boolean forward) {
+		List<Matrix> mxs = new ArrayList<Matrix>();
 
 		if (matrix.isEmpty) {
 			Point newPos = new Point(0, 0);
@@ -508,8 +509,8 @@ public class Solver {
 		return mxs;
 	}
 
-	public ArrayList<Matrix> FitRDiagonal(ArrayList<String> words, String word, Matrix matrix, boolean forward) {
-		ArrayList<Matrix> mxs = new ArrayList<Matrix>();
+	public List<Matrix> FitRDiagonal(List<String> words, String word, Matrix matrix, boolean forward) {
+		List<Matrix> mxs = new ArrayList<Matrix>();
 
 		if (matrix.isEmpty) {
 			Point newPos = new Point(0, 0);
@@ -645,7 +646,7 @@ public class Solver {
 		return mxs;
 	}
 
-	public static Matrix FitFreeSpace(ArrayList<String> words, Matrix matrix) {
+	public static Matrix FitFreeSpace(List<String> words, Matrix matrix) {
 		for (int j = 0; j < 20; j++) {
 			boolean fitted = false;
 			String word = "";

@@ -3,6 +3,7 @@ package app.memoling.android.wordoftheday.provider;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import org.w3c.dom.Element;
 
@@ -275,8 +276,8 @@ public class ProviderAdapter {
 				word.getUri(), word.getRoot(), word.getPostProcessor());
 	}
 
-	public ArrayList<Provider> getAll() {
-		ArrayList<Provider> providers = new ArrayList<Provider>();
+	public List<Provider> getAll() {
+		List<Provider> providers = new ArrayList<Provider>();
 		for (Provider word : m_providers) {
 			providers.add(copy(word));
 		}

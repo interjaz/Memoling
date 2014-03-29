@@ -1,6 +1,7 @@
 package app.memoling.android.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -19,7 +20,7 @@ public class QuizletDefinitionExampleAdapter extends SqliteAdapter {
 		super(context, persistant);
 	}
 
-	public static ArrayList<String> get(SqliteAdapter adapter, SQLiteDatabase db, String quizletDefinitionId) {
+	public static List<String> get(SqliteAdapter adapter, SQLiteDatabase db, String quizletDefinitionId) {
 		if (!adapter.inSync()) {
 			adapter.invalidateLocalCache();
 		}
@@ -29,7 +30,7 @@ public class QuizletDefinitionExampleAdapter extends SqliteAdapter {
 		Cursor cursor = db.rawQuery(query, new String[] { quizletDefinitionId });
 
 		try {
-			ArrayList<String> examples = new ArrayList<String>();
+			List<String> examples = new ArrayList<String>();
 
 			while (cursor.moveToNext()) {
 
@@ -47,7 +48,7 @@ public class QuizletDefinitionExampleAdapter extends SqliteAdapter {
 	}
 
 	public static boolean add(SqliteAdapter adapter, SQLiteDatabase db, String quizletDefinitionId,
-			ArrayList<String> examples) {
+			List<String> examples) {
 		adapter.invalidateLocalCache();
 		
 		for (String example : examples) {

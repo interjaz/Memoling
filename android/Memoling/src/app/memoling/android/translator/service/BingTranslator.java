@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -57,7 +58,7 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 	private ITranslatorComplete m_onTranslateComplete;
 	private static int m_timeout = 3000;
 
-	private static ArrayList<BingTranslator> m_pendingTranslations = new ArrayList<BingTranslator>();
+	private static List<BingTranslator> m_pendingTranslations = new ArrayList<BingTranslator>();
 
 	public BingTranslator(Context context, Word word, Language from, Language to, ITranslatorComplete onTranslatorResult) {
 
@@ -177,8 +178,8 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 	@Override
 	public void onHttpRequestTaskComplete(String response) {
 
-		ArrayList<Word> original = new ArrayList<Word>();
-		ArrayList<Word> translated = parseJson(response);
+		List<Word> original = new ArrayList<Word>();
+		List<Word> translated = parseJson(response);
 
 		if (translated != null && translated.size() > 0) {
 			for (int i = 0; i < translated.size(); i++) {
@@ -201,8 +202,8 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 	}
 
 	@SuppressLint("DefaultLocale")
-	private static ArrayList<Word> parseJson(String response) {
-		ArrayList<Word> words = new ArrayList<Word>();
+	private static List<Word> parseJson(String response) {
+		List<Word> words = new ArrayList<Word>();
 
 		try {
 			JSONArray translations = new JSONObject(response).getJSONArray(Translations);

@@ -1,6 +1,7 @@
 package app.memoling.android.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -17,7 +18,7 @@ public class WikiTranslationAdapter extends WiktionaryDb {
 		super(context);
 	}
 
-	public ArrayList<WikiTranslation> get(String expression, Language languageFrom, Language languageTo) {
+	public List<WikiTranslation> get(String expression, Language languageFrom, Language languageTo) {
 
 		SQLiteDatabase db = null;
 
@@ -30,7 +31,7 @@ public class WikiTranslationAdapter extends WiktionaryDb {
 		}
 	}
 
-	public static ArrayList<WikiTranslation> get(SqliteAdapter adapter, SQLiteDatabase db, String expression,
+	public static List<WikiTranslation> get(SqliteAdapter adapter, SQLiteDatabase db, String expression,
 			Language languageFrom, Language languageTo) {
 
 		String query = "SELECT ExpressionA, ExpressionB, LanguageA, LanguageB, MeaningId "
@@ -42,7 +43,7 @@ public class WikiTranslationAdapter extends WiktionaryDb {
 
 		try {
 
-			ArrayList<WikiTranslation> translations = null;
+			List<WikiTranslation> translations = null;
 
 			while (cursor.moveToNext()) {
 
@@ -85,7 +86,7 @@ public class WikiTranslationAdapter extends WiktionaryDb {
 
 	}
 
-	public ArrayList<WikiTranslation> get(String expression, Language languageFrom) {
+	public List<WikiTranslation> get(String expression, Language languageFrom) {
 
 		SQLiteDatabase db = null;
 
@@ -98,7 +99,7 @@ public class WikiTranslationAdapter extends WiktionaryDb {
 		}
 	}
 
-	public static ArrayList<WikiTranslation> get(SqliteAdapter adapter, SQLiteDatabase db, String expression,
+	public static List<WikiTranslation> get(SqliteAdapter adapter, SQLiteDatabase db, String expression,
 			Language languageFrom) {
 
 		String query = "SELECT ExpressionA, ExpressionB, LanguageA, LanguageB, MeaningId " + "FROM wiki_Translations "
@@ -108,7 +109,7 @@ public class WikiTranslationAdapter extends WiktionaryDb {
 
 		try {
 
-			ArrayList<WikiTranslation> translations = null;
+			List<WikiTranslation> translations = null;
 
 			while (cursor.moveToNext()) {
 

@@ -1,6 +1,7 @@
 package app.memoling.android.preference.custom;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,7 +56,7 @@ public class MemoListPreference {
 		return this;
 	}
 
-	public static String serializeList(ArrayList<MemoListPreference> object) throws JSONException {
+	public static String serializeList(List<MemoListPreference> object) throws JSONException {
 		JSONArray array = new JSONArray();
 
 		for (MemoListPreference preference : object) {
@@ -65,8 +66,8 @@ public class MemoListPreference {
 		return array.toString();
 	}
 
-	public static ArrayList<MemoListPreference> deserializeList(String object) throws JSONException {
-		ArrayList<MemoListPreference> data = new ArrayList<MemoListPreference>();
+	public static List<MemoListPreference> deserializeList(String object) throws JSONException {
+		List<MemoListPreference> data = new ArrayList<MemoListPreference>();
 
 		if (object == null) {
 			return data;

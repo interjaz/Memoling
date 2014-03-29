@@ -1,6 +1,7 @@
 package app.memoling.android.quizlet.data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,9 +11,9 @@ import app.memoling.android.entity.QuizletDefinition;
 
 public class DefinitionSearchResult {
 
-	private ArrayList<QuizletDefinition> m_definitions;
+	private List<QuizletDefinition> m_definitions;
 
-	public ArrayList<QuizletDefinition> getDefinitions() {
+	public List<QuizletDefinition> getDefinitions() {
 		return m_definitions;
 	}
 	

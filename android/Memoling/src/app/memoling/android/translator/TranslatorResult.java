@@ -1,6 +1,7 @@
 package app.memoling.android.translator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Word;
@@ -9,8 +10,8 @@ public class TranslatorResult {
 
 	public Language From;
 	public Language To;
-	public ArrayList<Word> Originals;
-	public ArrayList<Word> Translated;
+	public List<Word> Originals;
+	public List<Word> Translated;
 	public String Source;
 	
 	public TranslatorResult() {
@@ -18,7 +19,7 @@ public class TranslatorResult {
 	}
 
 	public TranslatorResult(Language from,
-			Language to, ArrayList<Word> originals, ArrayList<Word> translations, String source) {
+			Language to, List<Word> originals, List<Word> translations, String source) {
 
 		From = from;
 		To = to;		

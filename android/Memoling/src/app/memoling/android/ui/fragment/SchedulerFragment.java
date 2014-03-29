@@ -2,6 +2,7 @@ package app.memoling.android.ui.fragment;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import android.graphics.Typeface;
@@ -486,7 +487,7 @@ public class SchedulerFragment extends ApplicationFragment {
 
 	private void updateSchedules() {
 
-		ArrayList<Schedule> schedules = new ArrayList<Schedule>();
+		List<Schedule> schedules = new ArrayList<Schedule>();
 
 		for (int i = 0; i < m_lstListAdapter.getCount(); i++) {
 			schedules.add(m_lstListAdapter.getItem(i).getSchedule());
@@ -502,7 +503,7 @@ public class SchedulerFragment extends ApplicationFragment {
 
 		m_lstListAdapter.clear();
 		m_memoBaseId = getArguments().getString(MemoBaseId);
-		ArrayList<Schedule> schedules = m_scheduleAdapter.getByMemoBaseId(m_memoBaseId);
+		List<Schedule> schedules = m_scheduleAdapter.getByMemoBaseId(m_memoBaseId);
 		for (Schedule schedule : schedules) {
 			m_lstListAdapter.add(new ScheduleView(schedule, getActivity()));
 		}

@@ -1,6 +1,6 @@
 package app.memoling.android.ui.fragment;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -150,7 +150,7 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 
 		// Bind genres
 		m_genreAdapter.clear();
-		ArrayList<MemoBaseGenreView> genres = MemoBaseGenreView.getAll(m_genreDataAdapter.getAll());
+		List<MemoBaseGenreView> genres = MemoBaseGenreView.getAll(m_genreDataAdapter.getAll());
 		genres.add(0, MemoBaseGenreView.empty());
 		m_genreAdapter.addAll(genres);
 
@@ -280,7 +280,7 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 	}
 
 	@Override
-	public void onSearchComplete(ArrayList<PublishedMemoBase> headers) {
+	public void onSearchComplete(List<PublishedMemoBase> headers) {
 		if (headers == null) {
 			Toast.makeText(getActivity(), R.string.download_search_error, Toast.LENGTH_SHORT).show();
 			return;

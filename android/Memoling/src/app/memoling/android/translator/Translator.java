@@ -2,6 +2,7 @@ package app.memoling.android.translator;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import android.content.Context;
@@ -24,7 +25,7 @@ public class Translator implements ITranslatorComplete {
 	private final static int TranslatorsCount = 2;
 
 	private final static int MaxCache = 300;
-	private static CacheHelper<String, ArrayList<TranslatorResult>> m_cache = new CacheHelper<String, ArrayList<TranslatorResult>>(
+	private static CacheHelper<String, List<TranslatorResult>> m_cache = new CacheHelper<String, List<TranslatorResult>>(
 			MaxCache);
 
 	public Translator(Context context, Word word, Language from, Language to, ITranslatorComplete onTranslateComplete) {
@@ -58,7 +59,7 @@ public class Translator implements ITranslatorComplete {
 		}
 
 		if (cached) {
-			ArrayList<TranslatorResult> results = m_cache.get(cacheKey);
+			List<TranslatorResult> results = m_cache.get(cacheKey);
 
 			if (m_onTranslateComplete != null) {
 				for (int i = 0; i < results.size(); i++) {
@@ -84,7 +85,7 @@ public class Translator implements ITranslatorComplete {
 	@Override
 	public void onTranslatorComplete(TranslatorResult result) {
 
-		ArrayList<TranslatorResult> cachedResult = null;
+		List<TranslatorResult> cachedResult = null;
 		String cacheKey = m_word.getWord() + m_from.getCode() + m_to.getCode();
 
 		if (result != null && result.Translated.size() > 0) {
@@ -117,7 +118,7 @@ public class Translator implements ITranslatorComplete {
 		}
 	}
 
-	public static TranslatorResult getMostAccurate(ArrayList<TranslatorResult> translatorResults) {
+	public static TranslatorResult getMostAccurate(List<TranslatorResult> translatorResults) {
 		if (translatorResults == null) {
 			return null;
 		}

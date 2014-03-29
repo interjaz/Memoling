@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.SocketException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -28,7 +29,7 @@ public class HttpPostRequestTask extends WorkerThread<NameValuePair, Void, Strin
 
 	private IHttpRequestTaskComplete m_onHttpRequestTaskComplete;
 	private URI m_uri;
-	private ArrayList<NameValuePair> m_headers;
+	private List<NameValuePair> m_headers;
 	private int m_timeout;
 	private String m_encoding;
 	private Exception m_exception;
@@ -38,12 +39,12 @@ public class HttpPostRequestTask extends WorkerThread<NameValuePair, Void, Strin
 	}
 
 	public HttpPostRequestTask(URI uri, IHttpRequestTaskComplete onHttpRequestTaskComplete,
-			ArrayList<NameValuePair> headers, int timeout) {
+			List<NameValuePair> headers, int timeout) {
 		this(uri, onHttpRequestTaskComplete, headers, timeout, null);
 	}
 
 	public HttpPostRequestTask(URI uri, IHttpRequestTaskComplete onHttpRequestTaskComplete,
-			ArrayList<NameValuePair> headers, int timeout, String encoding) {
+			List<NameValuePair> headers, int timeout, String encoding) {
 		if (encoding == null) {
 			encoding = HTTP.DEFAULT_CONTENT_CHARSET;
 		}

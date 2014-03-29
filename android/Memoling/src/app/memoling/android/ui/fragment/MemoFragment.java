@@ -1,6 +1,6 @@
 package app.memoling.android.ui.fragment;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,9 +39,9 @@ public class MemoFragment extends FacebookFragment {
 	private String m_memoId;
 	private MemoAdapter m_memoAdapter;
 	private Memo m_memo;
-	private ArrayList<MemoSentence> m_memoSentences;
-	private ArrayList<QuizletDefinition> m_memoDefinitionsA;
-	private ArrayList<QuizletDefinition> m_memoDefinitionsB;
+	private List<MemoSentence> m_memoSentences;
+	private List<QuizletDefinition> m_memoDefinitionsA;
+	private List<QuizletDefinition> m_memoDefinitionsB;
 
 	private String m_originalWordA;
 	private String m_originalWordB;
@@ -109,7 +109,7 @@ public class MemoFragment extends FacebookFragment {
 		SentenceProvider.getSentences(getActivity(), m_memo.getWordA().getWord(), m_memo.getMemoId(), m_memo.getWordA()
 				.getLanguage(), m_memo.getWordB().getLanguage(), new IGetComplete() {
 			@Override
-			public void getComplete(ArrayList<MemoSentence> memoSentences) {
+			public void getComplete(List<MemoSentence> memoSentences) {
 				setSupportProgress(1f);
 				m_memoSentences = memoSentences;
 				if (m_adapter.getCacheSize() > 0) {
@@ -121,7 +121,7 @@ public class MemoFragment extends FacebookFragment {
 
 		QuizletProvider.getDefinitions(getActivity(), m_memo.getWordA().getWord(), new IQuizletGetDefinitions() {
 			@Override
-			public void getQuizletDefinitions(ArrayList<QuizletDefinition> definitions) {
+			public void getQuizletDefinitions(List<QuizletDefinition> definitions) {
 				m_memoDefinitionsA = definitions;
 				if (m_adapter.getCacheSize() > 0) {
 					((IMemoPagerFragment) m_adapter.getCachedItem(0)).setQuizlet(m_memoDefinitionsA);
@@ -131,7 +131,7 @@ public class MemoFragment extends FacebookFragment {
 
 		QuizletProvider.getDefinitions(getActivity(), m_memo.getWordB().getWord(), new IQuizletGetDefinitions() {
 			@Override
-			public void getQuizletDefinitions(ArrayList<QuizletDefinition> definitions) {
+			public void getQuizletDefinitions(List<QuizletDefinition> definitions) {
 				m_memoDefinitionsB = definitions;
 				if (m_adapter.getCacheSize() > 0) {
 					((IMemoPagerFragment) m_adapter.getCachedItem(1)).setQuizlet(m_memoDefinitionsB);
@@ -238,9 +238,9 @@ public class MemoFragment extends FacebookFragment {
 	public static interface IMemoPagerFragment {
 		void setMemo(Memo memo);
 
-		void setTatoeba(ArrayList<MemoSentence> memoSentences);
+		void setTatoeba(List<MemoSentence> memoSentences);
 
-		void setQuizlet(ArrayList<QuizletDefinition> definitions);
+		void setQuizlet(List<QuizletDefinition> definitions);
 
 		boolean onBackPressed();
 

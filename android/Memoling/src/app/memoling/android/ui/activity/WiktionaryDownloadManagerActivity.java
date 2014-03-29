@@ -1,9 +1,7 @@
 package app.memoling.android.ui.activity;
 
 import java.util.ArrayList;
-
-import com.google.analytics.tracking.android.EasyTracker;
-import com.google.analytics.tracking.android.GoogleAnalytics;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -17,6 +15,9 @@ import android.os.Bundle;
 import app.memoling.android.Config;
 import app.memoling.android.R;
 import app.memoling.android.wiktionary.WiktionaryProviderService;
+
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.GoogleAnalytics;
 
 public class WiktionaryDownloadManagerActivity extends Activity {
 
@@ -40,7 +41,7 @@ public class WiktionaryDownloadManagerActivity extends Activity {
 										| DownloadManager.STATUS_PAUSED);
 						Cursor c = manager.query(query);
 
-						ArrayList<Long> toStop = new ArrayList<Long>();
+						List<Long> toStop = new ArrayList<Long>();
 						while (c.moveToNext()) {
 							int columnIndex = c.getColumnIndex(DownloadManager.COLUMN_ID);
 							toStop.add(c.getLong(columnIndex));

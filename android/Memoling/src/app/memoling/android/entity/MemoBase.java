@@ -2,6 +2,7 @@ package app.memoling.android.entity;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,7 +15,7 @@ public class MemoBase {
 	private Date m_created;
 	private boolean m_active;
 
-	private ArrayList<Memo> m_memos;
+	private List<Memo> m_memos;
 	
 	public String getMemoBaseId() {
 		return m_memoBaseId;
@@ -48,11 +49,11 @@ public class MemoBase {
 		m_active = active;
 	}
 	
-	public ArrayList<Memo> getMemos() {
+	public List<Memo> getMemos() {
 		return m_memos;
 	}
 
-	public void setMemos(ArrayList<Memo> memos) {
+	public void setMemos(List<Memo> memos) {
 		m_memos = memos;
 	}
 	

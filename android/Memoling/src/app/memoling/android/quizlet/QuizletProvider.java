@@ -1,6 +1,7 @@
 package app.memoling.android.quizlet;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import android.content.Context;
@@ -12,7 +13,7 @@ import app.memoling.android.quizlet.data.DefinitionSearchResult;
 public class QuizletProvider {
 
 	public static interface IQuizletGetDefinitions {
-		void getQuizletDefinitions(ArrayList<QuizletDefinition> definitions);
+		void getQuizletDefinitions(List<QuizletDefinition> definitions);
 	}
 
 	public static void getDefinitions(Context context, final String word, final IQuizletGetDefinitions result) {
@@ -25,7 +26,7 @@ public class QuizletProvider {
 		// Check database
 		final QuizletDefinitionAdapter adapter = new QuizletDefinitionAdapter(context);
 
-		ArrayList<QuizletDefinition> definitions = null;
+		List<QuizletDefinition> definitions = null;
 		definitions = adapter.get(word);
 		if (definitions != null && definitions.size() != 0) {
 			result.getQuizletDefinitions(definitions);
@@ -41,7 +42,7 @@ public class QuizletProvider {
 					return;
 				}
 
-				ArrayList<QuizletDefinition> definitions = new ArrayList<QuizletDefinition>();
+				List<QuizletDefinition> definitions = new ArrayList<QuizletDefinition>();
 
 				for (QuizletDefinition definition : webResult.getDefinitions()) {
 					if (definition.getWord().toLowerCase(Locale.US).equals(word.toLowerCase(Locale.US))) {

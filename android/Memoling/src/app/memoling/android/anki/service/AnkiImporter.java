@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.UUID;
 
 import android.content.Context;
-import app.memoling.android.adapter.MemoAdapter.Sort;
 import app.memoling.android.adapter.MemoAdapter;
+import app.memoling.android.adapter.MemoAdapter.Sort;
 import app.memoling.android.adapter.MemoBaseAdapter;
 import app.memoling.android.anki.AnkiIOEngine;
 import app.memoling.android.anki.AnkiImportAdapter;
@@ -15,6 +15,7 @@ import app.memoling.android.anki.entity.AnkiCard;
 import app.memoling.android.anki.entity.AnkiCollection;
 import app.memoling.android.anki.entity.AnkiConfiguration;
 import app.memoling.android.anki.entity.AnkiDeck;
+import app.memoling.android.anki.entity.AnkiMessage;
 import app.memoling.android.anki.entity.AnkiNote;
 import app.memoling.android.db.DatabaseHelper;
 import app.memoling.android.db.DatabaseHelper.Order;
@@ -22,20 +23,89 @@ import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoBase;
 import app.memoling.android.entity.Word;
-import app.memoling.android.sync.SupervisedSyncHaltable;
 import app.memoling.android.sync.ConflictResolve.OnConflictResolveHaltable;
 import app.memoling.android.sync.SupervisedSync.OnSyncComplete;
+import app.memoling.android.sync.SupervisedSyncHaltable;
 import app.memoling.android.thread.WorkerThread;
 
 public class AnkiImporter {
 
 	public AnkiImporter(final Context context, final String path, final OnConflictResolveHaltable<Memo> onConflictMemo, final OnSyncComplete onComplete) {
 		// create new worker and execute it to work in background
-		new WorkerThread<Void, Void, Void>() {
+		new WorkerThread<Void, AnkiMessage, Void>() {
 
-			protected void onProgressUpdate() {
+			protected void onProgressUpdate(AnkiMessage... ankiMessage) {
+				final MemoAdapter memoAdapter = new MemoAdapter(context, true);
+				final List<Memo> internalMemos = ankiMessage[0].getInternalMemos();
+				final List<Memo> externalMemos = ankiMessage[0].getExternalMemos();
+				final String destinationMemoBaseId = ankiMessage[0].getDestinationMemoBaseId();
 				
+				SupervisedSyncHaltable<Memo> syncBase = new SupervisedSyncHaltable<Memo>(context, onConflictMemo,
+						onComplete) {
+
+					@Override
+					protected Memo contains(Memo object)
+							throws Exception {
+
+						for (Memo memo : internalMemos) {
+
+							if (memo.getMemoId().equals(object.getMemoId())) {
+								return memo;
+							}
+						}
+
+						return null;
+					}
+
+					@Override
+					protected List<Memo> getInternal() {
+						return internalMemos;
+					}
+
+					@Override
+					protected List<Memo> getExternal() {
+						return externalMemos;
+					}
+
+					@Override
+					protected Memo getNewer(Memo internal, Memo external) {
+						if (internal.getLastReviewed().compareTo(external.getLastReviewed()) > 0) {
+							return internal;
+						} else {
+							return external;
+						}
+					}
+
+					@Override
+					protected boolean submitTransaction(List<Memo> internalToDelete, List<Memo> externalToAdd) {
+
+						for (int i = 0; i < internalToDelete.size(); i++) {
+							Memo toDelete = internalToDelete.get(i);
+							memoAdapter.delete(toDelete.getMemoId());
+						}
+
+						for (int i = 0; i < externalToAdd.size(); i++) {
+							Memo toAdd = externalToAdd.get(i);
+							toAdd.setMemoBaseId(destinationMemoBaseId);
+							if(memoAdapter.add(toAdd) == DatabaseHelper.Error) {
+								return false;
+							}
+						}
+
+						return true;
+					}
+
+					@Override
+					protected void clean() throws Exception {
+						memoAdapter.closePersistant();
+					}
+				};
+				
+				// perform sync of the deck
+				syncBase.sync();
 			}
+			
+			
 			
 			@Override
 			protected Void doInBackground(Void... params) {				
@@ -49,9 +119,9 @@ public class AnkiImporter {
 				// open imported database
 				AnkiImportAdapter ankiImportAdapter = new AnkiImportAdapter(context, databaseName, databaseVersion, true);
 				// all notes from anki
-				final ArrayList<AnkiNote> ankiNotes = ankiImportAdapter.getAllAnkiNotes(Sort.CreatedDate, Order.ASC);
+				final List<AnkiNote> ankiNotes = ankiImportAdapter.getAllAnkiNotes(Sort.CreatedDate, Order.ASC);
 				// collections described in the database
-				final ArrayList<AnkiCollection> ankiCollections = ankiImportAdapter.getAllAnkiCollections(Sort.CreatedDate, Order.ASC);
+				final List<AnkiCollection> ankiCollections = ankiImportAdapter.getAllAnkiCollections(Sort.CreatedDate, Order.ASC);
 				
 				if(!ankiCollections.isEmpty()) {
 					// parse 'conf' column
@@ -101,77 +171,17 @@ public class AnkiImporter {
 						}
 						
 						// prepare cards for that deck, it will be best if this would be multithreaded and the cards in the list should be removed 
-						final ArrayList<AnkiCard> ankiCardsFromAnkiBase = ankiImportAdapter.getAnkiCards(ankiDeck.getDeckId().getTime(), Sort.CreatedDate, Order.ASC);
+						final List<AnkiCard> ankiCardsFromAnkiBase = ankiImportAdapter.getAnkiCards(ankiDeck.getDeckId().getTime(), Sort.CreatedDate, Order.ASC);
 
 						// convert AnkiCard to Memo
-						final ArrayList<Memo> externalMemos = convertAnkiCardsIntoMemos(ankiCardsFromAnkiBase, ankiNotes, findDestinationMemoBaseId, destinationMemoBase);
+						final List<Memo> externalMemos = convertAnkiCardsIntoMemos(ankiCardsFromAnkiBase, ankiNotes, findDestinationMemoBaseId, destinationMemoBase);
 						
 						final MemoAdapter memoAdapter = new MemoAdapter(context, true);
-						final ArrayList<Memo> internalMemos = memoAdapter.getAll(findDestinationMemoBaseId, Sort.CreatedDate, Order.ASC);
+						final List<Memo> internalMemos = memoAdapter.getAll(findDestinationMemoBaseId, Sort.CreatedDate, Order.ASC);
 						final String destinationMemoBaseId = findDestinationMemoBaseId;
 						
-						SupervisedSyncHaltable<Memo> syncBase = new SupervisedSyncHaltable<Memo>(context, onConflictMemo,
-								onComplete) {
 
-							@Override
-							protected Memo contains(Memo object)
-									throws Exception {
 
-								for (Memo memo : internalMemos) {
-
-									if (memo.getMemoId().equals(object.getMemoId())) {
-										return memo;
-									}
-								}
-
-								return null;
-							}
-
-							@Override
-							protected ArrayList<Memo> getInternal() {
-								return internalMemos;
-							}
-
-							@Override
-							protected ArrayList<Memo> getExternal() {
-								return externalMemos;
-							}
-
-							@Override
-							protected Memo getNewer(Memo internal, Memo external) {
-								if (internal.getLastReviewed().compareTo(external.getLastReviewed()) > 0) {
-									return internal;
-								} else {
-									return external;
-								}
-							}
-
-							@Override
-							protected boolean submitTransaction(ArrayList<Memo> internalToDelete, ArrayList<Memo> externalToAdd) {
-
-								for (int i = 0; i < internalToDelete.size(); i++) {
-									Memo toDelete = internalToDelete.get(i);
-									memoAdapter.delete(toDelete.getMemoId());
-								}
-
-								for (int i = 0; i < externalToAdd.size(); i++) {
-									Memo toAdd = externalToAdd.get(i);
-									toAdd.setMemoBaseId(destinationMemoBaseId);
-									if(memoAdapter.add(toAdd) == DatabaseHelper.Error) {
-										return false;
-									}
-								}
-
-								return true;
-							}
-
-							@Override
-							protected void clean() throws Exception {
-								memoAdapter.closePersistant();
-							}
-						};
-						// perform sync of the deck
-						syncBase.sync();
 					}
 					
 					// when all lists of cards for decks are ready then assign it one by one with usage of SupervisedSyncHaltable<Memo> from Import.java
@@ -210,9 +220,9 @@ public class AnkiImporter {
 		return newMemoBase;
 	}
 	
-	private ArrayList<Memo> convertAnkiCardsIntoMemos(List<AnkiCard> ankiCards, List<AnkiNote> ankiNotes, String memoBaseId, MemoBase memoBase) {
+	private List<Memo> convertAnkiCardsIntoMemos(List<AnkiCard> ankiCards, List<AnkiNote> ankiNotes, String memoBaseId, MemoBase memoBase) {
 		// create empty list of Memos
-		ArrayList<Memo> memosFromAnkiDeck = new ArrayList<Memo>();
+		List<Memo> memosFromAnkiDeck = new ArrayList<Memo>();
 		
 		// for every AnkiCard try to find corresponding one AnkiNote
 		for (AnkiCard ankiCard : ankiCards) {	

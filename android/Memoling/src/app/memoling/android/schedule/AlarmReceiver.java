@@ -3,6 +3,7 @@ package app.memoling.android.schedule;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import android.app.AlarmManager;
 import android.app.NotificationManager;
@@ -48,10 +49,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 		MemoBaseAdapter memoBaseAdapter = new MemoBaseAdapter(context);
 		ScheduleAdapter scheduleAdapter = new ScheduleAdapter(context);
 
-		ArrayList<Schedule> schedules = scheduleAdapter.getOnTime(new Date());
+		List<Schedule> schedules = scheduleAdapter.getOnTime(new Date());
 
 		// Get ones ones without MemoBase
-		ArrayList<Schedule> schedulesToDelete = new ArrayList<Schedule>();
+		List<Schedule> schedulesToDelete = new ArrayList<Schedule>();
 		for(Schedule schedule : schedules) {
 			if(memoBaseAdapter.get(schedule.getMemoBaseId()) == null) {
 				schedulesToDelete.add(schedule);

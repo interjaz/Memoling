@@ -1,6 +1,7 @@
 package app.memoling.android.crossword;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.os.Handler;
 import app.memoling.android.thread.WorkerThread;
@@ -8,7 +9,7 @@ import app.memoling.android.thread.WorkerThread;
 public class SolverThread {
 
 	public static interface ISolver {
-		ArrayList<String> getSolverWords();
+		List<String> getSolverWords();
 		void onSolverProgress(float progres);
 		void onSolverComplete(Matrix words);
 	}
@@ -36,7 +37,7 @@ public class SolverThread {
 
 				}, 100);				
 				
-				ArrayList<String> words = onSolver.getSolverWords();
+				List<String> words = onSolver.getSolverWords();
 				
 				// Prefiltering - stadarize input (remove long words if there are too many).
 				int size = Math.min(sizeY, sizeX);

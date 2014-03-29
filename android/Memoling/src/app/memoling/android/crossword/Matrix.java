@@ -1,6 +1,7 @@
 package app.memoling.android.crossword;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.util.Pair;
 
@@ -9,8 +10,8 @@ import android.util.Pair;
 //               y x x x
 //
 public class Matrix {
-	public ArrayList<ArrayList<Char>> matrix;
-	public ArrayList<MatrixWord> words = new ArrayList<MatrixWord>();
+	public List<ArrayList<Char>> matrix;
+	public List<MatrixWord> words = new ArrayList<MatrixWord>();
 
 	public Point size;
 	public boolean isEmpty = true;

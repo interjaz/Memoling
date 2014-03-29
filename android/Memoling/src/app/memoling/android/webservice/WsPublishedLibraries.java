@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -25,7 +26,7 @@ public class WsPublishedLibraries {
 	private static final int m_timeout = 8000;
 
 	public interface IIndexComplete {
-		void onIndexComplete(ArrayList<PublishedMemoBase> headers);
+		void onIndexComplete(List<PublishedMemoBase> headers);
 	}
 
 	public static void index(int page, final IIndexComplete onComplete) {
@@ -41,7 +42,7 @@ public class WsPublishedLibraries {
 					try {
 						JSONArray array = new JSONArray(response);
 
-						ArrayList<PublishedMemoBase> published = new ArrayList<PublishedMemoBase>();
+						List<PublishedMemoBase> published = new ArrayList<PublishedMemoBase>();
 						for (int i = 0; i < array.length(); i++) {
 							published.add(CanonicalConverter.parsePublishedMemoBase(array.getJSONObject(i)));
 						}
@@ -66,7 +67,7 @@ public class WsPublishedLibraries {
 	}
 
 	public interface ISearchComplete {
-		void onSearchComplete(ArrayList<PublishedMemoBase> headers);
+		void onSearchComplete(List<PublishedMemoBase> headers);
 	}
 
 	public static void search(String keyword, String generId, String languageA, String languageB, int page,
@@ -86,7 +87,7 @@ public class WsPublishedLibraries {
 					try {
 						JSONArray array = new JSONArray(response);
 
-						ArrayList<PublishedMemoBase> published = new ArrayList<PublishedMemoBase>();
+						List<PublishedMemoBase> published = new ArrayList<PublishedMemoBase>();
 						for (int i = 0; i < array.length(); i++) {
 							published.add(CanonicalConverter.parsePublishedMemoBase(array.getJSONObject(i)));
 						}

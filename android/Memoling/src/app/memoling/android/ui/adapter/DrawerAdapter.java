@@ -1,6 +1,7 @@
 package app.memoling.android.ui.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -22,8 +23,8 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
 	private Filter m_filter;
 
 	protected Object m_lock;
-	protected ArrayList<DrawerView> m_groupData;
-	protected ArrayList<ArrayList<DrawerView>> m_childData;
+	protected List<DrawerView> m_groupData;
+	protected List<ArrayList<DrawerView>> m_childData;
 	protected LayoutInflater m_inflater;
 
 	public final static int GroupPosition = -1;
@@ -119,7 +120,7 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
 
 	public int addChild(int groupPosition, DrawerView drawerView) {
 		synchronized (m_lock) {
-			ArrayList<DrawerView> group = m_childData.get(groupPosition);
+			List<DrawerView> group = m_childData.get(groupPosition);
 			group.add(drawerView);
 			notifyDataSetChanged();
 

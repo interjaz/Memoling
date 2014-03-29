@@ -3,6 +3,7 @@ package app.memoling.android.sync;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import android.content.Context;
@@ -26,28 +27,28 @@ public class Import {
 		try {
 			MemolingFile memolingFile = MemolingFile.parseFile(path);
 
-			final ArrayList<Memo> externalMemos = new ArrayList<Memo>();
+			final List<Memo> externalMemos = new ArrayList<Memo>();
 			for (MemoBase base : memolingFile.getMemoBases()) {
-				ArrayList<Memo> memos = base.getMemos();
+				List<Memo> memos = base.getMemos();
 				for (int i = 0; i < memos.size(); i++) {
 					externalMemos.add(memos.get(i));
 				}
 			}
 
 			final MemoAdapter memoAdapter = new MemoAdapter(context, true);
-			final ArrayList<Memo> internalMemos = memoAdapter
+			final List<Memo> internalMemos = memoAdapter
 					.getAll(destinationMemoBaseId, Sort.CreatedDate, Order.ASC);
 
 			SupervisedSyncHaltable<Memo> syncBase = new SupervisedSyncHaltable<Memo>(context, onConflictMemo,
 					onComplete) {
 
 				@Override
-				protected ArrayList<Memo> getInternal() {
+				protected List<Memo> getInternal() {
 					return internalMemos;
 				}
 
 				@Override
-				protected ArrayList<Memo> getExternal() {
+				protected List<Memo> getExternal() {
 					return externalMemos;
 				}
 
@@ -74,7 +75,7 @@ public class Import {
 				}
 
 				@Override
-				protected boolean submitTransaction(ArrayList<Memo> internalToDelete, ArrayList<Memo> externalToAdd) {
+				protected boolean submitTransaction(List<Memo> internalToDelete, List<Memo> externalToAdd) {
 
 					for (int i = 0; i < internalToDelete.size(); i++) {
 						Memo toDelete = internalToDelete.get(i);
@@ -112,24 +113,24 @@ public class Import {
 
 		try {
 
-			final ArrayList<Memo> externalMemos = CsvParser.parseFile(path);
+			final List<Memo> externalMemos = CsvParser.parseFile(path);
 			File fInfo = new File(path);
 			final Date externalDate = new Date(fInfo.lastModified());
 
 			final MemoAdapter memoAdapter = new MemoAdapter(context, true);
-			final ArrayList<Memo> internalMemos = memoAdapter
+			final List<Memo> internalMemos = memoAdapter
 					.getAll(destinationMemoBaseId, Sort.CreatedDate, Order.ASC);
 
 			SupervisedSyncHaltable<Memo> syncBase = new SupervisedSyncHaltable<Memo>(context, onConflictMemo,
 					onComplete) {
 
 				@Override
-				protected ArrayList<Memo> getInternal() {
+				protected List<Memo> getInternal() {
 					return internalMemos;
 				}
 
 				@Override
-				protected ArrayList<Memo> getExternal() {
+				protected List<Memo> getExternal() {
 					return externalMemos;
 				}
 
@@ -163,7 +164,7 @@ public class Import {
 				}
 
 				@Override
-				protected boolean submitTransaction(ArrayList<Memo> internalToDelete, ArrayList<Memo> externalToAdd) {
+				protected boolean submitTransaction(List<Memo> internalToDelete, List<Memo> externalToAdd) {
 
 					for (int i = 0; i < internalToDelete.size(); i++) {
 						Memo toDelete = internalToDelete.get(i);

@@ -1,6 +1,7 @@
 package app.memoling.android.sync;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 
@@ -31,18 +32,18 @@ public abstract class SupervisedSync<T> {
 	// 'object' one
 	protected abstract T contains(T object) throws Exception;
 
-	protected abstract ArrayList<T> getInternal();
+	protected abstract List<T> getInternal();
 
-	protected abstract ArrayList<? extends T> getExternal();
+	protected abstract List<? extends T> getExternal();
 
 	protected abstract T getNewer(T internal, T external);
 	
-	protected abstract boolean submitTransaction(ArrayList<T> internalToDelete, ArrayList<T> externalToAdd);
+	protected abstract boolean submitTransaction(List<T> internalToDelete, List<T> externalToAdd);
 
 	public void sync() {
 
-		ArrayList<T> toDelete = new ArrayList<T>();
-		ArrayList<T> toAdd = new ArrayList<T>();
+		List<T> toDelete = new ArrayList<T>();
+		List<T> toAdd = new ArrayList<T>();
 		
 		try {
 			SupervisedSync.this.prepare();

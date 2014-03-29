@@ -2,11 +2,12 @@ package app.memoling.android.helper;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 public final class CacheHelper<K, V> {
 
 	private Hashtable<K, V> m_hashtable;
-	private ArrayList<K> m_keyList;
+	private List<K> m_keyList;
 	private int m_size;
 
 	public CacheHelper(int size) {
