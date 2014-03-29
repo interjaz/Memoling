@@ -1,6 +1,5 @@
 package app.memoling.android.wordoftheday.resolver;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 

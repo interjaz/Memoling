@@ -10,7 +10,7 @@ import android.util.Pair;
 //               y x x x
 //
 public class Matrix {
-	public List<ArrayList<Char>> matrix;
+	public List<List<Char>> matrix;
 	public List<MatrixWord> words = new ArrayList<MatrixWord>();
 
 	public Point size;
@@ -19,7 +19,7 @@ public class Matrix {
 	public Matrix(Point p) {
 		size = p;
 
-		matrix = new ArrayList<ArrayList<Char>>(size.y);
+		matrix = new ArrayList<List<Char>>(size.y);
 		for (int i = 0; i < size.y; i++) {
 			matrix.add(new ArrayList<Char>(size.x));
 			for (int j = 0; j < size.x; j++) {

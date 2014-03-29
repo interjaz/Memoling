@@ -78,7 +78,7 @@ public class HttpPostRequestTask extends WorkerThread<NameValuePair, Void, Strin
 			HttpResponse response;
 
 			if (params != null && params.length > 0) {
-				ArrayList<NameValuePair> postArgs = new ArrayList<NameValuePair>();
+				List<NameValuePair> postArgs = new ArrayList<NameValuePair>();
 				if (params != null) {
 					for (NameValuePair param : params) {
 						postArgs.add(param);

@@ -26,7 +26,7 @@ public class AudioReplayService extends Service implements ITextToSpeechUtteranc
 	private TextToSpeechHelper m_textToSpeechHelper;
 
 	private String m_lastUtterenceId;
-	private ArrayList<String> m_wordsToRead;
+	private List<String> m_wordsToRead;
 	private int m_index;
 
 	public static void startReplay(Context context, String memoBaseId) {

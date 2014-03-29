@@ -28,7 +28,7 @@ public class SetSearchResult {
 	public void setImageSetCount(int imageSetCount) { m_imageSetCount = imageSetCount; }
 
 	public List<QuizletSetHeader> getSets() {  return m_sets; }
-	public void setSets(ArrayList<QuizletSetHeader> sets) { m_sets = sets; }
+	public void setSets(List<QuizletSetHeader> sets) { m_sets = sets; }
 
 
 	/**

@@ -1,11 +1,9 @@
 package app.memoling.android.wordlist.sqlprovider;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Word;
 import app.memoling.android.helper.CacheHelper;

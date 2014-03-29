@@ -43,7 +43,7 @@ public class SolverThread {
 				int size = Math.min(sizeY, sizeX);
 				int maxLongWords = size/3;
 				int longWords = 0;
-				ArrayList<String> toRemove = new ArrayList<String>();
+				List<String> toRemove = new ArrayList<String>();
 				for(int i=0;i<words.size();i++) {
 					String word= words.get(i);
 					if(size - word.length() < 4) {

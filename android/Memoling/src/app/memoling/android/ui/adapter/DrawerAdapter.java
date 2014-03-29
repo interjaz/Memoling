@@ -24,7 +24,7 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
 
 	protected Object m_lock;
 	protected List<DrawerView> m_groupData;
-	protected List<ArrayList<DrawerView>> m_childData;
+	protected List<List<DrawerView>> m_childData;
 	protected LayoutInflater m_inflater;
 
 	public final static int GroupPosition = -1;
@@ -37,7 +37,7 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
 		m_inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		m_groupData = new ArrayList<DrawerView>();
-		m_childData = new ArrayList<ArrayList<DrawerView>>();
+		m_childData = new ArrayList<List<DrawerView>>();
 		m_childData.add(new ArrayList<DrawerView>());
 	}
 

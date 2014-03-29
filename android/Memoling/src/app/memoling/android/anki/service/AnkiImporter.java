@@ -17,6 +17,7 @@ import app.memoling.android.anki.entity.AnkiConfiguration;
 import app.memoling.android.anki.entity.AnkiDeck;
 import app.memoling.android.anki.entity.AnkiMessage;
 import app.memoling.android.anki.entity.AnkiNote;
+import app.memoling.android.crossword.Solver;
 import app.memoling.android.db.DatabaseHelper;
 import app.memoling.android.db.DatabaseHelper.Order;
 import app.memoling.android.entity.Language;
@@ -103,6 +104,7 @@ public class AnkiImporter {
 				
 				// perform sync of the deck
 				syncBase.sync();
+				
 			}
 			
 			
@@ -180,7 +182,13 @@ public class AnkiImporter {
 						final List<Memo> internalMemos = memoAdapter.getAll(findDestinationMemoBaseId, Sort.CreatedDate, Order.ASC);
 						final String destinationMemoBaseId = findDestinationMemoBaseId;
 						
-
+						try {
+							publishProgress(new AnkiMessage(destinationMemoBaseId, internalMemos, externalMemos));
+							wait();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 
 					}
 					

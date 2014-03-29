@@ -14,7 +14,7 @@ import app.memoling.android.wordoftheday.provider.Provider.WordWithDescription;
 
 public class ProviderAdapter {
 
-	private static ArrayList<Provider> m_providers;
+	private static List<Provider> m_providers;
 
 	static {
 

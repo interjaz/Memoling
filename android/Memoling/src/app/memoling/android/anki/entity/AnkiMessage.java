@@ -12,7 +12,7 @@ public class AnkiMessage {
 	
 	private final String destinationMemoBaseId;
 	
-	AnkiMessage(String destinationMemoBaseId, List<Memo> internalMemos, List<Memo> externalMemos){
+	public AnkiMessage(String destinationMemoBaseId, List<Memo> internalMemos, List<Memo> externalMemos){
 		this.internalMemos = internalMemos;
 		this.externalMemos = externalMemos;
 		this.destinationMemoBaseId = destinationMemoBaseId;
