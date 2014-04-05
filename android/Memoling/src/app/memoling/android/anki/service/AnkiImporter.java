@@ -4,8 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import app.memoling.android.R;
 import app.memoling.android.adapter.MemoAdapter;
 import app.memoling.android.adapter.MemoAdapter.Sort;
 import app.memoling.android.adapter.MemoBaseAdapter;
@@ -17,13 +23,13 @@ import app.memoling.android.anki.entity.AnkiConfiguration;
 import app.memoling.android.anki.entity.AnkiDeck;
 import app.memoling.android.anki.entity.AnkiMessage;
 import app.memoling.android.anki.entity.AnkiNote;
-import app.memoling.android.crossword.Solver;
 import app.memoling.android.db.DatabaseHelper;
 import app.memoling.android.db.DatabaseHelper.Order;
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoBase;
 import app.memoling.android.entity.Word;
+import app.memoling.android.helper.AppLog;
 import app.memoling.android.sync.ConflictResolve.OnConflictResolveHaltable;
 import app.memoling.android.sync.SupervisedSync.OnSyncComplete;
 import app.memoling.android.sync.SupervisedSyncHaltable;
@@ -31,18 +37,29 @@ import app.memoling.android.thread.WorkerThread;
 
 public class AnkiImporter {
 
-	public AnkiImporter(final Context context, final String path, final OnConflictResolveHaltable<Memo> onConflictMemo, final OnSyncComplete onComplete) {
+	public AnkiImporter(final Context ctx, final String path, final OnConflictResolveHaltable<Memo> onConflictMemo, final OnSyncComplete onComplete) {
 		// create new worker and execute it to work in background
 		new WorkerThread<Void, AnkiMessage, Void>() {
 
 			protected void onProgressUpdate(AnkiMessage... ankiMessage) {
-				final MemoAdapter memoAdapter = new MemoAdapter(context, true);
+				final MemoAdapter memoAdapter = new MemoAdapter(ctx, true);
 				final List<Memo> internalMemos = ankiMessage[0].getInternalMemos();
 				final List<Memo> externalMemos = ankiMessage[0].getExternalMemos();
 				final String destinationMemoBaseId = ankiMessage[0].getDestinationMemoBaseId();
+				final Lock publishingLock = ankiMessage[0].getPublishingLock();
 				
-				SupervisedSyncHaltable<Memo> syncBase = new SupervisedSyncHaltable<Memo>(context, onConflictMemo,
-						onComplete) {
+				SupervisedSyncHaltable<Memo> syncBase = new SupervisedSyncHaltable<Memo>(ctx, onConflictMemo,
+						new OnSyncComplete() {
+							@Override
+							public void onComplete(boolean result) {
+								AppLog.e("AnkiImporter#onProgressUpdate", "onComplete fired", null);
+								synchronized(publishingLock) {
+									publishingLock.notify();	
+								}
+								AppLog.e("AnkiImporter#onProgressUpdate", "publishing lock was notified", null);
+							}
+				}) 
+					{
 
 					@Override
 					protected Memo contains(Memo object)
@@ -101,14 +118,11 @@ public class AnkiImporter {
 						memoAdapter.closePersistant();
 					}
 				};
-				
+
 				// perform sync of the deck
 				syncBase.sync();
-				
 			}
-			
-			
-			
+						
 			@Override
 			protected Void doInBackground(Void... params) {				
 				// unpack the file *.apkg
@@ -119,7 +133,7 @@ public class AnkiImporter {
 				int databaseVersion = AnkiIOEngine.getImportDatabaseVersion();
 				
 				// open imported database
-				AnkiImportAdapter ankiImportAdapter = new AnkiImportAdapter(context, databaseName, databaseVersion, true);
+				AnkiImportAdapter ankiImportAdapter = new AnkiImportAdapter(ctx, databaseName, databaseVersion, true);
 				// all notes from anki
 				final List<AnkiNote> ankiNotes = ankiImportAdapter.getAllAnkiNotes(Sort.CreatedDate, Order.ASC);
 				// collections described in the database
@@ -141,7 +155,7 @@ public class AnkiImporter {
 					// parse 'tags' column
 					
 					// MemoBase adapter is used to get all MemoBase'es from the database
-					MemoBaseAdapter memoBaseAdapter = new MemoBaseAdapter(context);
+					MemoBaseAdapter memoBaseAdapter = new MemoBaseAdapter(ctx);
 					List<MemoBase> memoBases = memoBaseAdapter.getAll();
 
 					// current 
@@ -168,8 +182,11 @@ public class AnkiImporter {
 						
 						if(!theDeckAlreadyExists) {
 							// if it is not then we will create new deck	
-							destinationMemoBase = createMemoBase(context,ankiDeck);
+							destinationMemoBase = createMemoBase(ctx,ankiDeck);
 							findDestinationMemoBaseId = destinationMemoBase.getMemoBaseId();
+							
+							// start activity for result, there is a need to determine the languages
+							
 						}
 						
 						// prepare cards for that deck, it will be best if this would be multithreaded and the cards in the list should be removed 
@@ -178,15 +195,26 @@ public class AnkiImporter {
 						// convert AnkiCard to Memo
 						final List<Memo> externalMemos = convertAnkiCardsIntoMemos(ankiCardsFromAnkiBase, ankiNotes, findDestinationMemoBaseId, destinationMemoBase);
 						
-						final MemoAdapter memoAdapter = new MemoAdapter(context, true);
+						final MemoAdapter memoAdapter = new MemoAdapter(ctx, true);
 						final List<Memo> internalMemos = memoAdapter.getAll(findDestinationMemoBaseId, Sort.CreatedDate, Order.ASC);
 						final String destinationMemoBaseId = findDestinationMemoBaseId;
-						
+
+						Lock publishingLock = new ReentrantLock();
+						AppLog.e("AnkiImporter#doInBackground", "publishing lock created", null);
 						try {
-							publishProgress(new AnkiMessage(destinationMemoBaseId, internalMemos, externalMemos));
-							wait();
+							publishingLock.lock();
+							AppLog.e("AnkiImporter#doInBackground", "publishing lock taken", null);
+							publishProgress(new AnkiMessage(destinationMemoBaseId, internalMemos, externalMemos, publishingLock));
+							AppLog.e("AnkiImporter#doInBackground", "publish progress was sent", null);
+							synchronized(publishingLock) {
+								publishingLock.wait();	
+							}
+							AppLog.e("AnkiImporter#doInBackground", "publishing lock was notified", null);
+							publishingLock.unlock();
+							AppLog.e("AnkiImporter#doInBackground", "unlock the thread", null);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
+							publishingLock.unlock();
 							e.printStackTrace();
 						}
 
@@ -273,7 +301,7 @@ public class AnkiImporter {
 			// get the index of current element
 			int indexOfAnkiCard = ankiCards.indexOf(ankiCard);
 			// check if the next one exists and if it has the same corresponding AnkiNote
-			if(indexOfAnkiCard + 1 <= ankiCards.size() && ankiCards.get(indexOfAnkiCard + 1).getNoteId().equals(ankiCard.getNoteId())) {
+			if(indexOfAnkiCard + 1 < ankiCards.size() && ankiCards.get(indexOfAnkiCard + 1).getNoteId().equals(ankiCard.getNoteId())) {
 				secondAnkiCard = ankiCards.get(indexOfAnkiCard + 1);
 			}
 			if(secondAnkiCard != null) {
