@@ -24,6 +24,9 @@
 
     <!-- MemoList Fragment -->
     <string name="memolist_btnSave">Save</string>
+    <string name="memolist_btnShowLang">Lang</string>
+    <string name="memolist_txtAddMemoHint">Expression</string>
+    <string name="memolist_txtAddMemoTranslatedHint">Translated</string>
     <string name="memolist_search">Search</string>
     <string name="memolist_voiceInput">Use voice</string>
     <string name="memolist_saveErrorMessage">Failed to save memo</string>
@@ -64,6 +67,8 @@
     <string name="memolist_crossword">Crossword</string>
     <string name="memolist_findword">Find word</string>
     <string name="memolist_wordExists">Such word already exist in the library</string>
+    <string name="memolist_manualSync">Force Sync</string>
+    <string name="memolist_syncDisabled">Sync Disabled</string>
 
     <!-- MemoBaseList Fragment -->
     <string name="memobaselist_title">Libraries</string>
@@ -285,6 +290,10 @@
 
     <!-- Preferences -->
     <string name="preferences_title">Preferences</string>
+    <string name="preferences_btnSync_title">Clound Sychronization</string>
+    <string name="preferences_btnSync_summary">Enabled: %s</string>
+    <string name="preferences_btnSync_summary_yes">YES</string>
+    <string name="preferences_btnSync_summary_no">NO</string>
     <string name="preferences_btnRateMemoling_title">Rate!</string>
     <string name="preferences_btnRateMemoling_summary">Rate Memoling</string>
     <string name="preferences_btnGoToMemoling_title">Application Website</string>
@@ -292,7 +301,8 @@
     <string name="preferences_btnClearLangPref_title">Language Preferences</string>
     <string name="preferences_btnClearLangPref_summary">Clear favorite languages</string>
     <string name="preferences_btnClearFacebook_title">Facebook Account</string>
-    <string name="preferences_btnClearFacebook_summary">Logout</string>
+    <string name="preferences_btnClearFacebook_summary">Log in</string>
+    <string name="preferences_btnClearFacebook_summary_logout">Log out (%s)</string>
     <string name="preferences_learningSetSize_summary">How many expressions do you want to review at once</string>
     <string name="preferences_learningSetSize_title">Learning Set Size</string>
     <string name="preferences_enableWordNotification_title">Word of a Day Notification</string>
@@ -325,7 +335,7 @@
         1. I want to receive new words in English with translation in Spanish. Check \'Do you&#8230;\', then select notification source to Merriam-Webster and set translation to Spanish.\n\n
         2. I want to receive new words in Greek with translation in Finish.  Check \'Do you&#8230;\', then select notification source to Merriam-Webster, check \'Would you&#8230;\', select pre translate to Greek and translate to Finish.\n\n
         At the end of setting up notification you can test it to see whether it meets you needs.	</string>
-    <string name="wordoftheday_soruceLibrary">Library</string>
+    <string name="wordoftheday_sourceLibrary">Library</string>
     <string name="wordoftheday_sourceOnline">Online</string>
 
     <string name="wordoftheday_widget_title">Memoling Word of the Day</string>
@@ -417,5 +427,30 @@
 	<string name="audioreplay_no">No</string>
     
     <string name="action_settings">Settings</string>
+    
+    <!-- Sync -->
+    <string name="sync_title">Memoling Sync</string>
+    <string name="sync_networkConnectionError">Sync Error: No connection</string>
+    <string name="sync_facebookNoUser">Sync Error: Facebook login failed</string>
+    <string name="sync_facebookError">Sync Error: Failed to register user</string>
+    <string name="sync_error">Sync Error</string>
+    
+    <string name="sync_stateStarting">Initiating Sync</string>
+    <string name="sync_stateAuthorizing">Authorizing</string>
+    <string name="sync_stateBuildingFirstSync">Preparing First Sync</string>
+    <string name="sync_stateGeneratingPackage">Generating Package</string>
+    <string name="sync_stateCompressingPackage">Compressing Package (%d changes)</string>
+    <string name="sync_stateSendingPackage">Sending Package %.2f kb</string>
+    <string name="sync_stateDecompressingPackage">Package Received. Decompressing %.2f kb</string>
+    <string name="sync_stateApplyingPackage">Applying Package (%d changes)</string>
+    <string name="sync_stateCompleted">Completed</string>
+    <string name="sync_stateAlreadyInProgress">Error: Sync already started</string>
+    <string name="sync_stateNoConnectionError">Error: No Connection</string>
+    <string name="sync_stateNoClientError">Error: No Client Error</string>
+    <string name="sync_stateNoAccountError">Error: No Account Error</string>
+    <string name="sync_stateDataMalformed">Error: Data Malformed</string>
+    <string name="sync_stateClientError">Error: Client Error</string>
+    <string name="sync_stateServerError">Error: Server Error</string>
+    <string name="sync_stateProcessingError">Error: Processing error</string>
     
 </resources>

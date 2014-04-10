@@ -25,7 +25,7 @@ class SafePDO extends PDO {
 		$this->m_tranCounter--;
 
 		if($this->m_tranCounter < 0) {
-			throw new Exception("Number of Commits and RollBack does not match number of BeginTransaction calls");
+			throw new Exception("Number of Commits and RollBack (" . $this->m_tranCounter . ") does not match number of BeginTransaction calls");
 		}
 		
 		if($this->m_tranCounter == 0) {
@@ -43,7 +43,7 @@ class SafePDO extends PDO {
 		$this->m_tranCounter--;
 		
 		if($this->m_tranCounter < 0) {
-			throw new Exception("Number of Commits and RollBack does not match number of BeginTransaction calls");
+			throw new Exception("Number of Commits and RollBack (" . $this->m_tranCounter . ") does not match number of BeginTransaction calls");
 		}
 		
 		$this->m_tranSuccessful = false;

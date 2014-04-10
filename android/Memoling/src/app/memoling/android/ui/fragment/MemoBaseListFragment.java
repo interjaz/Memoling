@@ -17,6 +17,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import app.memoling.android.R;
 import app.memoling.android.adapter.MemoBaseAdapter;
+import app.memoling.android.adapter.SyncClientAdapter;
 import app.memoling.android.entity.MemoBase;
 import app.memoling.android.entity.MemoBaseInfo;
 import app.memoling.android.ui.ApplicationFragment;
@@ -50,7 +51,7 @@ public class MemoBaseListFragment extends ApplicationFragment {
 
 		ResourceManager resources = getResourceManager();
 		Typeface thinFont = resources.getLightFont();
-		Typeface blackFont = resources.getBlackFont();
+		//Typeface blackFont = resources.getBlackFont();
 
 		m_lstMemos = (ListView) contentView.findViewById(R.id.memobaselist_lstMemo);
 		m_lstAdapter = new ModifiableComplexTextAdapter<MemoBaseInfoView>(getActivity(),
@@ -86,12 +87,13 @@ public class MemoBaseListFragment extends ApplicationFragment {
 
 		Context ctx = getActivity();
 		final MemoBase memoBase;
+		final String syncClientId = new SyncClientAdapter(getActivity()).getCurrentSyncClientId();
 
 		switch (item.getItemId()) {
 		case R.id.memobaselist_menu_list_activate:
 			memoBase = m_selectedItem.getMemoBaseInfo().getMemoBase();
 			memoBase.setActive(!memoBase.getActive());
-			m_memoBaseAdapter.update(memoBase);
+			m_memoBaseAdapter.update(memoBase, syncClientId);
 			m_lstAdapter.notifyDataSetChanged();
 			break;
 		case R.id.memobaselist_menu_list_delete:
@@ -115,7 +117,7 @@ public class MemoBaseListFragment extends ApplicationFragment {
 							new Dialog.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
-									m_memoBaseAdapter.delete(memoBase.getMemoBaseId());
+									m_memoBaseAdapter.delete(memoBase.getMemoBaseId(), syncClientId);
 									bindData();
 								}
 							})

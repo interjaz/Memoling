@@ -1,24 +1,26 @@
 package app.memoling.android.adapter;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import app.memoling.android.db.DatabaseHelper;
 import app.memoling.android.db.SqliteAdapter;
+import app.memoling.android.entity.Language;
+import app.memoling.android.entity.SyncAction;
 import app.memoling.android.entity.Word;
-import app.memoling.android.helper.AppLog;
-import app.memoling.android.helper.CacheHelper;
+import app.memoling.android.sync.cloud.ISyncAdapter;
+import app.memoling.android.sync.cloud.ISyncEntity;
 
-public class WordAdapter extends SqliteAdapter {
+public class WordAdapter extends SqliteAdapter implements ISyncAdapter {
 
 	public final static String TableName = "Words";
-
-	private final static int m_wordCacheSize = 20;
-	private static CacheHelper<String, Word> m_wordCache = new CacheHelper<String, Word>(m_wordCacheSize);
 
 	public WordAdapter(Context context) {
 		super(context);
@@ -28,89 +30,21 @@ public class WordAdapter extends SqliteAdapter {
 		super(context, persistant);
 	}
 
-	public long add(Word word) {
-		SQLiteDatabase db = null;
-		invalidateGlobalCache();
-
-		try {
-			db = getDatabase();
-			return add(this, db, word);
-		} finally {
-			closeDatabase();
-		}
+	public static Word bindWord(Cursor cursor) {
+		return WordAdapter.bindWord(cursor, "");
 	}
-
-	public static long add(SqliteAdapter adapter, SQLiteDatabase db, Word word) {
-		ContentValues values = createValues(word);
-		return db.insert(TableName, null, values);
+	
+	public static Word bindWord(Cursor cursor, String prefix) {
+		Word word = new Word();
+		
+		word.setWordId(DatabaseHelper.getString(cursor, prefix + "WordId"));
+		word.setDescription(DatabaseHelper.getString(cursor, prefix + "Description"));
+		word.setLanguage(Language.parse(DatabaseHelper.getString(cursor, prefix + "LanguageIso639")));
+		word.setWord(DatabaseHelper.getString(cursor, prefix + "Word"));
+		
+		return word;
 	}
-
-	public Set<String> getAdKeywords() {
-		SQLiteDatabase db = null;
-		Cursor cursor = null;
-		Set<String> words = new HashSet<String>();
-
-		try {
-			db = getDatabase();
-
-			String sql = "SELECT WA.Word AS WordA, WB.Word AS WordB          "
-					+ "FROM Memos AS M                                    "
-					+ "INNER JOIN Words AS WA ON M.WordAId = WA.WordId    "
-					+ "INNER JOIN Words AS WB ON M.WordBId = WB.WordId    "
-					+ "ORDER BY M.Created DESC LIMIT 10                   ";
-
-			cursor = db.rawQuery(sql, null);
-
-			while (cursor.moveToNext()) {
-				String wordA = DatabaseHelper.getString(cursor, "WordA");
-				String wordB = DatabaseHelper.getString(cursor, "WordB");
-
-				words.add(wordA);
-				words.add(wordB);
-			}
-
-		} catch (Exception ex) {
-			AppLog.e("WordAdapter", "getAdKeywords", ex);
-		} finally {
-			if (cursor != null && !cursor.isClosed()) {
-				cursor.close();
-			}
-
-			closeDatabase();
-		}
-
-		return words;
-	}
-
-	public int update(Word word) {
-		SQLiteDatabase db = null;
-		invalidateGlobalCache();
-
-		try {
-			db = getDatabase();
-			ContentValues values = createValues(word);
-			return db.update(TableName, values, "WordId = ?", new String[] { word.getWordId() });
-		} finally {
-			closeDatabase();
-		}
-	}
-
-	public void delete(String wordId) {
-		SQLiteDatabase db = null;
-		invalidateGlobalCache();
-
-		try {
-			db = getDatabase();
-			delete(this, db, wordId);
-		} finally {
-			closeDatabase();
-		}
-	}
-
-	public static void delete(SqliteAdapter adapter, SQLiteDatabase db, String wordId) {
-		db.delete(TableName, "WordId" + "=?", new String[] { wordId });
-	}
-
+	
 	private static ContentValues createValues(Word word) {
 		ContentValues values = new ContentValues();
 		values.put("WordId", word.getWordId());
@@ -120,17 +54,209 @@ public class WordAdapter extends SqliteAdapter {
 		return values;
 	}
 
-	@Override
-	protected void onInvalidateGlobalCache() {
-		super.onInvalidateGlobalCache();
+	public Word get(String wordId) {
+		try {
+			return WordAdapter.get(getDatabase(), wordId);
+		} finally {
+			closeDatabase();
+		}
+	}
+	
+	public void insert(Word word, String syncClientId) throws SQLiteException {
+		try {
+			WordAdapter.insert(getDatabase(), word, syncClientId);
+		} finally {
+			closeDatabase();
+		}
+	}
+	
+	public void update(Word word, String syncClientId) throws SQLiteException {
+		try {
+			WordAdapter.update(getDatabase(), word, syncClientId);
+		} finally {
+			closeDatabase();
+		}
+	}
+	
+	public void delete(String wordId, String syncClientId) throws SQLiteException {
+		try {
+			WordAdapter.delete(getDatabase(), wordId, syncClientId);
+		} finally {
+			closeDatabase();
+		}
+	}
+	
+	public static Word get(SQLiteDatabase db, String wordId) {
+		String sql = "SELECT WordId, Word, LanguageIso639, Description FROM Words WHERE WordId = ?";
+		Cursor cursor = null;
+		
+		try {
+			cursor = db.rawQuery(sql, new String[] { wordId });
+			if(cursor.moveToNext()) {
+				Word word = WordAdapter.bindWord(cursor);
+				return word;
+			}
+		} finally {
+			if(cursor != null) {
+				cursor.close();
+			}
+		}
+		
+		return null;
+	}
+	
+	public static void insert(SQLiteDatabase db, Word word, String syncClientId) throws SQLiteException {
+		SyncAction syncAction = new SyncAction();
+		syncAction.setAction(SyncAction.ACTION_INSERT);
+		syncAction.setPrimaryKey(word.getWordId());
+		syncAction.setTable(TableName);
+		syncAction.setSyncClientId(syncClientId);
+		
+		WordAdapter.insertDbSync(db, word, syncAction);
+	}
 
-		m_wordCache.clear();
+	public static void update(SQLiteDatabase db, Word word, String syncClientId) throws SQLiteException {
+		
+		ArrayList<String> updateColumns = new ArrayList<String>();
+		Word dbWord = WordAdapter.get(db, word.getWordId());
+		
+		if(!dbWord.getWord().equals(word.getWord())) {
+			updateColumns.add("Word");
+		}
+		
+		if(!dbWord.getDescription().equals(word.getDescription())) {
+			updateColumns.add("Description");
+		}
+		
+		if(!dbWord.getLanguage().equals(word.getLanguage())) {
+			updateColumns.add("LanguageIso639");
+		}
+		
+		for(String updateColumn : updateColumns) {
+			SyncAction syncAction = new SyncAction();
+			syncAction.setAction(SyncAction.ACTION_UPDATE);
+			syncAction.setPrimaryKey(word.getWordId());
+			syncAction.setTable(TableName);
+			syncAction.setSyncClientId(syncClientId);
+			syncAction.setUpdateColumn(updateColumn);
+			
+			WordAdapter.updateDbSync(db, word, syncAction);
+		}
+		
+	}
+	
+	public static void delete(SQLiteDatabase db, String wordId, String syncClientId) throws SQLiteException {
+		SyncAction syncAction = new SyncAction();
+		syncAction.setAction(SyncAction.ACTION_DELETE);
+		syncAction.setPrimaryKey(wordId);
+		syncAction.setTable(TableName);
+		syncAction.setSyncClientId(syncClientId);
+		
+		WordAdapter.deleteDbSync(db, wordId, syncAction);
+	}
+	
+	@Override
+	public ISyncEntity decodeEntity(JSONObject json) throws JSONException {
+		Word word = new Word();
+		word.decodeEntity(json);		
+		return word;
 	}
 
 	@Override
-	protected void onInvalidateLocalCache() {
-		super.onInvalidateLocalCache();
+	public ISyncEntity getEntity(String primaryKey) {
+		return WordAdapter.get(this.getDatabase(), primaryKey);
+	}
 
-		m_wordCache.clear();
+	@Override
+	public void insertEntity(SQLiteDatabase db, ISyncEntity object, SyncAction syncAction) throws SQLiteException {
+		WordAdapter.insertDbSync(db, (Word)object, syncAction);
+	}
+
+	@Override
+	public void deleteEntity(SQLiteDatabase db, String primaryKey, SyncAction syncAction) throws SQLiteException {
+		WordAdapter.deleteDbSync(db, primaryKey, syncAction);
+	}
+
+	@Override
+	public void updateEntity(SQLiteDatabase db, ISyncEntity object, SyncAction syncAction) throws SQLiteException {
+		WordAdapter.updateDbSync(db, (Word)object, syncAction);
+	}
+	
+	@Override
+	public void buildInitialSync(SQLiteDatabase db, String syncClientId) {
+		String sql = "SELECT WordId FROM Words";
+		
+		Cursor cursor = null;
+		try {
+			cursor = db.rawQuery(sql, null);
+			while(cursor.moveToNext()) {
+				SyncAction syncAction = new SyncAction();
+				syncAction.setAction(SyncAction.ACTION_INSERT);
+				syncAction.setTable(TableName);
+				syncAction.setPrimaryKey(DatabaseHelper.getString(cursor, "WordId"));
+				syncAction.setSyncClientId(syncClientId);
+				
+				SyncActionAdapter.insert(db, syncAction);
+			}
+		} finally {
+			if(cursor != null) {
+				cursor.close();
+			}
+		}
+	}
+	
+	private static void insertDbSync(SQLiteDatabase db, Word word, SyncAction syncAction) throws SQLiteException {
+		db.beginTransaction();
+
+		try {
+			ContentValues values = createValues(word);
+			
+			db.insertOrThrow(TableName, null, values);
+			SyncActionAdapter.insertAction(db, syncAction);
+			
+			db.setTransactionSuccessful();
+		} finally {
+			db.endTransaction();
+		}
+	}
+	
+	private static void updateDbSync(SQLiteDatabase db, Word word, SyncAction syncAction) throws SQLiteException {
+		db.beginTransaction();
+		
+		try {
+			ContentValues values = new ContentValues();
+			String column = syncAction.getUpdateColumn();
+			
+			if(column.equals("Word")) {
+				values.put("Word", word.getWord());
+			} else if(column.equals("LanguageIso639")) {
+				values.put("LanguageISo639", word.getLanguage().getCode());
+			} else if(column.equals("Description")) {
+				values.put("Description", word.getDescription());
+			} 
+
+			if(values.size() > 0) {
+				db.update(TableName, values, "WordId = ?", new String[] { word.getWordId() });
+				SyncActionAdapter.updateAction(db, syncAction);
+			}
+			
+			db.setTransactionSuccessful();
+		} finally {
+			db.endTransaction();
+		}
+	}
+	
+	private static void deleteDbSync(SQLiteDatabase db, String wordId, SyncAction syncAction) throws SQLiteException {
+		db.beginTransaction();
+		
+		try {
+
+			db.delete(TableName, "WordId = ?", new String[] { wordId });
+			SyncActionAdapter.deleteAction(db, syncAction);
+			
+			db.setTransactionSuccessful();
+		} finally {
+			db.endTransaction();
+		}
 	}
 }

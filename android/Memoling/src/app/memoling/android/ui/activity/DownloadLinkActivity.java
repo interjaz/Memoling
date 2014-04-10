@@ -13,6 +13,7 @@ import android.widget.Toast;
 import app.memoling.android.R;
 import app.memoling.android.adapter.MemoAdapter;
 import app.memoling.android.adapter.MemoBaseAdapter;
+import app.memoling.android.adapter.SyncClientAdapter;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoBase;
 import app.memoling.android.ui.AdActivity;
@@ -217,7 +218,7 @@ public class DownloadLinkActivity extends AdActivity {
 			Memo memo = (Memo)m_share;
 			memo.setMemoBaseId(selectedMemoBase.getMemoBaseId());
 			MemoAdapter adapter = new MemoAdapter(this);
-			adapter.add(memo);
+			adapter.insert(memo, new SyncClientAdapter(this).getCurrentSyncClientId());
 			
 		} else if(m_share instanceof MemoBase) {
 			

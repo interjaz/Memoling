@@ -17,8 +17,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="right"
-            android:orientation="vertical"
-            android:paddingTop="5dp" >
+            android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/memolist_lblWordWarning"
@@ -58,8 +57,7 @@
 
             </RelativeLayout>
 
-			<app.memoling.android.ui.control.CollapsibleLinearLayout
-			    android:id="@+id/memolist_laySearch"
+			<LinearLayout
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
 			    android:orientation="vertical" >
@@ -75,19 +73,38 @@
 				    android:background="#FF222222"
 				    android:orientation="vertical"
 				    android:paddingBottom="1dp"
-				    android:paddingLeft="10dp"
-				    android:paddingRight="10dp"
+				    android:paddingLeft="5dp"
+				    android:paddingRight="5dp"
 				    android:paddingTop="1dp" >
 
-				    <EditText
-				        android:id="@+id/memolist_txtAddMemo"
-				        style="@style/Theme.Darktheme.EditText.Dark"
-				        android:layout_width="match_parent"
-				        android:layout_height="wrap_content"
-				        android:inputType="text" >
-				    </EditText>
+					<LinearLayout
+					    android:layout_width="match_parent"
+					    android:layout_height="wrap_content"
+				        android:orientation="horizontal" >
+
+						<EditText
+						    android:id="@+id/memolist_txtAddMemo"
+				            style="@style/Theme.Darktheme.EditText.Dark"
+						    android:layout_width="wrap_content"
+						    android:layout_height="wrap_content"
+						    android:ems="10"
+				            android:layout_weight="8.0"
+				            android:hint="@string/memolist_txtAddMemoHint"
+						    android:inputType="text" >
+						</EditText>
+
+				        <Button
+				            android:id="@+id/memolist_btnShowLang"
+				            style="@style/Theme.Darktheme.Button.Dark"
+				            android:layout_width="50dp"
+				            android:layout_height="wrap_content"
+				            android:layout_marginLeft="5dp"
+				            android:text="@string/memolist_btnShowLang" />
+					</LinearLayout>
 
 				    <LinearLayout
+				        android:id="@+id/memolist_layTranslation"
+				        android:visibility="gone"
 				        android:layout_width="match_parent"
 				        android:layout_height="wrap_content"
 				        android:orientation="horizontal" >
@@ -95,25 +112,28 @@
 				        <EditText
 				            android:id="@+id/memolist_txtAddMemoTranslated"
 				            style="@style/Theme.Darktheme.EditText.Dark"
+				            android:hint="@string/memolist_txtAddMemoTranslatedHint"
 				            android:layout_width="wrap_content"
 				            android:layout_height="wrap_content"
-				            android:layout_marginRight="10dp"
 				            android:layout_weight="8.0"
 				            android:enabled="false"
 				            android:inputType="text" />
+				        
 
 				        <Button
 				            android:id="@+id/memolist_btnSave"
 				            style="@style/Theme.Darktheme.Button.Dark"
-				            android:layout_width="wrap_content"
+				            android:layout_width="50dp"
 				            android:layout_height="wrap_content"
-				            android:layout_weight="1.0"
 				            android:enabled="false"
+				            android:layout_marginLeft="5dp"
 				            android:text="@string/memolist_btnSave" />
 				    </LinearLayout>
 				</LinearLayout>
 
 				<LinearLayout
+				    android:id="@+id/memolist_layLanguage"
+				    android:visibility="gone"
 				    android:layout_width="match_parent"
 				    android:layout_height="wrap_content"
 				    android:background="#FF222222"
@@ -150,7 +170,7 @@
 				        tools:listitem="@layout/adapter_textdropdown_dark" />
 				</LinearLayout>
 
-			</app.memoling.android.ui.control.CollapsibleLinearLayout>
+			</LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

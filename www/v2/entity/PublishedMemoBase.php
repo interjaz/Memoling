@@ -35,7 +35,7 @@ class PublishedMemoBase {
 		$this->Downloads = isset($obj->downloads)?$obj->downloads:null;
 		$this->AdminsScore = isset($obj->adminsScore)?$obj->adminsScore:null;
 		$this->UsersScore = isset($obj->usersScore)?$obj->usersScore:null;
-		$this->Created = isset($obj->created)?$obj->created:null;
+		$this->Created = isset($obj->created)?$obj->created:date('Y-m-d H:i:s');
 		$this->PrimaryLanguageAIso639 = isset($obj->primaryLanguageAIso639)?$obj->primaryLanguageAIso639:null;
 		$this->PrimaryLanguageBIso639 = isset($obj->primaryLanguageBIso639)?$obj->primaryLanguageBIso639:null;
 		
@@ -48,8 +48,21 @@ class PublishedMemoBase {
 		if(isset($obj->memoBase)) {
 			$inner = new MemoBase();
 			$inner->decode($obj->memoBase);
+            $inner->Created = isset($obj->memoBase->created)?$obj->memoBase->created:date('Y-m-d H:i:s');
+            $inner->Active = isset($obj->memoBase->active)?$obj->memoBase->active:1;
 			$this->MemoBase = $inner;
 			
+            if($inner->Memos != null) {
+                foreach($inner->Memos as $memo) {
+                    $memo->Created = date('Y-m-d H:i:s');
+                    $memo->LastReviewed =  date('Y-m-d H:i:s');
+                    $memo->Displayed = 0;
+                    $memo->Active = true;
+                    $memo->CorrectAnsweredWordA = 0;
+                    $memo->CorrectAnsweredWordB = 0;
+                }
+            }
+            
 			if($this->PrimaryLanguageAIso639 == null) {
 				$this->getPrimaryLanguages();
 			}

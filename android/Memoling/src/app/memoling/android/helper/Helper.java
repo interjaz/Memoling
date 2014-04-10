@@ -34,7 +34,8 @@ import app.memoling.android.preference.Preferences;
 
 public class Helper {
 
-	public static String AppRoot = Environment.getExternalStorageDirectory() + "/memoling";
+	public static String AppRoot = Environment.getExternalStorageDirectory()
+			+ "/memoling";
 
 	public static <T> T coalesce(T notNull, T otherwise) {
 		if (notNull != null) {
@@ -77,7 +78,8 @@ public class Helper {
 	}
 
 	public static View getActivityRootView(Activity activity) {
-		return ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
+		return ((ViewGroup) activity.findViewById(android.R.id.content))
+				.getChildAt(0);
 	}
 
 	public static String getPathFromIntent(Context context, Intent intent) {
@@ -87,7 +89,8 @@ public class Helper {
 			Cursor cursor = null;
 
 			try {
-				cursor = context.getContentResolver().query(uri, projection, null, null, null);
+				cursor = context.getContentResolver().query(uri, projection,
+						null, null, null);
 				int column_index = cursor.getColumnIndexOrThrow("_data");
 				if (cursor.moveToFirst()) {
 					return cursor.getString(column_index);
@@ -113,7 +116,8 @@ public class Helper {
 	}
 
 	public static Bitmap invertBitmapColors(Bitmap src) {
-		Bitmap output = Bitmap.createBitmap(src.getWidth(), src.getHeight(), src.getConfig());
+		Bitmap output = Bitmap.createBitmap(src.getWidth(), src.getHeight(),
+				src.getConfig());
 		int A, R, G, B;
 		int pixelColor;
 		int height = src.getHeight();
@@ -153,36 +157,39 @@ public class Helper {
 
 			android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context
 					.getSystemService(Context.CLIPBOARD_SERVICE);
-			android.content.ClipData clip = android.content.ClipData.newPlainText(label, text);
+			android.content.ClipData clip = android.content.ClipData
+					.newPlainText(label, text);
 			clipboard.setPrimaryClip(clip);
 		}
 	}
 
 	public static int dipToPixels(Context context, float dip) {
-		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, context.getResources().getDisplayMetrics());
+		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+				dip, context.getResources().getDisplayMetrics());
 	}
-	
+
 	// This is helpful if received UTF-8 may be broken
 	// On Android v.10 Bing Translate does not work without this function being
 	// applied
 	public static String removeBom(String str) {
 
 		byte[] isBom = str.substring(0, 1).getBytes();
-		if (isBom.length == 3 && isBom[0] == (byte) 0xEF && isBom[1] == (byte) 0xBB && isBom[2] == (byte) 0xBF) {
+		if (isBom.length == 3 && isBom[0] == (byte) 0xEF
+				&& isBom[1] == (byte) 0xBB && isBom[2] == (byte) 0xBF) {
 			return str.substring(1);
 		}
 
 		return str;
 	}
-	
+
 	public static boolean hasInternetAccess(Context context) {
-	    ConnectivityManager cm =
-	        (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
-	    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-	        return true;
-	    }
-	    return false;
+		ConnectivityManager cm = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+			return true;
+		}
+		return false;
 	}
 
 	public static class Profile {
@@ -205,7 +212,8 @@ public class Helper {
 
 	public static PackageInfo getPackage(Context context) {
 		try {
-			return context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+			return context.getPackageManager().getPackageInfo(
+					context.getPackageName(), 0);
 		} catch (NameNotFoundException e) {
 			// Should not happen
 			return null;
@@ -226,65 +234,87 @@ public class Helper {
 		Preferences preferences = new Preferences(context);
 		preferences.setInstalledVersion(getPackage(context).versionName);
 	}
-	
-	public static class Pair<T1,T2> {
+
+	public static class Pair<T1, T2> {
 		public T1 first;
 		public T2 second;
-		
+
 		public Pair() {
-			
+
 		}
-		
+
 		public Pair(T1 first, T2 second) {
 			this.first = first;
 			this.second = second;
 		}
 	}
-	
-	public static Bitmap drawableToBitmap (Drawable drawable) {
-	    if (drawable instanceof BitmapDrawable) {
-	        return ((BitmapDrawable)drawable).getBitmap();
-	    }
 
-	    Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Config.ARGB_8888);
-	    Canvas canvas = new Canvas(bitmap); 
-	    drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-	    drawable.draw(canvas);
+	public static Bitmap drawableToBitmap(Drawable drawable) {
+		if (drawable instanceof BitmapDrawable) {
+			return ((BitmapDrawable) drawable).getBitmap();
+		}
 
-	    return bitmap;
+		Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+				drawable.getIntrinsicHeight(), Config.ARGB_8888);
+		Canvas canvas = new Canvas(bitmap);
+		drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+		drawable.draw(canvas);
+
+		return bitmap;
 	}
-	
-	public static int determineMaxTextSize(String str, float maxWidth)
-	{
-	    int size = 0;       
-	    Paint paint = new Paint();
 
-	    do {
-	        paint.setTextSize(++ size);
-	    } while(paint.measureText(str) < maxWidth);
+	public static int determineMaxTextSize(String str, float maxWidth) {
+		int size = 0;
+		Paint paint = new Paint();
 
-	    return size;
+		do {
+			paint.setTextSize(++size);
+		} while (paint.measureText(str) < maxWidth);
+
+		return size;
 	}
-	
+
 	public static String getHashKey(Context context) {
 
-        try {
-            PackageInfo info = context.getPackageManager().getPackageInfo("app.memoling.android",
-                    PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                return Base64.encodeToString(md.digest(), Base64.DEFAULT);
-            }
-        } catch (NameNotFoundException e) {
-        } catch (NoSuchAlgorithmException e) {
-        }
-        return null;
-    }
-	
+		try {
+			PackageInfo info = context.getPackageManager().getPackageInfo(
+					"app.memoling.android", PackageManager.GET_SIGNATURES);
+			for (Signature signature : info.signatures) {
+				MessageDigest md = MessageDigest.getInstance("SHA");
+				md.update(signature.toByteArray());
+				return Base64.encodeToString(md.digest(), Base64.DEFAULT);
+			}
+		} catch (NameNotFoundException e) {
+		} catch (NoSuchAlgorithmException e) {
+		}
+		return null;
+	}
+
 	public static int getMusicVolume(Context context) {
-		AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+		AudioManager audioManager = (AudioManager) context
+				.getSystemService(Context.AUDIO_SERVICE);
 		return audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 	}
-	
+
+	public static String getDeviceName() {
+		String manufacturer = Build.MANUFACTURER;
+		String model = Build.MODEL;
+		if (model.startsWith(manufacturer)) {
+			return Helper.capitalize(model);
+		} else {
+			return Helper.capitalize(manufacturer) + " " + model;
+		}
+	}
+
+	public static String capitalize(String s) {
+		if (s == null || s.length() == 0) {
+			return "";
+		}
+		char first = s.charAt(0);
+		if (Character.isUpperCase(first)) {
+			return s;
+		} else {
+			return Character.toUpperCase(first) + s.substring(1);
+		}
+	}
 }

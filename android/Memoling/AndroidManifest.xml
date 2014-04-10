@@ -113,6 +113,11 @@
             android:label="@string/audioreplay_title" 
             android:theme="@style/Theme.Darktheme.WidgetConfiguration" >
         </activity>
+        <activity
+            android:name="app.memoling.android.ui.activity.SyncActivity"
+            android:label="@string/sync_title" 
+            android:theme="@style/Theme.Darktheme.WidgetConfiguration" >
+        </activity>
 
         <!-- Receivers -->
         <receiver
@@ -161,6 +166,8 @@
         <service android:name="app.memoling.android.wiktionary.WiktionaryProviderService" >
         </service>
         <service android:name="app.memoling.android.audio.AudioReplayService" >
+        </service>
+        <service android:name="app.memoling.android.sync.cloud.SyncService" >
         </service>
 
         <!-- Meta Config -->

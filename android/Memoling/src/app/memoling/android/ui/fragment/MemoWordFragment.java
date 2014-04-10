@@ -2,7 +2,9 @@ package app.memoling.android.ui.fragment;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -88,6 +90,7 @@ public class MemoWordFragment extends Fragment implements
 
 	private TextToSpeechHelper m_textToSpeechHelper;
 
+	@SuppressLint("SetJavaScriptEnabled")
 	public View onCreateView(boolean isWordA, LayoutInflater inflater,
 			ViewGroup container, Bundle savedInstanceState) {
 		View contentView = inflater.inflate(R.layout.memo_word, container,
@@ -337,7 +340,7 @@ public class MemoWordFragment extends Fragment implements
 		}
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		String wordB = m_memo.getWordB().getWord();
+		//String wordB = m_memo.getWordB().getWord();
 
 		ArrayList<CharSequence> words = new ArrayList<CharSequence>();
 
@@ -345,7 +348,7 @@ public class MemoWordFragment extends Fragment implements
 			for (Word word : result.Translated) {
 				if (!word.getWord().equals("")
 						&& !words.contains(word.getWord())) {
-					words.add(word.getWord().toLowerCase());
+					words.add(word.getWord().toLowerCase(Locale.getDefault()));
 				}
 			}
 		}

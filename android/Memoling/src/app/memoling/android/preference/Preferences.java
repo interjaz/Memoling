@@ -18,6 +18,7 @@ import app.memoling.android.preference.custom.WordOfTheDayTime;
 
 public class Preferences {
 
+	public final static String BTN_SYNC = "BTN_SYNC";
 	public final static String BTN_RATE_MEMOLING = "BTN_RATE_MEMOLING";
 	public final static String BTN_GOTO_MEMOLING = "BTN_GOTO_MEMOLING";
 	public final static String BTN_CLEAR_LANGPREF = "BTN_CLEAR_LANGPREF";
@@ -215,6 +216,14 @@ public class Preferences {
 		} else {
 			return Locale.US;
 		}
+	}
+	
+	public void setSyncEnabled(boolean enabled) {
+		set(BTN_SYNC, enabled);
+	}
+	
+	public boolean getSyncEnabled() {
+		return get(BTN_SYNC, false);
 	}
 
 }

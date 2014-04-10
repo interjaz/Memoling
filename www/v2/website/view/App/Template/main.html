@@ -1,0 +1,90 @@
+
+<div id="logged" ng-controller="ViewCtrl">
+
+    
+  <div id="leftContent">
+      
+        
+      <ml-memobases ng-if="ViewModel.MemoBaseId == null" ml-select="onSelectMemoBase(memoBaseId)" ml-data="ViewModel.MemoBases">
+      </ml-memobases>
+      
+
+      <div ng-if="ViewModel.MemoBaseId != null" >
+      
+    <ml-memos ml-select="onSelectMemo(memoId)" ml-data="ViewModel.Memos">
+      </ml-memos>    
+          
+          </div>
+          
+  </div>
+
+  <div id="rightContent">
+
+      <div ng-if="ViewModel.Memo == null" ng-controller="MemoBaseCtrl">
+
+        <ul id="memoTop">
+            <li ng-click="onBack()">< Libraries</li>
+            <li ng-if="(ViewModel.Action == 'details' || ViewModel.Action == 'edit') && ViewModel.MemoBaseId != null" ng-click="onEdit(ViewModel.MemoBase.memoBaseId)">Edit Library</li>
+            <li ng-click="onNew()">New Library</li>
+            <li ng-click="onNewMemo()">New Expression</li>
+            <li ng-if="ViewModel.Action == 'edit'" ng-click="onDelete(ViewModel.MemoBase.memoBaseId)">Delete Library</li>
+            <li ng-if="ViewModel.Action == 'edit'" ng-click="onCancel()">Cancel</li>
+            
+        </ul>
+      
+        <ng-include ng-if="ViewModel.MemoBase != null" src="TemplateBase + 'MemoBase/index.html'"></ng-include>
+
+          </div>
+      
+      <div ng-if="ViewModel.Memo != null" ng-controller="MemoCtrl">
+      
+        <ul id="memoTop">
+            <li ng-click="onBack()">< Library</li>
+            <li ng-if="ViewModel.Action == 'details' || ViewModel.Action == 'edit'" ng-click="onEdit(ViewModel.Memo.memoId)">Edit Expression</li>
+            <li ng-click="onNew()">New Expression</li>
+            <li ng-if="ViewModel.Action == 'edit'" ng-click="onDelete(ViewModel.Memo.memoId)">Delete Expression</li>
+            <li ng-if="ViewModel.Action == 'edit'" ng-click="onCancel()">Cancel</li>
+            
+        </ul>
+      
+        <ng-include src="TemplateBase + 'Memo/index.html'"></ng-include>
+
+          </div>
+  </div>
+    
+</div>
+
+<script type="text/javascript">
+    
+    function onScroll() {
+        var offset = 10;
+        var top = Math.max( 65 - $(window).scrollTop(), 5);
+        var bodyHeight = $('body').height() - offset;
+        var bottom = Math.max(Math.min($('#main_content').height() - $('body').height() - $('body').scrollTop() + 124, 0),  -100);
+        
+        $('#leftContent .filter').css('top',top);  
+        $('#leftContent').css('top',top);  
+        $('#leftContent').css('max-height', bodyHeight-top+bottom);
+        
+        var bodyWidth = $('body').width();
+        $('#rightContent').css('max-width', bodyWidth-350);
+    }
+    
+    $(document).ready(function() {
+        onScroll();
+    });
+
+    $(window).resize(function() {
+        onScroll();
+    });
+    
+    $(window).scroll(function() {
+        onScroll();
+    })
+    
+    $('#footer').bind('DOMSubtreeModified', function() {
+        onScroll();
+    });
+    
+    
+</script>

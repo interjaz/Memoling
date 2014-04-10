@@ -27,8 +27,10 @@ class Word {
 	public function encode() {
 		$builder = new JsonBuilder();
 		
+        $builder->put("wordId", $this->WordId, true);
 		$builder->put("word", $this->Word, true);
 		$builder->put("languageIso639", $this->LanguageIso639, true);
+		$builder->put("description", $this->Description, true);
 
 		$extra = "";
 		if($this->Class != "") {
@@ -38,7 +40,6 @@ class Word {
 			$extra .= $this->Phonetic . ", ";
 		}
 		
-		$builder->put("description", $extra . $this->Description, true);
 		
 		return $builder->__toString();
 	}

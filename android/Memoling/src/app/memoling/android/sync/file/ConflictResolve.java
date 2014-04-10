@@ -1,4 +1,4 @@
-package app.memoling.android.sync;
+package app.memoling.android.sync.file;
 
 
 public class ConflictResolve {

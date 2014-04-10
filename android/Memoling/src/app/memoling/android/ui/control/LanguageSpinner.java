@@ -20,6 +20,7 @@ public class LanguageSpinner extends Spinner implements AdapterView.OnItemSelect
 	ModifiableComplexTextAdapter<LanguageView> m_spLanguageAdapter;
 	private Preferences m_preferences;
 	private ArrayList<LanguageView> m_laguageViews;
+	private AdapterView.OnItemSelectedListener m_onItemSelectListener;
 	
 	private boolean m_loaded;
 	
@@ -48,7 +49,7 @@ public class LanguageSpinner extends Spinner implements AdapterView.OnItemSelect
 				new int[] { R.id.memo_lblLang }, new Typeface[] { font });
 		
 		setAdapter(m_spLanguageAdapter);
-		setOnItemSelectedListener(this);
+		super.setOnItemSelectedListener(this);
 	}
 	
 	public void loadData(Context context) {
@@ -123,16 +124,28 @@ public class LanguageSpinner extends Spinner implements AdapterView.OnItemSelect
 	}
 	
 	@Override
+	public void setOnItemSelectedListener(AdapterView.OnItemSelectedListener onItemSelectListener) {
+		m_onItemSelectListener = onItemSelectListener;
+	}
+	
+	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		String langCode = m_spLanguageAdapter.getItem(position).getLanguage().getCode();
 
 		String languagePreferences = m_preferences.getLanguagePreferences();
 		languagePreferences = reorderPreferences(langCode, languagePreferences);
 		m_preferences.setLanguagePreferences(languagePreferences);
+		
+		if(m_onItemSelectListener != null) {
+			m_onItemSelectListener.onItemSelected(parent, view, position, id);
+		}
 	}
 
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
+		if(m_onItemSelectListener != null) {
+			m_onItemSelectListener.onNothingSelected(parent);
+		}
 	}
 
 	// This a valid format: a,b,c,d

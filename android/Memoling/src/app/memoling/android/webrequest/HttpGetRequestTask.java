@@ -95,6 +95,7 @@ public class HttpGetRequestTask extends WorkerThread<Void, Void, String> {
 
 	@Override
 	protected void onPostExecute(String response) {
+		super.onPostExecute(response);
 		
 		if(m_exception != null) {
 			if(m_exception instanceof ConnectTimeoutException) {
@@ -102,9 +103,7 @@ public class HttpGetRequestTask extends WorkerThread<Void, Void, String> {
 			} else if(m_exception instanceof SocketException) {
 				m_onHttpRequestTaskComplete.onHttpRequestTimeout(m_exception);				
 			} 
-		}
-		
-		if (response == null) {
+			
 			return;
 		}
 		

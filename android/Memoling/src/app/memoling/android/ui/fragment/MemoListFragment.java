@@ -3,7 +3,6 @@ package app.memoling.android.ui.fragment;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -35,6 +34,7 @@ import android.widget.Toast;
 import app.memoling.android.R;
 import app.memoling.android.adapter.MemoAdapter;
 import app.memoling.android.adapter.MemoBaseAdapter;
+import app.memoling.android.adapter.SyncClientAdapter;
 import app.memoling.android.audio.AudioReplayService;
 import app.memoling.android.audio.VoiceInputHelper;
 import app.memoling.android.db.DatabaseHelper.Order;
@@ -58,11 +58,11 @@ import app.memoling.android.ui.FacebookFragment;
 import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.activity.PreferenceLegacyActivity;
 import app.memoling.android.ui.activity.ReviewActivity;
+import app.memoling.android.ui.activity.SyncActivity;
 import app.memoling.android.ui.adapter.DrawerAdapter;
 import app.memoling.android.ui.adapter.ModifiableInjectableAdapter;
 import app.memoling.android.ui.adapter.ScrollableModifiableComplexTextAdapter;
 import app.memoling.android.ui.adapter.ScrollableModifiableComplexTextAdapter.OnScrollFinishedListener;
-import app.memoling.android.ui.control.CollapsibleLinearLayout;
 import app.memoling.android.ui.control.LanguageSpinner;
 import app.memoling.android.ui.view.DrawerView;
 import app.memoling.android.ui.view.LanguageView;
@@ -85,10 +85,14 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 	public final static int VoiceInputRequestCode = 1;
 
 	private Button m_btnSave;
+	private Button m_btnLang;
 	private EditText m_txtAdd;
 	private EditText m_txtAddTranslated;
 	private ListView m_lstWords;
 
+	private LinearLayout m_layTranslation;
+	private LinearLayout m_layLanguage;
+	
 	private ModifiableInjectableAdapter<TranslatedView> m_suggestionAdapter;
 	private WordsFinder m_wordsFinder;
 	private DelayedLookup m_lastLookup;
@@ -126,8 +130,6 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 
 	private SuggestionComparator m_suggestionComparator;
 
-	private CollapsibleLinearLayout m_laySearch;
-
 	//
 	// Base class implementation
 	//
@@ -144,6 +146,9 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 		// Language spinners
 		m_spLanguageFrom = (LanguageSpinner) contentView.findViewById(R.id.memolist_spLanguageFrom);
 		m_spLanguageTo = (LanguageSpinner) contentView.findViewById(R.id.memolist_spLanguageTo);
+		
+		m_spLanguageFrom.setOnItemSelectedListener(new SpLanguageFromEventHandler());
+		m_spLanguageTo.setOnItemSelectedListener(new SpLanguageToEventHandler());
 
 		m_btnLanguageSwap = (Button) contentView.findViewById(R.id.memolist_btnLanguageSwap);
 		resources.setFont(m_btnLanguageSwap, thinFont);
@@ -157,6 +162,19 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 		m_btnSave.setOnClickListener(new BtnSaveEventHanlder());
 		m_btnSave.setTypeface(thinFont);
 
+		// Language button
+		m_btnLang = (Button)contentView.findViewById(R.id.memolist_btnShowLang);
+		if(m_btnLang != null) {
+			m_btnLang.setOnClickListener(new BtnLangEventHandler());
+			m_btnLang.setTypeface(thinFont);
+		}
+		
+		// Layout Language
+		m_layLanguage = (LinearLayout)contentView.findViewById(R.id.memolist_layLanguage);
+		
+		// Layout Translation
+		m_layTranslation = (LinearLayout)contentView.findViewById(R.id.memolist_layTranslation);
+		
 		// AutoCompleteTextView
 		m_txtAdd = (EditText) contentView.findViewById(R.id.memolist_txtAddMemo);
 		TxtAddTextEventHandler txtAddTextEventHandler = new TxtAddTextEventHandler();
@@ -182,7 +200,6 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 		m_lstWords.setAdapter(m_wordsAdapter);
 		LstWordsEventHandler lstHandler = new LstWordsEventHandler();
 		m_lstWords.setOnItemClickListener(lstHandler);
-		m_lstWords.setOnScrollListener(lstHandler);
 		registerForContextMenu(m_lstWords);
 		// TODO: Check if we can have this functionality with hiding search - we
 		// can set select after added
@@ -195,8 +212,6 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 		
 		// Word finder
 		m_wordsFinder = new WordsFinder(getActivity());
-
-		m_laySearch = (CollapsibleLinearLayout) contentView.findViewById(R.id.memolist_laySearch);
 
 		// What's new
 		m_layWhatsNew = (LinearLayout) contentView.findViewById(R.id.memolist_layWhatsNew);
@@ -294,11 +309,12 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 	@Override
 	public boolean onContextItemSelected(android.view.MenuItem item) {
 		final Memo memo = m_selectedItem.getMemo();
-
+		final String syncClientId = new SyncClientAdapter(getActivity()).getCurrentSyncClientId();
+		
 		switch (item.getItemId()) {
 		case R.id.memolist_menu_list_activate:
 			memo.setActive(!memo.getActive());
-			m_memoAdapter.update(memo);
+			m_memoAdapter.update(memo, syncClientId);
 			m_wordsAdapter.notifyDataSetChanged();
 			break;
 		case R.id.memolist_menu_list_delete:
@@ -313,7 +329,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 							new android.content.DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
-									m_memoAdapter.delete(memo.getMemoId());
+									m_memoAdapter.delete(memo.getMemoId(), syncClientId);
 									bindData();
 								}
 							})
@@ -460,10 +476,8 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 
 			Memo memo = new Memo(original, translation, m_memoBaseId);
 
-			if (m_memoAdapter.add(memo) == -1) {
-				Toast.makeText(getActivity(), m_saveErrorMessage, Toast.LENGTH_SHORT).show();
-				return;
-			} else {
+			try {
+				m_memoAdapter.insert(memo, new SyncClientAdapter(getActivity()).getCurrentSyncClientId());
 				MemoView memoView = new MemoView(memo); 
 
 				m_wordsAdapter.add(memoView);
@@ -474,11 +488,27 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 				
 				m_txtAdd.setText("");
 				m_txtAddTranslated.setText("");
+			} catch(RuntimeException ex) {
+				Toast.makeText(getActivity(), m_saveErrorMessage, Toast.LENGTH_SHORT).show();
 			}
 		}
 
 	}
 
+	private class BtnLangEventHandler implements OnClickListener {
+
+		@Override
+		public void onClick(View arg0) {
+			if(m_layLanguage.getVisibility() == View.VISIBLE) {
+				m_layLanguage.setVisibility(View.GONE);
+			} else {
+				m_layLanguage.setVisibility(View.VISIBLE);
+			}
+
+		}
+		
+	}
+	
 	private class BtnWhatsNewEventHandler implements OnClickListener {
 
 		@Override
@@ -505,6 +535,8 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 
 			m_lastLookup = new DelayedLookup();
 			m_lastLookup.execute(m_txtAdd.getText().toString());
+
+			updateLangBtn();
 		}
 	}
 
@@ -539,6 +571,14 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 			} else {
 				m_lstWords.setVisibility(View.VISIBLE);
 				m_lstSuggestions.setVisibility(View.GONE);
+			}
+			
+			if(m_layTranslation != null) {
+				if(s.length() == 0) {
+					m_layTranslation.setVisibility(View.GONE);
+				} else {
+					m_layTranslation.setVisibility(View.VISIBLE);
+				}
 			}
 		}
 
@@ -639,11 +679,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 		}
 	}
 
-	private class LstWordsEventHandler implements OnItemClickListener, OnScrollListener {
-
-		private long m_lastScrollTime;
-		private int m_delay = 2000;
-		private boolean m_enableHide = false;
+	private class LstWordsEventHandler implements OnItemClickListener {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -656,61 +692,6 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 			fragment.setArguments(bundle);
 
 			startFragment(fragment);
-		}
-
-		@Override
-		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-			if (firstVisibleItem + 2 * visibleItemCount >= totalItemCount) {
-				m_enableHide = false;
-				show();
-			} else {
-				m_enableHide = true;
-			}
-
-		}
-
-		@Override
-		public void onScrollStateChanged(AbsListView view, int scrollState) {
-			if (!m_enableHide) {
-				return;
-			}
-
-			m_lastScrollTime = new Date().getTime();
-
-			if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
-				show();
-			} else {
-				hide();
-			}
-		}
-
-		private void show() {
-			if (m_laySearch == null || m_laySearch.getHandler() == null) {
-				return;
-			}
-
-			m_laySearch.getHandler().postDelayed(new Runnable() {
-
-				@Override
-				public void run() {
-					if (new Date().getTime() < m_lastScrollTime + m_delay) {
-						return;
-					}
-
-					m_laySearch.show();
-				}
-
-			}, m_delay);
-		}
-
-		private void hide() {
-			if (m_laySearch == null || m_laySearch.getHandler() == null) {
-				return;
-			}
-
-			m_laySearch.hide();
-			m_lblTextWarning.setVisibility(View.GONE);
 		}
 	}
 
@@ -749,6 +730,31 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 		}
 	}
 
+	private class SpLanguageFromEventHandler implements AdapterView.OnItemSelectedListener {
+
+		@Override
+		public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
+				long arg3) {
+			updateLangBtn();
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> arg0) {	
+		}
+	}
+
+	private class SpLanguageToEventHandler implements AdapterView.OnItemSelectedListener {
+
+		@Override
+		public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
+				long arg3) {
+			updateLangBtn();
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> arg0) {
+		}
+	}
 	//
 	// Methods
 	//
@@ -802,7 +808,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 					m_spLanguageTo.loadData(getActivity());
 
 					m_memoAdapter = new MemoAdapter(getActivity());
-					m_memos = m_memoAdapter.getAll(m_memoBaseId, MemoAdapter.Sort.CreatedDate, Order.ASC);
+					m_memos = m_memoAdapter.getAllDeep(m_memoBaseId, MemoAdapter.Sort.CreatedDate, Order.ASC);
 
 					updateSupportProgress(0.7f);
 
@@ -834,6 +840,10 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 				if (m_memosViews == null) {
 					return;
 				}
+				
+				if(preferedLangs == null) {
+					return;
+				}
 
 				m_wordsAdapter.clear();
 				m_wordsAdapter.addAll(m_memosViews);
@@ -842,7 +852,9 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 				m_spLanguageTo.bindData(getActivity());
 				m_spLanguageFrom.setSelection(preferedLangs.first);
 				m_spLanguageTo.setSelection(preferedLangs.second);
-
+				
+				updateLangBtn();
+				
 				updateSupportProgress(1f);
 
 				m_fragmentState.restore();
@@ -972,6 +984,17 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 		}
 
 		return new Helper.Pair<Language, Language>(fLangMax, sLangMax);
+	}
+	
+	private void updateLangBtn() {
+		if(m_btnLang == null) {
+			return;
+		}
+		
+		m_btnLang.setText(String.format("%s - %s",
+				m_spLanguageFrom.getSelectedLanguage() != null ? m_spLanguageFrom.getSelectedLanguage().getLanguage().getCode() : "",
+				m_spLanguageTo.getSelectedLanguage() != null ? m_spLanguageTo.getSelectedLanguage().getLanguage().getCode() : ""));
+		
 	}
 	
 	private void openDetails() {
@@ -1196,6 +1219,18 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 						return fragment;
 					}
 				}));
+		
+			drawer.addChild(moreGroupId,  new DrawerView(R.drawable.ic_sync, R.string.memolist_manualSync,
+					new DrawerView.OnClickListener() {
+						@Override
+						public void onClick(DrawerView v) {
+							if(getPreferences().getSyncEnabled()) {
+								SyncActivity.start(getActivity());
+							} else {
+								Toast.makeText(getActivity(), R.string.memolist_syncDisabled, Toast.LENGTH_SHORT).show();
+							}
+						}
+					}));
 
 		drawer.addChild(moreGroupId, new DrawerView(R.drawable.ic_preferences, R.string.memolist_settings,
 				new DrawerView.OnClickListener() {
@@ -1206,13 +1241,6 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 					}
 				}));
 
-		drawer.addChild(moreGroupId, new DrawerView(R.drawable.ic_info, R.string.memobaselist_setting_about,
-				new Lazy<ApplicationFragment>() {
-					public ApplicationFragment create() {
-						ApplicationFragment fragment = new AboutFragment();
-						return fragment;
-					}
-				}));
 	}
 
 	@Override

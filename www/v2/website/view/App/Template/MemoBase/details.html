@@ -1,0 +1,16 @@
+
+
+      <div class="details">
+          
+              <h2 class="to">{{Model.MemoBase.name}}</h2>
+         
+              <br />
+              <span ng-if="Model.MemoBase.description != ''">
+                  {{Model.MemoBase.description}}
+              </span>
+              <span ng-if="Model.MemoBase.description == null || Model.MemoBase.description == ''">
+                  <i>No description</i>
+              </span>
+          
+      </div>
+

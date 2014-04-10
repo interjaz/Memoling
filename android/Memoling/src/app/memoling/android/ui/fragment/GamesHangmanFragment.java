@@ -9,7 +9,6 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -255,7 +254,7 @@ public class GamesHangmanFragment extends ApplicationFragment implements TextWat
 		case 0:
 		default:
 			// Current library
-			Memo memo = memoAdapter.getRandom(getPreferences().getLastMemoBaseId());
+			Memo memo = memoAdapter.getRandomDeep(getPreferences().getLastMemoBaseId());
 			if (m_random.nextBoolean()) {
 				word = memo.getWordA().getWord();
 			} else {

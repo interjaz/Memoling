@@ -45,7 +45,7 @@ public class HttpPostRequestTask extends WorkerThread<NameValuePair, Void, Strin
 	public HttpPostRequestTask(URI uri, IHttpRequestTaskComplete onHttpRequestTaskComplete,
 			ArrayList<NameValuePair> headers, int timeout, String encoding) {
 		if (encoding == null) {
-			encoding = HTTP.DEFAULT_CONTENT_CHARSET;
+			encoding = HTTP.UTF_8;
 		}
 
 		m_uri = uri;
@@ -121,16 +121,18 @@ public class HttpPostRequestTask extends WorkerThread<NameValuePair, Void, Strin
 
 	@Override
 	protected void onPostExecute(String response) {
-
+		super.onPostExecute(response);
+		
 		if (m_exception != null) {
 			if (m_exception instanceof ConnectTimeoutException) {
 				m_onHttpRequestTaskComplete.onHttpRequestTimeout(m_exception);
 			} else if (m_exception instanceof SocketException) {
 				m_onHttpRequestTaskComplete.onHttpRequestTimeout(m_exception);
 			}
+			
+			return;
 		}
-
-		super.onPostExecute(response);
+		
 		m_onHttpRequestTaskComplete.onHttpRequestTaskComplete(response);
 	}
 

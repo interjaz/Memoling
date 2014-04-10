@@ -32,11 +32,17 @@ class PublishedMemo {
 		$this->PublishedMemoId =  isset($obj->publishedMemoId)?$obj->publishedMemoId:null;
 		$this->MemoId =  isset($obj->memoId)?$obj->memoId:null;
 		$this->FacebookUserId =  isset($obj->facebookUserId)?$obj->facebookUserId:null;
-		$this->Created =  isset($obj->created)?$obj->created:null;
+		$this->Created = isset($obj->created)?$obj->created:date('Y-m-d H:i:s');
 		
 		if(isset($obj->memo)) {
 			$this->Memo = new Memo();
 			$this->Memo->decode($obj->memo);
+            $this->Memo->Created = date('Y-m-d H:i:s');
+            $this->Memo->LastReviewed =  date('Y-m-d H:i:s');
+            $this->Memo->Displayed = 0;
+            $this->Memo->Active = true;
+            $this->Memo->CorrectAnsweredWordA = 0;
+            $this->Memo->CorrectAnsweredWordB = 0;
 		}
 		
 		if(isset($obj->facebookUser)) {

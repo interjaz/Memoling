@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import app.memoling.android.R;
 import app.memoling.android.adapter.MemoAdapter;
+import app.memoling.android.adapter.SyncClientAdapter;
 import app.memoling.android.audio.TextToSpeechHelper;
 import app.memoling.android.helper.AppLog;
 import app.memoling.android.ui.AdActivity;
@@ -223,6 +224,6 @@ public class WordOfTheDayReceiverActivity extends AdActivity {
 
 	private void saveMemo() {
 		MemoAdapter adapter = new MemoAdapter(this);
-		adapter.add(m_memo);
+		adapter.insert(m_memo, new SyncClientAdapter(this).getCurrentSyncClientId());
 	}
 }

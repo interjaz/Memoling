@@ -1,0 +1,32 @@
+
+      <h2 class="from">{{Model.Memo.wordA.word}}</h2>
+      <h2 class="to">{{Model.Memo.wordB.word}}</h2>
+      <hr />
+
+      <div class="top">
+
+          <div class="languages">
+              <span class="from">{{Model.Memo.wordA.languageIso639}}</span>
+              <span class="to">{{Model.Memo.wordB.languageIso639}}</span>
+          </div>
+      </div>
+
+      <div class="details">
+          <span class="from">
+              <span ng-if="Model.Memo.wordA.description != ''">
+                  {{Model.Memo.wordA.description}}
+              </span>
+              <span ng-if="Model.Memo.wordA.description == ''">
+                  <i>No description</i>
+              </span>
+          </span>
+          <span class="to">
+              <span ng-if="Model.Memo.wordB.description != ''">
+                  {{Model.Memo.wordB.description}}
+              </span>
+              <span ng-if="Model.Memo.wordB.description == ''">
+                  <i>No description</i>
+              </span>
+          </span>
+      </div>
+

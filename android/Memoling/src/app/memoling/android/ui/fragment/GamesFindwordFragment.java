@@ -1,6 +1,7 @@
 package app.memoling.android.ui.fragment;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -38,6 +39,8 @@ public class GamesFindwordFragment extends GamesMatrixGame {
 	private Paint m_foundStrokePaint;
 	private Paint m_touchPaint;
 
+	private RectF m_paintRect = new RectF();
+	
 	@Override
 	protected boolean getAllowDiagonal() {
 		//TODO: when there is a word from right to left it looks ugly
@@ -136,11 +139,12 @@ public class GamesFindwordFragment extends GamesMatrixGame {
 				if (str.equals("-")) {
 					str = getChar(y * sX + x);
 				}
-				c.drawText(str.toUpperCase(), wItem, hItem, txtPaint);
+				c.drawText(str.toUpperCase(Locale.getDefault()), wItem, hItem, txtPaint);
 			}
 		}
 
 		synchronized (m_found) {
+			
 			for (MatrixWord word : m_found) {
 
 				int x0 = (int)((itemWidth + itemPadding) * (word.from.x - 0.2) + paddingWidth);
@@ -150,13 +154,12 @@ public class GamesFindwordFragment extends GamesMatrixGame {
 				int y1 = (int) ((itemHeight + itemPadding) * (word.to.y + 0.4) + paddingHeight);
 
 				if(word.from.x == word.to.x || word.from.y == word.to.y) {
-					RectF rect = new RectF();
-					rect.left = x0;
-					rect.right = x1;
-					rect.top = y0;
-					rect.bottom = y1;
+					m_paintRect.left = x0;
+					m_paintRect.right = x1;
+					m_paintRect.top = y0;
+					m_paintRect.bottom = y1;
 					
-					c.drawRect(rect, m_foundPaint);
+					c.drawRect(m_paintRect, m_foundPaint);
 				} else {
 					c.drawLine(x0, y0, x1, y1, m_foundStrokePaint);
 				}

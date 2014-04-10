@@ -1,0 +1,25 @@
+
+
+<div id="memoList">
+
+
+    <input class="filter" type="text" ng-model="search.$" placeholder="Filter">
+    <div class="listViewPort">
+        <ul class="memoList" >
+            <li ng-repeat="memo in mlData | filter:search" ng-click="mlSelect({memoId:memo.memoId})">
+                <div class="word">
+                    <span class="first">{{memo.wordA.word}}</span>
+                    <span class="second">{{memo.wordB.word}}</span>
+                </div>
+                <div class="language">
+                    <span class="first">{{memo.wordA.languageIso639}}</span>
+                    <span class="second">{{memo.wordB.languageIso639}}</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+

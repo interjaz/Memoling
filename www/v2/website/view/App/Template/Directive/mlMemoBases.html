@@ -1,0 +1,18 @@
+<div class="listViewPort">
+        <ul class="memoBaseList" >
+            <li ng-repeat="memobase in mlData" ng-click="mlSelect({memoBaseId:memobase.memoBaseId})"  >
+                <div class="count">{{memobase.count}}</div>
+                <h2>{{memobase.name}}</h2>
+                <div class="language">
+                    <span class="start">&nbsp</span>
+                    <span ng-repeat="language in memobase.languages">
+                        {{language}}
+                    </span>
+                    <span class="stop">&nbsp;</span>
+                </div>
+            </li>
+        </ul>
+
+    </div>
+    
+</div>

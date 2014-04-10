@@ -89,7 +89,7 @@ public class ShareHelper implements IPublishedMemoUpload {
 				String name = "";
 
 				if (!m_isBase) {
-					Memo memo = new MemoAdapter(m_facebookFragment.getActivity()).get(m_id);
+					Memo memo = new MemoAdapter(m_facebookFragment.getActivity()).getDeep(m_id);
 					String word = (memo.getWordA().getWord() + " - " + memo.getWordB().getWord());
 					if (word.length() > 10) {
 						word = word.substring(0, 7) + "...";
@@ -127,7 +127,13 @@ public class ShareHelper implements IPublishedMemoUpload {
 					return;
 				}
 
-				WebView vw = new WebView(m_facebookFragment.getActivity());
+				WebView vw = new WebView(m_facebookFragment.getActivity()) {
+					@Override
+					public boolean onCheckIsTextEditor() {
+						return true; 
+					}
+				};
+				
 				String fbUrl = FacebookWrapper.createFeedUrl(user.getId(), friend.getId(), url, name,
 						m_facebookFragment.getActivity().getString(R.string.share_fbCaption), msg);
 				fbUrl = fbUrl.replace(' ', '+');
@@ -152,6 +158,12 @@ public class ShareHelper implements IPublishedMemoUpload {
 
 				vw.loadUrl(fbUrl);
 				vwDialog.show();
+				
+				vw.getSettings().setUseWideViewPort(true);
+				vw.setFocusableInTouchMode(true);
+				vw.setFocusable(true);
+				vw.setHapticFeedbackEnabled(true);
+				vw.setClickable(true);
 			}
 
 		});

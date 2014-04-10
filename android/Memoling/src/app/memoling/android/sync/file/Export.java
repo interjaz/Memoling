@@ -1,4 +1,4 @@
-package app.memoling.android.sync;
+package app.memoling.android.sync.file;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -39,7 +39,7 @@ public class Export {
 
 			for (String memoBaseId : memoBaseIds) {
 				MemoBase memoBase = baseAdapter.get(memoBaseId);
-				memoBase.setMemos(memoAdapter.getAll(memoBaseId, Sort.CreatedDate, Order.ASC));
+				memoBase.setMemos(memoAdapter.getAllDeep(memoBaseId, Sort.CreatedDate, Order.ASC));
 				memoBases.add(memoBase);
 			}
 
@@ -84,7 +84,7 @@ public class Export {
 
 			for (MemoBase base : bases) {
 				String line;
-				ArrayList<Memo> memos = memoAdapter.getAll(base.getMemoBaseId(), Sort.CreatedDate, Order.ASC);
+				ArrayList<Memo> memos = memoAdapter.getAllDeep(base.getMemoBaseId(), Sort.CreatedDate, Order.ASC);
 
 				for (Memo memo : memos) {
 					line = CsvParser.MemoToString(base, memo);
@@ -123,7 +123,7 @@ public class Export {
 
 			for (MemoBase base : bases) {
 				String line;
-				ArrayList<Memo> memos = memoAdapter.getAll(base.getMemoBaseId(), Sort.CreatedDate, Order.ASC);
+				ArrayList<Memo> memos = memoAdapter.getAllDeep(base.getMemoBaseId(), Sort.CreatedDate, Order.ASC);
 
 				noteText.append(String.format("Library %s\r\n", base.getName()));
 

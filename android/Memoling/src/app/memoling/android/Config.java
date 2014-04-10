@@ -1,7 +1,5 @@
 package app.memoling.android;
 
-import java.util.Date;
-
 import android.os.Environment;
 
 public class Config {
@@ -13,7 +11,7 @@ public class Config {
 	public final static String AppPath = Environment.getExternalStorageDirectory() + "/memoling";
 	
 	public final static String DatabaseName = "TranslateMemo";
-	public final static int DatabaseVersion = 5;
+	public final static int DatabaseVersion = 6;
 	
 	//
 	// Webservices
@@ -21,9 +19,9 @@ public class Config {
 	public final static int MinNumberOfMemosForUpload = 20;
 	
 	// Live
-	public final static String WsUrlRoot = "http://memoling.com/webservice";
+	//public final static String WsUrlRoot = "http://memoling.com/webservice";
 	// Dev
-	//public final static String WsUrlRoot = "http://192.168.1.67:8080/v2/webservice";
+	public final static String WsUrlRoot = "http://192.168.1.107:8080/v2/webservice";
 	
 
 	//
@@ -44,9 +42,7 @@ public class Config {
 	//
 	// Ads
 	//
-	//public final static boolean EnableAds = true;
-	private final static long EnableAdsFirstOfApril = 1396310400000L;
-	public static boolean EnableAds = new Date().after(new Date(EnableAdsFirstOfApril));
+	public final static boolean EnableAds = false;
 	public final static String AdUnitId = "a151d4995a52331";
 	public final static String AdTestDeviceId = "1D422D9852675CECF96B500DB4EC80F3";
 		

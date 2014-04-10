@@ -70,6 +70,12 @@ public class SqliteUpdater {
 						database.setVersion(5);
 						version = 5;
 					}
+					
+					if(version == 5) {
+						update56(database);
+						database.setVersion(6);
+						version = 6;
+					}
 
 					database.setTransactionSuccessful();
 				} catch (Exception ex) {
@@ -143,5 +149,24 @@ public class SqliteUpdater {
 				"\"MemoBaseId\" TEXT NOT NULL )";
 		
 		database.execSQL(updateWordOfTheDayWiget);
+	}
+	
+	private static void update56(SQLiteDatabase database) {
+		String updateSyncActions = "CREATE  TABLE \"SyncActions\" (" +
+				"\"SyncActionId\" VARCHAR NOT NULL PRIMARY KEY, " +
+				"\"SyncClientId\" VARCHAR NOT NULL, " +
+				"\"Table\" VARCHAR NOT NULL, " +
+				"\"PrimaryKey\" VARCHAR NOT NULL, " +
+				"\"Action\" INTEGER NOT NULL, " +
+				"\"UpdateColumn\" VARCHAR NULL, " +
+				"\"ServerTimestamp\" NUMERIC NOT NULL)";
+		String updateSyncClients = "CREATE  TABLE \"SyncClients\" ( " +
+				"\"SyncClientId\" VARCHAR NOT NULL, " +
+				"\"FacebookUserId\" VARCHAR NOT NULL, " +
+				"\"Description\" VARCHAR NOT NULL, " +
+				"\"LastSyncServerTimestamp\" NUMERIC NOT NULL )";
+		
+		database.execSQL(updateSyncActions);
+		database.execSQL(updateSyncClients);
 	}
 }

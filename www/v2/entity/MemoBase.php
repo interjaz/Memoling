@@ -5,7 +5,8 @@ class MemoBase {
 	public $Name;
 	public $Created;
 	public $Active;
-	
+	public $FacebookUserId;
+    
 	public $Memos;
 	
 	public function decode($json) {
@@ -17,9 +18,15 @@ class MemoBase {
 		
 		$this->MemoBaseId = isset($obj->memoBaseId)?$obj->memoBaseId:null;
 		$this->Name = isset($obj->name)?$obj->name:null;
-		$this->Created = isset($obj->created)?$obj->created:null;
-		$this->Active = isset($obj->active)?$obj->active:null;
+		$this->Created = isset($obj->created)?gmdate("Y-m-d\TH:i:s",$obj->created):null;
+		$this->Active = isset($obj->active)?strcasecmp($obj->active, "true")==0:null;
 		
+        //var_dump($obj->created);
+        //var_dump($this);
+        //exit;
+        
+        $this->Memos = null;
+        
 		if(isset($obj->memos)) {
 			
 			$Memos = array();
@@ -37,9 +44,12 @@ class MemoBase {
 	public function encode() {
 		$builder = new JsonBuilder();
 		
+        $builder->put("memoBaseId", $this->MemoBaseId);
+        $builder->put("created", strtotime($this->Created));
 		$builder->put("name", $this->Name);
+        $builder->put("active", $this->Active ? "true" : "false");
 		$builder->put("memos", $this->Memos);
-		
+        
 		return $builder->__toString();
 	}
 }

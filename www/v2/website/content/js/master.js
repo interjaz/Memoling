@@ -9,3 +9,48 @@ window.mobilecheck = function() {
 	})(navigator.userAgent || navigator.vendor || window.opera);
 	return check;
 }
+
+function s4() {
+  return Math.floor((1 + Math.random()) * 0x10000)
+             .toString(16)
+             .substring(1);
+};
+
+function guid() {
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+         s4() + '-' + s4() + s4() + s4();
+}
+
+function deleteFromArray(arr, item) {
+    for (var index = 0; index < arr.length; index++) {
+        if (arr[index] === item) {
+            arr.splice(index, 1);
+            return arr;
+        }
+    }
+    
+    return arr;
+}
+
+var toastLock = false;
+
+function makeToast(title, message) {
+    if(toastLock) {
+        setTimeout(function() {
+            makeToast(title, message);
+        }, 100);
+        return;
+    }
+    
+    toastLock = true;
+    
+    $('#toast h2').html(title);
+    $('#toast h3').html(message);
+    $('#toast').fadeIn('slow').promise().done(function() {
+        setTimeout(function() {
+            $('#toast').fadeOut('slow').promise().done(function() {
+                toastLock = false;
+            });
+        }, 2000);
+    });
+}

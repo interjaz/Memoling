@@ -2,13 +2,19 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <Preference
-        android:key="BTN_CLEAR_LANGPREF"
-        android:summary="@string/preferences_btnClearLangPref_summary"
-        android:title="@string/preferences_btnClearLangPref_title" />
+        android:key="BTN_SYNC"
+        android:summary="@string/preferences_btnSync_summary"
+        android:title="@string/preferences_btnSync_title" />
+    
     <Preference
         android:key="BTN_CLEAR_FACEBOOK"
         android:summary="@string/preferences_btnClearFacebook_summary"
         android:title="@string/preferences_btnClearFacebook_title" />
+    
+    <Preference
+        android:key="BTN_CLEAR_LANGPREF"
+        android:summary="@string/preferences_btnClearLangPref_summary"
+        android:title="@string/preferences_btnClearLangPref_title" />
 
     <EditTextPreference
         android:defaultValue="10"
