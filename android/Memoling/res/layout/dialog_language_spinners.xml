@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res/app.memoling.android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:id="@+id/linearLayoutLanguageSpinners"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" >
+
+        <app.memoling.android.ui.control.LanguageSpinner
+            android:id="@+id/ankiImport_spLanguageFrom"
+            style="@style/Theme.Darktheme.Spinner.Dark"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            app:bold="true"
+            tools:listitem="@layout/adapter_textdropdown_dark" />
+
+        <Button
+            android:id="@+id/ankiImport_btnLanguageSwap"
+            style="@style/Theme.Darktheme.Button.Dark"
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="0.0"
+            android:text="@string/memolist_swap" />
+
+        <app.memoling.android.ui.control.LanguageSpinner
+            android:id="@+id/ankiImport_spLanguageTo"
+            style="@style/Theme.Darktheme.Spinner.Dark"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            tools:listitem="@layout/adapter_textdropdown_dark" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/linearLayoutLanguageSpinners"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="2dp" >
+
+        <CheckBox
+            android:id="@+id/ankiImport_checkBox"
+            style="@style/Theme.Darktheme.Checkbox.Dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ankiImporter_ctxmenu_languagesSelectionCheckbox" />
+    </LinearLayout>
+
+</RelativeLayout>

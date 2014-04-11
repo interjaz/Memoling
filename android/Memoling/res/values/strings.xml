@@ -425,7 +425,7 @@
     <string name="ankiImporter_ctxmenu_languagesSelectionQuestion">Please provide information about languages in the deck</string>
     <string name="ankiImporter_ctxmenu_languagesSelectionConfirmation">Confirm the selection</string>
     <string name="ankiImporter_ctxmenu_languagesSelectionCancelation">Do not import this deck</string>
-    
+    <string name="ankiImporter_ctxmenu_languagesSelectionCheckbox">Apply the settings to all decks</string> 
     
     
 </resources>

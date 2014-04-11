@@ -5,20 +5,29 @@ import java.util.concurrent.locks.Lock;
 
 import app.memoling.android.entity.Memo;
 
+
 public class AnkiMessage {
 
-	private final List<Memo> internalMemos;
+	private List<Memo> internalMemos;
 	
-	private final List<Memo> externalMemos;
+	private List<Memo> externalMemos;
 	
-	private final String destinationMemoBaseId;
+	private String destinationMemoBaseId;
 	
-	private final Lock publishingLock;
+	private Lock publishingLock;
 	
-	public AnkiMessage(String destinationMemoBaseId, List<Memo> internalMemos, List<Memo> externalMemos, Lock publishingLock){
+	private Integer messageType;
+	
+	public AnkiMessage(Integer messageType, String destinationMemoBaseId, List<Memo> internalMemos, List<Memo> externalMemos, Lock publishingLock){
+		this.messageType = messageType;
 		this.internalMemos = internalMemos;
 		this.externalMemos = externalMemos;
 		this.destinationMemoBaseId = destinationMemoBaseId;
+		this.publishingLock = publishingLock;
+	}
+	
+	public AnkiMessage(Integer messageType, Lock publishingLock) {
+		this.messageType = messageType;
 		this.publishingLock = publishingLock;
 	}
 
@@ -36,5 +45,9 @@ public class AnkiMessage {
 
 	public Lock getPublishingLock() {
 		return publishingLock;
+	}
+
+	public Integer getMessageType() {
+		return messageType;
 	}
 }
