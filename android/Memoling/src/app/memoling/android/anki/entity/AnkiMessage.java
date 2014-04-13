@@ -18,6 +18,8 @@ public class AnkiMessage {
 	
 	private Integer messageType;
 	
+	private Integer progressBarValue;
+	
 	public AnkiMessage(Integer messageType, String destinationMemoBaseId, List<Memo> internalMemos, List<Memo> externalMemos, Lock publishingLock){
 		this.messageType = messageType;
 		this.internalMemos = internalMemos;
@@ -29,6 +31,11 @@ public class AnkiMessage {
 	public AnkiMessage(Integer messageType, Lock publishingLock) {
 		this.messageType = messageType;
 		this.publishingLock = publishingLock;
+	}
+	
+	public AnkiMessage(Integer messageType, Integer progressBarValue) {
+		this.messageType = messageType;
+		this.progressBarValue = progressBarValue;
 	}
 
 	public List<Memo> getInternalMemos() {
@@ -49,5 +56,17 @@ public class AnkiMessage {
 
 	public Integer getMessageType() {
 		return messageType;
+	}
+	
+	public void setMessageType(Integer messageType) {
+		this.messageType = messageType;
+	}
+
+	public Integer getProgressBarValue() {
+		return progressBarValue;
+	}
+	
+	public void setProgressBarValue(Integer progressBarValue) {
+		this.progressBarValue = progressBarValue;
 	}
 }

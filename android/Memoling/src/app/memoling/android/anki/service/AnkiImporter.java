@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ProgressBar;
 import app.memoling.android.R;
 import app.memoling.android.adapter.MemoAdapter;
 import app.memoling.android.adapter.MemoAdapter.Sort;
@@ -47,16 +48,68 @@ public class AnkiImporter {
 		// create new worker and execute it to work in background
 		new WorkerThread<Void, AnkiMessage, Void>() {
 
+			Language languageFrom = null;
+			Language languageTo = null;
+			boolean applySettingsToAllDecks = false;
+			boolean showHideButtonInProgressBarDialog = false;
+			boolean progressBarDialogCreated = false;
+			AlertDialog progressAlertDialog;
+			ProgressBar m_ankiImportProgressBar;
+			
+			private void createProgressAlertDialog() {
+				LayoutInflater inflater = LayoutInflater.from(ctx);
+				View view = inflater.inflate(R.layout.dialog_language_progressbar, null);
+
+				m_ankiImportProgressBar = (ProgressBar) view.findViewById(R.id.ankiImport_progressBar);
+				m_ankiImportProgressBar.setMax(100);
+				m_ankiImportProgressBar.setProgress(0);
+				
+				progressAlertDialog = new AlertDialog.Builder(ctx)
+				.setTitle(ctx.getString(R.string.ankiImporter_ctxmenu_importProgressTitle))
+				.setView(view)
+				.setPositiveButton(ctx.getString(R.string.ankiImporter_ctxmenu_importProgressHide), new android.content.DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// hide the progress
+						
+					}
+				})
+				.setIcon(R.drawable.ic_dialog_alert_holo_dark).create();
+			}
+			
 			protected void onProgressUpdate(AnkiMessage... ankiMessage) {
 				
 				if(ankiMessage[0].getMessageType().equals(0)){
 					performSync(ankiMessage);
 				} else if(ankiMessage[0].getMessageType().equals(1)) {
 					performAlertDialog(ankiMessage);
+				} else if(ankiMessage[0].getMessageType().equals(2)) {
+					showProgressBar(ankiMessage);
+				} else if(ankiMessage[0].getMessageType().equals(3)) {
+					cancelProgressBar(ankiMessage);
 				}
 			}
 						
+			private void showProgressBar(AnkiMessage... ankiMessage) {
+				if(!progressBarDialogCreated) {
+					createProgressAlertDialog();	
+				}
+				
+				int progressBarValue = ankiMessage[0].getProgressBarValue();
+				m_ankiImportProgressBar.setProgress(progressBarValue);
+				progressAlertDialog.show();
+			}
+			
+			private void cancelProgressBar(AnkiMessage... ankiMessage) {
+				int progressBarValue = ankiMessage[0].getProgressBarValue();
+				m_ankiImportProgressBar.setProgress(progressBarValue);
+				progressAlertDialog.show();
+				progressAlertDialog.cancel();
+			}
+			
 			private void performAlertDialog(AnkiMessage... ankiMessage) {
+				
+				progressAlertDialog.cancel();
 				
 				final Lock publishingLock = ankiMessage[0].getPublishingLock();
 				
@@ -78,13 +131,6 @@ public class AnkiImporter {
 					}
 				});
 				
-				m_applySettingsCheckbox.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						boolean checked = ((CheckBox) v).isChecked();
-					}
-				});
-				
 				m_spLanguageFrom.bindData(ctx);
 				m_spLanguageTo.bindData(ctx);
 				
@@ -99,8 +145,10 @@ public class AnkiImporter {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								// take the information about selected languages from the user
-								Language fromLang = ((LanguageView) m_spLanguageFrom.getSelectedItem()).getLanguage();
-								Language toLang = ((LanguageView) m_spLanguageTo.getSelectedItem()).getLanguage();
+								languageFrom = ((LanguageView) m_spLanguageFrom.getSelectedItem()).getLanguage();
+								languageTo = ((LanguageView) m_spLanguageTo.getSelectedItem()).getLanguage();
+								
+								applySettingsToAllDecks = ((CheckBox) m_applySettingsCheckbox).isChecked();
 								
 								// notify the waiting thread
 								synchronized(publishingLock) {
@@ -203,7 +251,16 @@ public class AnkiImporter {
 			}
 			
 			@Override
-			protected Void doInBackground(Void... params) {				
+			protected Void doInBackground(Void... params) {		
+				
+				Integer progressBarValue = Integer.valueOf(0);
+				Integer numberOfDecks = Integer.valueOf(0);
+				Integer progressChunk = Integer.valueOf(0);
+				Integer ankiMessageType = 2;
+				
+				AnkiMessage progressBarValueMessage = new AnkiMessage(ankiMessageType, progressBarValue);
+				publishProgress(progressBarValueMessage);
+				
 				// unpack the file *.apkg
 				AnkiIOEngine.unpackFile(path);
 				
@@ -242,6 +299,13 @@ public class AnkiImporter {
 					MemoBase destinationMemoBase;
 					boolean theDeckAlreadyExists;
 					
+					// information was read from the file
+					progressBarValue = Integer.valueOf(5);
+					progressBarValueMessage.setProgressBarValue(progressBarValue);
+					publishProgress(progressBarValueMessage);
+					numberOfDecks = ankiDecks.size();
+					progressChunk = 95 / numberOfDecks;
+					
 					// for every anki deck
 					for (AnkiDeck ankiDeck : ankiDecks) {
 						findDestinationMemoBaseId = null;
@@ -264,23 +328,24 @@ public class AnkiImporter {
 							destinationMemoBase = createMemoBase(ctx,ankiDeck);
 							findDestinationMemoBaseId = destinationMemoBase.getMemoBaseId();
 
-							Lock alertDialogLock = new ReentrantLock();
-							AppLog.e("AnkiImporter#doInBackground", "publishing lock created", null);
-							try {
-								alertDialogLock.lock();
-								AppLog.e("AnkiImporter#doInBackground", "publishing lock taken", null);
-								publishProgress(new AnkiMessage(1,alertDialogLock));
-								AppLog.e("AnkiImporter#doInBackground", "publish progress was sent", null);
-								synchronized(alertDialogLock) {
-									alertDialogLock.wait();	
-								}
-								AppLog.e("AnkiImporter#doInBackground", "publishing lock was notified", null);
-								alertDialogLock.unlock();
-								AppLog.e("AnkiImporter#doInBackground", "unlock the thread", null);
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								alertDialogLock.unlock();
-								e.printStackTrace();
+							if(!applySettingsToAllDecks){
+								// publishing lock created
+								Lock alertDialogLock = new ReentrantLock();
+								try {
+									// lock taken
+									alertDialogLock.lock();
+									// ask user about the languages in decks
+									publishProgress(new AnkiMessage(1,alertDialogLock));
+									// waiting for response from user
+									synchronized(alertDialogLock) {
+										alertDialogLock.wait();	
+									}
+									// user responded
+									alertDialogLock.unlock();
+								} catch (InterruptedException e) {
+									alertDialogLock.unlock();
+									e.printStackTrace();
+								}	
 							}
 						}
 												
@@ -288,34 +353,43 @@ public class AnkiImporter {
 						final List<AnkiCard> ankiCardsFromAnkiBase = ankiImportAdapter.getAnkiCards(ankiDeck.getDeckId().getTime(), Sort.CreatedDate, Order.ASC);
 
 						// convert AnkiCard to Memo
-						final List<Memo> externalMemos = convertAnkiCardsIntoMemos(ankiCardsFromAnkiBase, ankiNotes, findDestinationMemoBaseId, destinationMemoBase);
+						final List<Memo> externalMemos = convertAnkiCardsIntoMemos(ankiCardsFromAnkiBase, 
+								ankiNotes, findDestinationMemoBaseId, destinationMemoBase, languageFrom, languageTo);
 						
 						final MemoAdapter memoAdapter = new MemoAdapter(ctx, true);
 						final List<Memo> internalMemos = memoAdapter.getAll(findDestinationMemoBaseId, Sort.CreatedDate, Order.ASC);
 						final String destinationMemoBaseId = findDestinationMemoBaseId;
 
+						// publishing lock created
 						Lock publishingLock = new ReentrantLock();
-						AppLog.e("AnkiImporter#doInBackground", "publishing lock created", null);
 						try {
+							// lock taken
 							publishingLock.lock();
-							AppLog.e("AnkiImporter#doInBackground", "publishing lock taken", null);
+							// perform sync
 							publishProgress(new AnkiMessage(0, destinationMemoBaseId, internalMemos, externalMemos, publishingLock));
-							AppLog.e("AnkiImporter#doInBackground", "publish progress was sent", null);
+							// waiting for completion
 							synchronized(publishingLock) {
 								publishingLock.wait();	
 							}
-							AppLog.e("AnkiImporter#doInBackground", "publishing lock was notified", null);
+							// complete
 							publishingLock.unlock();
-							AppLog.e("AnkiImporter#doInBackground", "unlock the thread", null);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							publishingLock.unlock();
 							e.printStackTrace();
 						}
-
+						
+						// the deck was imported
+						progressBarValue = progressBarValue.intValue() + progressChunk;
+						progressBarValueMessage.setProgressBarValue(progressBarValue);
+						publishProgress(progressBarValueMessage);
 					}
-					
-					// when all lists of cards for decks are ready then assign it one by one with usage of SupervisedSyncHaltable<Memo> from Import.java
+					// the deck was imported
+					ankiMessageType = 3;
+					progressBarValue = 100;
+					progressBarValueMessage.setMessageType(ankiMessageType);
+					progressBarValueMessage.setProgressBarValue(progressBarValue);
+					publishProgress(progressBarValueMessage);
 				}
 				return null;
 			}
@@ -351,7 +425,8 @@ public class AnkiImporter {
 		return newMemoBase;
 	}
 	
-	private List<Memo> convertAnkiCardsIntoMemos(List<AnkiCard> ankiCards, List<AnkiNote> ankiNotes, String memoBaseId, MemoBase memoBase) {
+	private List<Memo> convertAnkiCardsIntoMemos(List<AnkiCard> ankiCards, 
+			List<AnkiNote> ankiNotes, String memoBaseId, MemoBase memoBase, Language languageFrom, Language languageTo) {
 		// create empty list of Memos
 		List<Memo> memosFromAnkiDeck = new ArrayList<Memo>();
 		
@@ -382,8 +457,8 @@ public class AnkiImporter {
 			
 			// in Anki base there is no information about input language
 			// we will ask user for going through short questions
-			Word wordA = new Word(UUID.randomUUID().toString(), ankiWordA, Language.DE);
-			Word wordB = new Word(UUID.randomUUID().toString(), ankiWordB, Language.PL);
+			Word wordA = new Word(UUID.randomUUID().toString(), ankiWordA, languageFrom);
+			Word wordB = new Word(UUID.randomUUID().toString(), ankiWordB, languageTo);
 			
 			Memo newMemo = new Memo(wordA, wordB, memoBaseId);
 			// there is (all answers - wrong answers) of correct answers
