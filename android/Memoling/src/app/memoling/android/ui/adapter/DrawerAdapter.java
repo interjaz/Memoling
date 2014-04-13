@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import app.memoling.android.R;
@@ -19,9 +18,6 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
 
 	private ResourceManager m_resources;
 
-	private Context m_context;
-	private Filter m_filter;
-
 	protected Object m_lock;
 	protected List<DrawerView> m_groupData;
 	protected List<List<DrawerView>> m_childData;
@@ -30,7 +26,6 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
 	public final static int GroupPosition = -1;
 
 	public DrawerAdapter(Context context, ResourceManager resources) {
-		m_context = context;
 		m_resources = resources;
 
 		m_lock = new Object();

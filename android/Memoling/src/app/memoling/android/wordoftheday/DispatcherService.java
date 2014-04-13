@@ -117,7 +117,7 @@ public class DispatcherService extends Service {
 
 	private static void getMemoOfTheDay(Context context, String memoBaseId) {
 		MemoAdapter adapter = new MemoAdapter(context);
-		Memo memo = adapter.getRandom(memoBaseId);
+		Memo memo = adapter.getRandomDeep(memoBaseId);
 		createNotification(context, memo, false);
 	}
 

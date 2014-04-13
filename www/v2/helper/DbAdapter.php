@@ -14,13 +14,13 @@ class DbAdapter {
 				"mysql:host=%s;dbname=%s",
 				Config::$Db_Host,
 				Config::$Db_Database
-		);		
+		);
 	}
 	
 	
 	// Do not use this connection when using transactions
 	protected function connect() {
-
+		
 		if($this->m_connectDbh != null) {
 			return $this->m_connectDbh;
 		}
@@ -43,7 +43,6 @@ class DbAdapter {
 		$dbh = new SafePDO($this->m_connectionString, Config::$Db_Username, Config::$Db_Password, array(PDO::ATTR_PERSISTENT => false));
 		$dbh->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
 		$dbh->exec("set names utf8");
-		
 		$this->m_transConnectDbh = $dbh;
 		
 		return $dbh;

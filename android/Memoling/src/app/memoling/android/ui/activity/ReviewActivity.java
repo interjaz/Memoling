@@ -30,6 +30,7 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import app.memoling.android.R;
 import app.memoling.android.adapter.MemoAdapter;
+import app.memoling.android.adapter.SyncClientAdapter;
 import app.memoling.android.adapter.MemoAdapter.Sort;
 import app.memoling.android.adapter.MemoSentenceAdapter;
 import app.memoling.android.audio.TextToSpeechHelper;
@@ -373,7 +374,7 @@ public class ReviewActivity extends AdActivity {
 			m_access = Access.Random;
 			m_trainingSetSize = m_memos.size();
 		} else {
-			m_memos = m_memoAdapter.getAll(memoBaseId, Sort.CreatedDate, Order.ASC);
+			m_memos = m_memoAdapter.getAllDeep(memoBaseId, Sort.CreatedDate, Order.ASC);
 			m_access = Access.AllA;
 			m_trainingSetSize = m_memos.size() * 2;
 		}
@@ -641,7 +642,7 @@ public class ReviewActivity extends AdActivity {
 				m_memo.setCorrectAnsweredWordB(m_memo.getCorrectAnsweredWordB() + 1);
 			}
 		}
-		m_memoAdapter.update(m_memo);
+		m_memoAdapter.update(m_memo, new SyncClientAdapter(this).getCurrentSyncClientId());
 		
 		m_fadeOutAnswer.reset();
 		m_fadeOutAnswer.start();

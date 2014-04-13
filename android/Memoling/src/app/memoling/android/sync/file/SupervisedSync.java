@@ -1,4 +1,4 @@
-package app.memoling.android.sync;
+package app.memoling.android.sync.file;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import android.content.Context;
 
 import app.memoling.android.helper.AppLog;
-import app.memoling.android.sync.ConflictResolve.OnConflictResolve;
+import app.memoling.android.sync.file.ConflictResolve.OnConflictResolve;
 
 public abstract class SupervisedSync<T> {
 

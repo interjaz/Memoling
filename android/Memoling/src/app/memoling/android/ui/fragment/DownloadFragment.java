@@ -23,6 +23,7 @@ import android.widget.Toast;
 import app.memoling.android.R;
 import app.memoling.android.adapter.MemoBaseAdapter;
 import app.memoling.android.adapter.MemoBaseGenreAdapter;
+import app.memoling.android.adapter.SyncClientAdapter;
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.PublishedMemoBase;
 import app.memoling.android.ui.ApplicationFragment;
@@ -188,7 +189,7 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 					Toast.makeText(getActivity(), R.string.download_download_completedDownload, Toast.LENGTH_SHORT)
 							.show();
 
-					m_memoBaseDataAdapter.addDeep(published.getMemoBase());
+					m_memoBaseDataAdapter.insert(published.getMemoBase(), new SyncClientAdapter(getActivity()).getCurrentSyncClientId());
 
 					Toast.makeText(getActivity(), R.string.download_download_finished, Toast.LENGTH_SHORT).show();
 				}

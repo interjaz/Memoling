@@ -1,13 +1,10 @@
 package app.memoling.android.ui;
 
-import java.util.Set;
-
 import android.app.Activity;
 import android.view.View;
 import android.widget.LinearLayout;
 import app.memoling.android.Config;
 import app.memoling.android.R;
-import app.memoling.android.adapter.WordAdapter;
 import app.memoling.android.helper.Helper;
 
 import com.google.ads.AdRequest;
@@ -67,9 +64,6 @@ public class AdCommon {
 				.addExtra("color_bg_top", "0000000").addExtra("color_border", "000000").addExtra("color_link", "EEEEEE")
 				.addExtra("color_text", "FFFFFF").addExtra("color_url", "EEEEEE");
 		adRequest.setNetworkExtras(extras);
-
-		Set<String> keywords = new WordAdapter(activity).getAdKeywords();
-		adRequest.addKeywords(keywords);
 
 		adView.loadAd(adRequest);
 

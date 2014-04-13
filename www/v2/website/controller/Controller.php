@@ -52,6 +52,18 @@ class Controller {
 		}
 	}
 	
+    protected function facebookUserId() {
+        if(!isset($_SESSION['FacebookUserId'])) {
+            return null;
+        }
+        
+        return $_SESSION['FacebookUserId'];
+    }
+    
+    public static function isAuthorized() {
+        return isset($_SESSION['FacebookUserId']) && $_SESSION['FacebookUserId'] != '';
+    }
+    
 	private function httpResponse($code = NULL) {
 		if ($code !== NULL) {
 			switch ($code) {
@@ -110,8 +122,9 @@ class Controller {
 
 	private function action() {
 
-		$this->m_action = isset($_GET["action"])?$_GET["action"]:"index";
-		
+		$action = isset($_GET["action"])?$_GET["action"]:"index";
+        $this->m_action = $action;
+        
 		$reflectionMethod = null;
 
 		try {
@@ -127,7 +140,7 @@ class Controller {
 			return $reflectionMethod->invoke($this);
 		} catch(Exception $ex) {
 			Log::save("Uncaught Exception", $ex, Log::PRIO_HIGH);
-			throw $e;
+			throw $ex;
 		}
 	}
 

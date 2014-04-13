@@ -49,7 +49,7 @@ public class PublishedMemoUpload {
 				m_published.setMemoId(memoId);
 
 				MemoAdapter memoAdapter = new MemoAdapter(m_facebookFragment.getActivity());
-				Memo memo = memoAdapter.get(m_published.getMemoId());
+				Memo memo = memoAdapter.getDeep(m_published.getMemoId());
 				if (memo == null) {
 					m_publishedMemoUploadInterface.onException(new Exception(ExceptionReasons.NoMemoToUpload));
 					return;
@@ -68,7 +68,7 @@ public class PublishedMemoUpload {
 	private void loginWs(FacebookUser user) {
 		WsFacebookUsers.login(user, new ILoginComplete() {
 			@Override
-			public void onLoginComplete(boolean result) {
+			public void onLoginComplete(Boolean result) {
 				if (result != true) {
 					// forward exception
 					m_publishedMemoUploadInterface.onException(new Exception(ExceptionReasons.WsAuthError));

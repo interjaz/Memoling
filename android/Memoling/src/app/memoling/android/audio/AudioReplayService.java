@@ -56,7 +56,7 @@ public class AudioReplayService extends Service implements ITextToSpeechUtteranc
 			m_wordsToRead = new ArrayList<String>();
 			
 			MemoAdapter memoAdapter = new MemoAdapter(this);
-			List<Memo> memos = memoAdapter.getAll(memoBaseId, Sort.CreatedDate, Order.DESC);
+			List<Memo> memos = memoAdapter.getAllDeep(memoBaseId, Sort.CreatedDate, Order.DESC);
 			
 			for(Memo memo : memos) {
 				if(!memo.getWordA().getWord().equals("")) {

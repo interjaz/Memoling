@@ -257,6 +257,8 @@ public abstract class ApplicationFragment extends Fragment {
 					activity.setSupportProgressBarVisibility(true);
 
 					m_uiProgress += 0.05f * direction;
+					
+					m_uiProgress = Math.round(m_uiProgress*100)/100.0f;
 
 					// Normalize our progress along the progress bar's scale
 					int progress = (int) ((Window.PROGRESS_END - Window.PROGRESS_START) * m_uiProgress);

@@ -1,0 +1,19 @@
+09-04-14 19:21:23¦IP:192.168.1.66¦P:FLOW¦MSG:Method invoked: login¦EX:
+09-04-14 19:21:25¦IP:192.168.1.66¦P:FLOW¦MSG:Method invoked: upload¦EX:
+09-04-14 19:21:45¦IP:192.168.1.66¦P:FLOW¦MSG:Method invoked: search¦EX:
+09-04-14 19:21:48¦IP:192.168.1.66¦P:FLOW¦MSG:Method invoked: search¦EX:
+09-04-14 19:21:49¦IP:192.168.1.66¦P:FLOW¦MSG:Method invoked: preview¦EX:
+09-04-14 19:22:16¦IP:192.168.1.66¦P:FLOW¦MSG:Method invoked: preview¦EX:
+09-04-14 19:22:19¦IP:192.168.1.66¦P:FLOW¦MSG:Method invoked: download¦EX:
+09-04-14 19:22:45¦IP:192.168.1.66¦P:FLOW¦MSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"GorzÃ³w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"https:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"0","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-09-25T22:47:56+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)¦EX:
+09-04-14 19:22:45¦IP:192.168.1.66¦P:FLOW¦MSG:Method invoked: login¦EX:
+09-04-14 19:23:01¦IP:192.168.1.66¦P:FLOW¦MSG:Method invoked: syncBase64¦EX:
+09-04-14 19:24:02¦IP:192.168.1.66¦P:FLOW¦MSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"GorzÃ³w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"https:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"0","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-09-25T22:47:56+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)¦EX:
+09-04-14 19:24:02¦IP:192.168.1.66¦P:FLOW¦MSG:Method invoked: login¦EX:
+09-04-14 19:24:02¦IP:192.168.1.66¦P:FLOW¦MSG:Method invoked: syncBase64¦EX:
+09-04-14 19:26:30¦IP:192.168.1.66¦P:FLOW¦MSG:Method invoked: get¦EX:
+09-04-14 23:32:45¦IP:192.168.1.66¦P:FLOW¦MSG:POST: array (\n  'user' => '{"lastName":"Bodzon","hometown":{"name":"GorzÃ³w Wielkopolski","facebookLocationId":"109532505739627"},"location":{"name":"Coventry, United Kingdom","facebookLocationId":"106076586099038"},"locale":"pl_PL","link":"https:\\/\\/www.facebook.com\\/bartosz.bodzon.5","locationId":"106076586099038","facebookUserId":"100002530762250","timezone":"0","username":"bartosz.bodzon.5","verified":true,"name":"Bartosz Bodzon","gender":"male","firstName":"Bartosz","updatedTime":"2013-09-25T22:47:56+0000"}',\n)\nGET: array (\n  'action' => 'login',\n)¦EX:
+09-04-14 23:32:45¦IP:192.168.1.66¦P:FLOW¦MSG:Method invoked: login¦EX:
+09-04-14 23:32:46¦IP:192.168.1.66¦P:FLOW¦MSG:Method invoked: syncBase64¦EX:
+10-04-14 20:56:58¦IP:192.168.1.66¦P:FLOW¦MSG:Method invoked: get¦EX:
+10-04-14 20:57:38¦IP:192.168.1.66¦P:FLOW¦MSG:Method invoked: get¦EX:

@@ -5,7 +5,9 @@ import java.util.UUID;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Word {
+import app.memoling.android.sync.cloud.ISyncEntity;
+
+public class Word implements ISyncEntity {
 	private String m_wordId;
 	private String m_word;
 	private Language m_language;
@@ -140,6 +142,29 @@ public class Word {
 			return false;
 
 		return true;
+	}
+
+	@Override
+	public JSONObject encodeEntity() throws JSONException {
+		JSONObject json = new JSONObject();
+
+		json.put("wordId", m_wordId);
+		json.put("word", m_word);
+		json.put("languageIso639", m_language);
+		json.put("description", m_description);
+
+		return json;
+	}
+
+	@Override
+	public ISyncEntity decodeEntity(JSONObject json) throws JSONException {
+		
+		m_wordId = json.getString("wordId");
+		m_word = json.getString("word");
+		m_language = Language.parse(json.getString("languageIso639"));
+		m_description = json.getString("description");
+		
+		return this;
 	}
 
 }

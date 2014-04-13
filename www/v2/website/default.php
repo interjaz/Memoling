@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 	<head>
@@ -6,6 +5,7 @@
 		<link rel="shortcut icon" href="<?php echo Content::img("favicon.ico"); ?>">
 		
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+		
 		<script type="text/javascript" src="<?php echo Content::js("jquery-1.10.2.min.js"); ?>"></script>
 		
 		<style type="text/css">
@@ -37,6 +37,25 @@
 					display:inline-block;
 					cursor: pointer;
 				}
+            
+            #enter {
+                font-size: 20px;
+                background-color: #fff;
+                -webkit-border-radius: 20px;
+                -moz-border-radius: 20px;
+                border-radius: 20px;
+                display: inline-block;
+                padding: 10px 20px 10px 20px;
+                margin-top: 20px;
+                opacity: 0.7;
+					font-family: 'Open Sans', sans-serif;
+                text-decoration: none;
+                color: #111;
+            }
+            
+            #enter:hover {
+                opacity: 0.9;
+            }
 				
 		</style>
 		<script type="text/javascript">
@@ -92,8 +111,12 @@
 			<br/>
 			<span>FACEBOOK</span>
 		</div>
-		
+		<Br />
+        <a href="app.php?#/" id="enter">
+            Log in
+        </a>
 	</div>
+    
 	
 <img style="position:fixed;bottom:0px;right:0px;height:25%;z-index:-1" src="<?php echo Content::img("footer.png"); ?>" />
 

@@ -1,4 +1,5 @@
 <?php
+session_start();
 include_once("Init.php");
 
 class Index {
@@ -6,6 +7,8 @@ class Index {
 	function __construct() {
 		
 		$controller = isset($_GET['controller'])?$_GET['controller']:null;
+		$controller = explode('/', $controller);
+        $controller = $controller[0];
 				
 		if($controller == null) {
 			// Not found

@@ -34,7 +34,7 @@ public class WordOfTheDayWidgetProvider extends AppWidgetProvider {
 				continue;
 			}
 
-			Memo memo = memoAdapter.getRandom(widget.getMemoBaseId());
+			Memo memo = memoAdapter.getRandomDeep(widget.getMemoBaseId());
 
 			String definition = "";
 			if (memo.getWordA().getDescription() == "" && memo.getWordB().getDescription() != "") {

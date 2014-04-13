@@ -25,6 +25,9 @@
     
     <!-- MemoList Fragment -->
     <string name="memolist_btnSave">Zapisz</string>
+    <string name="memolist_btnShowLang">Język</string>
+    <string name="memolist_txtAddMemoHint">Wyrażenie</string>
+    <string name="memolist_txtAddMemoTranslatedHint">Tłumaczenie</string>
     <string name="memolist_search">Szukaj</string>
     <string name="memolist_voiceInput">Użyj głosu</string>
     <string name="memolist_saveErrorMessage">Wystąpił problem podczas zapisu</string>
@@ -65,6 +68,8 @@
     <string name="memolist_wiktionary_back">Cofnij</string>
     <string name="memolist_audioReplay">Audio Powtórka</string>
     <string name="memolist_wordExists">Słowo już jest w bibliotece</string>
+    <string name="memolist_manualSync">Synchronizuj</string>
+    <string name="memolist_syncDisabled">Sync Wyłączona</string>
 
     <!-- MemoBaseList Fragment -->
     <string name="memobaselist_title">Biblioteki</string>
@@ -290,6 +295,10 @@
     
     <!-- Preferences -->
     <string name="preferences_title">Ustawienia</string>
+    <string name="preferences_btnSync_title">Sychronizuj do chmury</string>
+    <string name="preferences_btnSync_summary">Włączona: %s</string>
+    <string name="preferences_btnSync_summary_yes">TAK</string>
+    <string name="preferences_btnSync_summary_no">NIE</string>
     <string name="preferences_btnRateMemoling_title">Oceń!</string>
     <string name="preferences_btnRateMemoling_summary">Oceń Memolinga</string>
     <string name="preferences_btnGoToMemoling_title">Strona aplikacji</string>
@@ -297,7 +306,8 @@
     <string name="preferences_btnClearLangPref_title">Preferencje językowe</string>
     <string name="preferences_btnClearLangPref_summary">Wyczyść ulubione języki</string>
     <string name="preferences_btnClearFacebook_title">Konto Facebook</string>
-    <string name="preferences_btnClearFacebook_summary">Wyloguj</string>
+    <string name="preferences_btnClearFacebook_summary">Zaloguj</string>
+    <string name="preferences_btnClearFacebook_summary_logout">Wyloguj (%s)</string>
     <string name="preferences_learningSetSize_summary">Ile wyrażeń ma zawierać powtórka</string>
     <string name="preferences_learningSetSize_title">Rozmiar powtórki</string>
     <string name="preferences_enableWordNotification_title">Powiadomienie o słowie dnia</string>
@@ -332,8 +342,8 @@
         2. Chcę otrzymywać nowe słówko w języku greckin z tłuaczeniem w języku fińskim. Zaznacz \'Czy chcesz&#8230;\', następnie zaznacz źródło powiadomień jako Merriam-Webster, zaznacz \'Czy chciał&#8230;\', ustaw \'Przetłumacz nowe&#8230;\' na grecki i \'Przetł&#8230;\' na fiński.\n\n
         Pod koniec możesz przetestować konfiguracjię by zobczyć czy otrzymałeś/aś to co oczekiwałeś/aś.
      </string>
-    <string name="wordoftheday_sourceLibrary">Biblioteka</string>
     <string name="wordoftheday_sourceOnline">Online</string>
+    <string name="wordoftheday_sourceLibrary">Biblioteka</string>
 
     <string name="wordoftheday_widget_title">Memoling - Słówko dnia</string>
     <string name="wordofthedaywidgetconfiguration_title">Konfiguracja Widget-u</string>
@@ -425,5 +435,29 @@
 	
     <!-- General -->
     <string name="action_settings">Ustawienia</string>
-
+    
+ 	<!-- Sync -->
+    <string name="sync_title">Memoling Sync</string>
+    <string name="sync_networkConnectionError">Bład Sync: Brak połączenia</string>
+    <string name="sync_facebookNoUser">Błąd Sync: Nieudana próba logowania do Facebooka</string>
+    <string name="sync_facebookError">Błąd Sync: Problem z rejestracją użytkownika</string>
+    <string name="sync_error">Błąd Sync</string>
+    
+    <string name="sync_stateStarting">Rozpoczynanie Sync</string>
+    <string name="sync_stateAuthorizing">Autorizacja</string>
+    <string name="sync_stateBuildingFirstSync">Tworzenie pierwszej synchronizacji</string>
+    <string name="sync_stateGeneratingPackage">Tworzenie pakietu</string>
+    <string name="sync_stateCompressingPackage">Kompresowanie pakietu (%d zmian)</string>
+    <string name="sync_stateSendingPackage">Wysyłanie pakietu %.2f kb</string>
+    <string name="sync_stateDecompressingPackage">Otrzymanie pakiet. Dekompresja %.2f kb</string>
+    <string name="sync_stateApplyingPackage">Synchronizacja pakietu (%d zmian)</string>
+    <string name="sync_stateCompleted">Zakończono</string>
+    <string name="sync_stateAlreadyInProgress">Błąd: Sync w toku</string>
+    <string name="sync_stateNoConnectionError">Błąd: Brak połączenia</string>
+    <string name="sync_stateNoClientError">Błąd: Nie znaleziono klienta</string>
+    <string name="sync_stateNoAccountError">Błąd: Nie znaleziono konta</string>
+    <string name="sync_stateDataMalformed">Błąd: Skorumpowane dane</string>
+    <string name="sync_stateClientError">Błąd: Błąd klienta</string>
+    <string name="sync_stateServerError">Błąd: Bład serwera</string>
+    <string name="sync_stateProcessingError">Błąd: Bład przetwarzania</string>
 </resources>

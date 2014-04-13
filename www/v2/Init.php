@@ -20,7 +20,9 @@ function __autoload($class_name) {
 			$base."adapter",
 			$base."webservice",
 			$base."website",
+			$base."sync",
 			$base."website/controller",
+			$base."website/viewmodel",
 			$base."helper");
 
 	foreach($dirs as $dir) {

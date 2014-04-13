@@ -46,7 +46,7 @@ public class DatabaseHelper {
 			return defaultValue;
 		}
 	}
-
+	
 	public static long getLong(Cursor cursor, String columnName) {
 		return cursor.getLong(cursor.getColumnIndex(columnName));
 	}

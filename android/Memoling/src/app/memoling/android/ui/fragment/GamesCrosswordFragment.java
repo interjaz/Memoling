@@ -1,5 +1,6 @@
 package app.memoling.android.ui.fragment;
 
+import java.util.Locale;
 import java.util.Random;
 
 import android.app.AlertDialog;
@@ -9,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.text.InputFilter;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,7 +22,6 @@ import app.memoling.android.R;
 import app.memoling.android.crossword.Matrix;
 import app.memoling.android.crossword.MatrixWord;
 import app.memoling.android.helper.Helper;
-import app.memoling.android.ui.ResourceManager;
 
 import com.actionbarsherlock.view.MenuItem;
 
@@ -69,8 +68,8 @@ public class GamesCrosswordFragment extends GamesMatrixGame {
 	@Override
 	protected void onCreateView(View contentView) {
 
-		ResourceManager resources = getResourceManager();
-		Typeface thinFont = resources.getLightFont();
+		//ResourceManager resources = getResourceManager();
+		//Typeface thinFont = resources.getLightFont();
 		
 		m_txtPaint = new Paint();
 		m_txtPaint.setStyle(Style.STROKE);
@@ -194,7 +193,7 @@ public class GamesCrosswordFragment extends GamesMatrixGame {
 
 				if (!str.equals("-")) {
 					if (m_letterGrid[y][x]) {
-						c.drawText(str.toUpperCase(), wItem, hItem, txtPaint);
+						c.drawText(str.toUpperCase(Locale.getDefault()), wItem, hItem, txtPaint);
 					}
 
 					r.top = (int) ((itemHeight + itemPadding) * (y + 0.1) + paddingHeight);
@@ -368,7 +367,7 @@ public class GamesCrosswordFragment extends GamesMatrixGame {
 			if (!m_letterGrid[y][x]) {
 				str += " ";
 			} else {
-				str += Character.toString(m_words.matrix.get(y).get(x).c).toUpperCase();
+				str += Character.toString(m_words.matrix.get(y).get(x).c).toUpperCase(Locale.getDefault());
 			}
 		}
 		return str;
@@ -423,7 +422,7 @@ public class GamesCrosswordFragment extends GamesMatrixGame {
 				}
 			}
 			
-			if (m_currentWord.word.toUpperCase().equals(providedWord.toString().toUpperCase())) {
+			if (m_currentWord.word.toUpperCase(Locale.getDefault()).equals(providedWord.toString().toUpperCase(Locale.getDefault()))) {
 				for (int y = m_currentWord.from.y; y <= m_currentWord.to.y; y++) {
 					for (int x = m_currentWord.from.x; x <= m_currentWord.to.x; x++) {
 						m_letterGrid[y][x] = true;

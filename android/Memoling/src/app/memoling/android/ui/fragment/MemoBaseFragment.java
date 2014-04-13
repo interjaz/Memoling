@@ -26,16 +26,17 @@ import app.memoling.android.Config;
 import app.memoling.android.R;
 import app.memoling.android.adapter.MemoBaseAdapter;
 import app.memoling.android.adapter.MemoBaseGenreAdapter;
+import app.memoling.android.adapter.SyncClientAdapter;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoBase;
 import app.memoling.android.entity.MemoBaseInfo;
 import app.memoling.android.helper.DateHelper;
 import app.memoling.android.helper.Helper;
-import app.memoling.android.sync.ConflictResolve;
-import app.memoling.android.sync.ConflictResolve.OnConflictResolveHaltable;
-import app.memoling.android.sync.Export;
-import app.memoling.android.sync.Import;
-import app.memoling.android.sync.SupervisedSync.OnSyncComplete;
+import app.memoling.android.sync.file.ConflictResolve;
+import app.memoling.android.sync.file.ConflictResolve.OnConflictResolveHaltable;
+import app.memoling.android.sync.file.Export;
+import app.memoling.android.sync.file.Import;
+import app.memoling.android.sync.file.SupervisedSync.OnSyncComplete;
 import app.memoling.android.ui.ApplicationFragment;
 import app.memoling.android.ui.FacebookFragment;
 import app.memoling.android.ui.ResourceManager;
@@ -434,7 +435,7 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 		memoBase.setCreated(new Date());
 		memoBase.setMemoBaseId(memoBaseId);
 		memoBase.setName(getString(R.string.memobase_newMemoBase));
-		m_memoBaseAdapter.add(memoBase);
+		m_memoBaseAdapter.insert(memoBase, new SyncClientAdapter(getActivity()).getCurrentSyncClientId());
 
 		return memoBaseId;
 	}
@@ -594,9 +595,8 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 		memoBase.setName(m_txtName.getText().toString());
 		memoBase.setActive(m_chbActive.isChecked());
 
-		if (m_memoBaseAdapter.update(memoBase) == 1) {
-			bindData();
-		}
+		m_memoBaseAdapter.update(memoBase, new SyncClientAdapter(getActivity()).getCurrentSyncClientId());
+		bindData();
 	}
 
 }

@@ -1,4 +1,4 @@
-package app.memoling.android.sync;
+package app.memoling.android.sync.file;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -8,16 +8,16 @@ import java.util.UUID;
 
 import android.content.Context;
 import app.memoling.android.adapter.MemoAdapter;
+import app.memoling.android.adapter.SyncClientAdapter;
 import app.memoling.android.adapter.MemoAdapter.Sort;
 import app.memoling.android.anki.AnkiIOEngine;
-import app.memoling.android.db.DatabaseHelper;
 import app.memoling.android.db.DatabaseHelper.Order;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoBase;
 import app.memoling.android.entity.Word;
 import app.memoling.android.helper.AppLog;
-import app.memoling.android.sync.ConflictResolve.OnConflictResolveHaltable;
-import app.memoling.android.sync.SupervisedSync.OnSyncComplete;
+import app.memoling.android.sync.file.ConflictResolve.OnConflictResolveHaltable;
+import app.memoling.android.sync.file.SupervisedSync.OnSyncComplete;
 
 public class Import {
 
@@ -37,7 +37,7 @@ public class Import {
 
 			final MemoAdapter memoAdapter = new MemoAdapter(context, true);
 			final List<Memo> internalMemos = memoAdapter
-					.getAll(destinationMemoBaseId, Sort.CreatedDate, Order.ASC);
+					.getAllDeep(destinationMemoBaseId, Sort.CreatedDate, Order.ASC);
 
 			SupervisedSyncHaltable<Memo> syncBase = new SupervisedSyncHaltable<Memo>(context, onConflictMemo,
 					onComplete) {
@@ -77,15 +77,19 @@ public class Import {
 				@Override
 				protected boolean submitTransaction(List<Memo> internalToDelete, List<Memo> externalToAdd) {
 
+					String syncClientId = new SyncClientAdapter(context).getCurrentSyncClientId();
+					
 					for (int i = 0; i < internalToDelete.size(); i++) {
 						Memo toDelete = internalToDelete.get(i);
-						memoAdapter.delete(toDelete.getMemoId());
+						memoAdapter.delete(toDelete.getMemoId(), syncClientId);
 					}
 
 					for (int i = 0; i < externalToAdd.size(); i++) {
 						Memo toAdd = externalToAdd.get(i);
 						toAdd.setMemoBaseId(destinationMemoBaseId);
-						if(memoAdapter.add(toAdd) == DatabaseHelper.Error) {
+						try {
+							memoAdapter.insert(toAdd, syncClientId);
+						} catch(RuntimeException ex) {
 							return false;
 						}
 					}
@@ -119,8 +123,8 @@ public class Import {
 
 			final MemoAdapter memoAdapter = new MemoAdapter(context, true);
 			final List<Memo> internalMemos = memoAdapter
-					.getAll(destinationMemoBaseId, Sort.CreatedDate, Order.ASC);
-
+					.getAllDeep(destinationMemoBaseId, Sort.CreatedDate, Order.ASC);
+			
 			SupervisedSyncHaltable<Memo> syncBase = new SupervisedSyncHaltable<Memo>(context, onConflictMemo,
 					onComplete) {
 
@@ -166,9 +170,11 @@ public class Import {
 				@Override
 				protected boolean submitTransaction(List<Memo> internalToDelete, List<Memo> externalToAdd) {
 
+					String syncClientId = new SyncClientAdapter(context).getCurrentSyncClientId();
+					
 					for (int i = 0; i < internalToDelete.size(); i++) {
 						Memo toDelete = internalToDelete.get(i);
-						memoAdapter.delete(toDelete.getMemoId());
+						memoAdapter.delete(toDelete.getMemoId(), syncClientId);
 					}
 
 					for (int i = 0; i < externalToAdd.size(); i++) {
@@ -177,7 +183,11 @@ public class Import {
 						toAdd.setCreated(new Date());
 						toAdd.setLastReviewed(new Date());
 						toAdd.setMemoBaseId(destinationMemoBaseId);
-						memoAdapter.add(toAdd);
+						try {
+							memoAdapter.insert(toAdd, syncClientId);
+						} catch(RuntimeException ex) {
+							return false;
+						}
 					}
 
 					return true;

@@ -1,0 +1,38 @@
+<h2 class="to">Edit</h2>
+<hr />
+
+<label>
+    From:
+    <input ng-model="Model.Memo.wordA.word" />
+</label>
+
+<label>
+    To:
+    <input ng-model="Model.Memo.wordB.word" />
+</label>
+
+
+<div class="top">
+
+    <div class="languages">
+        <span class="from">{{Model.Memo.wordA.languageIso639}}</span>
+        <span class="to">{{Model.Memo.wordB.languageIso639}}</span>
+    </div>
+</div>
+
+<div class="details">
+    <label>
+        Description From:
+        <textarea  ng-model="Model.Memo.wordA.description">
+        </textarea>
+    </label>
+    <label>
+        Description To:
+        <textarea ng-model="Model.Memo.wordB.description">
+        </textarea>
+    </label>
+</div>
+
+<div class="saveBtn" ng-click="onSaveEdit(Model.Memo)">
+    Save
+</div>

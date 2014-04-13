@@ -255,7 +255,7 @@ public class GamesHangmanFragment extends ApplicationFragment implements TextWat
 		case 0:
 		default:
 			// Current library
-			Memo memo = memoAdapter.getRandom(getPreferences().getLastMemoBaseId());
+			Memo memo = memoAdapter.getRandomDeep(getPreferences().getLastMemoBaseId());
 			if (m_random.nextBoolean()) {
 				word = memo.getWordA().getWord();
 			} else {

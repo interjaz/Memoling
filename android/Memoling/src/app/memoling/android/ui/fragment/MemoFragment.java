@@ -12,9 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import app.memoling.android.R;
 import app.memoling.android.adapter.MemoAdapter;
+import app.memoling.android.adapter.SyncClientAdapter;
+import app.memoling.android.adapter.WordAdapter;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoSentence;
 import app.memoling.android.entity.QuizletDefinition;
+import app.memoling.android.entity.Word;
 import app.memoling.android.helper.RemovableFragmentPagerAdapter;
 import app.memoling.android.helper.SentenceProvider;
 import app.memoling.android.helper.ShareHelper;
@@ -94,7 +97,7 @@ public class MemoFragment extends FacebookFragment {
 	@Override
 	protected void onDataBind(Bundle savedInstanceState) {
 		m_memoId = getArguments().getString(MemoId);
-		m_memo = m_memoAdapter.get(m_memoId);
+		m_memo = m_memoAdapter.getDeep(m_memoId);
 		setTitle(m_memo.getWordA().getWord() + " - " + m_memo.getWordB().getWord());
 		setSupportProgress(0.5f);
 
@@ -250,14 +253,25 @@ public class MemoFragment extends FacebookFragment {
 	@Override
 	public void onDestroyView() {
 
-		if (!m_originalWordA.equals(m_memo.getWordA().getWord())
-				|| !m_originalWordB.equals(m_memo.getWordB().getWord())
-				|| !m_originalDescriptionA.equals(m_memo.getWordA().getDescription())
-				|| !m_originalDescriptionB.equals(m_memo.getWordB().getDescription())
-				|| m_originalActive != m_memo.getActive()) {
-			m_memoAdapter.update(m_memo);
+		String syncClientId =  new SyncClientAdapter(getActivity()).getCurrentSyncClientId();
+		Word wordA = m_memo.getWordA();
+		Word wordB = m_memo.getWordB();
+		
+		
+		if (!m_originalWordA.equals(wordA.getWord())
+				|| !m_originalDescriptionA.equals(wordA.getDescription())) {
+			new WordAdapter(getActivity()).update(wordA, syncClientId);
+		}
+		
+		if (!m_originalWordB.equals(wordB.getWord())
+				|| !m_originalDescriptionB.equals(wordB.getDescription())) {
+			new WordAdapter(getActivity()).update(wordB, syncClientId);
 		}
 
+		if (m_originalActive != m_memo.getActive()) {
+			m_memoAdapter.update(m_memo, syncClientId);
+		}
+		
 		m_adapter.destroyFragments();
 
 		super.onDestroyView();

@@ -3,12 +3,15 @@ package app.memoling.android.facebook;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Comparator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,6 +38,7 @@ public class FacebookWrapper {
 
 	private Session.StatusCallback m_statusCallback = new SessionStatusCallback();
 	private Fragment m_fragment;
+	private Activity m_activity;
 	private List<IPendingAction> m_pendingActions;
 
 	// %d is FacebookUserId
@@ -49,6 +53,13 @@ public class FacebookWrapper {
 
 	public FacebookWrapper(Fragment fragment) {
 		m_fragment = fragment;
+		m_activity = fragment.getActivity();
+		m_pendingActions = new ArrayList<IPendingAction>();
+	}
+	
+	public FacebookWrapper(Activity activity) {
+		m_fragment = null;
+		m_activity = activity;
 		m_pendingActions = new ArrayList<IPendingAction>();
 	}
 
@@ -85,14 +96,18 @@ public class FacebookWrapper {
 		Session session = Session.getActiveSession();
 		if (session == null) {
 			if (savedInstanceState != null) {
-				session = Session.restoreSession(m_fragment.getActivity(), null, m_statusCallback, savedInstanceState);
+				session = Session.restoreSession(m_activity, null, m_statusCallback, savedInstanceState);
 			}
 			if (session == null) {
-				session = new Session(m_fragment.getActivity());
+				session = new Session(m_activity);
 			}
 			Session.setActiveSession(session);
 			if (session.getState().equals(SessionState.CREATED_TOKEN_LOADED)) {
-				session.openForRead(new Session.OpenRequest(m_fragment).setCallback(m_statusCallback));
+				if(m_fragment != null) {
+					session.openForRead(new Session.OpenRequest(m_fragment).setCallback(m_statusCallback));
+				} else {
+					session.openForRead(new Session.OpenRequest(m_activity).setCallback(m_statusCallback));
+				}
 			}
 		}
 
@@ -107,7 +122,7 @@ public class FacebookWrapper {
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		Session.getActiveSession().onActivityResult(m_fragment.getActivity(), requestCode, resultCode, data);
+		Session.getActiveSession().onActivityResult(m_activity, requestCode, resultCode, data);
 	}
 
 	public void onSaveInstanceState(Bundle outState) {
@@ -140,9 +155,13 @@ public class FacebookWrapper {
 		});
 
 		if (!session.isOpened() && !session.isClosed()) {
-			session.openForRead(new Session.OpenRequest(m_fragment).setCallback(m_statusCallback));
+			if(m_fragment != null) {
+				session.openForRead(new Session.OpenRequest(m_fragment).setCallback(m_statusCallback));
+			} else {
+				session.openForRead(new Session.OpenRequest(m_activity).setCallback(m_statusCallback));
+			}
 		} else {
-			Session.openActiveSession(m_fragment.getActivity(), true, m_statusCallback);
+			Session.openActiveSession(m_activity, true, m_statusCallback);
 		}
 	}
 
@@ -269,11 +288,28 @@ public class FacebookWrapper {
 				}
 
 				final ModifiableInjectableAdapter<FacebookFriendView> adapter = new ModifiableInjectableAdapter<FacebookFriendView>(
-						m_fragment.getActivity(), R.layout.adapter_share_friendlist, null, false);
+						m_activity, R.layout.adapter_share_friendlist, null, false);
 
+				Collections.sort(friends, new Comparator<FacebookFriend>() {
+
+					@Override
+					public int compare(FacebookFriend a, FacebookFriend b) {
+						if(a.getName() == null) {
+							return -1;
+						}
+						
+						if(b.getName() == null) {
+							return -1;
+						}
+						
+						return a.getName().compareTo(b.getName());
+					}
+					
+				});
+				
 				adapter.addAll(FacebookFriendView.getAll(friends));
 
-				new AlertDialog.Builder(m_fragment.getActivity())
+				new AlertDialog.Builder(m_activity)
 						.setAdapter(adapter, new DialogInterface.OnClickListener() {
 
 							@Override
@@ -346,7 +382,7 @@ public class FacebookWrapper {
 	}
 
 	private FacebookUser readUser() {
-		Preferences preferences = new Preferences(m_fragment.getActivity());
+		Preferences preferences = new Preferences(m_activity);
 		m_user = preferences.getFacebookUser();
 
 		return m_user;
@@ -358,7 +394,7 @@ public class FacebookWrapper {
 		}
 
 		m_user = user;
-		Preferences preferences = new Preferences(m_fragment.getActivity());
+		Preferences preferences = new Preferences(m_activity);
 		preferences.setFacebookUser(user);
 	}
 }

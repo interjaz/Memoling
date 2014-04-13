@@ -6,7 +6,9 @@ import java.util.UUID;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Memo {
+import app.memoling.android.sync.cloud.ISyncEntity;
+
+public class Memo implements ISyncEntity {
 
 	// Database columns
 	private String m_memoId;
@@ -286,6 +288,42 @@ public class Memo {
 		} else if (!m_wordBId.equals(other.m_wordBId))
 			return false;
 		return true;
+	}
+
+	@Override
+	public JSONObject encodeEntity() throws JSONException {
+
+		JSONObject json = new JSONObject();
+
+		json.put("memoId", m_memoId);
+		json.put("memoBaseId", m_memoBaseId);
+		json.put("wordAId", m_wordAId);
+		json.put("wordBId", m_wordBId);
+		json.put("created", m_created.getTime()/1000L);
+		json.put("lastReviewed", m_lastReviewed.getTime()/1000L);
+		json.put("displayed", m_displayed);
+		json.put("correctAnsweredWordA", m_correctAnsweredWordA);
+		json.put("correctAnsweredWordB", m_correctAnsweredWordB);
+		json.put("active", m_active);
+		
+		return json;
+	}
+
+	@Override
+	public ISyncEntity decodeEntity(JSONObject json) throws JSONException {
+		
+		m_memoId = json.getString("memoId");
+		m_memoBaseId = json.getString("memoBaseId");
+		m_wordAId = json.getString("wordAId");
+		m_wordBId = json.getString("wordBId");
+		m_created = new Date(json.getLong("created")*1000L);
+		m_lastReviewed = new Date(json.getLong("lastReviewed")*1000L);
+		m_displayed = json.getInt("displayed");
+		m_correctAnsweredWordA = json.getInt("correctAnsweredWordA");
+		m_correctAnsweredWordB = json.getInt("correctAnsweredWordB");
+		m_active = json.getBoolean("active");
+
+		return this;
 	}
 
 }

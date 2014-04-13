@@ -17,7 +17,7 @@ public class WsFacebookUsers {
 	private static final int m_timeout = 8000;
 
 	public interface ILoginComplete {
-		void onLoginComplete(boolean result);
+		void onLoginComplete(Boolean result);
 	}
 	
 	public static void login(FacebookUser user, final ILoginComplete onComplete) {
@@ -39,7 +39,7 @@ public class WsFacebookUsers {
 
 				@Override
 				public void onHttpRequestTimeout(Exception ex) {
-					onComplete.onLoginComplete(false);
+					onComplete.onLoginComplete(null);
 				}
 				
 			}, null, m_timeout, "UTF-8").execute(postUser);

@@ -16,7 +16,7 @@ class JsonBuilder {
 		} else if(is_numeric($val)) {
 			$this->json .= '"' . $key . '":' . $val . ',';
 		} else {
-			$this->json .= '"' . $key . '":"' . addslashes($val) . '",';
+			$this->json .= '"' . $key . '":' . json_encode($val) . ',';
 		}
 		
 	}
@@ -36,14 +36,14 @@ class JsonBuilder {
 
 	public static function arrayToJson($array) {
 		$string = '[';
-		
+        
 		foreach($array as $key=>$val) {
 			if(is_object($val)) {
 				$string .=  $val->encode() . ",";
 			} else if(is_numeric($val)) {
 				$string .= $val . ',';
 			} else {
-				$string .= '"' . addslashes($val) . '",';
+				$string .= '' . json_encode($val) . ',';
 			}
 		}
 		

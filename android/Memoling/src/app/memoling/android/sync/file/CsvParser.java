@@ -1,4 +1,4 @@
-package app.memoling.android.sync;
+package app.memoling.android.sync.file;
 
 import java.io.FileReader;
 import java.io.IOException;

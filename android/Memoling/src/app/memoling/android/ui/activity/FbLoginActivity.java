@@ -22,6 +22,7 @@ public class FbLoginActivity extends Activity {
 
 	private WebView m_webView;
 
+	@SuppressWarnings("deprecation")
 	@SuppressLint("SetJavaScriptEnabled")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

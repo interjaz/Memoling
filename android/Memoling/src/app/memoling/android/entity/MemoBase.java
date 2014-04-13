@@ -8,7 +8,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MemoBase {
+import app.memoling.android.sync.cloud.ISyncEntity;
+
+public class MemoBase implements ISyncEntity {
 
 	private String m_memoBaseId;
 	private String m_name;
@@ -132,5 +134,28 @@ public class MemoBase {
 		} else if (!m_name.equals(other.m_name))
 			return false;
 		return true;
+	}
+
+	@Override
+	public JSONObject encodeEntity() throws JSONException {
+		JSONObject json = new JSONObject();
+
+		json.put("memoBaseId", m_memoBaseId);
+		json.put("name",  m_name);
+		json.put("created", m_created.getTime()/1000L);
+		json.put("active", m_active);
+			
+		return json;
+	}
+
+	@Override
+	public ISyncEntity decodeEntity(JSONObject json) throws JSONException {
+
+		m_memoBaseId = json.getString("memoBaseId");
+		m_name = json.getString("name");
+		m_created = new Date(json.getLong("created")*1000L);
+		m_active = json.getBoolean("active");
+		
+		return this;
 	}
 }
