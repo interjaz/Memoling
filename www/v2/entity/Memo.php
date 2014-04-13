@@ -33,7 +33,8 @@ class Memo {
 		$this->Displayed= isset($obj->displayed)?$obj->displayed:null;
 		$this->CorrectAnsweredWordA= isset($obj->correctAnsweredWordA)?$obj->correctAnsweredWordA:null;
 		$this->CorrectAnsweredWordB= isset($obj->correctAnsweredWordB)?$obj->correctAnsweredWordB:null;
-		$this->Active= isset($obj->active)?strcasecmp($obj->active, "true")==0:null;
+		$this->Active= isset($obj->active)?strcasecmp($obj->active, "true")==0 || $obj->active == 1:null;
+        
 
         if($this->Created != null) {
             $this->Created = date("Y-m-d H:i:s", $this->Created);
@@ -74,7 +75,7 @@ class Memo {
         $builder->put("correctAnsweredWordA", $this->CorrectAnsweredWordA);
         $builder->put("correctAnsweredWordB", $this->CorrectAnsweredWordB);
         $builder->put("lastReviewed", strtotime($this->LastReviewed));
-        $builder->put("active", $this->Active ? "true" : "false");
+        $builder->put("active", $this->Active == 1 ? "true" : "false");
         
         if($this->WordA != null) {
 		  $builder->put("wordA", $this->WordA);

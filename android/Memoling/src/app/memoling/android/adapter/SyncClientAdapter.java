@@ -51,6 +51,14 @@ public class SyncClientAdapter extends SqliteAdapter {
 		}
 	}
 	
+	public void changeId(String oldId, String newId) throws SQLiteException {
+		try {
+			SyncClientAdapter.changeId(getDatabase(), oldId, newId);
+		} finally {
+			closeDatabase();
+		}
+	}
+	
 	public void delete(String syncClientId) throws SQLiteException {
 		try {
 			SyncClientAdapter.delete(getDatabase(), syncClientId);
@@ -161,6 +169,10 @@ public class SyncClientAdapter extends SqliteAdapter {
 	public static void insert(SQLiteDatabase db, SyncClient syncClient) {
 		ContentValues values = SyncClientAdapter.createValues(syncClient);
 		db.insertOrThrow(TableName, null, values);
+	}
+
+	public static void changeId(SQLiteDatabase db, String oldId, String newId) {
+		db.execSQL("UPDATE " + TableName + " SET SyncClientId = '" + newId + "' WHERE SyncClientId = '" + oldId + "'");
 	}
 	
 	public static void update(SQLiteDatabase db, SyncClient syncClient) {

@@ -57,6 +57,14 @@ public class SyncClient {
 
 		return json.toString();
 	}
+	
+	public void decode(String object) throws JSONException {
+		JSONObject json = new JSONObject(object);
+
+		m_syncClientId = json.getString("syncClientId");
+		m_facebookUserId = json.getString("facebookUserId");
+		m_description = json.getString("description");
+	}
 
 	public static SyncClient newSyncClient(FacebookUser user) {
 		SyncClient client = new SyncClient();

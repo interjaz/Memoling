@@ -50,7 +50,7 @@ public class SyncActionAdapter extends SqliteAdapter {
 			
 			// If new item is created and updated afterwards, only update is sent
 			// however, multiple updates may be sent, but only one insert is allowed.
-			ArrayList<String> updateInsertContext = new ArrayList<String>();
+			List<String> updateInsertContext = new ArrayList<String>();
 			
 			// Sync all actions
 			for(SyncAction syncAction : syncServerActions) {

@@ -10,6 +10,7 @@ class Sync extends Webservice {
 	}
 	
     public function register() {
+        
         try {
             $jsonSyncClient = $_POST['syncClient'];
             $syncClient = new SyncClient();
@@ -17,14 +18,19 @@ class Sync extends Webservice {
             
             // Check if exists
 			$syncClientAdapter = new SyncClientAdapter();
-			$client = $syncClientAdapter->get($syncClient->SyncClientId);
+			$client = $syncClientAdapter->getByFacebookUserId($syncClient->FacebookUserId);
 	
 			if($client == null) {
+                // Generate new client id
+                $syncClient->SyncClientId = Helper::newGuid();
+                
 				// Register
                 $syncClientAdapter->register($syncClient);
-			}
+			} else {
+                $syncClient = $client;
+            }
             
-            echo "true";
+            echo $syncClient->encode();
             
         } catch(Exception $ex) {
 			Log::save("Sync.register Exception", $ex, Log::PRIO_HIGH);
@@ -34,6 +40,7 @@ class Sync extends Webservice {
     
     public function syncBase64() {
         try {
+            
 			// Decode
 			$baseSyncPackage = $_POST['syncPackage'];
             $gzipSyncPackage = base64_decode($baseSyncPackage);
@@ -53,7 +60,7 @@ class Sync extends Webservice {
 	private function sync($jsonSyncPackage) {
 		
 		try {
-			
+            
 			$clientPackage = new SyncPackage();
 			$clientPackage->decode($jsonSyncPackage);
 			//var_dump($clientPackage);
