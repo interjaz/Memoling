@@ -67,7 +67,7 @@
     <string name="memolist_crossword">Crossword</string>
     <string name="memolist_findword">Find word</string>
     <string name="memolist_wordExists">Such word already exist in the library</string>
-    <string name="memolist_manualSync">Force Sync</string>
+    <string name="memolist_manualSync">Synchronize</string>
     <string name="memolist_syncDisabled">Sync Disabled</string>
 
     <!-- MemoBaseList Fragment -->

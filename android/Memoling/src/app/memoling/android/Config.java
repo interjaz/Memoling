@@ -19,9 +19,9 @@ public class Config {
 	public final static int MinNumberOfMemosForUpload = 20;
 	
 	// Live
-	//public final static String WsUrlRoot = "http://memoling.com/webservice";
+	public final static String WsUrlRoot = "http://memoling.com/webservice";
 	// Dev
-	public final static String WsUrlRoot = "http://192.168.1.107:8080/v2/webservice";
+	//public final static String WsUrlRoot = "http://192.168.1.107:8080/v2/webservice";
 	
 
 	//

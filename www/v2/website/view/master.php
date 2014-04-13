@@ -4,7 +4,7 @@
 		<title><?php echo !isset($title)?"Memoling.com":$title; ?></title>
 		
 		<meta charset="utf-8"> 
-		<meta name="viewport" content="width=320, height=480">
+		<!--<meta name="viewport" content="width=320, height=480">-->
 		
 		<link rel="shortcut icon" href="<?php echo Content::img("favicon.ico"); ?>" />
 		

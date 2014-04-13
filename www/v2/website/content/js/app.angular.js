@@ -64,7 +64,6 @@ app.config(function($routeProvider) {
     $routeProvider
     .when("/", {
         templateUrl: TemplateBase + "main.html",
-        controller: 'ViewCtrl',
         resolve: {
             facebookUserId: appCtrl.loadFacebookUserId
         },
@@ -103,15 +102,14 @@ appCtrl.loadFacebookUserId = function($q) {
 
 
 var viewCtrl = app.controller("ViewCtrl", function($scope,$routeParams,$location,viewModel,dataContext) {
-
+    
     $scope.ViewModel = viewModel;
     
     viewModel.MemoBaseId = $routeParams.memoBaseId;
-    viewModel.MemoId = $routeParams.memoId;
     
     // Load MemoBases    
     var getMemoBases = function() {
-        dataContext.getMemoBases()
+        return dataContext.getMemoBases()
         .then(function(memoBases) {
             viewModel.MemoBases = memoBases;
         });
@@ -119,7 +117,7 @@ var viewCtrl = app.controller("ViewCtrl", function($scope,$routeParams,$location
     
     var getMemoBase = function(memoBaseId) {
         viewModel.MemoBaseId = memoBaseId;
-        dataContext.getMemoBase(memoBaseId)
+        return dataContext.getMemoBase(memoBaseId)
         .then(function(memoBase) {
             viewModel.MemoBase = memoBase; 
             return dataContext.getMemos(memoBaseId);
@@ -127,6 +125,12 @@ var viewCtrl = app.controller("ViewCtrl", function($scope,$routeParams,$location
         .then(function(memos) {
             viewModel.Memos = memos; 
         });
+    };
+    
+    var getMemo = function(memoId) {
+        viewModel.MemoId = memoId;
+        viewModel.Memo = viewModel.findMemo(memoId);
+        viewModel.Action = "details";
     };
     
     getMemoBases();
@@ -138,20 +142,30 @@ var viewCtrl = app.controller("ViewCtrl", function($scope,$routeParams,$location
     };
     
     $scope.onSelectMemo = function(memoId) {
-        viewModel.MemoId = memoId;
-        viewModel.Memo = viewModel.findMemo(memoId);
-        viewModel.Action = "details";
-        $location.search({"memoBaseId":viewModel.MemoBaseId,"memoId":viewModel.MemoId});
+       getMemo(memoId); $location.search({"memoBaseId":viewModel.MemoBaseId,"memoId":viewModel.MemoId});
     };
     
     $scope.onNewMemo = function(memoBaseId) {
         $location.search({"memoBaseId":viewModel.MemoBaseId,"memoId":viewModel.MemoId,"action":"new"});
     }
     
-    if(viewModel.MemoBaseId != null) {
-        getMemoBase(viewModel.MemoBaseId);
-    }
+    if($routeParams.memoBaseId != null) {
+        var defer = getMemoBase(viewModel.MemoBaseId);
+    
+        defer.then(function(result) {
+    
+            if($routeParams.memoId != null) {
+                viewModel.MemoId = $routeParams.memoId;
+                getMemo(viewModel.MemoId);
+            }
 
+            if($routeParams.action != null) {
+                viewModel.Action = $routeParams.action;
+            }
+            
+        });
+    
+    }
 })
 
 var memoBaseCtrl = app.controller("MemoBaseCtrl", function($scope, $http, $location,viewModel,dataContext) {
@@ -194,7 +208,7 @@ var memoBaseCtrl = app.controller("MemoBaseCtrl", function($scope, $http, $locat
     $scope.onSaveEdit = function(memoBase) {
         $http({
             method: 'POST',
-            url: 'index.php?controller=memoBase&action=update',
+            url: 'index.php?controller=MemoBase&action=update',
             data: 'model='+JSON.stringify(memoBase),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function(data, status) {
@@ -213,7 +227,7 @@ var memoBaseCtrl = app.controller("MemoBaseCtrl", function($scope, $http, $locat
     $scope.onSaveNew = function(memoBase) {
         $http({
             method: 'POST',
-            url: 'index.php?controller=memoBase&action=insert',
+            url: 'index.php?controller=MemoBase&action=insert',
             data: 'model='+JSON.stringify(memoBase),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function(data, status) {
@@ -234,7 +248,7 @@ var memoBaseCtrl = app.controller("MemoBaseCtrl", function($scope, $http, $locat
         
         $http({
             method: 'POST',
-            url: 'index.php?controller=memoBase&action=delete',
+            url: 'index.php?controller=MemoBase&action=delete',
             data: 'id='+memoBase.memoBaseId,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function(data, status) {
@@ -287,7 +301,7 @@ var memoCtrl = app.controller("MemoCtrl", function($scope, $http, $location,view
     $scope.onSaveEdit = function(memo) {
         $http({
             method: 'POST',
-            url: 'index.php?controller=memo&action=update',
+            url: 'index.php?controller=Memo&action=update',
             data: 'model='+JSON.stringify(memo),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function(data, status) {
@@ -305,11 +319,9 @@ var memoCtrl = app.controller("MemoCtrl", function($scope, $http, $location,view
    $scope.onSaveNew = function(memo) {
        memo.memoBaseId = viewModel.MemoBaseId;
        
-       alert(JSON.stringify(memo));
-       
         $http({
             method: 'POST',
-            url: 'index.php?controller=memo&action=insert',
+            url: 'index.php?controller=Memo&action=insert',
             data: 'model='+JSON.stringify(memo),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function(data, status) {
@@ -334,7 +346,7 @@ var memoCtrl = app.controller("MemoCtrl", function($scope, $http, $location,view
         
         $http({
             method: 'POST',
-            url: 'index.php?controller=memo&action=delete',
+            url: 'index.php?controller=Memo&action=delete',
             data: 'id='+viewModel.MemoId,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function(data, status) {

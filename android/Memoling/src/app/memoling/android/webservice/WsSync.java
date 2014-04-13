@@ -15,7 +15,7 @@ import app.memoling.android.webrequest.IHttpRequestTaskComplete;
 public class WsSync {
 
 	private final static String WsUrl = Config.WsUrlRoot + "/Sync.php";
-	private final static int m_timeout = 8000;
+	private final static int m_timeout = 60000;
 
 	public interface ISyncRequestResult {
 		void syncCompleted(byte[] gzipPackage);

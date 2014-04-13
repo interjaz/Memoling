@@ -9,7 +9,7 @@ var dataContext = app.service("dataContext", function($q, $http) {
         
         var httpRequest = $http({
             method: 'GET',
-            url: 'index.php?controller=memobase&action=listAll',
+            url: 'index.php?controller=MemoBase&action=listAll',
             data: "",
             cache: false
         }).success(function(data, status) {
@@ -28,7 +28,7 @@ var dataContext = app.service("dataContext", function($q, $http) {
         
         var httpRequest = $http({
             method: 'GET',
-            url: 'index.php?controller=memobase&action=get&id=' + memoBaseId,
+            url: 'index.php?controller=MemoBase&action=get&id=' + memoBaseId,
             data: "",
             cache: false
         }).success(function(data, status) {
@@ -47,7 +47,7 @@ var dataContext = app.service("dataContext", function($q, $http) {
         
         var httpRequest = $http({
             method: 'GET',
-            url: 'index.php?controller=memo&action=listAll&id=' + memoBaseId,
+            url: 'index.php?controller=Memo&action=listAll&id=' + memoBaseId,
             data: "",
             cache: false
         }).success(function(data, status) {

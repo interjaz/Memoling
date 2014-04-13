@@ -52,8 +52,8 @@ class MemoBaseAdapter extends DbAdapter implements SyncAdapter {
         $query = "SELECT 
             MB.MemoBaseId AS MemoBaseId, MB.Name AS Name,
             COUNT(M.MemoId) AS Count 
-            FROM memoling.memoling_MemoBases AS MB
-            LEFT OUTER JOIN memoling.memoling_Memos AS M 
+            FROM memoling_MemoBases AS MB
+            LEFT OUTER JOIN memoling_Memos AS M 
                 ON MB.MemoBaseId = M.MemoBaseId
             GROUP BY MB.MemoBaseId, MB.FacebookUserId
             HAVING MB.FacebookUserId = '100002530762250'
@@ -81,15 +81,15 @@ class MemoBaseAdapter extends DbAdapter implements SyncAdapter {
         $query = "SELECT Languages FROM  (
                     SELECT 
                         DISTINCT WA.LanguageIso639 AS Languages
-                    FROM memoling.memoling_Memos AS M
-                    JOIN memoling.memoling_Words AS WA 
+                    FROM memoling_Memos AS M
+                    JOIN memoling_Words AS WA 
                         ON M.WordAId = WA.WordId
                     WHERE M.MemoBaseId = :MemoBaseId
                     ) AS A UNION (
                     SELECT 
                         DISTINCT WB.LanguageIso639 AS Languages
-                    FROM memoling.memoling_Memos AS M
-                    JOIN memoling.memoling_Words AS WB 
+                    FROM memoling_Memos AS M
+                    JOIN memoling_Words AS WB 
                         ON M.WordBId = WB.WordId
                     WHERE M.MemoBaseId = :MemoBaseId
                     )";

@@ -85,7 +85,7 @@ class Sync extends Webservice {
 	
 			//var_dump($syncResolver->PendingClientActions);
 			//var_dump($syncResolver->PendingServerActions);
-			//exit;
+            //exit;
 			
 			// Update server
 			$syncAdapter->syncServer($syncResolver->PendingServerActions);
@@ -108,24 +108,19 @@ class Sync extends Webservice {
 	}
 	
 	public static function foreignKeyPolicyComparator($syncActionA, $syncActionB) {
-		if($syncActionA->ServerTimestamp == $syncActionB->ServerTimestamp) {
 			
-			$tableA = $syncActionA->Table;
-			$tableB = $syncActionB->Table;
-			
-			if($tableA == $tableB) {
-				return 0;
-			}
-			
-			$orderA = $tableA == "MemoBases" ? 3 : ($tableA == "Words" ? 2 : ($tableA == "Memos" ? 1 : 0));
-			$orderB = $tableB == "MemoBases" ? 3 : ($tableB == "Words" ? 2 : ($tableB == "Memos" ? 1 : 0));
-			
-			return $orderA < $orderB ? 1 : -1;
-			
-		} else {
+        $tableA = $syncActionA->Table;
+        $tableB = $syncActionB->Table;
+
+        if($tableA == $tableB) {
             // DESC
-			return $syncActionA->ServerTimestamp < $syncActionB->ServerTimestamp ? 1 : -1;
-		}
+            return $syncActionA->ServerTimestamp < $syncActionB->ServerTimestamp ? 1 : -1;
+        }
+
+        $orderA = $tableA == "MemoBases" ? 3 : ($tableA == "Words" ? 2 : ($tableA == "Memos" ? 1 : 0));
+        $orderB = $tableB == "MemoBases" ? 3 : ($tableB == "Words" ? 2 : ($tableB == "Memos" ? 1 : 0));
+
+        return $orderA < $orderB ? 1 : -1;
 	}
 }
 

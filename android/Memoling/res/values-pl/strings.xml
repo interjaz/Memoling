@@ -68,7 +68,7 @@
     <string name="memolist_wiktionary_back">Cofnij</string>
     <string name="memolist_audioReplay">Audio Powtórka</string>
     <string name="memolist_wordExists">Słowo już jest w bibliotece</string>
-    <string name="memolist_manualSync">Wymuś Sync</string>
+    <string name="memolist_manualSync">Synchronizuj</string>
     <string name="memolist_syncDisabled">Sync Wyłączona</string>
 
     <!-- MemoBaseList Fragment -->

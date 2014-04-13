@@ -123,6 +123,11 @@ body {
 	#footer_links a  {
 		display: block;	
 	}
+    
+	
+	#top  {
+		font-size: 10px;
+	}
 }
 
 #footer_logo {
@@ -133,7 +138,10 @@ body {
 	opacity: 0.4;
 }
 
-
+.fb-login-button {
+    display: inline-block !important;
+    width: auto !important;
+}
 
 
 #toast {
