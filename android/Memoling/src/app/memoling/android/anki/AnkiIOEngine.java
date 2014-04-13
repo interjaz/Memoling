@@ -14,8 +14,8 @@ import app.memoling.android.Config;
 import app.memoling.android.anki.service.AnkiImporter;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.helper.AppLog;
-import app.memoling.android.sync.ConflictResolve.OnConflictResolveHaltable;
-import app.memoling.android.sync.SupervisedSync.OnSyncComplete;
+import app.memoling.android.sync.file.ConflictResolve.OnConflictResolveHaltable;
+import app.memoling.android.sync.file.SupervisedSync.OnSyncComplete;
 
 public class AnkiIOEngine {
 

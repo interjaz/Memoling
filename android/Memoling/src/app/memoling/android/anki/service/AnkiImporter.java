@@ -20,6 +20,7 @@ import app.memoling.android.R;
 import app.memoling.android.adapter.MemoAdapter;
 import app.memoling.android.adapter.MemoAdapter.Sort;
 import app.memoling.android.adapter.MemoBaseAdapter;
+import app.memoling.android.adapter.SyncClientAdapter;
 import app.memoling.android.anki.AnkiIOEngine;
 import app.memoling.android.anki.AnkiImportAdapter;
 import app.memoling.android.anki.entity.AnkiCard;
@@ -28,16 +29,15 @@ import app.memoling.android.anki.entity.AnkiConfiguration;
 import app.memoling.android.anki.entity.AnkiDeck;
 import app.memoling.android.anki.entity.AnkiMessage;
 import app.memoling.android.anki.entity.AnkiNote;
-import app.memoling.android.db.DatabaseHelper;
 import app.memoling.android.db.DatabaseHelper.Order;
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoBase;
 import app.memoling.android.entity.Word;
 import app.memoling.android.helper.AppLog;
-import app.memoling.android.sync.ConflictResolve.OnConflictResolveHaltable;
-import app.memoling.android.sync.SupervisedSync.OnSyncComplete;
-import app.memoling.android.sync.SupervisedSyncHaltable;
+import app.memoling.android.sync.file.ConflictResolve.OnConflictResolveHaltable;
+import app.memoling.android.sync.file.SupervisedSync.OnSyncComplete;
+import app.memoling.android.sync.file.SupervisedSyncHaltable;
 import app.memoling.android.thread.WorkerThread;
 import app.memoling.android.ui.control.LanguageSpinner;
 import app.memoling.android.ui.view.LanguageView;
@@ -223,16 +223,21 @@ public class AnkiImporter {
 
 					@Override
 					protected boolean submitTransaction(List<Memo> internalToDelete, List<Memo> externalToAdd) {
-
+						String syncClientId = new SyncClientAdapter(getContext()).getCurrentSyncClientId();
+								
 						for (int i = 0; i < internalToDelete.size(); i++) {
 							Memo toDelete = internalToDelete.get(i);
-							memoAdapter.delete(toDelete.getMemoId());
+							// [BB] Changed DAL
+							memoAdapter.delete(toDelete.getMemoId(), syncClientId);
 						}
 
 						for (int i = 0; i < externalToAdd.size(); i++) {
 							Memo toAdd = externalToAdd.get(i);
 							toAdd.setMemoBaseId(destinationMemoBaseId);
-							if(memoAdapter.add(toAdd) == DatabaseHelper.Error) {
+							// [BB] Changed DAL
+							try {
+								memoAdapter.insert(toAdd, syncClientId);
+							} catch(Exception ex) {
 								return false;
 							}
 						}
@@ -357,7 +362,7 @@ public class AnkiImporter {
 								ankiNotes, findDestinationMemoBaseId, destinationMemoBase, languageFrom, languageTo);
 						
 						final MemoAdapter memoAdapter = new MemoAdapter(ctx, true);
-						final List<Memo> internalMemos = memoAdapter.getAll(findDestinationMemoBaseId, Sort.CreatedDate, Order.ASC);
+						final List<Memo> internalMemos = memoAdapter.getAllDeep(findDestinationMemoBaseId, Sort.CreatedDate, Order.ASC);
 						final String destinationMemoBaseId = findDestinationMemoBaseId;
 
 						// publishing lock created
@@ -420,7 +425,9 @@ public class AnkiImporter {
 		// we take a name from AnkiDeck
 		newMemoBase.setName(ankiDeck.getName());
 		// add newly created MemoBase to the database
-		memoBaseAdapter.add(newMemoBase);		
+		// [BB] Changed DAL
+		String syncClientId = new SyncClientAdapter(context).getCurrentSyncClientId();
+		memoBaseAdapter.insert(newMemoBase, syncClientId);		
 		// return it for further use
 		return newMemoBase;
 	}

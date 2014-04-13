@@ -132,7 +132,7 @@ public class MemoAdapter extends SqliteAdapter implements ISyncAdapter {
 		}
 	}
 	
-	public ArrayList<Memo> getAllDeep(String memoBaseId, Sort sort, Order order) {
+	public List<Memo> getAllDeep(String memoBaseId, Sort sort, Order order) {
 		try {
 			return getAllDeep(getDatabase(), memoBaseId, sort, order);
 		} finally {
