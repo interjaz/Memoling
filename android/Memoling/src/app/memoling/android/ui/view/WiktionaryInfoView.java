@@ -1,6 +1,7 @@
 package app.memoling.android.ui.view;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import app.memoling.android.entity.WiktionaryInfo;
 import app.memoling.android.ui.adapter.IGet;
@@ -35,9 +36,8 @@ public class WiktionaryInfoView implements IGet<String> {
 		m_wiktionaryInfo = wiktionaryInfo;
 	}
 
-	public static ArrayList<WiktionaryInfoView> getAll(ArrayList<WiktionaryInfo> wiktionaryInfos) {
-
-		ArrayList<WiktionaryInfoView> views = new ArrayList<WiktionaryInfoView>();
+	public static List<WiktionaryInfoView> getAll(List<WiktionaryInfo> wiktionaryInfos) {
+		List<WiktionaryInfoView> views = new ArrayList<WiktionaryInfoView>();
 		for (WiktionaryInfo wiktionaryInfo : wiktionaryInfos) {
 			views.add(new WiktionaryInfoView(wiktionaryInfo));
 		}

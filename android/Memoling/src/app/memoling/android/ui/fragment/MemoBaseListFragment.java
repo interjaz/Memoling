@@ -1,6 +1,7 @@
 package app.memoling.android.ui.fragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -36,7 +37,7 @@ public class MemoBaseListFragment extends ApplicationFragment {
 	private MemoBaseListEventHandler m_lstHandler;
 
 	private MemoBaseAdapter m_memoBaseAdapter;
-	private ArrayList<MemoBaseInfo> m_memoBaseInfos;
+	private List<MemoBaseInfo> m_memoBaseInfos;
 
 	private MemoBaseInfoView m_selectedItem;
 

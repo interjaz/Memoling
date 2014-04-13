@@ -1,7 +1,7 @@
 package app.memoling.android.ui.activity;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
@@ -84,12 +84,12 @@ public class ReviewActivity extends AdActivity {
 
 	private Random m_random;
 
-	private ArrayList<Memo> m_memos;
+	private List<Memo> m_memos;
 	private Memo m_memo;
 	private String m_toGuess;
 	private Language m_toGuessLanguage;
 	private int m_toGuessItem;
-	private ArrayList<MemoSentence> m_sentences;
+	private List<MemoSentence> m_sentences;
 
 	private MemoAdapter m_memoAdapter;
 	private int m_currentMemo;
@@ -326,7 +326,7 @@ public class ReviewActivity extends AdActivity {
 			SentenceProvider.getSentences(this, m_memos, new IGetManyComplete() {
 
 				@Override
-				public void onComplete(ArrayList<Pair<Memo, ArrayList<MemoSentence>>> result) {
+				public void onComplete(List<Pair<Memo, List<MemoSentence>>> result) {
 					m_handler.post(new Runnable() {
 						@Override
 						public void run() {
@@ -411,7 +411,7 @@ public class ReviewActivity extends AdActivity {
 
 	private void sentenceMode(final Word a, final Word b) {
 		MemoSentenceAdapter adapter = new MemoSentenceAdapter(this);
-		ArrayList<MemoSentence> sentences = adapter.getSentences(b.getWord(), b.getLanguage(), a.getLanguage());
+		List<MemoSentence> sentences = adapter.getSentences(b.getWord(), b.getLanguage(), a.getLanguage());
 
 		final Runnable delayed = new Runnable() {
 
@@ -449,7 +449,7 @@ public class ReviewActivity extends AdActivity {
 					a.getLanguage(), new IGetComplete() {
 
 						@Override
-						public void getComplete(ArrayList<MemoSentence> memoSentences) {
+						public void getComplete(List<MemoSentence> memoSentences) {
 							getSherlock().setProgressBarIndeterminateVisibility(false);
 
 							if (memoSentences == null || memoSentences.size() == 0) {

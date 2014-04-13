@@ -3,6 +3,7 @@ package app.memoling.android.ui.fragment;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -331,7 +332,7 @@ public class MemoWordFragment extends Fragment implements
 	}
 
 	@Override
-	public void onAllTranslatorComplete(ArrayList<TranslatorResult> results) {
+	public void onAllTranslatorComplete(List<TranslatorResult> results) {
 
 		if (results == null) {
 			Toast.makeText(getActivity(), R.string.memo_notFound,
@@ -342,7 +343,7 @@ public class MemoWordFragment extends Fragment implements
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		//String wordB = m_memo.getWordB().getWord();
 
-		ArrayList<CharSequence> words = new ArrayList<CharSequence>();
+		List<CharSequence> words = new ArrayList<CharSequence>();
 
 		for (TranslatorResult result : results) {
 			for (Word word : result.Translated) {
@@ -441,7 +442,7 @@ public class MemoWordFragment extends Fragment implements
 
 				WikiSynonymAdapter synonymAdapter = new WikiSynonymAdapter(
 						getActivity());
-				ArrayList<WikiSynonym> wikiSynonyms = synonymAdapter.get(
+				List<WikiSynonym> wikiSynonyms = synonymAdapter.get(
 						getWord().getWord(), getWord().getLanguage());
 
 				HashSet<String> synonyms = new HashSet<String>();
@@ -493,7 +494,7 @@ public class MemoWordFragment extends Fragment implements
 
 				WikiTranslationAdapter wikiTranslationAdapter = new WikiTranslationAdapter(
 						getActivity());
-				ArrayList<WikiTranslation> wikiTranslations = wikiTranslationAdapter
+				List<WikiTranslation> wikiTranslations = wikiTranslationAdapter
 						.get(getWord().getWord(), getWord().getLanguage());
 
 				m_meanings = new HashSet<String>();
@@ -554,7 +555,7 @@ public class MemoWordFragment extends Fragment implements
 	}
 
 	@Override
-	public void setTatoeba(final ArrayList<MemoSentence> memoSentences) {
+	public void setTatoeba(final List<MemoSentence> memoSentences) {
 
 		Runnable runnable = new Runnable() {
 
@@ -588,7 +589,7 @@ public class MemoWordFragment extends Fragment implements
 		m_sentenceDelayedRunnable = runnable;
 	}
 
-	public void setQuizlet(final ArrayList<QuizletDefinition> definitions) {
+	public void setQuizlet(final List<QuizletDefinition> definitions) {
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {

@@ -3,6 +3,7 @@ package app.memoling.android.webservice;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,7 +21,7 @@ public class WsSentences {
 	private static final int m_timeout = 10000;
 
 	public interface IGetComplete {
-		void getComplete(ArrayList<MemoSentence> memoSentences);
+		void getComplete(List<MemoSentence> memoSentences);
 	}
 
 	public static void get(String word, Language from, Language to, final IGetComplete onComplete) {
@@ -38,7 +39,7 @@ public class WsSentences {
 					try {
 						JSONArray array = new JSONArray(response);
 
-						ArrayList<MemoSentence> sentences = new ArrayList<MemoSentence>();
+						List<MemoSentence> sentences = new ArrayList<MemoSentence>();
 						for (int i = 0; i < array.length(); i++) {
 							MemoSentence sentence = CanonicalConverter.parseMemoSentence(array.getJSONObject(i));
 							sentences.add(sentence);

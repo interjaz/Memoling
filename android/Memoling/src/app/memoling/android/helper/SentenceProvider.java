@@ -1,6 +1,7 @@
 package app.memoling.android.helper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.util.Pair;
@@ -15,7 +16,7 @@ import app.memoling.android.webservice.WsSentences.IGetComplete;
 public class SentenceProvider {
 
 	private static int m_sentenceCacheSize = 20;
-	private static CacheHelper<String, ArrayList<MemoSentence>> m_sentenceListCache = new CacheHelper<String, ArrayList<MemoSentence>>(
+	private static CacheHelper<String, List<MemoSentence>> m_sentenceListCache = new CacheHelper<String, List<MemoSentence>>(
 			m_sentenceCacheSize);
 
 	public static void getSentences(Context context, String word, final String memoId, Language from, Language to,
@@ -25,7 +26,7 @@ public class SentenceProvider {
 
 		// Check if already in the cache
 		if (m_sentenceListCache.containsKey(cacheKey)) {
-			ArrayList<MemoSentence> sentences = m_sentenceListCache.get(cacheKey);
+			List<MemoSentence> sentences = m_sentenceListCache.get(cacheKey);
 			if (sentences.size() == 0) {
 				onComplete.getComplete(null);
 			} else {
@@ -36,7 +37,7 @@ public class SentenceProvider {
 
 		// Check if there is a word in the db
 		final MemoSentenceAdapter sentenceAdapter = new MemoSentenceAdapter(context);
-		ArrayList<MemoSentence> sentences = sentenceAdapter.getMemoSentences(memoId, from, to);
+		List<MemoSentence> sentences = sentenceAdapter.getMemoSentences(memoId, from, to);
 
 		if (sentences.size() != 0) {
 			onComplete.getComplete(sentences);
@@ -47,7 +48,7 @@ public class SentenceProvider {
 		WsSentences.get(word, from, to, new IGetComplete() {
 
 			@Override
-			public void getComplete(ArrayList<MemoSentence> memoSentences) {
+			public void getComplete(List<MemoSentence> memoSentences) {
 				if (memoSentences != null && memoSentences.size() > 0) {
 					for (MemoSentence sentence : memoSentences) {
 						sentence.setMemoId(memoId);
@@ -68,28 +69,28 @@ public class SentenceProvider {
 	}
 
 	public static interface IGetManyComplete {
-		void onComplete(ArrayList<Pair<Memo, ArrayList<MemoSentence>>> result);
+		void onComplete(List<Pair<Memo, List<MemoSentence>>> result);
 	}
 
 	private static class ManyState {
-		public ArrayList<Pair<Memo, ArrayList<MemoSentence>>> received;
+		public List<Pair<Memo, List<MemoSentence>>> received;
 		public final int sent;
 		public boolean completed = false;
 
-		public ManyState(ArrayList<Memo> memos) {
+		public ManyState(List<Memo> memos) {
 			// Get unique only
-			ArrayList<String> unique = new ArrayList<String>();
+			List<String> unique = new ArrayList<String>();
 			for (Memo memo : memos) {
 				if (!unique.contains(memo.getMemoId())) {
 					unique.add(memo.getMemoId());
 				}
 			}
 			sent = unique.size();
-			received = new ArrayList<Pair<Memo, ArrayList<MemoSentence>>>();
+			received = new ArrayList<Pair<Memo, List<MemoSentence>>>();
 		}
 	}
 
-	public static void getSentences(final Context context, ArrayList<Memo> memos, final IGetManyComplete onComplete) {
+	public static void getSentences(final Context context, List<Memo> memos, final IGetManyComplete onComplete) {
 
 		final ManyState state = new ManyState(memos);
 
@@ -105,8 +106,8 @@ public class SentenceProvider {
 							.getWordB().getLanguage(), new IGetComplete() {
 
 						@Override
-						public void getComplete(ArrayList<MemoSentence> memoSentences) {
-							state.received.add(new Pair<Memo, ArrayList<MemoSentence>>(m, memoSentences));
+						public void getComplete(List<MemoSentence> memoSentences) {
+							state.received.add(new Pair<Memo, List<MemoSentence>>(m, memoSentences));
 
 							int size = state.received.size();
 

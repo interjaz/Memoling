@@ -41,7 +41,7 @@ public class VoiceInputHelper {
 
 	public static String getData(Bundle bundle) {
 		if (bundle.containsKey(RecognizerIntent.EXTRA_RESULTS)) {
-			ArrayList<String> data = bundle.getStringArrayList(RecognizerIntent.EXTRA_RESULTS);
+			List<String> data = bundle.getStringArrayList(RecognizerIntent.EXTRA_RESULTS);
 			if (data.size() > 0) {
 				return data.get(0);
 			}

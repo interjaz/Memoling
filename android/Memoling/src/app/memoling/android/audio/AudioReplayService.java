@@ -1,6 +1,7 @@
 package app.memoling.android.audio;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -25,7 +26,7 @@ public class AudioReplayService extends Service implements ITextToSpeechUtteranc
 	private TextToSpeechHelper m_textToSpeechHelper;
 
 	private String m_lastUtterenceId;
-	private ArrayList<String> m_wordsToRead;
+	private List<String> m_wordsToRead;
 	private int m_index;
 
 	public static void startReplay(Context context, String memoBaseId) {
@@ -55,7 +56,7 @@ public class AudioReplayService extends Service implements ITextToSpeechUtteranc
 			m_wordsToRead = new ArrayList<String>();
 			
 			MemoAdapter memoAdapter = new MemoAdapter(this);
-			ArrayList<Memo> memos = memoAdapter.getAllDeep(memoBaseId, Sort.CreatedDate, Order.DESC);
+			List<Memo> memos = memoAdapter.getAllDeep(memoBaseId, Sort.CreatedDate, Order.DESC);
 			
 			for(Memo memo : memos) {
 				if(!memo.getWordA().getWord().equals("")) {

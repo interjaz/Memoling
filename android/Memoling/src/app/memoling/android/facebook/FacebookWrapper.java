@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Comparator;
 
 import org.json.JSONArray;
@@ -38,7 +39,7 @@ public class FacebookWrapper {
 	private Session.StatusCallback m_statusCallback = new SessionStatusCallback();
 	private Fragment m_fragment;
 	private Activity m_activity;
-	private ArrayList<IPendingAction> m_pendingActions;
+	private List<IPendingAction> m_pendingActions;
 
 	// %d is FacebookUserId
 	private static String FacebookFeedUrl = "https://www.facebook.com/dialog/feed";
@@ -79,7 +80,7 @@ public class FacebookWrapper {
 	}
 
 	public static interface IFacebookGetFriendsComplete {
-		void onGetFriendsCompete(FacebookUser user, ArrayList<FacebookFriend> friends);
+		void onGetFriendsCompete(FacebookUser user, List<FacebookFriend> friends);
 	}
 
 	public static interface IFacebookSelectFriendDialogComplete {
@@ -252,7 +253,7 @@ public class FacebookWrapper {
 							JSONObject json = new JSONObject(response);
 							JSONArray array = json.getJSONArray("data");
 
-							ArrayList<FacebookFriend> friends = new ArrayList<FacebookFriend>();
+							List<FacebookFriend> friends = new ArrayList<FacebookFriend>();
 							for (int i = 0; i < array.length(); i++) {
 								friends.add(new FacebookFriend().deserialize(array.getJSONObject(i)));
 							}
@@ -279,7 +280,7 @@ public class FacebookWrapper {
 		getFriends(new IFacebookGetFriendsComplete() {
 
 			@Override
-			public void onGetFriendsCompete(final FacebookUser user, ArrayList<FacebookFriend> friends) {
+			public void onGetFriendsCompete(final FacebookUser user, List<FacebookFriend> friends) {
 
 				if (user == null || friends == null) {
 					onFacebookFriendSelectFriendDialogComplete.onSelectFriendDialogComplete(user, null);

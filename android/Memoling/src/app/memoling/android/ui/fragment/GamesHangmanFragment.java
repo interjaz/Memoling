@@ -1,6 +1,7 @@
 package app.memoling.android.ui.fragment;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import android.content.Context;
@@ -55,7 +56,7 @@ public class GamesHangmanFragment extends ApplicationFragment implements TextWat
 	private int m_originalOrientation;
 	private int m_state = 0;
 	private int m_lettersToGuess;
-	private ArrayList<Character> m_letters;
+	private List<Character> m_letters;
 	private ModifiableComplexTextAdapter<GamesSourceView> m_adapter;
 
 	Typeface m_thinFont;

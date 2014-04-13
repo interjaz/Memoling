@@ -1,6 +1,7 @@
 package app.memoling.android.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,21 +19,21 @@ public class WordListAdapter extends SqliteAdapter {
 	}
 
 	public String getRandom(Language language) {
-		ArrayList<String> words = getRandom(language, 1, 6, Integer.MAX_VALUE);
+		List<String> words = getRandom(language, 1, 6, Integer.MAX_VALUE);
 		if (words.size() == 0) {
 			return null;
 		}
 		return words.get(0);
 	}
 
-	public ArrayList<String> getRandom(Language language, int count, int minLength, int maxLength) {
+	public List<String> getRandom(Language language, int count, int minLength, int maxLength) {
 		SQLiteDatabase db;
 		Cursor cursor = null;
 
 		try {
 			db = getDatabase();
 			
-			ArrayList<String> words = new ArrayList<String>();
+			List<String> words = new ArrayList<String>();
 
 			String query = "SELECT Word FROM WordLists " + "WHERE LanguageIso639 = ? " + " AND LENGTH(Word) >= "
 					+ Integer.toString(minLength) + " AND LENGTH(Word) <= " + Integer.toString(maxLength)

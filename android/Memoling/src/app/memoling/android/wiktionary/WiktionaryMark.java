@@ -1,6 +1,7 @@
 package app.memoling.android.wiktionary;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class WiktionaryMark {
@@ -55,7 +56,7 @@ public class WiktionaryMark {
 		StringBuilder sb = new StringBuilder();
 		int level = 0;
 		boolean inList = false;
-		ArrayList<Integer> stack = new ArrayList<Integer>();
+		List<Integer> stack = new ArrayList<Integer>();
 		
 		String regex = "[#\\*]+[ ;:]*(.*)";
 		String replace = "<li>$1</li>";

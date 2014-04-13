@@ -1,6 +1,7 @@
 package app.memoling.android.helper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -20,8 +21,8 @@ public abstract class RemovableFragmentPagerAdapter extends PagerAdapter {
 	private final FragmentManager mFragmentManager;
 	private FragmentTransaction mCurTransaction = null;
 
-	private ArrayList<Fragment.SavedState> mSavedState = new ArrayList<Fragment.SavedState>();
-	private ArrayList<Fragment> mFragments = new ArrayList<Fragment>();
+	private List<Fragment.SavedState> mSavedState = new ArrayList<Fragment.SavedState>();
+	private List<Fragment> mFragments = new ArrayList<Fragment>();
 	private Fragment mCurrentPrimaryItem = null;
 
 	public RemovableFragmentPagerAdapter(FragmentManager fm) {

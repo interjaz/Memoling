@@ -1,6 +1,6 @@
 package app.memoling.android.ui.activity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -129,7 +129,7 @@ public class DownloadLinkActivity extends AdActivity {
 
 		// Bind MemoBases
 		MemoBaseAdapter adapter = new MemoBaseAdapter(this);
-		ArrayList<MemoBase> memoBases = adapter.getAll();
+		List<MemoBase> memoBases = adapter.getAll();
 		m_lstMemoBasesAdapter.addAll(MemoBaseNameView.getAll(memoBases));
 		
 		

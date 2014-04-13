@@ -1,6 +1,7 @@
 package app.memoling.android.translator.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import app.memoling.android.adapter.WikiTranslationAdapter;
@@ -26,7 +27,7 @@ public class WiktionaryTranslator {
 		
 		new WorkerThread<Void, Void, Void>() {
 
-			private ArrayList<WikiTranslation> m_translations;
+			private List<WikiTranslation> m_translations;
 
 			@Override
 			protected Void doInBackground(Void... params) {
@@ -46,8 +47,8 @@ public class WiktionaryTranslator {
 					return;
 				}
 				
-				ArrayList<Word> wordAs = new ArrayList<Word>();
-				ArrayList<Word> wordBs = new ArrayList<Word>();
+				List<Word> wordAs = new ArrayList<Word>();
+				List<Word> wordBs = new ArrayList<Word>();
 				
 				for (WikiTranslation translation : m_translations) {
 					Word wordA = new Word();

@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -70,7 +71,7 @@ public class CsvParser {
 		return memo;
 	}
 
-	public static ArrayList<Memo> parseFile(String path) throws IOException {
+	public static List<Memo> parseFile(String path) throws IOException {
 
 		FileReader reader = new FileReader(path);
 		StringBuilder sb = new StringBuilder();
@@ -81,8 +82,8 @@ public class CsvParser {
 			sb.append(buffer, 0, read);
 		}
 
-		ArrayList<Memo> memos = new ArrayList<Memo>();
-		ArrayList<MemoBase> bases = new ArrayList<MemoBase>();
+		List<Memo> memos = new ArrayList<Memo>();
+		List<MemoBase> bases = new ArrayList<MemoBase>();
 
 		String[] lines = sb.toString().split("\\r?\\n");
 		// Skip first line (description);

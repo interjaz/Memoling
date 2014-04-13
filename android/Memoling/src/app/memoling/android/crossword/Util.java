@@ -1,6 +1,7 @@
 package app.memoling.android.crossword;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Util {
 	public static int[] copy(int[] data) {
@@ -12,8 +13,8 @@ public class Util {
 		return copy;
 	}
 
-	public static ArrayList<MatrixWord> copyMw(ArrayList<MatrixWord> data) {
-		ArrayList<MatrixWord> copy = new ArrayList<MatrixWord>(data.size());
+	public static List<MatrixWord> copyMw(List<MatrixWord> data) {
+		List<MatrixWord> copy = new ArrayList<MatrixWord>(data.size());
 		for (int i = 0; i < data.size(); i++) {
 			MatrixWord word = data.get(i);
 			copy.add(new MatrixWord(word.word, new Point(word.from.y, word.from.x), new Point(word.to.y, word.to.x)));
@@ -22,8 +23,8 @@ public class Util {
 		return copy;
 	}
 
-	public static ArrayList<Point> copyP(ArrayList<Point> data) {
-		ArrayList<Point> copy = new ArrayList<Point>(data.size());
+	public static List<Point> copyP(List<Point> data) {
+		List<Point> copy = new ArrayList<Point>(data.size());
 
 		for (int i = 0; i < data.size(); i++) {
 			copy.add(new Point(data.get(i).y, data.get(i).x));
@@ -48,8 +49,8 @@ public class Util {
 		return copy;
 	}
 
-	public static ArrayList<String> copy(ArrayList<String> data) {
-		ArrayList<String> copy = new ArrayList<String>(data.size());
+	public static List<String> copy(List<String> data) {
+		List<String> copy = new ArrayList<String>(data.size());
 		for (int i = 0; i < data.size(); i++) {
 			copy.add(data.get(i));
 		}
@@ -57,8 +58,8 @@ public class Util {
 		return copy;
 	}
 
-	public static ArrayList<String> diff(ArrayList<MatrixWord> a, ArrayList<String> b) {
-		ArrayList<String> c = Util.copy(b);
+	public static List<String> diff(List<MatrixWord> a, List<String> b) {
+		List<String> c = Util.copy(b);
 		for (int i = 0; i < a.size(); i++) {
 			c.remove(a.get(i).word);
 		}
@@ -66,7 +67,7 @@ public class Util {
 		return c;
 	}
 
-	public static ArrayList<Matrix> add(Matrix from, ArrayList<Matrix> to) {
+	public static List<Matrix> add(Matrix from, List<Matrix> to) {
 		if (from != null) {
 			to.add(from);
 		}
@@ -74,7 +75,7 @@ public class Util {
 		return to;
 	}
 
-	public static ArrayList<Matrix> add(ArrayList<Matrix> from, ArrayList<Matrix> to) {
+	public static List<Matrix> add(List<Matrix> from, List<Matrix> to) {
 		if (from == null) {
 			return to;
 		}

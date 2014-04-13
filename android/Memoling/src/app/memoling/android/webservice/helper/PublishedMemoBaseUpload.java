@@ -1,6 +1,6 @@
 package app.memoling.android.webservice.helper;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import app.memoling.android.adapter.MemoAdapter;
 import app.memoling.android.adapter.MemoAdapter.Sort;
@@ -54,7 +54,7 @@ public class PublishedMemoBaseUpload {
 			public void onGetUserComplete(FacebookUser user) {
 
 				MemoAdapter memoAdapter = new MemoAdapter(m_facebookFragment.getActivity());
-				ArrayList<Memo> memos = memoAdapter.getAllDeep(m_published.getMemoBaseId(), Sort.CreatedDate, Order.ASC);
+				List<Memo> memos = memoAdapter.getAllDeep(m_published.getMemoBaseId(), Sort.CreatedDate, Order.ASC);
 				if (memos.size() == 0) {
 					m_publishedMemoBaseUploadInterface.onException(new Exception(ExceptionReasons.NoMemosToUpload));
 					return;

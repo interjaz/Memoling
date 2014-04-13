@@ -2,6 +2,7 @@ package app.memoling.android.wordlist.sqlprovider;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -19,9 +20,9 @@ public class WordListAdapter extends SqliteAdapter {
 	}
 
 	@SuppressLint("DefaultLocale")
-	public ArrayList<Word> findWord(Word word, Language language, int limitFrom, int limitTo) {
+	public List<Word> findWord(Word word, Language language, int limitFrom, int limitTo) {
 		SQLiteDatabase db = null;
-		ArrayList<Word> suggestions = new ArrayList<Word>();
+		List<Word> suggestions = new ArrayList<Word>();
 		
 		try {
 			db = getDatabase();

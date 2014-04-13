@@ -1,6 +1,7 @@
 package app.memoling.android.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import app.memoling.android.R;
@@ -8,7 +9,7 @@ import app.memoling.android.entity.MemoBaseGenre;
 
 public class MemoBaseGenreAdapter {
 
-	public static ArrayList<MemoBaseGenre> m_genres;
+	public static List<MemoBaseGenre> m_genres;
 		
 	public MemoBaseGenreAdapter(Context context) {
 		
@@ -44,7 +45,7 @@ public class MemoBaseGenreAdapter {
 		m_genres.add(new MemoBaseGenre(gid, str));
 	}
 	
-	public ArrayList<MemoBaseGenre> getAll() {
+	public List<MemoBaseGenre> getAll() {
 		return m_genres;
 	}
 

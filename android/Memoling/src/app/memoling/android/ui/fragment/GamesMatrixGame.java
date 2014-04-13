@@ -1,6 +1,6 @@
 package app.memoling.android.ui.fragment;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
@@ -343,14 +343,14 @@ public abstract class GamesMatrixGame extends ApplicationFragment implements OnT
 	//
 
 	@Override
-	public ArrayList<String> getSolverWords() {
+	public List<String> getSolverWords() {
 
 		int count = 20;
 		int min = 4;
 		int max = 12;
 
 		WordListAdapter wordAdapter = new WordListAdapter(getActivity());
-		ArrayList<String> words;
+		List<String> words;
 
 		int value = m_adapter.getItem(m_spSource.getSelectedItemPosition()).getValue();
 		switch (value) {

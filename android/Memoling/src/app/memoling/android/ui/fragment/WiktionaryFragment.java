@@ -1,6 +1,6 @@
 package app.memoling.android.ui.fragment;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -84,7 +84,7 @@ public class WiktionaryFragment extends ApplicationFragment {
 		new WsWiktionary().get(new IGetComplete() {
 
 			@Override
-			public void getComplete(ArrayList<WiktionaryInfo> wiktionaryInfos) {
+			public void getComplete(List<WiktionaryInfo> wiktionaryInfos) {
 
 				if (wiktionaryInfos == null) {
 					Toast.makeText(getActivity(), R.string.memolist_wiktionary_getError, Toast.LENGTH_SHORT).show();

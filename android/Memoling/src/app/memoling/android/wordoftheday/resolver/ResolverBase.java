@@ -1,6 +1,6 @@
 package app.memoling.android.wordoftheday.resolver;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import android.annotation.SuppressLint;
@@ -90,7 +90,7 @@ public abstract class ResolverBase {
 	public class PreTranslateWordFrom implements IAllTranslatorComplete {
 		
 		@Override
-		public void onAllTranslatorComplete(ArrayList<TranslatorResult> translatorResults) {
+		public void onAllTranslatorComplete(List<TranslatorResult> translatorResults) {
 			TranslatorResult result = Translator.getMostAccurate(translatorResults);
 			
 			if (result != null && result.Translated.size() > 0) {
@@ -119,7 +119,7 @@ public abstract class ResolverBase {
 	public class TranslateWordTo implements IAllTranslatorComplete {
 		
 		@Override
-		public void onAllTranslatorComplete(ArrayList<TranslatorResult> translatorResults) {
+		public void onAllTranslatorComplete(List<TranslatorResult> translatorResults) {
 			TranslatorResult result = Translator.getMostAccurate(translatorResults);
 			
 			if (result != null && result.Translated.size() > 0) {

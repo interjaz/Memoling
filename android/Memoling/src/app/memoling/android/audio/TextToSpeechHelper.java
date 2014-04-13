@@ -3,6 +3,7 @@ package app.memoling.android.audio;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -29,7 +30,7 @@ public class TextToSpeechHelper implements OnInitListener {
 	private TextToSpeech m_textToSpeech;
 
 	private final static int TextToSpeechRequestCode = 4000;
-	private static ArrayList<ReadItem> m_pendingQueue;
+	private static List<ReadItem> m_pendingQueue;
 	private OnCompleteReading m_onCompleteHelper;
 	private AtomicInteger m_initialized;
 	private float m_speechRate = 1.0f;

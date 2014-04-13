@@ -1,6 +1,7 @@
 package app.memoling.android.ui.view;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.MemoBaseInfo;
@@ -47,8 +48,8 @@ public class MemoBaseInfoView implements IGet<String>, IActive {
 		return sb.toString();
 	}
 
-	public static ArrayList<MemoBaseInfoView> getAll(ArrayList<MemoBaseInfo> memoBaseInfos) {
-		ArrayList<MemoBaseInfoView> views = new ArrayList<MemoBaseInfoView>();
+	public static List<MemoBaseInfoView> getAll(List<MemoBaseInfo> memoBaseInfos) {
+		List<MemoBaseInfoView> views = new ArrayList<MemoBaseInfoView>();
 
 		for (MemoBaseInfo memoBaseInfo : memoBaseInfos) {
 			views.add(new MemoBaseInfoView(memoBaseInfo));

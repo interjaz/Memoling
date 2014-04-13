@@ -1,6 +1,6 @@
 package app.memoling.android.ui.adapter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -41,7 +41,7 @@ public class ScrollableModifiableComplexTextAdapter<T extends IGet<String>> exte
 	}
 
 	public ScrollableModifiableComplexTextAdapter(Context context, int resourceId, int[] innerResourceIds,
-			ArrayList<T> data) {
+			List<T> data) {
 		super(context, resourceId, innerResourceIds, data);
 	}
 

@@ -1,6 +1,7 @@
 package app.memoling.android.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.json.JSONException;
@@ -289,11 +290,11 @@ public class MemoAdapter extends SqliteAdapter implements ISyncAdapter {
 		return null;
 	}
 
-	public static ArrayList<Memo> getAllDeep(SQLiteDatabase db, String memoBaseId, Sort sort,
+	public static List<Memo> getAllDeep(SQLiteDatabase db, String memoBaseId, Sort sort,
 			Order order) {
 
 		MemoBase memoBase = null;
-		ArrayList<Memo> memos = new ArrayList<Memo>();
+		List<Memo> memos = new ArrayList<Memo>();
 
 		memoBase = MemoBaseAdapter.get(db, memoBaseId);
 
@@ -340,7 +341,7 @@ public class MemoAdapter extends SqliteAdapter implements ISyncAdapter {
 		return memos;
 	}
 
-	public ArrayList<Memo> getTrainSet(String memoBaseId, int size) {
+	public List<Memo> getTrainSet(String memoBaseId, int size) {
 		SQLiteDatabase db = null;
 		Cursor cursor = null;
 
@@ -350,7 +351,7 @@ public class MemoAdapter extends SqliteAdapter implements ISyncAdapter {
 
 		try {
 			MemoBase memoBase = null;
-			ArrayList<Memo> memos = new ArrayList<Memo>();
+			List<Memo> memos = new ArrayList<Memo>();
 
 			db = getDatabase();
 

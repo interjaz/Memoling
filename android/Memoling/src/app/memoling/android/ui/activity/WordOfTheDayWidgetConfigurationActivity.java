@@ -1,6 +1,6 @@
 package app.memoling.android.ui.activity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
@@ -69,7 +69,7 @@ public class WordOfTheDayWidgetConfigurationActivity extends Activity {
 	}
 
 	private void bindData() {
-		ArrayList<MemoBase> memoBases = m_memoBaseAdapter.getAll();
+		List<MemoBase> memoBases = m_memoBaseAdapter.getAll();
 		m_lstMemoBasesAdapter.addAll(MemoBaseNameView.getAll(memoBases));
 	}
 

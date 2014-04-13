@@ -1,6 +1,7 @@
 package app.memoling.android.ui.view;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import app.memoling.android.entity.MemoBase;
 import app.memoling.android.ui.adapter.IGet;
@@ -22,8 +23,8 @@ public class MemoBaseNameView implements IGet<String> {
 		m_memoBase = memoBase;
 	}
 
-	public static ArrayList<MemoBaseNameView> getAll(ArrayList<MemoBase> memoBases) {
-		ArrayList<MemoBaseNameView> views = new ArrayList<MemoBaseNameView>();
+	public static List<MemoBaseNameView> getAll(List<MemoBase> memoBases) {
+		List<MemoBaseNameView> views = new ArrayList<MemoBaseNameView>();
 		for (MemoBase memoBase : memoBases) {
 			views.add(new MemoBaseNameView(memoBase));
 		}

@@ -1,6 +1,7 @@
 package app.memoling.android.wordlist;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import app.memoling.android.entity.Language;
@@ -31,7 +32,7 @@ public class WordsFinder {
 	}
 
 	private class FindWordsStartingWithAsync extends
-			WorkerThread<Word, Void, ArrayList<Word>> {
+			WorkerThread<Word, Void, List<Word>> {
 		IWordsFindComplete m_onWordsFound;
 		Language m_language;
 		Word m_word;
@@ -47,7 +48,7 @@ public class WordsFinder {
 		}
 
 		@Override
-		protected ArrayList<Word> doInBackground(Word... word) {
+		protected List<Word> doInBackground(Word... word) {
 			Thread.currentThread().setName("WordFinderThread");
 						
 			m_word = word[0];
@@ -59,7 +60,7 @@ public class WordsFinder {
 		}
 
 		@Override
-		protected void onPostExecute(ArrayList<Word> words) {
+		protected void onPostExecute(List<Word> words) {
 			super.onPostExecute(words);
 			m_onWordsFound.onWordsFindComplete(new WordsFindResult(m_word,
 					words));

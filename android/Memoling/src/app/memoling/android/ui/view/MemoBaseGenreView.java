@@ -1,6 +1,7 @@
 package app.memoling.android.ui.view;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import app.memoling.android.entity.MemoBaseGenre;
 import app.memoling.android.ui.adapter.IGet;
@@ -34,8 +35,8 @@ public class MemoBaseGenreView implements IGet<String> {
 		m_genre = genre;
 	}
 
-	public static ArrayList<MemoBaseGenreView> getAll(ArrayList<MemoBaseGenre> genres) {
-		ArrayList<MemoBaseGenreView> views = new ArrayList<MemoBaseGenreView>();
+	public static List<MemoBaseGenreView> getAll(List<MemoBaseGenre> genres) {
+		List<MemoBaseGenreView> views = new ArrayList<MemoBaseGenreView>();
 		
 		for(MemoBaseGenre genre : genres) {
 			views.add(new MemoBaseGenreView(genre));

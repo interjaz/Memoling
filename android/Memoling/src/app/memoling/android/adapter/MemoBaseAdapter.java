@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.UUID;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -104,7 +105,7 @@ public class MemoBaseAdapter extends SqliteAdapter implements ISyncAdapter {
 		Cursor cursor = null;
 
 		try {
-			ArrayList<MemoBase> memoBases = new ArrayList<MemoBase>();
+			List<MemoBase> memoBases = new ArrayList<MemoBase>();
 
 			String query = "SELECT "
 					+ "	B.MemoBaseId B_MemoBaseId, B.Name B_Name, B.Created B_Created, B.Active B_Active "

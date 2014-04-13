@@ -59,6 +59,18 @@ public class DatabaseHelper {
 		}
 	}
 
+	public static long getLong(Cursor cursor, String columnName) {
+		return cursor.getLong(cursor.getColumnIndex(columnName));
+	}
+
+	public static long optLong(Cursor cursor, String columnName, long defaultValue) {
+		try {
+			return cursor.getLong(cursor.getColumnIndex(columnName));
+		} catch (Exception ex) {
+			return defaultValue;
+		}
+	}
+	
 	public static Date getDate(Cursor cursor, String columnName) {
 		return DateHelper.fromNormalizedString(cursor.getString(cursor.getColumnIndex(columnName)));
 	}
@@ -89,5 +101,4 @@ public class DatabaseHelper {
 		ASC,
 		DESC,
 	}
-
 }

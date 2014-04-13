@@ -1,10 +1,9 @@
 package app.memoling.android.wordlist.sqlprovider;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
-
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Word;
 import app.memoling.android.helper.CacheHelper;
@@ -14,7 +13,7 @@ import app.memoling.android.wordlist.WordsProviderException;
 public final class SqlWordsProvider implements IWordsProvider {
 
 	private final static int MaxCache = 200;
-	private static CacheHelper<String, ArrayList<Word>> m_cache = new CacheHelper<String, ArrayList<Word>>(
+	private static CacheHelper<String, List<Word>> m_cache = new CacheHelper<String, List<Word>>(
 			MaxCache);
 
 	private WordListAdapter m_wordListAdapter;
@@ -29,9 +28,9 @@ public final class SqlWordsProvider implements IWordsProvider {
 	}
 
 	@Override
-	public ArrayList<Word> findWordStartingWith(Word word, Language language, int limitFrom, int limitTo) {
+	public List<Word> findWordStartingWith(Word word, Language language, int limitFrom, int limitTo) {
 
-		ArrayList<Word> words = null;
+		List<Word> words = null;
 		String key = word.getWord() + language.getCode() + Integer.toString(limitFrom) + Integer.toString(limitTo);
 
 		if (m_cache.containsKey(key)) {

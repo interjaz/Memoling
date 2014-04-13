@@ -54,7 +54,8 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 
 	private static final int MemolingFile = 0;
 	private static final int CsvFile = 1;
-	private static final int Evernote = 2;
+	private static final int AnkiFile = 2;
+	private static final int Evernote = 3;
 
 	public final static String MemoBaseId = "MemoBaseId";
 	public final static String ActionCreate = "ActionCreate";
@@ -62,6 +63,7 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 	public final static int RequestMemolingFile = 1;
 	public final static int RequestCsvFile = 2;
 	public final static int RequestEvernote = 3;
+	public final static int RequestAnkiFile = 4;
 
 	private String m_memoBaseId;
 
@@ -166,6 +168,10 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 				path = Helper.getPathFromIntent(ctx, data);
 				importCsvFile(path);
 				break;
+			case RequestAnkiFile:
+				path = Helper.getPathFromIntent(ctx, data);
+				importAnkiFile(path);
+				break;
 			}
 
 		} else {
@@ -219,12 +225,20 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 				case MemolingFile:
 					intent = new Intent(Intent.ACTION_GET_CONTENT);
 					intent.setType("file/*");
-					getActivity().startActivityForResult(intent, RequestMemolingFile);
+//					getActivity().startActivityForResult(intent, RequestMemolingFile);
+					getActivity().startActivityForResult(Intent.createChooser(intent, "Open file:"), RequestMemolingFile);
 					break;
 				case CsvFile:
 					intent = new Intent(Intent.ACTION_GET_CONTENT);
 					intent.setType("file/*");
-					getActivity().startActivityForResult(intent, RequestCsvFile);
+//					getActivity().startActivityForResult(intent, RequestCsvFile);
+					getActivity().startActivityForResult(Intent.createChooser(intent, "Open file:"), RequestCsvFile);
+					break;
+				case AnkiFile:
+					intent = new Intent(Intent.ACTION_GET_CONTENT);
+					intent.setType("file/*");
+//					getActivity().startActivityForResult(intent, RequestAnkiFile);
+					getActivity().startActivityForResult(Intent.createChooser(intent, "Open file:"), RequestAnkiFile);
 					break;
 				case Evernote:
 					break;
@@ -282,6 +296,15 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 				case CsvFile:
 
 					result = Export.exportCsv(context, new String[] { m_memoBaseId });
+					if (result == null) {
+						result = context.getString(R.string.memobase_exportFailure);
+					} else {
+						result = context.getString(R.string.memobase_exportSuccess) + result;
+					}
+
+					break;
+				case AnkiFile:
+					result = Export.exportAnki(context, new String[] { m_memoBaseId });
 					if (result == null) {
 						result = context.getString(R.string.memobase_exportFailure);
 					} else {
@@ -362,6 +385,10 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 			public void onComplete(boolean result) {
 				Context context = getActivity();
 
+				if(context == null) {
+					return;
+				}
+				
 				if (!result) {
 					String strResult = String.format(context.getString(R.string.memobase_importFailed), path);
 					Toast.makeText(context, strResult, Toast.LENGTH_LONG).show();
@@ -373,9 +400,31 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 
 				MemoBaseFragment.this.bindData();
 			}
-
 		});
+	}
+	
+	private void importAnkiFile(final String path) {
+		Import.importAnkiFile(getActivity(), path, m_memoConflictResolve, new OnSyncComplete() {
+			@Override
+			public void onComplete(boolean result) {
+				Context context = getActivity();
 
+				if(context == null) {
+					return;
+				}
+				
+				if (!result) {
+					String strResult = String.format(context.getString(R.string.memobase_importFailed), path);
+					Toast.makeText(context, strResult, Toast.LENGTH_LONG).show();
+					return;
+				}
+
+				String strResult = String.format(context.getString(R.string.memobase_importCompleted), path);
+				Toast.makeText(context, strResult, Toast.LENGTH_LONG).show();
+
+				MemoBaseFragment.this.bindData();
+			}
+		});
 	}
 
 	private String createMemoBase() {

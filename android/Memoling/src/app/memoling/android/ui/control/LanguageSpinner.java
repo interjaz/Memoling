@@ -1,6 +1,7 @@
 package app.memoling.android.ui.control;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -19,7 +20,7 @@ public class LanguageSpinner extends Spinner implements AdapterView.OnItemSelect
 
 	ModifiableComplexTextAdapter<LanguageView> m_spLanguageAdapter;
 	private Preferences m_preferences;
-	private ArrayList<LanguageView> m_laguageViews;
+	private List<LanguageView> m_laguageViews;
 	private AdapterView.OnItemSelectedListener m_onItemSelectListener;
 	
 	private boolean m_loaded;
@@ -33,12 +34,12 @@ public class LanguageSpinner extends Spinner implements AdapterView.OnItemSelect
 
 		ResourceManager resources = new ResourceManager(context);
 		Typeface font = resources.getLightFont();
-		if(attrs.getAttributeBooleanValue("http://schemas.android.com/apk/res/app.memoling.android", "bold", false)) {
+		if(attrs != null && attrs.getAttributeBooleanValue("http://schemas.android.com/apk/res/app.memoling.android", "bold", false)) {
 			font = resources.getBlackFont();
 		}
 		
 		int adapterLayout = R.layout.adapter_textdropdown_dark;
-		if(attrs.getAttributeBooleanValue("http://schemas.android.com/apk/res/app.memoling.android", "light_theme", false)) {
+		if(attrs != null && attrs.getAttributeBooleanValue("http://schemas.android.com/apk/res/app.memoling.android", "light_theme", false)) {
 			adapterLayout = R.layout.adapter_textdropdown;
 		}
 		

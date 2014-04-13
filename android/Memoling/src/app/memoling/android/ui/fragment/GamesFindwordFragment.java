@@ -2,6 +2,7 @@ package app.memoling.android.ui.fragment;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.List;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -30,9 +31,9 @@ public class GamesFindwordFragment extends GamesMatrixGame {
 	private int m_itemStartWidth;
 	private int m_itemTxtHeight;
 
-	private ArrayList<MatrixWord> m_found;
+	private List<MatrixWord> m_found;
 
-	private ArrayList<String> m_currentLetters;
+	private List<String> m_currentLetters;
 
 	private Paint m_txtPaint;
 	private Paint m_foundPaint;

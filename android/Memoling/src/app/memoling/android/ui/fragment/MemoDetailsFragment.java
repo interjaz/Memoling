@@ -1,6 +1,6 @@
 package app.memoling.android.ui.fragment;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.graphics.Typeface;
@@ -120,12 +120,12 @@ public class MemoDetailsFragment extends Fragment implements IMemoPagerFragment 
 	}
 
 	@Override
-	public void setTatoeba(ArrayList<MemoSentence> memoSentences) {
+	public void setTatoeba(List<MemoSentence> memoSentences) {
 		// No implementation
 	}
 
 	@Override
-	public void setQuizlet(ArrayList<QuizletDefinition> definitions) {	
+	public void setQuizlet(List<QuizletDefinition> definitions) {	
 		// No implementation	
 	}
 }

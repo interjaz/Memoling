@@ -1,6 +1,6 @@
 package app.memoling.android.ui.adapter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -43,7 +43,7 @@ public class ModifiableComplexTextAdapter<T extends IGet<String>> extends Modifi
 		m_alternateBackground = alternateBackground;
 	}
 
-	public ModifiableComplexTextAdapter(Context context, int resourceId, int[] innerResourceIds, ArrayList<T> data) {
+	public ModifiableComplexTextAdapter(Context context, int resourceId, int[] innerResourceIds, List<T> data) {
 		super(context, resourceId, data);
 		m_innerResources = innerResourceIds;
 	}

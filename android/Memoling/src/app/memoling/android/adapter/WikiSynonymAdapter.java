@@ -1,6 +1,7 @@
 package app.memoling.android.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -17,7 +18,7 @@ public class WikiSynonymAdapter extends WiktionaryDb {
 		super(context);
 	}
 
-	public ArrayList<WikiSynonym> get(String expression, Language language) {
+	public List<WikiSynonym> get(String expression, Language language) {
 
 		SQLiteDatabase db = null;
 
@@ -30,7 +31,7 @@ public class WikiSynonymAdapter extends WiktionaryDb {
 		}
 	}
 
-	public static ArrayList<WikiSynonym> get(SqliteAdapter adapter, SQLiteDatabase db, String expression,
+	public static List<WikiSynonym> get(SqliteAdapter adapter, SQLiteDatabase db, String expression,
 			Language language) {
 
 		String query = "SELECT ExpressionA, ExpressionB, Language " + "FROM wiki_Synonyms "
@@ -41,7 +42,7 @@ public class WikiSynonymAdapter extends WiktionaryDb {
 
 		try {
 
-			ArrayList<WikiSynonym> synonyms = null;
+			List<WikiSynonym> synonyms = null;
 
 			while (cursor.moveToNext()) {
 

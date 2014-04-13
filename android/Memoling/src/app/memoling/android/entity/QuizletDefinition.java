@@ -1,6 +1,7 @@
 package app.memoling.android.entity;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.json.JSONArray;
@@ -13,7 +14,7 @@ public class QuizletDefinition {
 	private String m_word;
 	private String m_speechPart;
 	private String m_definition;
-	private ArrayList<String> m_examples;
+	private List<String> m_examples;
 	private boolean m_isOfficial;
 
 	public String getQuizletDefinitionId() {
@@ -48,11 +49,11 @@ public class QuizletDefinition {
 		m_definition = definition;
 	}
 
-	public ArrayList<String> getExamples() {
+	public List<String> getExamples() {
 		return m_examples;
 	}
 
-	public void setExamples(ArrayList<String> examples) {
+	public void setExamples(List<String> examples) {
 		m_examples = examples;
 	}
 

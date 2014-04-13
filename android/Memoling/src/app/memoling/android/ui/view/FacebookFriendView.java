@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -71,8 +72,8 @@ public class FacebookFriendView implements IInject {
 		return m_friend;
 	}
 
-	public static ArrayList<FacebookFriendView> getAll(ArrayList<FacebookFriend> friends) {
-		ArrayList<FacebookFriendView> views = new ArrayList<FacebookFriendView>();
+	public static List<FacebookFriendView> getAll(List<FacebookFriend> friends) {
+		List<FacebookFriendView> views = new ArrayList<FacebookFriendView>();
 		for (FacebookFriend friend : friends) {
 			views.add(new FacebookFriendView(friend));
 		}

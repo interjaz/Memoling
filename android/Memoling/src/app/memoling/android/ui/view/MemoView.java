@@ -1,6 +1,7 @@
 package app.memoling.android.ui.view;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.graphics.Typeface;
 import android.view.View;
@@ -59,8 +60,8 @@ public class MemoView implements IInject {
 				LayoutParams.MATCH_PARENT, weight));
 	}
 
-	public static ArrayList<MemoView> getAll(ArrayList<Memo> memos) {
-		ArrayList<MemoView> memoViews = new ArrayList<MemoView>();
+	public static List<MemoView> getAll(List<Memo> memos) {
+		List<MemoView> memoViews = new ArrayList<MemoView>();
 
 		for (Memo memo : memos) {
 			memoViews.add(new MemoView(memo));

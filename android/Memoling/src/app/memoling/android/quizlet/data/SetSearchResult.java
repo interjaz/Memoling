@@ -1,6 +1,7 @@
 package app.memoling.android.quizlet.data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,7 +13,7 @@ public class SetSearchResult {
 	private int m_totalPages;
 	private int m_page;
 	private int m_imageSetCount;
-	private ArrayList<QuizletSetHeader> m_sets;
+	private List<QuizletSetHeader> m_sets;
 	
 	public int getTotalResults() {  return m_totalResults; }
 	public void setTotalResults(int totalResults) { m_totalResults = totalResults; }
@@ -26,8 +27,8 @@ public class SetSearchResult {
 	public int getImageSetCount() {  return m_imageSetCount; }
 	public void setImageSetCount(int imageSetCount) { m_imageSetCount = imageSetCount; }
 
-	public ArrayList<QuizletSetHeader> getSets() {  return m_sets; }
-	public void setSets(ArrayList<QuizletSetHeader> sets) { m_sets = sets; }
+	public List<QuizletSetHeader> getSets() {  return m_sets; }
+	public void setSets(List<QuizletSetHeader> sets) { m_sets = sets; }
 
 
 	/**

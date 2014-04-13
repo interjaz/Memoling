@@ -2,6 +2,7 @@ package app.memoling.android.webservice;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.json.JSONArray;
@@ -52,7 +53,7 @@ class CanonicalConverter {
 
 			JSONArray array = json.optJSONArray("memos");
 			if (array != null) {
-				ArrayList<Memo> memos = new ArrayList<Memo>();
+				List<Memo> memos = new ArrayList<Memo>();
 				for (int i = 0; i < array.length(); i++) {
 					Memo memo = parseMemo(array.getJSONObject(i));
 					memo.setMemoBase(obj);
@@ -146,7 +147,7 @@ class CanonicalConverter {
 		}
 	}
 
-	static JSONArray memosToWsJson(ArrayList<Memo> objs) {
+	static JSONArray memosToWsJson(List<Memo> objs) {
 		JSONArray array = new JSONArray();
 
 		for (Memo obj : objs) {

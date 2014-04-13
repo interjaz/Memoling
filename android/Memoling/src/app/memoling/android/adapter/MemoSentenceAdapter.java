@@ -1,6 +1,7 @@
 package app.memoling.android.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -15,14 +16,14 @@ import app.memoling.android.helper.CacheHelper;
 public class MemoSentenceAdapter extends SqliteAdapter {
 
 	private static int m_sentenceCacheSize = 20;
-	private static CacheHelper<String, ArrayList<MemoSentence>> m_sentenceListCache = new CacheHelper<String, ArrayList<MemoSentence>>(
+	private static CacheHelper<String, List<MemoSentence>> m_sentenceListCache = new CacheHelper<String, List<MemoSentence>>(
 			m_sentenceCacheSize);
 
 	public MemoSentenceAdapter(Context context) {
 		super(context);
 	}
 
-	public ArrayList<MemoSentence> getMemoSentences(String memoId, Language from, Language to) {
+	public List<MemoSentence> getMemoSentences(String memoId, Language from, Language to) {
 		SQLiteDatabase db = null;
 
 		String cacheKey = memoId + from.getCode() + to.getCode();
@@ -38,7 +39,7 @@ public class MemoSentenceAdapter extends SqliteAdapter {
 		}
 	}
 
-	public static ArrayList<MemoSentence> getMemoSentences(SqliteAdapter adapter, SQLiteDatabase db, String memoId,
+	public static List<MemoSentence> getMemoSentences(SqliteAdapter adapter, SQLiteDatabase db, String memoId,
 			Language from, Language to) {
 
 		String cacheKey = memoId + from.getCode() + to.getCode();
@@ -50,7 +51,7 @@ public class MemoSentenceAdapter extends SqliteAdapter {
 			return m_sentenceListCache.get(cacheKey);
 		}
 
-		ArrayList<MemoSentence> sentences = new ArrayList<MemoSentence>();
+		List<MemoSentence> sentences = new ArrayList<MemoSentence>();
 		
 		// Look forward
 		String sql = "SELECT MemoSentenceId, MemoId, OriginalSentence, OriginalLanguageIso639, TranslatedSentence, TranslatedLanguageIso639 "
@@ -88,7 +89,7 @@ public class MemoSentenceAdapter extends SqliteAdapter {
 		return sentences;
 	}
 	
-	public ArrayList<MemoSentence> getSentences(String word, Language from, Language to) {
+	public List<MemoSentence> getSentences(String word, Language from, Language to) {
 		SQLiteDatabase db = null;
 
 		String cacheKey = word + from.getCode() + to.getCode();
@@ -104,7 +105,7 @@ public class MemoSentenceAdapter extends SqliteAdapter {
 		}
 	}
 
-	public static ArrayList<MemoSentence> getSentences(SqliteAdapter adapter, SQLiteDatabase db, String word,
+	public static List<MemoSentence> getSentences(SqliteAdapter adapter, SQLiteDatabase db, String word,
 			Language from, Language to) {
 
 		String cacheKey = word + from.getCode() + to.getCode();
@@ -116,7 +117,7 @@ public class MemoSentenceAdapter extends SqliteAdapter {
 			return m_sentenceListCache.get(cacheKey);
 		}
 
-		ArrayList<MemoSentence> sentences = new ArrayList<MemoSentence>();
+		List<MemoSentence> sentences = new ArrayList<MemoSentence>();
 		
 		// Look forward
 		String sql = "SELECT MemoSentenceId, MemoId, OriginalSentence, OriginalLanguageIso639, TranslatedSentence, TranslatedLanguageIso639 "
@@ -201,7 +202,7 @@ public class MemoSentenceAdapter extends SqliteAdapter {
 		}
 	}
 
-	public void addAll(ArrayList<MemoSentence> sentences) {
+	public void addAll(List<MemoSentence> sentences) {
 		SQLiteDatabase db = null;
 		invalidateGlobalCache();
 
