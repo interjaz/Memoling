@@ -18,6 +18,17 @@ class SyncClient {
 		$this->FacebookUserId = isset($obj->facebookUserId)?$obj->facebookUserId:null;
 		$this->Description = isset($obj->description)?$obj->description:"";
     }
+    
+    public function encode() {
+		$builder = new JsonBuilder();
+	
+		$builder->put("syncClientId", $this->SyncClientId, true);
+		$builder->put("facebookUserId", $this->FacebookUserId, true);
+		$builder->put("description", $this->Description, true);
+	
+		return $builder->__toString();
+        
+    }
 }
 
 ?>

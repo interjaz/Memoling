@@ -59,6 +59,7 @@ public class SyncService extends Service {
 	private static AtomicBoolean m_isSyncing = new AtomicBoolean(false);
 	
 	private SyncActionAdapter m_syncActionAdapter;
+	private SyncClientAdapter m_syncClientAdapter;
 	private SyncClient m_syncClient;
 	
 	private static WeakReference<ISyncProgress> m_syncProgress;
@@ -113,7 +114,8 @@ public class SyncService extends Service {
 				return result;
 			}
 
-			m_syncClient = new SyncClientAdapter(this).getCurrentSyncClient();
+			m_syncClientAdapter = new SyncClientAdapter(this);
+			m_syncClient = m_syncClientAdapter.getCurrentSyncClient();
 			if(m_syncClient == null) {
 				notifySyncError(SyncState.NoClientError);
 				return result;
@@ -178,26 +180,27 @@ public class SyncService extends Service {
 	private void generateInitialPackage() {
 			notifySyncProgress(SyncState.BuildingFirstSync);
 			
-			m_syncActionAdapter.buildInitialSync();
 			
 			WsSync.registerRequest(m_syncClient, new IRegisterRequestResult() {
 
 				@Override
-				public void registerCompleted(Boolean success) {
-					if(success == null) {
+				public void registerCompleted(SyncClient syncClient) {
+					if(syncClient == null) {
 						notifySyncError(SyncState.NoConnectionError);
 						return;
 					}
 					
-					if(success != true) {
-						notifySyncError(SyncState.ServerError);
-						return;
-					}
+					// Update temporary client
+					m_syncClientAdapter.changeId(m_syncClient.getSyncClientId(), syncClient.getSyncClientId());
+					m_syncClientAdapter.resetCurrentClient();
+					m_syncClient = syncClient;
 					
 					executeInBackground(new Runnable() {
 
 						@Override
 						public void run() {
+							m_syncActionAdapter.buildInitialSync();
+							
 							generatePackage();
 						}
 						

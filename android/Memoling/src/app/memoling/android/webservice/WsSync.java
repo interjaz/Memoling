@@ -22,7 +22,7 @@ public class WsSync {
 	}
 	
 	public interface IRegisterRequestResult {
-		void registerCompleted(Boolean success);
+		void registerCompleted(SyncClient client);
 	}
 
 	public static void registerRequest(SyncClient syncClient, final IRegisterRequestResult onComplete) {
@@ -38,10 +38,11 @@ public class WsSync {
 				@Override
 				public void onHttpRequestTaskComplete(String response) {
 					try {
-						boolean success = response.equalsIgnoreCase("true");
-						onComplete.registerCompleted(success);
+						SyncClient syncClient = new SyncClient();
+						syncClient.decode(response);
+						onComplete.registerCompleted(syncClient);
 					} catch(Exception ex) {
-						onComplete.registerCompleted(false);
+						onComplete.registerCompleted(null);
 					}
 				}
 

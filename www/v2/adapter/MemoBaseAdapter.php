@@ -56,7 +56,7 @@ class MemoBaseAdapter extends DbAdapter implements SyncAdapter {
             LEFT OUTER JOIN memoling_Memos AS M 
                 ON MB.MemoBaseId = M.MemoBaseId
             GROUP BY MB.MemoBaseId, MB.FacebookUserId
-            HAVING MB.FacebookUserId = '100002530762250'
+            HAVING MB.FacebookUserId = :FacebookUserId
             ORDER BY MB.Name";
         
 		$stm = $db->prepare($query);
