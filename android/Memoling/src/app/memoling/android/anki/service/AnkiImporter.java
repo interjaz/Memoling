@@ -247,7 +247,7 @@ public class AnkiImporter {
 
 					@Override
 					protected void clean() throws Exception {
-						memoAdapter.closePersistant();
+//						memoAdapter.closePersistant();
 					}
 				};
 
