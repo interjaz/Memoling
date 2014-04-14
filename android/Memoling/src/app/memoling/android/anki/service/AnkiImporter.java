@@ -67,6 +67,7 @@ public class AnkiImporter {
 				progressAlertDialog = new AlertDialog.Builder(ctx)
 				.setTitle(ctx.getString(R.string.ankiImporter_ctxmenu_importProgressTitle))
 				.setView(view)
+				.setCancelable(false)
 				.setPositiveButton(ctx.getString(R.string.ankiImporter_ctxmenu_importProgressHide), new android.content.DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -75,6 +76,7 @@ public class AnkiImporter {
 					}
 				})
 				.setIcon(R.drawable.ic_dialog_alert_holo_dark).create();
+				progressAlertDialog.show();
 			}
 			
 			protected void onProgressUpdate(AnkiMessage... ankiMessage) {
@@ -93,23 +95,21 @@ public class AnkiImporter {
 			private void showProgressBar(AnkiMessage... ankiMessage) {
 				if(!progressBarDialogCreated) {
 					createProgressAlertDialog();	
+					progressBarDialogCreated = true;
 				}
 				
 				int progressBarValue = ankiMessage[0].getProgressBarValue();
 				m_ankiImportProgressBar.setProgress(progressBarValue);
-				progressAlertDialog.show();
 			}
 			
 			private void cancelProgressBar(AnkiMessage... ankiMessage) {
 				int progressBarValue = ankiMessage[0].getProgressBarValue();
 				m_ankiImportProgressBar.setProgress(progressBarValue);
-				progressAlertDialog.show();
 				progressAlertDialog.cancel();
 			}
 			
 			private void performAlertDialog(AnkiMessage... ankiMessage) {
 				
-				progressAlertDialog.cancel();
 				
 				final Lock publishingLock = ankiMessage[0].getPublishingLock();
 				
@@ -243,11 +243,6 @@ public class AnkiImporter {
 						}
 
 						return true;
-					}
-
-					@Override
-					protected void clean() throws Exception {
-//						memoAdapter.closePersistant();
 					}
 				};
 
