@@ -33,10 +33,6 @@ public class MemoBaseAdapter extends SqliteAdapter implements ISyncAdapter {
 	public MemoBaseAdapter(Context context) {
 		super(context);
 	}
-
-	public MemoBaseAdapter(Context context, boolean persistant) {
-		super(context, persistant);
-	}
 	
 	public static MemoBase bindMemoBase(Cursor cursor) {
 		return MemoBaseAdapter.bindMemoBase(cursor, "");

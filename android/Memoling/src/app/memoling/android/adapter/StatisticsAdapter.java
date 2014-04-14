@@ -21,10 +21,6 @@ public class StatisticsAdapter extends SqliteAdapter {
 		super(context);
 	}
 
-	public StatisticsAdapter(Context context, boolean persistant) {
-		super(context, persistant);
-	}
-
 	public int[] getMonthlyAdded() {
 		SQLiteDatabase db = null;
 		Cursor cursor = null;

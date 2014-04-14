@@ -169,7 +169,7 @@ public class AnkiImporter {
 			}
 			
 			private void performSync(AnkiMessage... ankiMessage) {
-				final MemoAdapter memoAdapter = new MemoAdapter(ctx, true);
+				final MemoAdapter memoAdapter = new MemoAdapter(ctx);
 				final List<Memo> internalMemos = ankiMessage[0].getInternalMemos();
 				final List<Memo> externalMemos = ankiMessage[0].getExternalMemos();
 				final String destinationMemoBaseId = ankiMessage[0].getDestinationMemoBaseId();
@@ -356,7 +356,7 @@ public class AnkiImporter {
 						final List<Memo> externalMemos = convertAnkiCardsIntoMemos(ankiCardsFromAnkiBase, 
 								ankiNotes, findDestinationMemoBaseId, destinationMemoBase, languageFrom, languageTo);
 						
-						final MemoAdapter memoAdapter = new MemoAdapter(ctx, true);
+						final MemoAdapter memoAdapter = new MemoAdapter(ctx);
 						final List<Memo> internalMemos = memoAdapter.getAllDeep(findDestinationMemoBaseId, Sort.CreatedDate, Order.ASC);
 						final String destinationMemoBaseId = findDestinationMemoBaseId;
 

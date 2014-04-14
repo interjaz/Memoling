@@ -9,8 +9,7 @@
 		<link rel="shortcut icon" href="<?php echo Content::img("favicon.ico"); ?>" />
 		
 		<link rel="stylesheet" type="text/css" href="<?php echo Content::css("master.css"); ?>" />
-		<link href='http://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css' />
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300&subset=latin,latin-ext,cyrillic-ext,cyrillic,vietnamese,greek,greek-ext' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300|Oxygen|Open+Sans+Condensed:300&subset=cyrillic-ext,greek-ext,vietnamese,latin-ext,cyrillic,latin,greek' rel='stylesheet' type='text/css'>
 		
 		<script type="text/javascript" src="<?php echo Content::js("jquery-1.10.2.min.js"); ?>"></script>
 		<script type="text/javascript" src="<?php echo Content::js("master.js"); ?>"></script>		

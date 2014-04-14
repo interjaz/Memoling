@@ -35,10 +35,6 @@ public class MemoAdapter extends SqliteAdapter implements ISyncAdapter {
 		super(context);
 	}
 
-	public MemoAdapter(Context context, boolean persistant) {
-		super(context, persistant);
-	}
-
 	private static String buildSort(Sort sort, Order order) {
 		String query = " ORDER BY";
 

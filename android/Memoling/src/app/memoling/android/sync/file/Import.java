@@ -35,7 +35,7 @@ public class Import {
 				}
 			}
 
-			final MemoAdapter memoAdapter = new MemoAdapter(context, true);
+			final MemoAdapter memoAdapter = new MemoAdapter(context);
 			final List<Memo> internalMemos = memoAdapter
 					.getAllDeep(destinationMemoBaseId, Sort.CreatedDate, Order.ASC);
 
@@ -121,7 +121,7 @@ public class Import {
 			File fInfo = new File(path);
 			final Date externalDate = new Date(fInfo.lastModified());
 
-			final MemoAdapter memoAdapter = new MemoAdapter(context, true);
+			final MemoAdapter memoAdapter = new MemoAdapter(context);
 			final List<Memo> internalMemos = memoAdapter
 					.getAllDeep(destinationMemoBaseId, Sort.CreatedDate, Order.ASC);
 			

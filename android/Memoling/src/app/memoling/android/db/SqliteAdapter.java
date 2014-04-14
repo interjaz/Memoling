@@ -17,24 +17,16 @@ public abstract class SqliteAdapter {
 	private int m_version;
 	private Context m_context;
 
-	private boolean m_persistant;
-
 	public SqliteAdapter(Context context) {
-		this(context, false);
-	}
-
-	public SqliteAdapter(Context context, boolean persistant) {
 		m_context = context;
 		m_databaseName = Config.DatabaseName;
 		m_version = Config.DatabaseVersion;
-		m_persistant = persistant;
 	}
 
 	public SqliteAdapter(Context context, String databaseName, int version, boolean persistant) {
 		m_context = context;
 		m_databaseName = databaseName;
 		m_version = version;
-		m_persistant = persistant;
 	}
 
 	public SQLiteDatabase getDatabase() {
@@ -66,7 +58,7 @@ public abstract class SqliteAdapter {
 				close = true;
 			}
 
-			if (close && !m_persistant) {
+			if (close) {
 				close(handle);
 			}
 		}

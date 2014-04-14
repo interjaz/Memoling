@@ -22,10 +22,6 @@ public class QuizletDefinitionAdapter extends SqliteAdapter {
 		super(context);
 	}
 
-	public QuizletDefinitionAdapter(Context context, boolean persistant) {
-		super(context, persistant);
-	}
-
 	public List<QuizletDefinition> get(String word) {
 
 		if (inSync() && m_definitionListCache.containsKey(word)) {

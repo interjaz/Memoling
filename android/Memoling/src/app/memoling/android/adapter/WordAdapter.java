@@ -26,10 +26,6 @@ public class WordAdapter extends SqliteAdapter implements ISyncAdapter {
 		super(context);
 	}
 
-	public WordAdapter(Context context, boolean persistant) {
-		super(context, persistant);
-	}
-
 	public static Word bindWord(Cursor cursor) {
 		return WordAdapter.bindWord(cursor, "");
 	}

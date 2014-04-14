@@ -16,10 +16,6 @@ public class QuizletDefinitionExampleAdapter extends SqliteAdapter {
 		super(context);
 	}
 
-	public QuizletDefinitionExampleAdapter(Context context, boolean persistant) {
-		super(context, persistant);
-	}
-
 	public static List<String> get(SqliteAdapter adapter, SQLiteDatabase db, String quizletDefinitionId) {
 		if (!adapter.inSync()) {
 			adapter.invalidateLocalCache();
