@@ -2,11 +2,15 @@
 <resources>
 
     <string name="memolist_whatsNewContent">
-		Brak reklam do końca kwietnia 2014\n
+		Wyłączono tymaczasowo reklamy/\n
 		Jeśli Ci się podoba aplikacja, oceń ją.\n
 		\n
 		Jeżeli zauważyłeś/aś błąd, proszę napisz o nim na fb aplikacji. Dzięki!\n
 		\n
+		Zmainy v.1.10.0\n
+		1. Synchronizacja (beta) - dane mogą być edytowane teraz także online\n
+		2. Anik import/eksport\n
+		3. Inne poprawki\n
 		Zmainy v.1.9.2\n
 		1. Usunięto kilka błędów\n
 		Zmainy v.1.9.1\n
@@ -213,6 +217,7 @@
     <string name="review_btnCorrect">Poprawne</string>
     <string name="review_btnIncorrect">Niepoprawne</string>
     <string name="review_btnDeactivate">Dezaktywuj</string>
+    <string name="review_btnEdit">Edytuj</string>
     
     <!-- Statistics Fragment -->
     <string name="statistics_title">Statystyki</string>

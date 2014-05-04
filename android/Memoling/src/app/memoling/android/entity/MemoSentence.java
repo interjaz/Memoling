@@ -1,5 +1,9 @@
 package app.memoling.android.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,6 +60,34 @@ public class MemoSentence {
 		m_originalLanguage =  Language.parse(json.getString("m_originalLanguage"));
 
 		return this;
+	}
+	
+	public static JSONArray serializeList(List<MemoSentence> sentences) throws JSONException {
+		JSONArray array = new JSONArray();
+		
+		if(sentences == null) {
+			return array;
+		}
+		
+		for(MemoSentence sentence : sentences) {
+			array.put(sentence.serialize());
+		}
+		
+		return array;
+	}
+	
+	public static List<MemoSentence> deserializeList(JSONArray sentences) throws JSONException {
+		ArrayList<MemoSentence> array = new ArrayList<MemoSentence>();
+		
+		if(sentences == null) {
+			return array;
+		}
+		
+		for(int i=0;i<sentences.length();i++) {
+			array.add(new MemoSentence().deserialize(sentences.getJSONObject(i)));
+		}
+		
+		return array;
 	}
 
 }

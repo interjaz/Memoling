@@ -3,7 +3,6 @@ package app.memoling.android.ui.fragment;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -82,6 +81,8 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 	public final static String MemoBaseId = "MemoBaseId";
 	public final static String NotificationId = "NotificationId";
 	public final static String MemoId = "MemoId";
+	public final static String MemoIdCloseAfterwards = "MemoIdCloseAfterwards";
+	
 	private final static int InvalidNotificationId = -1;
 
 	public final static int VoiceInputRequestCode = 1;
@@ -205,7 +206,7 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 		registerForContextMenu(m_lstWords);
 		// TODO: Check if we can have this functionality with hiding search - we
 		// can set select after added
-		// m_lstWords.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+		m_lstWords.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
 		m_lstWords.setStackFromBottom(true);
 
 		// Warnings
@@ -490,6 +491,9 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 				
 				m_txtAdd.setText("");
 				m_txtAddTranslated.setText("");
+
+				m_lstWords.setSelection(m_wordsAdapter.getCount() - 1);
+				
 			} catch(RuntimeException ex) {
 				Toast.makeText(getActivity(), m_saveErrorMessage, Toast.LENGTH_SHORT).show();
 			}
@@ -1275,6 +1279,11 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 				ApplicationFragment fragment = new MemoFragment();
 				Bundle bundle = new Bundle();
 				bundle.putString(MemoFragment.MemoId, memoId);
+				
+				if(intent.hasExtra(MemoIdCloseAfterwards)) {
+					bundle.putBoolean(MemoFragment.MemoIdCloseAfterwards, true);
+				}
+				
 				fragment.setArguments(bundle);
 				startFragment(fragment);
 			}
@@ -1350,9 +1359,8 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 			if (!isSaved) {
 				return;
 			}
-
-			return;
-			// m_lstWords.setSelectionFromTop(lstWordsIndex, lstWordsTop);
+			
+			m_lstWords.setSelectionFromTop(lstWordsIndex, lstWordsTop);
 		}
 
 		public void addToBundle(Bundle bundle) {

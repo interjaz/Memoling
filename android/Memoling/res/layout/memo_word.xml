@@ -127,8 +127,6 @@
                     android:imeOptions="actionDone"
                     android:inputType="text"
                     android:textSize="18sp" >
-
-                    <requestFocus />
                 </app.memoling.android.ui.control.EditTextActionDone>
             </RelativeLayout>
 

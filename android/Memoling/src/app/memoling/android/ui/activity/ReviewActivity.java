@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -30,9 +33,9 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import app.memoling.android.R;
 import app.memoling.android.adapter.MemoAdapter;
-import app.memoling.android.adapter.SyncClientAdapter;
 import app.memoling.android.adapter.MemoAdapter.Sort;
 import app.memoling.android.adapter.MemoSentenceAdapter;
+import app.memoling.android.adapter.SyncClientAdapter;
 import app.memoling.android.audio.TextToSpeechHelper;
 import app.memoling.android.audio.VoiceInputHelper;
 import app.memoling.android.db.DatabaseHelper.Order;
@@ -40,11 +43,14 @@ import app.memoling.android.entity.Language;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoSentence;
 import app.memoling.android.entity.Word;
+import app.memoling.android.helper.AppLog;
 import app.memoling.android.helper.SentenceProvider;
 import app.memoling.android.helper.SentenceProvider.IGetManyComplete;
 import app.memoling.android.preference.Preferences;
 import app.memoling.android.ui.AdActivity;
+import app.memoling.android.ui.ApplicationActivity;
 import app.memoling.android.ui.ResourceManager;
+import app.memoling.android.ui.fragment.MemoListFragment;
 import app.memoling.android.webservice.WsSentences.IGetComplete;
 
 import com.actionbarsherlock.view.Menu;
@@ -115,6 +121,8 @@ public class ReviewActivity extends AdActivity {
 	private Access m_access;
 
 	private int m_mode;
+	
+	private ActivityState m_activityState = new ActivityState();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -163,6 +171,10 @@ public class ReviewActivity extends AdActivity {
 		Button btnDeactivate = (Button) findViewById(R.id.review_btnDeactive);
 		btnDeactivate.setTypeface(m_resources.getLightFont());
 		btnDeactivate.setOnClickListener(new BtnDeactivateEventHandler());
+		
+		Button btnEdit = (Button) findViewById(R.id.review_btnEdit);
+		btnEdit.setTypeface(m_resources.getLightFont());
+		btnEdit.setOnClickListener(new BtnEditEventHandler());
 		
 		m_inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -304,6 +316,11 @@ public class ReviewActivity extends AdActivity {
 	public void onStart() {
 		super.onStart();
 
+		if(m_memos != null) {
+			// restored state
+			return;
+		}
+		
 		Intent intent = getIntent();
 		String memoBaseId = intent.getStringExtra(MemoBaseId);
 
@@ -360,6 +377,16 @@ public class ReviewActivity extends AdActivity {
 	
 
 	@Override
+	protected void onPause() {
+		super.onPause();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
+
+	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		if(m_textToSpeechHelper != null) {
@@ -368,7 +395,7 @@ public class ReviewActivity extends AdActivity {
 	}
 
 	private void bindData(String memoBaseId, boolean repeatAll) {
-
+		
 		if (!repeatAll) {
 			m_memos = m_memoAdapter.getTrainSet(memoBaseId, m_trainingSetSize);
 			m_access = Access.Random;
@@ -630,6 +657,20 @@ public class ReviewActivity extends AdActivity {
 		
 	}
 	
+	private class BtnEditEventHandler implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent(ReviewActivity.this, ApplicationActivity.class);
+			intent.putExtra(MemoListFragment.MemoBaseId, m_memo.getMemoBaseId());
+			intent.putExtra(MemoListFragment.MemoId, m_memo.getMemoId());
+			intent.putExtra(MemoListFragment.MemoIdCloseAfterwards, true);
+			
+			startActivity(intent);
+		}
+		
+	}
+	
 	private void startFadeOutAnimation(boolean correct, boolean active) {
 
 		m_memo.setDisplayed(m_memo.getDisplayed() + 1);
@@ -656,5 +697,67 @@ public class ReviewActivity extends AdActivity {
 		m_txtMemo2.setAnimation(m_fadeOutAnswer);
 		m_lblLang2.clearAnimation();
 		m_lblLang2.setAnimation(m_fadeOutAnswer);
+	}
+	
+	
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		m_activityState.save(outState);
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		m_activityState.restore(savedInstanceState);
+	}
+
+	class ActivityState {
+		
+		public void restore(Bundle state) {
+
+			try {
+
+				m_memos = Memo.deserializeList(new JSONArray(state.getString("m_memos")));
+				m_memo = new Memo().deserialize(new JSONObject(state.getString("m_memo")));
+				m_toGuess = state.getString("m_toGuess");
+				m_toGuessLanguage = Language.values()[state.getInt("m_toGuessLanguage")];
+				m_toGuessItem = state.getInt("m_toGuessItem");
+				m_currentMemo = state.getInt("m_currentMemo");
+				m_uiCurrentMemo = state.getInt("m_uiCurrentMemo");
+				m_mode = state.getInt("m_mode");
+				m_access = Access.values()[state.getInt("m_mode")];
+				m_answerCorrect = state.getBoolean("m_answerCorrect");
+				m_uiProgress = state.getFloat("m_uiProgress");
+				m_sentences = MemoSentence.deserializeList(new JSONArray(state.getString("m_sentences")));
+				
+			} catch(Exception ex) {
+				AppLog.e("ReviewActivity.restore", "Failed to restore state");
+			}
+		}
+		
+		public void save(Bundle state) {
+
+			try {
+				
+				state.putString("m_memos", Memo.serializeList(m_memos).toString());
+				state.putString("m_memo", m_memo.serialize().toString());
+				state.putString("m_toGuess", m_toGuess);
+				state.putInt("m_toGuessLanguage", m_toGuessLanguage.ordinal());
+				state.putInt("m_toGuessItem", m_toGuessItem);
+				state.putInt("m_currentMemo", m_currentMemo);
+				state.putInt("m_uiCurrentMemo", m_uiCurrentMemo);
+				state.putInt("m_mode", m_mode);
+				state.putInt("m_access", m_access.ordinal());
+				state.putBoolean("m_answerCorrect", m_answerCorrect);
+				state.putFloat("m_uiProgress", m_uiProgress);
+				state.putString("m_sentences", MemoSentence.serializeList(m_sentences).toString());
+				
+			} catch(Exception ex) {
+				AppLog.e("ReviewActivity.save", "Failed to save state");
+			}
+		}
+		
 	}
 }

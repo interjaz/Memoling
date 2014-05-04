@@ -82,7 +82,7 @@
 					    android:layout_height="wrap_content"
 				        android:orientation="horizontal" >
 
-						<EditText
+						<app.memoling.android.ui.control.CancellableEditText
 						    android:id="@+id/memolist_txtAddMemo"
 				            style="@style/Theme.Darktheme.EditText.Dark"
 						    android:layout_width="wrap_content"
@@ -90,8 +90,7 @@
 						    android:ems="10"
 				            android:layout_weight="8.0"
 				            android:hint="@string/memolist_txtAddMemoHint"
-						    android:inputType="text" >
-						</EditText>
+						    android:inputType="text" />
 
 				        <Button
 				            android:id="@+id/memolist_btnShowLang"
@@ -109,7 +108,7 @@
 				        android:layout_height="wrap_content"
 				        android:orientation="horizontal" >
 
-				        <EditText
+				        <app.memoling.android.ui.control.CancellableEditText
 				            android:id="@+id/memolist_txtAddMemoTranslated"
 				            style="@style/Theme.Darktheme.EditText.Dark"
 				            android:hint="@string/memolist_txtAddMemoTranslatedHint"

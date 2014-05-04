@@ -2,11 +2,15 @@
 <resources>
     
     <string name="memolist_whatsNewContent">		
-		No ads till the end of April 2014!\n
+		No ads for now.\n
 		If you like application please rate the app.\n
 		\n 
 		If you spot a bug, please write a post on application fb site. Thanks!\n
 		\n
+		Changes v.1.10.0\n
+		1. Synchronization (beta) - Data can now be edited online too\n
+		2. Anki import/export\n
+		3. Some improvements and tweaks\n
 		Changes v.1.9.2\n
 		1. Bug fixes\n
 		Changes v.1.9.1\n
@@ -211,6 +215,7 @@
     <string name="review_btnCorrect">Mark as Correct</string>
     <string name="review_btnIncorrect">Mark as Incorrect</string>
     <string name="review_btnDeactivate">Deactivate</string>
+    <string name="review_btnEdit">Edit</string>
 
     <!-- Statistics Fragment -->
     <string name="statistics_title">Statistics</string>

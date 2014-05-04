@@ -35,10 +35,13 @@ public class MemoFragment extends FacebookFragment {
 	private final static int TabSize = 3;
 
 	public final static String MemoId = "MemoId";
+	public final static String MemoIdCloseAfterwards = "MemoIdCloseAfterwards";
 
 	private ViewPager m_pager;
 	private MyPagerAdapter m_adapter;
 
+	private boolean m_memoIdCloseAfterwards = false;
+	
 	private String m_memoId;
 	private MemoAdapter m_memoAdapter;
 	private Memo m_memo;
@@ -81,13 +84,18 @@ public class MemoFragment extends FacebookFragment {
 		if (fragment != null) {
 			boolean carryOn = ((IMemoPagerFragment) fragment).onBackPressed();
 
-			if (!carryOn) {
+			if (!carryOn) {				
 				return false;
 			}
 
 			if (item != 0) {
 				m_pager.setCurrentItem(item - 1);
 				return false;
+			} else {
+				if(m_memoIdCloseAfterwards) {
+					getActivity().finish();
+					return false;
+				}
 			}
 		}
 
@@ -97,6 +105,8 @@ public class MemoFragment extends FacebookFragment {
 	@Override
 	protected void onDataBind(Bundle savedInstanceState) {
 		m_memoId = getArguments().getString(MemoId);
+		m_memoIdCloseAfterwards = getArguments().get(MemoIdCloseAfterwards) != null;
+		
 		m_memo = m_memoAdapter.getDeep(m_memoId);
 		setTitle(m_memo.getWordA().getWord() + " - " + m_memo.getWordB().getWord());
 		setSupportProgress(0.5f);
@@ -109,6 +119,12 @@ public class MemoFragment extends FacebookFragment {
 		m_originalDescriptionB = m_memo.getWordB().getDescription();
 		m_originalActive = m_memo.getActive();
 
+		if(m_adapter.getCacheSize() > 0) {
+			for(int i=0;i<3;i++) {
+				bindFragment(m_adapter.getCachedItem(i));
+			}
+		}
+		
 		SentenceProvider.getSentences(getActivity(), m_memo.getWordA().getWord(), m_memo.getMemoId(), m_memo.getWordA()
 				.getLanguage(), m_memo.getWordB().getLanguage(), new IGetComplete() {
 			@Override

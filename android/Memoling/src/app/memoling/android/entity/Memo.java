@@ -1,8 +1,11 @@
 package app.memoling.android.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -203,6 +206,34 @@ public class Memo implements ISyncEntity {
 		}
 
 		return this;
+	}
+	
+	public static JSONArray serializeList(List<Memo> memos) throws JSONException {
+		JSONArray array = new JSONArray();
+		
+		if(memos == null) {
+			return array;
+		}
+		
+		for(Memo memo : memos) {
+			array.put(memo.serialize());
+		}
+		
+		return array;
+	}
+	
+	public static List<Memo> deserializeList(JSONArray memos) throws JSONException {
+		ArrayList<Memo> array = new ArrayList<Memo>();
+		
+		if(memos == null) {
+			return array;
+		}
+		
+		for(int i=0;i<memos.length();i++) {
+			array.add(new Memo().deserialize(memos.getJSONObject(i)));
+		}
+		
+		return array;
 	}
 
 	@Override
