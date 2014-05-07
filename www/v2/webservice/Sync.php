@@ -46,13 +46,15 @@ class Sync extends Webservice {
             $gzipSyncPackage = base64_decode($baseSyncPackage);
             $jsonSyncPackage = gzdecode($gzipSyncPackage);
                         
+            Log::save("Sync.SyncBase64 message: " . $jsonSyncPackage);
+            
             $jsonServerPackage = $this->sync($jsonSyncPackage);
             $gzipSyncPackage = gzencode($jsonServerPackage);
             $baseSyncPackage =  base64_encode($gzipSyncPackage);
             
             echo $baseSyncPackage;
         } catch(Exception $ex) {
-			Log::save("SyncBase64 Exception", $ex, Log::PRIO_HIGH);
+			Log::save("Sync.SyncBase64 Exception", $ex, Log::PRIO_HIGH);
             echo "false";
         }
     }
@@ -103,7 +105,7 @@ class Sync extends Webservice {
 			return $serverPackage->encode();
 			
 		} catch(Exception $ex) {
-			Log::save("Sync Exception", $ex, Log::PRIO_HIGH);
+			Log::save("Sync.sync Exception", $ex, Log::PRIO_HIGH);
 			return null;
 		}
 	}
