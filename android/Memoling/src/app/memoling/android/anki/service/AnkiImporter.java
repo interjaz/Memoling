@@ -10,6 +10,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -109,7 +110,6 @@ public class AnkiImporter {
 			}
 			
 			private void performAlertDialog(AnkiMessage... ankiMessage) {
-				
 				
 				final Lock publishingLock = ankiMessage[0].getPublishingLock();
 				
@@ -453,9 +453,8 @@ public class AnkiImporter {
 			}
 			
 			// TODO there is a need to cut out the initial wordB from wordA, strange
-			tmpAnkiNote.getFlds();
-			String ankiWordA = "";
-			String ankiWordB = tmpAnkiNote.getSfld();
+			String ankiWordB = stripHtml(tmpAnkiNote.getSfld().trim());
+			String ankiWordA = stripHtml(tmpAnkiNote.getFlds().trim()).substring(ankiWordB.length());
 			
 			// in Anki base there is no information about input language
 			// we will ask user for going through short questions
@@ -491,5 +490,9 @@ public class AnkiImporter {
 		}
 		
 		return memosFromAnkiDeck;
+	}
+	
+	public String stripHtml(String html) {
+	    return Html.fromHtml(html).toString();
 	}
 }
