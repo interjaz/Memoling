@@ -13,10 +13,10 @@ import android.content.DialogInterface;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 import app.memoling.android.R;
 import app.memoling.android.adapter.MemoAdapter;
 import app.memoling.android.adapter.MemoAdapter.Sort;
@@ -55,15 +55,18 @@ public class AnkiImporter {
 			boolean showHideButtonInProgressBarDialog = false;
 			boolean progressBarDialogCreated = false;
 			AlertDialog progressAlertDialog;
-			ProgressBar m_ankiImportProgressBar;
+			ProgressBar ankiImportProgressBar;
+			TextView progressInfo;
 			
 			private void createProgressAlertDialog() {
 				LayoutInflater inflater = LayoutInflater.from(ctx);
-				View view = inflater.inflate(R.layout.dialog_language_progressbar, null);
-
-				m_ankiImportProgressBar = (ProgressBar) view.findViewById(R.id.ankiImport_progressBar);
-				m_ankiImportProgressBar.setMax(100);
-				m_ankiImportProgressBar.setProgress(0);
+				View view = inflater.inflate(R.layout.dialog_language_progressbar_with_progressinfo, null);
+				
+				progressInfo = (TextView) view.findViewById(R.id.ankiImport_progressInfo);
+				
+				ankiImportProgressBar = (ProgressBar) view.findViewById(R.id.ankiImport_progressBar);
+				ankiImportProgressBar.setMax(100);
+				ankiImportProgressBar.setProgress(0);
 				
 				progressAlertDialog = new AlertDialog.Builder(ctx)
 				.setTitle(ctx.getString(R.string.ankiImporter_ctxmenu_importProgressTitle))
@@ -73,7 +76,7 @@ public class AnkiImporter {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// hide the progress
-						
+						Toast.makeText(ctx, R.string.ankiImporter_importInBackground, Toast.LENGTH_SHORT).show();
 					}
 				})
 				.setIcon(R.drawable.ic_dialog_alert_holo_dark).create();
@@ -100,39 +103,49 @@ public class AnkiImporter {
 				}
 				
 				int progressBarValue = ankiMessage[0].getProgressBarValue();
-				m_ankiImportProgressBar.setProgress(progressBarValue);
+				ankiImportProgressBar.setProgress(progressBarValue);
+				
+				progressInfo.setText(ankiMessage[0].getProgressInfo());
 			}
 			
 			private void cancelProgressBar(AnkiMessage... ankiMessage) {
 				int progressBarValue = ankiMessage[0].getProgressBarValue();
-				m_ankiImportProgressBar.setProgress(progressBarValue);
+				ankiImportProgressBar.setProgress(progressBarValue);
 				progressAlertDialog.cancel();
 			}
 			
 			private void performAlertDialog(AnkiMessage... ankiMessage) {
 				
 				final Lock publishingLock = ankiMessage[0].getPublishingLock();
+				final String leftWord =  ankiMessage[0].getLeftWord();
+				final String rightWord =  ankiMessage[0].getRightWord();
 				
 				LayoutInflater inflater = LayoutInflater.from(ctx);
-				View view = inflater.inflate(R.layout.dialog_language_spinners, null);
+				View view = inflater.inflate(R.layout.dialog_language_spinners_with_example_text, null);
 				
-				final LanguageSpinner m_spLanguageFrom = (LanguageSpinner) view.findViewById(R.id.ankiImport_spLanguageFrom);
-				final LanguageSpinner m_spLanguageTo = (LanguageSpinner) view.findViewById(R.id.ankiImport_spLanguageTo);
-				final Button m_btnLanguageSwap = (Button) view.findViewById(R.id.ankiImport_btnLanguageSwap);
-				final CheckBox m_applySettingsCheckbox = (CheckBox) view.findViewById(R.id.ankiImport_checkBox);
+				final LanguageSpinner spLanguageFrom = (LanguageSpinner) view.findViewById(R.id.ankiImport_spLanguageFrom);
+				final LanguageSpinner spLanguageTo = (LanguageSpinner) view.findViewById(R.id.ankiImport_spLanguageTo);
+				final CheckBox applySettingsCheckbox = (CheckBox) view.findViewById(R.id.ankiImport_checkBox);
+				final TextView leftWordFromExamplePair = (TextView) view.findViewById(R.id.ankiImport_leftWordFromExamplePair);
+				final TextView rightWordFromExamplePair = (TextView) view.findViewById(R.id.ankiImport_rightWordFromExamplePair);
 				
-				m_btnLanguageSwap.setOnClickListener(new OnClickListener() {				
-					@Override
-					public void onClick(View arg0) {
-						int from = m_spLanguageFrom.getSelectedItemPosition();
-						int to = m_spLanguageTo.getSelectedItemPosition();
-						m_spLanguageTo.setSelection(from);
-						m_spLanguageFrom.setSelection(to);
-					}
-				});
+				leftWordFromExamplePair.setText(leftWord);
+				rightWordFromExamplePair.setText(rightWord);
 				
-				m_spLanguageFrom.bindData(ctx);
-				m_spLanguageTo.bindData(ctx);
+				spLanguageFrom.bindData(ctx);
+				spLanguageTo.bindData(ctx);
+				
+				if(languageFrom != null) {
+					spLanguageFrom.setSelection(languageFrom);	
+				} else {
+					spLanguageFrom.setSelection(Language.Unsupported);
+				}
+				
+				if(languageTo != null) {
+					spLanguageTo.setSelection(languageTo);
+				} else {
+					spLanguageTo.setSelection(Language.Unsupported);
+				}
 				
 				// start activity for result, there is a need to determine the languages
 				new AlertDialog.Builder(ctx)
@@ -145,10 +158,10 @@ public class AnkiImporter {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								// take the information about selected languages from the user
-								languageFrom = ((LanguageView) m_spLanguageFrom.getSelectedItem()).getLanguage();
-								languageTo = ((LanguageView) m_spLanguageTo.getSelectedItem()).getLanguage();
+								languageFrom = ((LanguageView) spLanguageFrom.getSelectedItem()).getLanguage();
+								languageTo = ((LanguageView) spLanguageTo.getSelectedItem()).getLanguage();
 								
-								applySettingsToAllDecks = ((CheckBox) m_applySettingsCheckbox).isChecked();
+								applySettingsToAllDecks = ((CheckBox) applySettingsCheckbox).isChecked();
 								
 								// notify the waiting thread
 								synchronized(publishingLock) {
@@ -258,7 +271,8 @@ public class AnkiImporter {
 				Integer progressChunk = Integer.valueOf(0);
 				Integer ankiMessageType = 2;
 				
-				AnkiMessage progressBarValueMessage = new AnkiMessage(ankiMessageType, progressBarValue);
+				AnkiMessage progressBarValueMessage = new AnkiMessage(ankiMessageType, progressBarValue, 
+						ctx.getString(R.string.ankiImporter_progressInfo_loading));
 				publishProgress(progressBarValueMessage);
 				
 				// unpack the file *.apkg
@@ -299,15 +313,19 @@ public class AnkiImporter {
 					MemoBase destinationMemoBase;
 					boolean theDeckAlreadyExists;
 					
-					// information was read from the file
-					progressBarValue = Integer.valueOf(5);
-					progressBarValueMessage.setProgressBarValue(progressBarValue);
-					publishProgress(progressBarValueMessage);
+					// set progress chunk
 					numberOfDecks = ankiDecks.size();
-					progressChunk = 95 / numberOfDecks;
+					progressChunk = 100 / numberOfDecks;
 					
 					// for every anki deck
 					for (AnkiDeck ankiDeck : ankiDecks) {
+						
+						// importing of a deck
+						progressBarValue = progressBarValue.intValue() + progressChunk;
+						progressBarValueMessage.setProgressBarValue(progressBarValue);
+						progressBarValueMessage.setProgressInfo(ctx.getString(R.string.ankiImporter_progressInfo_loadingDeck) + ankiDeck.getName());
+						publishProgress(progressBarValueMessage);
+						
 						findDestinationMemoBaseId = null;
 						destinationMemoBase = null;
 						// check if there is corresponding memoling deck
@@ -327,7 +345,16 @@ public class AnkiImporter {
 							// if it is not then we will create new deck	
 							destinationMemoBase = createMemoBase(ctx,ankiDeck);
 							findDestinationMemoBaseId = destinationMemoBase.getMemoBaseId();
+						}
+						
+						// prepare cards for that deck, it will be best if this would be multithreaded and the cards in the list should be removed 
+						final List<AnkiCard> ankiCardsFromAnkiBase = ankiImportAdapter.getAnkiCards(ankiDeck.getDeckId().getTime(), Sort.CreatedDate, Order.ASC);
 
+						// convert AnkiCard to Memo
+						final List<Memo> externalMemos = convertAnkiCardsIntoMemos(ankiCardsFromAnkiBase, 
+								ankiNotes, findDestinationMemoBaseId, destinationMemoBase, languageFrom, languageTo);
+						
+						if(!theDeckAlreadyExists) {
 							if(!applySettingsToAllDecks){
 								// publishing lock created
 								Lock alertDialogLock = new ReentrantLock();
@@ -335,7 +362,14 @@ public class AnkiImporter {
 									// lock taken
 									alertDialogLock.lock();
 									// ask user about the languages in decks
-									publishProgress(new AnkiMessage(1,alertDialogLock));
+									if(externalMemos.size() > 0) {
+										publishProgress(new AnkiMessage(1,alertDialogLock, 
+												externalMemos.get(0).getWordA().getWord(), externalMemos.get(0).getWordB().getWord()));	
+									} else {
+										publishProgress(new AnkiMessage(1,alertDialogLock, 
+												"abc", "abc"));
+									}
+									
 									// waiting for response from user
 									synchronized(alertDialogLock) {
 										alertDialogLock.wait();	
@@ -349,13 +383,6 @@ public class AnkiImporter {
 							}
 						}
 												
-						// prepare cards for that deck, it will be best if this would be multithreaded and the cards in the list should be removed 
-						final List<AnkiCard> ankiCardsFromAnkiBase = ankiImportAdapter.getAnkiCards(ankiDeck.getDeckId().getTime(), Sort.CreatedDate, Order.ASC);
-
-						// convert AnkiCard to Memo
-						final List<Memo> externalMemos = convertAnkiCardsIntoMemos(ankiCardsFromAnkiBase, 
-								ankiNotes, findDestinationMemoBaseId, destinationMemoBase, languageFrom, languageTo);
-						
 						final MemoAdapter memoAdapter = new MemoAdapter(ctx);
 						final List<Memo> internalMemos = memoAdapter.getAllDeep(findDestinationMemoBaseId, Sort.CreatedDate, Order.ASC);
 						final String destinationMemoBaseId = findDestinationMemoBaseId;
@@ -378,11 +405,6 @@ public class AnkiImporter {
 							publishingLock.unlock();
 							e.printStackTrace();
 						}
-						
-						// the deck was imported
-						progressBarValue = progressBarValue.intValue() + progressChunk;
-						progressBarValueMessage.setProgressBarValue(progressBarValue);
-						publishProgress(progressBarValueMessage);
 					}
 					// the deck was imported
 					ankiMessageType = 3;
@@ -398,6 +420,8 @@ public class AnkiImporter {
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
 				// TODO on post execute action
+				Toast.makeText(ctx, R.string.ankiImporter_importCompleted, Toast.LENGTH_SHORT).show();
+				
 				AnkiIOEngine.onAnkiImportComplete();
 			}
 

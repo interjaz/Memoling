@@ -468,5 +468,10 @@
     <string name="ankiImporter_ctxmenu_languagesSelectionCheckbox">Apply the settings to all decks</string> 
     <string name="ankiImporter_ctxmenu_importProgressTitle">Anki import progress</string>
     <string name="ankiImporter_ctxmenu_importProgressHide">Hide</string>
+    <string name="ankiImporter_progressInfo_loading">Initializing import... </string>
+    <string name="ankiImporter_progressInfo_loadingDeck">Importing deck: </string>
+    <string name="ankiImporter_importInBackground">Importing in background</string>
+    <string name="ankiImporter_importCompleted">Import accomplished</string>
+    
     
 </resources>

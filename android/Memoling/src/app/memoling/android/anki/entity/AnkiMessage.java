@@ -20,6 +20,12 @@ public class AnkiMessage {
 	
 	private Integer progressBarValue;
 	
+	private String leftWord;
+	
+	private String rightWord;
+
+	private String progressInfo;
+	
 	public AnkiMessage(Integer messageType, String destinationMemoBaseId, List<Memo> internalMemos, List<Memo> externalMemos, Lock publishingLock){
 		this.messageType = messageType;
 		this.internalMemos = internalMemos;
@@ -28,14 +34,17 @@ public class AnkiMessage {
 		this.publishingLock = publishingLock;
 	}
 	
-	public AnkiMessage(Integer messageType, Lock publishingLock) {
+	public AnkiMessage(Integer messageType, Lock publishingLock, String leftWord, String rightWord) {
 		this.messageType = messageType;
 		this.publishingLock = publishingLock;
+		this.leftWord = leftWord;
+		this.rightWord = rightWord;
 	}
 	
-	public AnkiMessage(Integer messageType, Integer progressBarValue) {
+	public AnkiMessage(Integer messageType, Integer progressBarValue, String progressInfo) {
 		this.messageType = messageType;
 		this.progressBarValue = progressBarValue;
+		this.progressInfo = progressInfo;
 	}
 
 	public List<Memo> getInternalMemos() {
@@ -68,5 +77,21 @@ public class AnkiMessage {
 	
 	public void setProgressBarValue(Integer progressBarValue) {
 		this.progressBarValue = progressBarValue;
+	}
+
+	public String getLeftWord() {
+		return leftWord;
+	}
+
+	public String getRightWord() {
+		return rightWord;
+	}
+
+	public String getProgressInfo() {
+		return progressInfo;
+	}
+
+	public void setProgressInfo(String progressInfo) {
+		this.progressInfo = progressInfo;
 	}
 }
