@@ -178,7 +178,7 @@ public class AnkiImporter {
 									publishingLock.notify();	
 								}
 							}
-						}).setIcon(R.drawable.ic_dialog_alert_holo_dark).create().show();
+						}).setIcon(R.drawable.ic_import).create().show();
 			}
 			
 			private void performSync(AnkiMessage... ankiMessage) {
