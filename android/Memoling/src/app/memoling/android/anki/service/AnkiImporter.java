@@ -271,16 +271,21 @@ public class AnkiImporter {
 									destinationMemoBaseId = destinationMemoBase.getMemoBaseId();
 								} 
 								
-								// convert AnkiCard to Memo
-								final List<Memo> externalMemos = convertAnkiCardsIntoMemos(ankiCardsFromAnkiBase, 
+								Memo exampleMemo = convertAnkiCardIntoMemo(ankiCardsFromAnkiBase, 
 										ankiNotes, destinationMemoBaseId, destinationMemoBase, languageFrom, languageTo);
 
-								if(!applySettingsToAllDecks){
+								if(!applySettingsToAllDecks && exampleMemo != null){
 									// ask user about the languages in decks
-									askUserAboutDeck(externalMemos);	
+									askUserAboutDeck(exampleMemo);
+								} else if(exampleMemo == null) {
+									skipThisDeck = true;
 								}
 								
 								if(!skipThisDeck && !skipRestOfDecks) {
+									// convert AnkiCard to Memo
+									final List<Memo> externalMemos = convertAnkiCardsIntoMemos(ankiCardsFromAnkiBase, 
+											ankiNotes, destinationMemoBaseId, destinationMemoBase, languageFrom, languageTo);
+									
 									// load internal memos
 									final List<Memo> internalMemos = memoAdapter.getAllDeep(destinationMemoBaseId, Sort.CreatedDate, Order.ASC);
 
@@ -315,7 +320,7 @@ public class AnkiImporter {
 				AnkiIOEngine.onAnkiImportComplete();
 			}
 			
-			private void askUserAboutDeck(List<Memo> externalMemos) {
+			private void askUserAboutDeck(Memo exampleMemo) {
 				// publishing lock created
 				Lock alertDialogLock = new ReentrantLock();
 				try {
@@ -323,7 +328,7 @@ public class AnkiImporter {
 					alertDialogLock.lock();
 					// ask user about the languages in decks
 					publishProgress(new AnkiMessage(1,alertDialogLock, 
-							externalMemos.get(0).getWordA().getWord(), externalMemos.get(0).getWordB().getWord()));	
+							exampleMemo.getWordA().getWord(), exampleMemo.getWordB().getWord()));	
 					
 					// waiting for response from user
 					synchronized(alertDialogLock) {
@@ -360,7 +365,7 @@ public class AnkiImporter {
 
 		}.execute();
 	}
-	
+
 	private void performSync(AnkiMessage... ankiMessage) {
 		final MemoAdapter memoAdapter = new MemoAdapter(ctx);
 		final List<Memo> internalMemos = ankiMessage[0].getInternalMemos();
@@ -543,6 +548,68 @@ public class AnkiImporter {
 	private void deleteMemoBase(String memoBaseId) {
 		String syncClientId = new SyncClientAdapter(ctx).getCurrentSyncClientId();
 		memoBaseAdapter.delete(memoBaseId, syncClientId);
+	}
+	
+	protected Memo convertAnkiCardIntoMemo( List<AnkiCard> ankiCards, 
+			List<AnkiNote> ankiNotes, String memoBaseId, MemoBase memoBase, Language languageFrom, Language languageTo) {
+		
+		// for every AnkiCard try to find corresponding one AnkiNote
+		for (AnkiCard ankiCard : ankiCards) {	
+			// we process only cards that are the first from the pair
+			if(ankiCard.getOrd() != 0){
+				continue;
+			}
+			
+			AnkiNote tmpAnkiNote = null;
+			// TODO change this maybe to map: m_NoteId => AnkiNote
+			for (AnkiNote ankiNote : ankiNotes) {
+				if(ankiCard.getNoteId().equals(ankiNote.getNoteId())) {
+					tmpAnkiNote = ankiNote;
+					break;
+				}
+			}
+			// check if there was AnkiNote found
+			if(tmpAnkiNote == null) {
+				continue;
+			}
+			
+			// TODO there is a need to cut out the initial wordB from wordA, strange
+			String ankiWordB = stripHtml(tmpAnkiNote.getSfld().trim());
+			String ankiWordA = stripHtml(tmpAnkiNote.getFlds().trim()).substring(ankiWordB.length());
+			
+			// in Anki base there is no information about input language
+			// we will ask user for going through short questions
+			Word wordA = new Word(UUID.randomUUID().toString(), ankiWordA, languageFrom);
+			Word wordB = new Word(UUID.randomUUID().toString(), ankiWordB, languageTo);
+			
+			Memo newMemo = new Memo(wordA, wordB, memoBaseId);
+			// there is (all answers - wrong answers) of correct answers
+			newMemo.setCorrectAnsweredWordA(ankiCard.getNumberAllAnswers() - ankiCard.getNumberWrongAnswers());
+			newMemo.setCreated(ankiCard.getCardId());
+			newMemo.setLastReviewed(ankiCard.getLastModification());
+			newMemo.setMemoBase(memoBase);
+			
+			AnkiCard secondAnkiCard = null;
+			// get the index of current element
+			int indexOfAnkiCard = ankiCards.indexOf(ankiCard);
+			// check if the next one exists and if it has the same corresponding AnkiNote
+			if(indexOfAnkiCard + 1 < ankiCards.size() && ankiCards.get(indexOfAnkiCard + 1).getNoteId().equals(ankiCard.getNoteId())) {
+				secondAnkiCard = ankiCards.get(indexOfAnkiCard + 1);
+			}
+			if(secondAnkiCard != null) {
+				// there is (all answers - wrong answers) of correct answers
+				newMemo.setCorrectAnsweredWordB(secondAnkiCard.getNumberAllAnswers() - secondAnkiCard.getNumberWrongAnswers());
+				// second card exists so all answers is a sum of both cards
+				newMemo.setDisplayed(ankiCard.getNumberAllAnswers() + secondAnkiCard.getNumberAllAnswers());
+			} else {
+				// second card do not exist so only answers from first card is taken
+				newMemo.setDisplayed(ankiCard.getNumberAllAnswers());
+			}
+			
+			// add the newly created memo to the memoList
+			return newMemo;
+		}
+		return null;
 	}
 	
 	private List<Memo> convertAnkiCardsIntoMemos(List<AnkiCard> ankiCards, 
