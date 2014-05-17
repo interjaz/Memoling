@@ -50,6 +50,7 @@ public class AnkiImporter {
 	private AnkiImportAdapter ankiImportAdapter;
 	private MemoBaseAdapter memoBaseAdapter;
 	private MemoAdapter memoAdapter;
+	private String path;
 	
 	private Language languageFrom = null;
 	private Language languageTo = null;
@@ -62,11 +63,14 @@ public class AnkiImporter {
 	private AnkiConfiguration ankiDefaultConfiguration;
 	private List<AnkiDeck> ankiDecks;
 	private List<MemoBase> memoBases;
+	private List<AnkiNote> ankiNotes;
+	private List<AnkiCollection> ankiCollections;
 	
 	private Integer numberOfDecks = Integer.valueOf(0);
 	private Integer progressChunk = Integer.valueOf(0);
 	
 	private ProgressDialogManager progressDialogManager;
+	private AnkiImporterManager ankiImporterManager;
 	
 	private class ProgressDialogManager {
 		private TextView progressInfo;
@@ -125,6 +129,7 @@ public class AnkiImporter {
 		
 		private AnkiMessage initializeProgressDialog() {
 			ankiMessageType = 2;
+			progressBarValue = 0;
 			
 			progressBarValueMessage = new AnkiMessage(ankiMessageType, progressBarValue, 
 					ctx.getString(R.string.ankiImporter_progressInfo_loading));
@@ -145,17 +150,48 @@ public class AnkiImporter {
 		}
 	}
 	
-	private class AnkiManager {
+	private class AnkiImporterManager {
+		private void initializeAnkiImporter() {
+			// unpack the file *.apkg
+			AnkiIOEngine.unpackFile(path);
+			
+			String databaseName = AnkiIOEngine.getImportDatabaseName();
+			int databaseVersion = AnkiIOEngine.getImportDatabaseVersion();
+			
+			// open imported database
+			ankiImportAdapter = new AnkiImportAdapter(ctx, databaseName, databaseVersion, true);
+			// all notes from anki
+			ankiNotes = ankiImportAdapter.getAllAnkiNotes(Sort.CreatedDate, Order.ASC);
+			// collections described in the database
+			ankiCollections = ankiImportAdapter.getAllAnkiCollections(Sort.CreatedDate, Order.ASC);
+		}
 		
+		private void parseAnkiFile() {
+			// parse 'conf' column
+			ankiConfiguration = AnkiCollection.getConfigurationDescription(ankiCollections.get(0).getConfiguration());
+			
+			// parse 'models' column
+//			List<AnkiModel> ankiModels = AnkiCollection.getModelsDescription(ankiCollections.get(0).getModels());
+			
+			// parse 'decks' column
+			ankiDecks = AnkiCollection.getDecksDescription(ankiCollections.get(0).getDecks());
+								
+			// parse 'dconf' column
+			ankiDefaultConfiguration = AnkiCollection.getConfigurationDescription(ankiCollections.get(0).getDefaultConfiguration());
+			
+			// parse 'tags' column
+		}
 	}
 	
 	public AnkiImporter(final Context ctx, final String path, final OnConflictResolveHaltable<Memo> onConflictMemo, final OnSyncComplete onComplete) {
 		this.ctx = ctx;
 		this.onConflictMemo = onConflictMemo;
+		this.path = path;
 		
 		progressDialogManager = new ProgressDialogManager();
 		memoBaseAdapter = new MemoBaseAdapter(ctx);
 		memoAdapter = new MemoAdapter(ctx);
+		ankiImporterManager = new AnkiImporterManager();
 		
 		// create new worker and execute it to work in background
 		new WorkerThread<Void, AnkiMessage, Void>() {
@@ -177,42 +213,22 @@ public class AnkiImporter {
 			@Override
 			protected Void doInBackground(Void... params) {		
 				
+				// initialize the dialog with a progress bar
 				publishProgress(progressDialogManager.initializeProgressDialog());
-				
-				// unpack the file *.apkg
-				AnkiIOEngine.unpackFile(path);
-				
-				String databaseName = AnkiIOEngine.getImportDatabaseName();
-				AnkiIOEngine.setImportDatabaseVersion(1);
-				int databaseVersion = AnkiIOEngine.getImportDatabaseVersion();
-				
-				// open imported database
-				ankiImportAdapter = new AnkiImportAdapter(ctx, databaseName, databaseVersion, true);
-				// all notes from anki
-				final List<AnkiNote> ankiNotes = ankiImportAdapter.getAllAnkiNotes(Sort.CreatedDate, Order.ASC);
-				// collections described in the database
-				final List<AnkiCollection> ankiCollections = ankiImportAdapter.getAllAnkiCollections(Sort.CreatedDate, Order.ASC);
+		
+				// initialize the importing
+				ankiImporterManager.initializeAnkiImporter();
 				
 				if(!ankiCollections.isEmpty()) {
-					// parse 'conf' column
-					ankiConfiguration = AnkiCollection.getConfigurationDescription(ankiCollections.get(0).getConfiguration());
 					
-					// parse 'models' column
-//					List<AnkiModel> ankiModels = AnkiCollection.getModelsDescription(ankiCollections.get(0).getModels());
+					// parsed information from anki file
+					ankiImporterManager.parseAnkiFile();
 					
-					// parse 'decks' column
-					ankiDecks = AnkiCollection.getDecksDescription(ankiCollections.get(0).getDecks());
-										
-					// parse 'dconf' column
-					ankiDefaultConfiguration = AnkiCollection.getConfigurationDescription(ankiCollections.get(0).getDefaultConfiguration());
-					
-					// parse 'tags' column
-					
-					// MemoBase adapter is used to get all MemoBase'es from the database
+					// get all memo bases from the memoling storage
 					memoBases = memoBaseAdapter.getAll();
 
-					// current 
-					String findDestinationMemoBaseId;
+					// local settings 
+					String destinationMemoBaseId;
 					MemoBase destinationMemoBase;
 					boolean theDeckAlreadyExists;
 					
@@ -220,57 +236,69 @@ public class AnkiImporter {
 					numberOfDecks = ankiDecks.size();
 					progressChunk = 100 / numberOfDecks;
 					
-					// for every anki deck
-					for (AnkiDeck ankiDeck : ankiDecks) {
-						
-						// importing of a deck
-						publishProgress(progressDialogManager.updateProgressDialog(progressChunk,2));
-						
-						findDestinationMemoBaseId = null;
-						destinationMemoBase = null;
-						
-						// check if there is corresponding memoling deck
-						theDeckAlreadyExists = false;
-						for (MemoBase memoBase : memoBases){
-							if(ankiDeck.getName().equals(memoBase.getName())) {
-								// if it is then we will be updating the content
-								findDestinationMemoBaseId = memoBase.getMemoBaseId();
-								destinationMemoBase = memoBase;
-								theDeckAlreadyExists = true;
-								break;
-							}
-						}
-						
-						if(!theDeckAlreadyExists) {
-							// if it is not then we will create new deck	
-							destinationMemoBase = createMemoBase(ctx,ankiDeck);
-							findDestinationMemoBaseId = destinationMemoBase.getMemoBaseId();
-						}
-						
-						// prepare cards for that deck, it will be best if this would be multithreaded and the cards in the list should be removed 
-						final List<AnkiCard> ankiCardsFromAnkiBase = ankiImportAdapter.getAnkiCards(ankiDeck.getDeckId().getTime(), Sort.CreatedDate, Order.ASC);
-
-						// convert AnkiCard to Memo
-						final List<Memo> externalMemos = convertAnkiCardsIntoMemos(ankiCardsFromAnkiBase, 
-								ankiNotes, findDestinationMemoBaseId, destinationMemoBase, languageFrom, languageTo);
-						
-						if(externalMemos.size() > 0) {
+					if(!skipRestOfDecks) {
+						// for every anki deck
+						for (AnkiDeck ankiDeck : ankiDecks) {
 							
-						}
-						
-						if(!theDeckAlreadyExists) {
-							if(!applySettingsToAllDecks){
-								// ask user about the languages in decks
-								askUserAboutDeck(externalMemos);
+							// importing of a deck
+							publishProgress(progressDialogManager.updateProgressDialog(progressChunk,2));
+							
+							// clear local settings 
+							destinationMemoBaseId = null;
+							destinationMemoBase = null;
+							theDeckAlreadyExists = false;
+							
+							// check if there is corresponding memoling deck
+							for (MemoBase memoBase : memoBases){
+								if(ankiDeck.getName().equals(memoBase.getName())) {
+									// if it is then we will be updating the content
+									destinationMemoBaseId = memoBase.getMemoBaseId();
+									destinationMemoBase = memoBase;
+									theDeckAlreadyExists = true;
+									break;
+								}
 							}
-						}
-												
-						
-						final List<Memo> internalMemos = memoAdapter.getAllDeep(findDestinationMemoBaseId, Sort.CreatedDate, Order.ASC);
-						final String destinationMemoBaseId = findDestinationMemoBaseId;
+														
+							// prepare cards for that deck, it will be best if this would be multithreaded and the cards in the list should be removed 
+							final List<AnkiCard> ankiCardsFromAnkiBase = ankiImportAdapter.getAnkiCards(ankiDeck.getDeckId().getTime(), Sort.CreatedDate, Order.ASC);
+							
+							// imported deck has at least one memo card ?
+							if(ankiCardsFromAnkiBase.size() > 0) {
 
-						// trigger for synchronization
-						triggerSync(destinationMemoBaseId, internalMemos, externalMemos);
+								if(!theDeckAlreadyExists) {
+									// if it is not then we will create new deck	
+									destinationMemoBase = createMemoBase(ankiDeck);
+									destinationMemoBaseId = destinationMemoBase.getMemoBaseId();
+								} 
+								
+								// convert AnkiCard to Memo
+								final List<Memo> externalMemos = convertAnkiCardsIntoMemos(ankiCardsFromAnkiBase, 
+										ankiNotes, destinationMemoBaseId, destinationMemoBase, languageFrom, languageTo);
+
+								if(!applySettingsToAllDecks){
+									// ask user about the languages in decks
+									askUserAboutDeck(externalMemos);	
+								}
+								
+								if(!skipThisDeck && !skipRestOfDecks) {
+									// load internal memos
+									final List<Memo> internalMemos = memoAdapter.getAllDeep(destinationMemoBaseId, Sort.CreatedDate, Order.ASC);
+
+									// trigger for synchronization
+									triggerSync(destinationMemoBaseId, internalMemos, externalMemos);	
+									
+									// reset skipThisDeck
+									skipThisDeck = false;
+								} else {
+									// delete newly created MemoBase
+									if(!theDeckAlreadyExists) {
+										deleteMemoBase(destinationMemoBaseId);
+									}
+									// reset skipThisDeck
+									skipThisDeck = false;
+								}
+							} 
+						}	
 					}
 					// import completed
 					publishProgress(progressDialogManager.updateProgressDialog(progressChunk,3));
@@ -479,6 +507,8 @@ public class AnkiImporter {
 						
 						if(applySettingsToAllDecks) {
 							skipRestOfDecks = true;
+						} else {
+							skipThisDeck = true;
 						}
 						
 						// notify the waiting thread
@@ -489,7 +519,7 @@ public class AnkiImporter {
 				}).setIcon(R.drawable.ic_import).create().show();
 	}
 	
-	private MemoBase createMemoBase(final Context context, AnkiDeck ankiDeck) {
+	private MemoBase createMemoBase(AnkiDeck ankiDeck) {
 		// create new MemoBase
 		MemoBase newMemoBase = new MemoBase(); 
 		// create random MemoBaseId
@@ -504,10 +534,15 @@ public class AnkiImporter {
 		newMemoBase.setName(ankiDeck.getName());
 		// add newly created MemoBase to the database
 		// [BB] Changed DAL
-		String syncClientId = new SyncClientAdapter(context).getCurrentSyncClientId();
+		String syncClientId = new SyncClientAdapter(ctx).getCurrentSyncClientId();
 		memoBaseAdapter.insert(newMemoBase, syncClientId);		
 		// return it for further use
 		return newMemoBase;
+	}
+	
+	private void deleteMemoBase(String memoBaseId) {
+		String syncClientId = new SyncClientAdapter(ctx).getCurrentSyncClientId();
+		memoBaseAdapter.delete(memoBaseId, syncClientId);
 	}
 	
 	private List<Memo> convertAnkiCardsIntoMemos(List<AnkiCard> ankiCards, 
