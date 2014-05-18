@@ -23,6 +23,16 @@ public class AnkiIOEngine {
 	private static String importDatabaseName;
 	private static int importDatabaseVersion;
 	
+	public static void removeFile(String path) {
+		// file with *.apkg
+//		File m_pkg = new File(path);
+//		m_pkg.delete();
+	}
+	
+	public static void cleanAfterImporting() {
+		setImportDatabaseName(null);
+	}
+	
 	public static void unpackFile(String path) {
 		// file with *.apkg
 		File m_pkg = new File(path);

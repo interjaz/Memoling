@@ -307,6 +307,8 @@ public class AnkiImporter {
 					}
 					// import completed
 					publishProgress(progressDialogManager.updateProgressDialog(progressChunk,3));
+					AnkiIOEngine.removeFile(path);
+					AnkiIOEngine.cleanAfterImporting();
 				}
 				return null;
 			}
