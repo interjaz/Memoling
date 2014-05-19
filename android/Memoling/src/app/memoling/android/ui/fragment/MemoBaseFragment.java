@@ -89,7 +89,6 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 
 	private PublishedMemoBaseUpload m_publishedUpload;
 
-	private int m_inoutSelectedWhich;
 	private int m_conflictResolveWhich;
 	
 	private InputMethodManager m_inputManager;
@@ -450,15 +449,11 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 		}
 
 		new AlertDialog.Builder(getActivity()).setTitle(getString(R.string.memobase_inoutTitle))
-				.setNeutralButton(getString(R.string.memobase_inoutConfirm), new DialogInterface.OnClickListener() {
+				.setSingleChoiceItems(stringArrayRes, -1, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						onSelected.onClick(dialog, m_inoutSelectedWhich);
-					}
-				}).setSingleChoiceItems(stringArrayRes, 0, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						m_inoutSelectedWhich = which;
+						onSelected.onClick(dialog, which);
+						dialog.dismiss();
 					}
 				}).create().show();
 
