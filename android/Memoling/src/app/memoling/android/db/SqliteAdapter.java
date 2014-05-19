@@ -6,6 +6,7 @@ import java.util.Hashtable;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import app.memoling.android.Config;
+import app.memoling.android.helper.AppLog;
 
 public abstract class SqliteAdapter {
 
@@ -51,6 +52,7 @@ public abstract class SqliteAdapter {
 
 		synchronized (m_tableHandle) {
 
+			try {
 			TableHandle handle = m_tableHandle.get(m_databaseName);
 			handle.ActiveConnections -= 1;
 
@@ -60,6 +62,9 @@ public abstract class SqliteAdapter {
 
 			if (close) {
 				close(handle);
+			}
+			} catch(Exception ex) {
+				AppLog.e("SqliteAdapter.closeDatabase", "Error", ex);
 			}
 		}
 	}
