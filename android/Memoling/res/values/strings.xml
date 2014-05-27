@@ -472,6 +472,7 @@
     <string name="ankiImporter_progressInfo_loadingDeck">Importing deck:</string>
     <string name="ankiImporter_importInBackground">Importing in background</string>
     <string name="ankiImporter_importCompleted">Import completed</string>
+    <string name="ankiImporter_importFailed">Import failed</string>
     
     
 </resources>

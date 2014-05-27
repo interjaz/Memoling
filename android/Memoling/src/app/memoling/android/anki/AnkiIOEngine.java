@@ -23,19 +23,36 @@ public class AnkiIOEngine {
 	private static String importDatabaseName;
 	private static int importDatabaseVersion;
 	
+	private static File tmpFile = null;
+	
 	public static void removeFile(String path) {
-		// file with *.apkg
-//		File m_pkg = new File(path);
-//		m_pkg.delete();
+		if(tmpFile != null) {
+			tmpFile.delete();			
+			tmpFile = null;
+		}
 	}
 	
 	public static void cleanAfterImporting() {
 		setImportDatabaseName(null);
 	}
 	
-	public static void unpackFile(String path) {
-		// file with *.apkg
-		File m_pkg = new File(path);
+	public static void unpackFile(String path) throws IOException {
+		// imported file
+		File importedFile = new File(path);
+		
+		// get file name
+		String fileName = importedFile.getName();
+		
+		// split it with dots
+		String[] fileParts = fileName.split("\\.");
+		
+		// check the last one if it is apkg
+		if(!(fileParts != null && fileParts.length > 1 && fileParts[fileParts.length - 1].equals("apkg"))) {
+			AppLog.e("AnkiParser.unpackFile", "Exception caused by improper file name");
+			// TODO throw custom Exception
+			throw new IOException();
+		} 
+		
 		// stream for reading
 		BufferedInputStream is = null;
 		// stream for writing
@@ -44,7 +61,7 @@ public class AnkiIOEngine {
 			// file entry
 			ZipEntry ze;
 			// initialize input stream with *.apkg
-			is = new BufferedInputStream(new FileInputStream(m_pkg));
+			is = new BufferedInputStream(new FileInputStream(importedFile));
 			// initialize zip input stream with input stream containing *.apkg
 			ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is));
 			try {
@@ -57,22 +74,30 @@ public class AnkiIOEngine {
 					// set the imported database name
 					if(getImportDatabaseName() == null) {
 						String[] originalFilenameSplitted = originalFilename.split("\\.");
-						if(originalFilenameSplitted[1].equals("anki")) {
-							setImportDatabaseVersion(0);
-						} else if(originalFilenameSplitted[1].equals("anki2")) {
-							setImportDatabaseVersion(1);
-						}
-						setImportDatabaseName(originalFilenameSplitted[0]);
-
-						// prepare a file with known filename in db catalogue
-						File m_tmp = new File(Config.AppPath + "/db/" + getImportDatabaseName() + ".sqlite");
-						// initialize the output stream with file location 
-						os = new BufferedOutputStream(new FileOutputStream(m_tmp));		
-						// read file
-						byte[] buffer = new byte[4096];
-						int read = 0;
-						while ((read = zis.read(buffer, 0, buffer.length)) > 0) {
-							os.write(buffer, 0, read);
+						int fileLength = originalFilenameSplitted.length;
+						
+						if(originalFilenameSplitted != null && fileLength > 1) {
+							if(originalFilenameSplitted[fileLength - 1].equals("anki")) {
+								setImportDatabaseVersion(0);
+							} else if(originalFilenameSplitted[fileLength - 1].equals("anki2")) {
+								setImportDatabaseVersion(1);
+							}
+							setImportDatabaseName(originalFilenameSplitted[fileLength - 2]);							
+							
+							// prepare a file with known filename in db catalogue
+							tmpFile = new File(Config.AppPath + "/db/" + getImportDatabaseName() + ".sqlite");
+							// initialize the output stream with file location 
+							os = new BufferedOutputStream(new FileOutputStream(tmpFile));		
+							// read file
+							byte[] buffer = new byte[4096];
+							int read = 0;
+							while ((read = zis.read(buffer, 0, buffer.length)) > 0) {
+								os.write(buffer, 0, read);
+							}
+						} else {
+							AppLog.e("AnkiParser.unpackFile", "Exception caused by improper unpacked file name");
+							// TODO throw custom Exception
+							throw new IOException();
 						}
 					}
 				}
@@ -81,6 +106,7 @@ public class AnkiIOEngine {
 			}
 		} catch (IOException ex) {
 			AppLog.e("AnkiParser.unpackFile", "Exception while extracting", ex);
+			throw ex;
 		} finally {
 			try {
 				if (is != null) {
@@ -91,6 +117,7 @@ public class AnkiIOEngine {
 				}
 			} catch (IOException ex) {
 				AppLog.e("AnkiParser.unpackFile", "Exception while closing", ex);
+				throw ex;
 			}
 		}	
 	}

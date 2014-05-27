@@ -1,5 +1,6 @@
 package app.memoling.android.anki.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -58,6 +59,7 @@ public class AnkiImporter {
 	private boolean skipRestOfDecks = false;
 	private boolean skipThisDeck = false;
 	private boolean showHideButtonInProgressBarDialog = false;
+	private boolean importSuccessful = false;
 	
 	private AnkiConfiguration ankiConfiguration;
 	private AnkiConfiguration ankiDefaultConfiguration;
@@ -151,19 +153,25 @@ public class AnkiImporter {
 	}
 	
 	private class AnkiImporterManager {
-		private void initializeAnkiImporter() {
+		private boolean initializeAnkiImporter() {
 			// unpack the file *.apkg
-			AnkiIOEngine.unpackFile(path);
-			
-			String databaseName = AnkiIOEngine.getImportDatabaseName();
-			int databaseVersion = AnkiIOEngine.getImportDatabaseVersion();
-			
-			// open imported database
-			ankiImportAdapter = new AnkiImportAdapter(ctx, databaseName, databaseVersion, true);
-			// all notes from anki
-			ankiNotes = ankiImportAdapter.getAllAnkiNotes(Sort.CreatedDate, Order.ASC);
-			// collections described in the database
-			ankiCollections = ankiImportAdapter.getAllAnkiCollections(Sort.CreatedDate, Order.ASC);
+			try {
+				AnkiIOEngine.unpackFile(path);
+
+				String databaseName = AnkiIOEngine.getImportDatabaseName();
+				int databaseVersion = AnkiIOEngine.getImportDatabaseVersion();
+				
+				// open imported database
+				ankiImportAdapter = new AnkiImportAdapter(ctx, databaseName, databaseVersion, true);
+				// all notes from anki
+				ankiNotes = ankiImportAdapter.getAllAnkiNotes(Sort.CreatedDate, Order.ASC);
+				// collections described in the database
+				ankiCollections = ankiImportAdapter.getAllAnkiCollections(Sort.CreatedDate, Order.ASC);
+			} catch (IOException e) {
+				AppLog.e("AnkiImporter.AnkiImporterManager.initializeAnkiImporter", "Unpacking failed");
+				return false;
+			}
+			return true;
 		}
 		
 		private void parseAnkiFile() {
@@ -217,9 +225,9 @@ public class AnkiImporter {
 				publishProgress(progressDialogManager.initializeProgressDialog());
 		
 				// initialize the importing
-				ankiImporterManager.initializeAnkiImporter();
+				boolean isInitSuccessful = ankiImporterManager.initializeAnkiImporter();
 				
-				if(!ankiCollections.isEmpty()) {
+				if(ankiCollections != null && !ankiCollections.isEmpty() && isInitSuccessful) {
 					
 					// parsed information from anki file
 					ankiImporterManager.parseAnkiFile();
@@ -307,9 +315,13 @@ public class AnkiImporter {
 					}
 					// import completed
 					publishProgress(progressDialogManager.updateProgressDialog(progressChunk,3));
+					importSuccessful = true;
 					AnkiIOEngine.removeFile(path);
 					AnkiIOEngine.cleanAfterImporting();
-				}
+				} else {
+					// import failed
+					publishProgress(progressDialogManager.updateProgressDialog(progressChunk,3));
+				} 
 				return null;
 			}
 
@@ -317,8 +329,12 @@ public class AnkiImporter {
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
 				// TODO on post execute action
-				Toast.makeText(ctx, R.string.ankiImporter_importCompleted, Toast.LENGTH_SHORT).show();
-				
+				if(importSuccessful) {
+					Toast.makeText(ctx, R.string.ankiImporter_importCompleted, Toast.LENGTH_SHORT).show();					
+				} else {
+					Toast.makeText(ctx, R.string.ankiImporter_importFailed, Toast.LENGTH_SHORT).show();
+				}
+
 				AnkiIOEngine.onAnkiImportComplete();
 			}
 			
