@@ -76,6 +76,7 @@ public class AnkiImporter {
 	
 	private class ProgressDialogManager {
 		private TextView progressInfo;
+		private TextView deckOfDecks;
 		private View view;
 		private LayoutInflater inflater;
 		private ProgressBar ankiImportProgressBar;
@@ -91,6 +92,7 @@ public class AnkiImporter {
 			view = inflater.inflate(R.layout.dialog_language_progressbar_with_progressinfo, null);
 			
 			progressInfo = (TextView) view.findViewById(R.id.ankiImport_progressInfo);
+			deckOfDecks = (TextView) view.findViewById(R.id.ankiImport_deckOfDecks);
 			
 			ankiImportProgressBar = (ProgressBar) view.findViewById(R.id.ankiImport_progressBar);
 			ankiImportProgressBar.setMax(100);
@@ -407,10 +409,17 @@ public class AnkiImporter {
 			@Override
 			protected Memo contains(Memo object)
 					throws Exception {
-
+				
 				for (Memo memo : internalMemos) {
+					Word wmA = memo.getWordA();
+					Word wmB = memo.getWordB();
+					Word woA = object.getWordA();
+					Word woB = object.getWordB();
 
-					if (memo.getMemoId().equals(object.getMemoId())) {
+					if (wmA.getWord().equals(woA.getWord())
+							&& wmA.getLanguage().getCode().equals(woA.getLanguage().getCode())
+							&& wmB.getWord().equals(woB.getWord())
+							&& wmB.getLanguage().getCode().equals(woB.getLanguage().getCode())) {
 						return memo;
 					}
 				}
@@ -591,14 +600,20 @@ public class AnkiImporter {
 				continue;
 			}
 			
-			// TODO there is a need to cut out the initial wordB from wordA, strange
-			String ankiWordB = stripHtml(tmpAnkiNote.getSfld().trim());
-			String ankiWordA = stripHtml(tmpAnkiNote.getFlds().trim()).substring(ankiWordB.length());
+			byte[] specialSign = "\u001F".getBytes();
+			
+			// 1. take advantage of separation in the original field
+			String[] translations = tmpAnkiNote.getFlds().split(new String(specialSign));		
+			
+			// 2. strip html tags and trip white spaces
+			for (int i = 0; i < translations.length; i++) {
+				translations[i] = stripHtml(translations[i]).trim();
+			}
 			
 			// in Anki base there is no information about input language
 			// we will ask user for going through short questions
-			Word wordA = new Word(UUID.randomUUID().toString(), ankiWordA, languageFrom);
-			Word wordB = new Word(UUID.randomUUID().toString(), ankiWordB, languageTo);
+			Word wordA = new Word(UUID.randomUUID().toString(), translations[0], languageFrom);
+			Word wordB = new Word(UUID.randomUUID().toString(), translations[1], languageTo);
 			
 			Memo newMemo = new Memo(wordA, wordB, memoBaseId);
 			// there is (all answers - wrong answers) of correct answers
@@ -654,15 +669,30 @@ public class AnkiImporter {
 			if(tmpAnkiNote == null) {
 				continue;
 			}
+
+			byte[] specialSign = "\u001F".getBytes();
 			
-			// TODO there is a need to cut out the initial wordB from wordA, strange
-			String ankiWordB = stripHtml(tmpAnkiNote.getSfld().trim());
-			String ankiWordA = stripHtml(tmpAnkiNote.getFlds().trim()).substring(ankiWordB.length());
+			// 1. take advantage of separation in the original field
+			String[] translations = tmpAnkiNote.getFlds().split(new String(specialSign));		
+			
+			// 2. strip html tags and trip white spaces
+			for (int i = 0; i < translations.length; i++) {
+				translations[i] = stripHtml(translations[i]).trim();
+			}
 			
 			// in Anki base there is no information about input language
 			// we will ask user for going through short questions
-			Word wordA = new Word(UUID.randomUUID().toString(), ankiWordA, languageFrom);
-			Word wordB = new Word(UUID.randomUUID().toString(), ankiWordB, languageTo);
+			Word wordA = new Word(UUID.randomUUID().toString(), translations[0], languageFrom);
+			Word wordB = new Word(UUID.randomUUID().toString(), translations[1], languageTo);
+			
+			if(translations.length == 3) {
+				wordA.setDescription(translations[2]);
+			}
+			
+			if(translations.length == 4) {
+				wordA.setDescription(translations[2]);
+				wordB.setDescription(translations[3]);
+			}
 			
 			Memo newMemo = new Memo(wordA, wordB, memoBaseId);
 			// there is (all answers - wrong answers) of correct answers

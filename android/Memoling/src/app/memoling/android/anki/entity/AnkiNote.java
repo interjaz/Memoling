@@ -1,5 +1,6 @@
 package app.memoling.android.anki.entity;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 public class AnkiNote {

@@ -31,7 +31,7 @@
             android:layout_weight="1.5"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="" />
+            android:textSize="14sp" />
 
     </LinearLayout>
     
@@ -61,7 +61,7 @@
             android:layout_weight="1.5"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
