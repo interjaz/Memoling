@@ -14,6 +14,8 @@ import android.content.DialogInterface;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -58,7 +60,6 @@ public class AnkiImporter {
 	private boolean applySettingsToAllDecks = false;
 	private boolean skipRestOfDecks = false;
 	private boolean skipThisDeck = false;
-	private boolean showHideButtonInProgressBarDialog = false;
 	private boolean importSuccessful = false;
 	
 	private AnkiConfiguration ankiConfiguration;
@@ -111,6 +112,8 @@ public class AnkiImporter {
 			})
 			.setIcon(R.drawable.ic_dialog_alert_holo_dark).create();
 			progressAlertDialog.show();
+			
+			progressAlertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
 		}
 		
 		private void showProgressDialog(AnkiMessage... ankiMessage) {
@@ -123,6 +126,10 @@ public class AnkiImporter {
 			ankiImportProgressBar.setProgress(progressBarValue);
 			
 			progressInfo.setText(ankiMessage[0].getProgressInfo());
+
+	        if(applySettingsToAllDecks){
+	        	progressAlertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true);			        	
+	        }
 		}
 
 		private void cancelProgressDialog(AnkiMessage... ankiMessage) {
@@ -287,6 +294,8 @@ public class AnkiImporter {
 								if(!applySettingsToAllDecks && exampleMemo != null){
 									// ask user about the languages in decks
 									askUserAboutDeck(exampleMemo);
+									// importing of a deck
+									publishProgress(progressDialogManager.updateProgressDialog(progressChunk,2));
 								} else if(exampleMemo == null) {
 									skipThisDeck = true;
 								}
@@ -489,6 +498,17 @@ public class AnkiImporter {
 		final CheckBox applySettingsCheckbox = (CheckBox) view.findViewById(R.id.ankiImport_checkBox);
 		final TextView leftWordFromExamplePair = (TextView) view.findViewById(R.id.ankiImport_leftWordFromExamplePair);
 		final TextView rightWordFromExamplePair = (TextView) view.findViewById(R.id.ankiImport_rightWordFromExamplePair);
+		final Button swapButton = (Button) view.findViewById(R.id.ankiImport_btnLanguageSwap);
+		
+		swapButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				LanguageView languageFrom = spLanguageFrom.getSelectedLanguage();
+				LanguageView languageTo = spLanguageTo.getSelectedLanguage();
+				spLanguageFrom.setSelection(languageTo.getLanguage());
+				spLanguageTo.setSelection(languageFrom.getLanguage());
+			}
+		});
 		
 		leftWordFromExamplePair.setText(leftWord);
 		rightWordFromExamplePair.setText(rightWord);
