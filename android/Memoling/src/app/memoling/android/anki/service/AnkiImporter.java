@@ -1,5 +1,6 @@
 package app.memoling.android.anki.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,8 @@ import android.content.DialogInterface;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -57,7 +60,7 @@ public class AnkiImporter {
 	private boolean applySettingsToAllDecks = false;
 	private boolean skipRestOfDecks = false;
 	private boolean skipThisDeck = false;
-	private boolean showHideButtonInProgressBarDialog = false;
+	private boolean importSuccessful = false;
 	
 	private AnkiConfiguration ankiConfiguration;
 	private AnkiConfiguration ankiDefaultConfiguration;
@@ -74,6 +77,7 @@ public class AnkiImporter {
 	
 	private class ProgressDialogManager {
 		private TextView progressInfo;
+		private TextView deckOfDecks;
 		private View view;
 		private LayoutInflater inflater;
 		private ProgressBar ankiImportProgressBar;
@@ -89,6 +93,7 @@ public class AnkiImporter {
 			view = inflater.inflate(R.layout.dialog_language_progressbar_with_progressinfo, null);
 			
 			progressInfo = (TextView) view.findViewById(R.id.ankiImport_progressInfo);
+			deckOfDecks = (TextView) view.findViewById(R.id.ankiImport_deckOfDecks);
 			
 			ankiImportProgressBar = (ProgressBar) view.findViewById(R.id.ankiImport_progressBar);
 			ankiImportProgressBar.setMax(100);
@@ -107,6 +112,8 @@ public class AnkiImporter {
 			})
 			.setIcon(R.drawable.ic_dialog_alert_holo_dark).create();
 			progressAlertDialog.show();
+			
+			progressAlertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
 		}
 		
 		private void showProgressDialog(AnkiMessage... ankiMessage) {
@@ -119,6 +126,10 @@ public class AnkiImporter {
 			ankiImportProgressBar.setProgress(progressBarValue);
 			
 			progressInfo.setText(ankiMessage[0].getProgressInfo());
+
+	        if(applySettingsToAllDecks){
+	        	progressAlertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true);			        	
+	        }
 		}
 
 		private void cancelProgressDialog(AnkiMessage... ankiMessage) {
@@ -151,19 +162,25 @@ public class AnkiImporter {
 	}
 	
 	private class AnkiImporterManager {
-		private void initializeAnkiImporter() {
+		private boolean initializeAnkiImporter() {
 			// unpack the file *.apkg
-			AnkiIOEngine.unpackFile(path);
-			
-			String databaseName = AnkiIOEngine.getImportDatabaseName();
-			int databaseVersion = AnkiIOEngine.getImportDatabaseVersion();
-			
-			// open imported database
-			ankiImportAdapter = new AnkiImportAdapter(ctx, databaseName, databaseVersion, true);
-			// all notes from anki
-			ankiNotes = ankiImportAdapter.getAllAnkiNotes(Sort.CreatedDate, Order.ASC);
-			// collections described in the database
-			ankiCollections = ankiImportAdapter.getAllAnkiCollections(Sort.CreatedDate, Order.ASC);
+			try {
+				AnkiIOEngine.unpackFile(path);
+
+				String databaseName = AnkiIOEngine.getImportDatabaseName();
+				int databaseVersion = AnkiIOEngine.getImportDatabaseVersion();
+				
+				// open imported database
+				ankiImportAdapter = new AnkiImportAdapter(ctx, databaseName, databaseVersion, true);
+				// all notes from anki
+				ankiNotes = ankiImportAdapter.getAllAnkiNotes(Sort.CreatedDate, Order.ASC);
+				// collections described in the database
+				ankiCollections = ankiImportAdapter.getAllAnkiCollections(Sort.CreatedDate, Order.ASC);
+			} catch (IOException e) {
+				AppLog.e("AnkiImporter.AnkiImporterManager.initializeAnkiImporter", "Unpacking failed");
+				return false;
+			}
+			return true;
 		}
 		
 		private void parseAnkiFile() {
@@ -217,9 +234,9 @@ public class AnkiImporter {
 				publishProgress(progressDialogManager.initializeProgressDialog());
 		
 				// initialize the importing
-				ankiImporterManager.initializeAnkiImporter();
+				boolean isInitSuccessful = ankiImporterManager.initializeAnkiImporter();
 				
-				if(!ankiCollections.isEmpty()) {
+				if(ankiCollections != null && !ankiCollections.isEmpty() && isInitSuccessful) {
 					
 					// parsed information from anki file
 					ankiImporterManager.parseAnkiFile();
@@ -277,6 +294,8 @@ public class AnkiImporter {
 								if(!applySettingsToAllDecks && exampleMemo != null){
 									// ask user about the languages in decks
 									askUserAboutDeck(exampleMemo);
+									// importing of a deck
+									publishProgress(progressDialogManager.updateProgressDialog(progressChunk,2));
 								} else if(exampleMemo == null) {
 									skipThisDeck = true;
 								}
@@ -307,9 +326,13 @@ public class AnkiImporter {
 					}
 					// import completed
 					publishProgress(progressDialogManager.updateProgressDialog(progressChunk,3));
+					importSuccessful = true;
 					AnkiIOEngine.removeFile(path);
 					AnkiIOEngine.cleanAfterImporting();
-				}
+				} else {
+					// import failed
+					publishProgress(progressDialogManager.updateProgressDialog(progressChunk,3));
+				} 
 				return null;
 			}
 
@@ -317,8 +340,12 @@ public class AnkiImporter {
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
 				// TODO on post execute action
-				Toast.makeText(ctx, R.string.ankiImporter_importCompleted, Toast.LENGTH_SHORT).show();
-				
+				if(importSuccessful) {
+					Toast.makeText(ctx, R.string.ankiImporter_importCompleted, Toast.LENGTH_SHORT).show();					
+				} else {
+					Toast.makeText(ctx, R.string.ankiImporter_importFailed, Toast.LENGTH_SHORT).show();
+				}
+
 				AnkiIOEngine.onAnkiImportComplete();
 			}
 			
@@ -391,10 +418,17 @@ public class AnkiImporter {
 			@Override
 			protected Memo contains(Memo object)
 					throws Exception {
-
+				
 				for (Memo memo : internalMemos) {
+					Word wmA = memo.getWordA();
+					Word wmB = memo.getWordB();
+					Word woA = object.getWordA();
+					Word woB = object.getWordB();
 
-					if (memo.getMemoId().equals(object.getMemoId())) {
+					if (wmA.getWord().equals(woA.getWord())
+							&& wmA.getLanguage().getCode().equals(woA.getLanguage().getCode())
+							&& wmB.getWord().equals(woB.getWord())
+							&& wmB.getLanguage().getCode().equals(woB.getLanguage().getCode())) {
 						return memo;
 					}
 				}
@@ -464,6 +498,17 @@ public class AnkiImporter {
 		final CheckBox applySettingsCheckbox = (CheckBox) view.findViewById(R.id.ankiImport_checkBox);
 		final TextView leftWordFromExamplePair = (TextView) view.findViewById(R.id.ankiImport_leftWordFromExamplePair);
 		final TextView rightWordFromExamplePair = (TextView) view.findViewById(R.id.ankiImport_rightWordFromExamplePair);
+		final Button swapButton = (Button) view.findViewById(R.id.ankiImport_btnLanguageSwap);
+		
+		swapButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				LanguageView languageFrom = spLanguageFrom.getSelectedLanguage();
+				LanguageView languageTo = spLanguageTo.getSelectedLanguage();
+				spLanguageFrom.setSelection(languageTo.getLanguage());
+				spLanguageTo.setSelection(languageFrom.getLanguage());
+			}
+		});
 		
 		leftWordFromExamplePair.setText(leftWord);
 		rightWordFromExamplePair.setText(rightWord);
@@ -575,14 +620,20 @@ public class AnkiImporter {
 				continue;
 			}
 			
-			// TODO there is a need to cut out the initial wordB from wordA, strange
-			String ankiWordB = stripHtml(tmpAnkiNote.getSfld().trim());
-			String ankiWordA = stripHtml(tmpAnkiNote.getFlds().trim()).substring(ankiWordB.length());
+			byte[] specialSign = "\u001F".getBytes();
+			
+			// 1. take advantage of separation in the original field
+			String[] translations = tmpAnkiNote.getFlds().split(new String(specialSign));		
+			
+			// 2. strip html tags and trip white spaces
+			for (int i = 0; i < translations.length; i++) {
+				translations[i] = stripHtml(translations[i]).trim();
+			}
 			
 			// in Anki base there is no information about input language
 			// we will ask user for going through short questions
-			Word wordA = new Word(UUID.randomUUID().toString(), ankiWordA, languageFrom);
-			Word wordB = new Word(UUID.randomUUID().toString(), ankiWordB, languageTo);
+			Word wordA = new Word(UUID.randomUUID().toString(), translations[0], languageFrom);
+			Word wordB = new Word(UUID.randomUUID().toString(), translations[1], languageTo);
 			
 			Memo newMemo = new Memo(wordA, wordB, memoBaseId);
 			// there is (all answers - wrong answers) of correct answers
@@ -638,15 +689,30 @@ public class AnkiImporter {
 			if(tmpAnkiNote == null) {
 				continue;
 			}
+
+			byte[] specialSign = "\u001F".getBytes();
 			
-			// TODO there is a need to cut out the initial wordB from wordA, strange
-			String ankiWordB = stripHtml(tmpAnkiNote.getSfld().trim());
-			String ankiWordA = stripHtml(tmpAnkiNote.getFlds().trim()).substring(ankiWordB.length());
+			// 1. take advantage of separation in the original field
+			String[] translations = tmpAnkiNote.getFlds().split(new String(specialSign));		
+			
+			// 2. strip html tags and trip white spaces
+			for (int i = 0; i < translations.length; i++) {
+				translations[i] = stripHtml(translations[i]).trim();
+			}
 			
 			// in Anki base there is no information about input language
 			// we will ask user for going through short questions
-			Word wordA = new Word(UUID.randomUUID().toString(), ankiWordA, languageFrom);
-			Word wordB = new Word(UUID.randomUUID().toString(), ankiWordB, languageTo);
+			Word wordA = new Word(UUID.randomUUID().toString(), translations[0], languageFrom);
+			Word wordB = new Word(UUID.randomUUID().toString(), translations[1], languageTo);
+			
+			if(translations.length == 3) {
+				wordA.setDescription(translations[2]);
+			}
+			
+			if(translations.length == 4) {
+				wordA.setDescription(translations[2]);
+				wordB.setDescription(translations[3]);
+			}
 			
 			Memo newMemo = new Memo(wordA, wordB, memoBaseId);
 			// there is (all answers - wrong answers) of correct answers

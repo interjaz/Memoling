@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
@@ -148,7 +150,7 @@ public class LanguageSpinner extends Spinner implements AdapterView.OnItemSelect
 			m_onItemSelectListener.onNothingSelected(parent);
 		}
 	}
-
+	
 	// This a valid format: a,b,c,d
 	private String reorderPreferences(String langCode, String preferences) {
 
