@@ -3,6 +3,7 @@ package app.memoling.android.ui.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.graphics.Typeface;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import app.memoling.android.R;
 import app.memoling.android.entity.Memo;
+import app.memoling.android.helper.Helper;
 import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.adapter.IInject;
 
@@ -38,11 +40,20 @@ public class MemoView implements IInject {
 			incorrect = 1;
 		}
 
+		int width = Helper.getActivityWidth((Activity)view.getContext());
+		int maxLength = width/48;
+		
+		String wordA = m_memo.getWordA().getWord();
+		String wordB = m_memo.getWordB().getWord();
+
+		int extraLength = maxLength - wordA.length();
+		extraLength = extraLength > 0 ? extraLength : 0;
+
 		setProgressWeight(holder.m_progressBar, correct);
 		setProgressWeight(holder.m_progressReminder, incorrect);
 		
-		holder.m_original.setText(m_memo.getWordA().getWord());
-		holder.m_translate.setText(m_memo.getWordB().getWord());
+		holder.m_original.setText(Helper.trim(wordA, maxLength, "..."));
+		holder.m_translate.setText(Helper.trim(wordB, maxLength + extraLength, "..."));
 		holder.m_languageA.setText(m_memo.getWordA().getLanguage().getCode());
 		holder.m_languageB.setText(m_memo.getWordB().getLanguage().getCode());
 		
@@ -73,7 +84,6 @@ public class MemoView implements IInject {
 	public Memo getMemo() {
 		return m_memo;
 	}
-	
 	
 	private static class ViewHolder {
 		

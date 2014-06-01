@@ -26,6 +26,9 @@ import app.memoling.android.adapter.MemoBaseGenreAdapter;
 import app.memoling.android.adapter.SyncClientAdapter;
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.PublishedMemoBase;
+import app.memoling.android.thread.SpinThread;
+import app.memoling.android.thread.SpinThread.SpinRunnable;
+import app.memoling.android.thread.SpinThread.SpinRunnableResult;
 import app.memoling.android.ui.ApplicationFragment;
 import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.adapter.ModifiableComplexTextAdapter;
@@ -176,25 +179,46 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 		public void onClick(DialogInterface dialog, int which) {
 			m_layPreview.setVisibility(View.GONE);
 			Toast.makeText(getActivity(), R.string.download_download_startDownload, Toast.LENGTH_SHORT).show();
+			
+			new SpinThread<Void>(getActivity(), new SpinRunnable<Void>() {
 
-			WsPublishedLibraries.download(m_lastPreviedPublishedMemoBaseId, new IDownloadComplete() {
 				@Override
-				public void onDownloadComplete(PublishedMemoBase published) {
-					if (published == null) {
-						Toast.makeText(getActivity(), R.string.download_download_errorDownload, Toast.LENGTH_SHORT)
-								.show();
-						return;
-					}
+				public void run(final SpinThread<Void> spinThread) {
 
-					Toast.makeText(getActivity(), R.string.download_download_completedDownload, Toast.LENGTH_SHORT)
-							.show();
+					WsPublishedLibraries.download(m_lastPreviedPublishedMemoBaseId, new IDownloadComplete() {
+						@Override
+						public void onDownloadComplete(final PublishedMemoBase published) {
+							if (published == null) {
+								Toast.makeText(getActivity(), R.string.download_download_errorDownload, Toast.LENGTH_SHORT)
+										.show();
+								spinThread.setCompleted();
+								return;
+							}
 
-					m_memoBaseDataAdapter.insert(published.getMemoBase(), new SyncClientAdapter(getActivity()).getCurrentSyncClientId());
+							Toast.makeText(getActivity(), R.string.download_download_completedDownload, Toast.LENGTH_SHORT)
+									.show();
 
+							spinThread.addWork(new Runnable() {
+
+								@Override
+								public void run() {
+									m_memoBaseDataAdapter.insert(published.getMemoBase(), new SyncClientAdapter(getActivity()).getCurrentSyncClientId());
+									spinThread.setCompleted();
+								}
+							});
+						}
+					});
+					
+				}
+				
+			},  new SpinRunnableResult<Void>() {
+
+				@Override
+				public void run(Void result) {
 					Toast.makeText(getActivity(), R.string.download_download_finished, Toast.LENGTH_SHORT).show();
 				}
-			});
-
+				
+			}).start();
 		}
 
 	}
@@ -223,6 +247,10 @@ public class DownloadFragment extends ApplicationFragment implements ISearchComp
 			});
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(DownloadFragment.this.getActivity());
+
+			if(m_layPreview.getParent() != null) {
+				((ViewGroup)m_layPreview.getParent()).removeView(m_layPreview);
+			}
 
 			builder.setView(m_layPreview)
 					.setPositiveButton(getString(R.string.download_download), m_btnDownloadEventHandler)

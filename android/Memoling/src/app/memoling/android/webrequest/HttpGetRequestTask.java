@@ -99,12 +99,14 @@ public class HttpGetRequestTask extends WorkerThread<Void, Void, String> {
 		
 		if(m_exception != null) {
 			if(m_exception instanceof ConnectTimeoutException) {
-				m_onHttpRequestTaskComplete.onHttpRequestTimeout(m_exception);				
-			} else if(m_exception instanceof SocketException) {
-				m_onHttpRequestTaskComplete.onHttpRequestTimeout(m_exception);				
+				m_onHttpRequestTaskComplete.onHttpRequestTimeout(m_exception);	
+				return;			
 			} 
 			
-			return;
+			if(m_exception instanceof SocketException) {
+				m_onHttpRequestTaskComplete.onHttpRequestTimeout(m_exception);	
+				return;			
+			} 
 		}
 		
 		m_onHttpRequestTaskComplete.onHttpRequestTaskComplete(response);

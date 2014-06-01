@@ -40,7 +40,7 @@ class MemoBaseController extends Controller {
 	
     public function update() {
         $model = new MemoBase();
-        $model->decode($_POST['model']);
+        $model->decode(urldecode ($_POST['model']));
         $clientId = $this->getClientId();
         
         try {
@@ -53,7 +53,7 @@ class MemoBaseController extends Controller {
     
     public function insert() {
         $model = new MemoBase();
-        $model->decode($_POST['model']);
+        $model->decode(urldecode ($_POST['model']));
         $clientId = $this->getClientId();
         
         try {

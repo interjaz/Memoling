@@ -319,6 +319,15 @@ public class SyncActionAdapter extends SqliteAdapter {
 			db.endTransaction();
 		}
 	}
+	
+	public void delete(String syncActionId) {
+		try {
+			SyncActionAdapter.delete(getDatabase(), syncActionId);
+		} finally {
+			closeDatabase();
+		}
+		
+	}
 
 	private static void delete(SQLiteDatabase db, String syncActionId) {
 		db.delete(TableName, "SyncActionId = ?", new String[] { syncActionId });

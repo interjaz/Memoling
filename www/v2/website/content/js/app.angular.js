@@ -209,7 +209,7 @@ var memoBaseCtrl = app.controller("MemoBaseCtrl", function($scope, $http, $locat
         $http({
             method: 'POST',
             url: 'index.php?controller=MemoBase&action=update',
-            data: 'model='+JSON.stringify(memoBase),
+            data: 'model='+ encodeURIComponent(JSON.stringify(memoBase)),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function(data, status) {
             if(data == 'true') {
@@ -228,7 +228,7 @@ var memoBaseCtrl = app.controller("MemoBaseCtrl", function($scope, $http, $locat
         $http({
             method: 'POST',
             url: 'index.php?controller=MemoBase&action=insert',
-            data: 'model='+JSON.stringify(memoBase),
+            data: 'model='+encodeURIComponent(JSON.stringify(memoBase)),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function(data, status) {
             if(data == 'true') {
@@ -302,7 +302,7 @@ var memoCtrl = app.controller("MemoCtrl", function($scope, $http, $location,view
         $http({
             method: 'POST',
             url: 'index.php?controller=Memo&action=update',
-            data: 'model='+JSON.stringify(memo),
+            data: 'model='+encodeURIComponent(JSON.stringify(memo)),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function(data, status) {
             if(data == 'true') {
@@ -322,7 +322,7 @@ var memoCtrl = app.controller("MemoCtrl", function($scope, $http, $location,view
         $http({
             method: 'POST',
             url: 'index.php?controller=Memo&action=insert',
-            data: 'model='+JSON.stringify(memo),
+            data: 'model='+encodeURIComponent(JSON.stringify(memo)),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function(data, status) {
             if(data != 'true') {

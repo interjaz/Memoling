@@ -304,6 +304,8 @@
     <string name="preferences_btnSync_summary">Włączona: %s</string>
     <string name="preferences_btnSync_summary_yes">TAK</string>
     <string name="preferences_btnSync_summary_no">NIE</string>
+    <string name="preferences_btnSyncFix_title">Napraw sychronizacje</string>
+    <string name="preferences_btnSyncFix_summary">NIEBEZPIECZNE! Usuwa lokalną kopię i pobiera ostatnie zmiany.</string>
     <string name="preferences_btnRateMemoling_title">Oceń!</string>
     <string name="preferences_btnRateMemoling_summary">Oceń Memolinga</string>
     <string name="preferences_btnGoToMemoling_title">Strona aplikacji</string>
@@ -449,7 +451,7 @@
     <string name="sync_error">Błąd Sync</string>
     
     <string name="sync_stateStarting">Rozpoczynanie Sync</string>
-    <string name="sync_stateAuthorizing">Autorizacja</string>
+    <string name="sync_stateAuthorizing">Autoryzacja</string>
     <string name="sync_stateBuildingFirstSync">Tworzenie pierwszej synchronizacji</string>
     <string name="sync_stateGeneratingPackage">Tworzenie pakietu</string>
     <string name="sync_stateCompressingPackage">Kompresowanie pakietu (%d zmian)</string>
@@ -465,4 +467,18 @@
     <string name="sync_stateClientError">Błąd: Błąd klienta</string>
     <string name="sync_stateServerError">Błąd: Bład serwera</string>
     <string name="sync_stateProcessingError">Błąd: Bład przetwarzania</string>
+    
+      <!-- Anki Importer -->
+    <string name="ankiImporter_ctxmenu_languagesSelectionTitle">Rozpoznanie języka</string>
+    <string name="ankiImporter_ctxmenu_languagesSelectionQuestion">Proszę podać informacje o językach</string>
+    <string name="ankiImporter_ctxmenu_languagesSelectionConfirmation">Potwierdź wybór</string>
+    <string name="ankiImporter_ctxmenu_languagesSelectionCancelation">Nie importuj tej talii</string>
+    <string name="ankiImporter_ctxmenu_languagesSelectionCheckbox">Zastosuj ustawienia dla wszystkich talii</string> 
+    <string name="ankiImporter_ctxmenu_importProgressTitle">Postęp importu Anki</string>
+    <string name="ankiImporter_ctxmenu_importProgressHide">Ukryj</string>
+    <string name="ankiImporter_progressInfo_loading">Initializacja importu ...</string>
+    <string name="ankiImporter_progressInfo_loadingDeck">Importowanie talii:</string>
+    <string name="ankiImporter_importInBackground">Importowanie w tle</string>
+    <string name="ankiImporter_importCompleted">Import zakończony</string>
+    
 </resources>

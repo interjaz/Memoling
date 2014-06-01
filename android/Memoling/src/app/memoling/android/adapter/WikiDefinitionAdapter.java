@@ -1,5 +1,8 @@
 package app.memoling.android.adapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,7 +18,7 @@ public class WikiDefinitionAdapter extends WiktionaryDb {
 		super(context);
 	}
 
-	public WikiDefinition get(String expression, Language language) {
+	public List<WikiDefinition> get(String expression, Language language) {
 
 		SQLiteDatabase db = null;
 
@@ -28,15 +31,18 @@ public class WikiDefinitionAdapter extends WiktionaryDb {
 		}
 	}
 
-	public static WikiDefinition get(SqliteAdapter adapter, SQLiteDatabase db, String expression, Language language) {
+	public static List<WikiDefinition> get(SqliteAdapter adapter, SQLiteDatabase db, String expression, Language language) {
 
 		String query = "SELECT Expression, Language, PartOfSpeech, Definition " + "FROM wiki_Definitions "
 				+ "WHERE Expression = ? AND Language = ?";
 
 		Cursor cursor = db.rawQuery(query, new String[] { expression, language.getCode() });
 
+		ArrayList<WikiDefinition> definitions = new ArrayList<WikiDefinition>();
+		
 		try {
-			if (cursor.moveToNext()) {
+			
+			while (cursor.moveToNext()) {
 
 				WikiDefinition definition = new WikiDefinition();
 
@@ -45,7 +51,7 @@ public class WikiDefinitionAdapter extends WiktionaryDb {
 				definition.setPartOfSpeech(DatabaseHelper.getString(cursor, "PartOfSpeech"));
 				definition.setDefinition(DatabaseHelper.getString(cursor, "Definition"));
 
-				return definition;
+				definitions.add(definition);
 			}
 		} finally {
 			if (cursor != null && !cursor.isClosed()) {
@@ -53,9 +59,9 @@ public class WikiDefinitionAdapter extends WiktionaryDb {
 			}
 		}
 
-		return null;
+		return definitions;
 	}
-
+	
 	public void createIndexes() {
 
 		SQLiteDatabase db = null;

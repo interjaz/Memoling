@@ -487,7 +487,7 @@ public class MemoWordFragment extends Fragment implements
 		new WorkerThread<Void, Void, Void>() {
 
 			private HashSet<String> m_meanings;
-			private WikiDefinition m_wikiDefinition;
+			private List<WikiDefinition> m_wikiDefinitions;
 
 			@Override
 			protected Void doInBackground(Void... params) {
@@ -508,7 +508,7 @@ public class MemoWordFragment extends Fragment implements
 
 				WikiDefinitionAdapter wikiDefinitionAdapter = new WikiDefinitionAdapter(
 						getActivity());
-				m_wikiDefinition = wikiDefinitionAdapter.get(getWord()
+				m_wikiDefinitions = wikiDefinitionAdapter.get(getWord()
 						.getWord(), getWord().getLanguage());
 
 				return null;
@@ -529,9 +529,9 @@ public class MemoWordFragment extends Fragment implements
 
 					wikiDefBuilder.append("</ol>");
 				}
-
-				if (m_wikiDefinition != null) {
-					wikiDefBuilder.append(m_wikiDefinition.getHtmlDefinition());
+				
+				for(WikiDefinition definition : m_wikiDefinitions) {
+					wikiDefBuilder.append(definition.getHtmlDefinition());
 				}
 
 				if (wikiDefBuilder.length() == 0) {

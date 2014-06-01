@@ -1,6 +1,8 @@
 package app.memoling.android.sync.cloud;
 
 import java.lang.ref.WeakReference;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -14,6 +16,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import app.memoling.android.adapter.DbFixAdapter;
 import app.memoling.android.adapter.SyncActionAdapter;
 import app.memoling.android.adapter.SyncClientAdapter;
 import app.memoling.android.entity.SyncAction;
@@ -164,6 +167,8 @@ public class SyncService extends Service {
 					
 					@Override
 					public void run() {
+						fixDatabase();
+						
 						if(m_syncClient.getLastSyncServerTimestamp() == 0) {
 							generateInitialPackage();
 						} else {
@@ -177,10 +182,15 @@ public class SyncService extends Service {
 		});
 	}
 	
+	private void fixDatabase() {
+		// Remove all orphans
+		DbFixAdapter fixAdapter = new DbFixAdapter(this);
+		fixAdapter.removeOrphans();
+	}
+	
 	private void generateInitialPackage() {
 			notifySyncProgress(SyncState.BuildingFirstSync);
-			
-			
+						
 			WsSync.registerRequest(m_syncClient, new IRegisterRequestResult() {
 
 				@Override
@@ -212,7 +222,7 @@ public class SyncService extends Service {
 	
 	private void generatePackage() {
 		notifySyncProgress(SyncState.GeneratingPackage);
-
+		
 		// Create change set
 		List<SyncAction> syncActions = m_syncActionAdapter.getAll();
 		syncActions = SyncService.foreignKeyPolicy(syncActions);
@@ -233,8 +243,9 @@ public class SyncService extends Service {
 			String jsonPackage = syncPackage.encode();
 			byte[] bytePackage = jsonPackage.getBytes("UTF-8");
 			byte[] gzipPackage = GzipHelper.compress(bytePackage);
-			
+			Charset.forName("UTF-8").decode(ByteBuffer.wrap(bytePackage)).toString().subSequence(0, 100);
 			sendPackage(gzipPackage);
+			
 			
 		} catch(Exception ex) {
 			notifySyncError(SyncState.DataMalformed);

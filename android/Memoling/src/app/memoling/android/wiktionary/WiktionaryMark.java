@@ -71,13 +71,16 @@ public class WiktionaryMark {
 			char c = line.charAt(level);
 			int type = charType(c);
 			if(type > 0) {
-				if(charType(line.charAt(level+1)) > 0) {
+				int subType = charType(line.charAt(level+1));
+				if(subType > 0) {
 					// Start new sublist
 					level++;
 					type = charType(line.charAt(level));
 					stack.add(type);
 					modified = getStartForType(type) + modified.replaceAll(regex, replace);
 					
+				} else if(subType == -1) {
+					modified = modified.replaceAll(regex, "$1");
 				} else {
 					if(inList == true) {
 						// Same list
@@ -108,6 +111,12 @@ public class WiktionaryMark {
 			sb.append(modified);
 		}
 
+		while(stack.size() > 0) {
+			int type = stack.remove(stack.size()-1);
+			String modified = getEndForType(type);
+			sb.append(modified);
+		}
+
 		return sb.toString();
 	}
 	
@@ -116,6 +125,8 @@ public class WiktionaryMark {
 			return 1;
 		} else if(c == '*') {
 			return 2;
+		} else if(c == ':') {
+			return -1;
 		}
 		
 		return 0;

@@ -21,6 +21,9 @@ import app.memoling.android.adapter.MemoBaseAdapter;
 import app.memoling.android.adapter.SyncClientAdapter;
 import app.memoling.android.entity.MemoBase;
 import app.memoling.android.entity.MemoBaseInfo;
+import app.memoling.android.thread.SpinThread;
+import app.memoling.android.thread.SpinThread.SpinRunnable;
+import app.memoling.android.thread.SpinThread.SpinRunnableResult;
 import app.memoling.android.ui.ApplicationFragment;
 import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.adapter.DrawerAdapter;
@@ -118,8 +121,20 @@ public class MemoBaseListFragment extends ApplicationFragment {
 							new Dialog.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
-									m_memoBaseAdapter.delete(memoBase.getMemoBaseId(), syncClientId);
-									bindData();
+									new SpinThread<Void>(getActivity(), new SpinRunnable<Void>() {
+										@Override
+										public void run(SpinThread<Void> thread) {
+											m_memoBaseAdapter.delete(memoBase.getMemoBaseId(), syncClientId);
+											thread.setCompleted();
+										}
+									}, new SpinRunnableResult<Void>() {
+
+										@Override
+										public void run(Void result) {
+											bindData();
+										}
+										
+									}).start();
 								}
 							})
 					.setNegativeButton(ctx.getString(R.string.memobaselist_ctxmenu_deleteNo),

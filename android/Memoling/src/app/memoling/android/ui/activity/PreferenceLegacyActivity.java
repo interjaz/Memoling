@@ -18,6 +18,7 @@ import app.memoling.android.entity.SyncClient;
 import app.memoling.android.facebook.FacebookUser;
 import app.memoling.android.facebook.FacebookWrapper;
 import app.memoling.android.facebook.FacebookWrapper.IFacebookGetUserComplete;
+import app.memoling.android.helper.Helper;
 import app.memoling.android.preference.IFindPreferenceApi;
 import app.memoling.android.preference.Preferences;
 import app.memoling.android.preference.custom.TimePreference;
@@ -122,6 +123,7 @@ public class PreferenceLegacyActivity extends PreferenceActivity implements IFin
 	private void initialize(IFindPreferenceApi findPreferenceApi) {
 		m_findPreferenceApi = findPreferenceApi;
 		syncPreference();
+		syncFixPreference();
 		languagePreference();
 		facebookPreference();
 		rateMemolingPreference();
@@ -139,6 +141,20 @@ public class PreferenceLegacyActivity extends PreferenceActivity implements IFin
 			@Override
 			public boolean onPreferenceClick(Preference arg0) {
 				toggleSync();
+				return true;
+			}
+		});
+	}
+	
+	private void syncFixPreference() {
+
+		Preference button = m_findPreferenceApi.findPreferenceApi(Preferences.BTN_SYNC_FIX);
+		updateSyncPreference();
+		
+		button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference arg0) {
+				fixSync();
 				return true;
 			}
 		});
@@ -309,5 +325,31 @@ public class PreferenceLegacyActivity extends PreferenceActivity implements IFin
 			updateSyncPreference();
 			SyncActivity.start(PreferenceLegacyActivity.this);
 		}
+	}
+	
+	private void fixSync() {
+		final SyncClientAdapter clientAdapter = new SyncClientAdapter(this);
+		String syncClientId = clientAdapter.getCurrentSyncClientId();
+		
+		if(!m_preferences.getSyncEnabled()) {
+			Toast.makeText(PreferenceLegacyActivity.this, getString(R.string.sync_syncDisabledError), Toast.LENGTH_SHORT).show();
+			return;			
+		}
+		
+		if(!Helper.hasInternetAccess(PreferenceLegacyActivity.this)) {
+			Toast.makeText(PreferenceLegacyActivity.this, getString(R.string.sync_networkConnectionError), Toast.LENGTH_SHORT).show();
+			return;			
+		}
+		
+		m_facebookWrapper.getUser(new IFacebookGetUserComplete() {
+
+			@Override
+			public void onGetUserComplete(FacebookUser user) {
+				m_preferences.setFacebookUser(user);
+				updateFacebookPreference();
+				
+				SyncActivity.startFix(PreferenceLegacyActivity.this);
+			}
+		});
 	}
 }

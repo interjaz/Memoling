@@ -1,5 +1,7 @@
 package app.memoling.android.ui.activity;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +10,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+import android.widget.Toast;
+import app.memoling.android.Config;
 import app.memoling.android.R;
+import app.memoling.android.adapter.MemoBaseAdapter;
+import app.memoling.android.adapter.SyncActionAdapter;
+import app.memoling.android.adapter.SyncClientAdapter;
+import app.memoling.android.db.SqliteProvider;
+import app.memoling.android.entity.MemoBase;
+import app.memoling.android.entity.SyncAction;
+import app.memoling.android.entity.SyncClient;
+import app.memoling.android.preference.Preferences;
 import app.memoling.android.sync.cloud.SyncService;
 import app.memoling.android.sync.cloud.SyncService.ISyncProgress;
 import app.memoling.android.sync.cloud.SyncService.SyncState;
@@ -18,6 +30,10 @@ public class SyncActivity extends Activity implements ISyncProgress {
 
 	public final static int SyncOk = 0;
 	public final static int SyncError = -1;
+	
+	public final static String SyncMode = "SyncMode";
+	public final static int ModeNormal = 0;
+	public final static int ModeFix = 1;
 	
 	private TextView m_txtProgress; 
 	private ResourceManager m_resources;
@@ -31,6 +47,13 @@ public class SyncActivity extends Activity implements ISyncProgress {
 	
 	public static void start(Context context) {
 		Intent intent = new Intent(context, SyncActivity.class);
+		intent.putExtra(SyncMode, ModeNormal);
+		context.startActivity(intent);
+	}
+	
+	public static void startFix(Context context) {
+		Intent intent = new Intent(context, SyncActivity.class);
+		intent.putExtra(SyncMode, ModeFix);
 		context.startActivity(intent);
 	}
 
@@ -52,6 +75,20 @@ public class SyncActivity extends Activity implements ISyncProgress {
 		m_resources.setFont(m_txtProgress, thinFont);
 		
 		m_progress = 0;
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		
+		int syncMode = getIntent().getExtras().getInt(SyncMode);
+		
+		if(syncMode == ModeFix) {
+			boolean success = cleanSyncPrepare();
+			if(!success) {
+				return;
+			}
+		}
 		
 		SyncService.sync(this, this);
 	}
@@ -128,6 +165,7 @@ public class SyncActivity extends Activity implements ISyncProgress {
 			break;
 		case NoAccountError:
 			strState = getString(R.string.sync_stateNoAccountError);
+			m_disableBack = false;
 			break;
 		case DataMalformed:
 			strState = getString(R.string.sync_stateDataMalformed);
@@ -175,6 +213,47 @@ public class SyncActivity extends Activity implements ISyncProgress {
 		}
 	}
 	
-	
+	private boolean cleanSyncPrepare() {
+		
+		try {
+			onSyncProgress(SyncState.Starting, null);
+			
+			// Backup
+			SqliteProvider provider = new SqliteProvider(this, Config.DatabaseName, Config.DatabaseVersion);
+			String outputFile = provider.createBackup();
+			Toast.makeText(this, String.format(getString(R.string.sync_fixStepBackup), outputFile), Toast.LENGTH_SHORT).show();
+			
+			// Delete all data
+			Toast.makeText(this, getString(R.string.sync_fixStpDeletion), Toast.LENGTH_SHORT).show();
+			
+			MemoBaseAdapter memoBaseAdapter = new MemoBaseAdapter(this);
+			List<MemoBase> memoBases = memoBaseAdapter.getAll();
+			
+			for(MemoBase memoBase : memoBases) {
+				memoBaseAdapter.delete(memoBase.getMemoBaseId(), null);
+			}
+			
+			SyncActionAdapter syncActionAdapter = new SyncActionAdapter(this);
+			List<SyncAction> syncActions = syncActionAdapter.getAll();
+			for(SyncAction syncAction : syncActions) {
+				syncActionAdapter.delete(syncAction.getSyncActionId());
+			}
+			
+			SyncClientAdapter syncClientAdapter = new SyncClientAdapter(this);
+			String syncClientId = syncClientAdapter.getCurrentSyncClientId();
+			if(syncClientId != null) {
+				syncClientAdapter.delete(syncClientId);
+			}
+			
+			SyncClient syncClient = SyncClient.newSyncClient(new Preferences(this).getFacebookUser());
+			syncClientAdapter.insert(syncClient);
+			syncClientAdapter.resetCurrentClient();
+			
+			return true;
+		} catch(Exception ex) {
+			onSyncProgress(SyncState.ProcessingError, null);
+			return false;
+		}
+	}
 	
 }

@@ -45,8 +45,6 @@ class Sync extends Webservice {
 			$baseSyncPackage = $_POST['syncPackage'];
             $gzipSyncPackage = base64_decode($baseSyncPackage);
             $jsonSyncPackage = gzdecode($gzipSyncPackage);
-                        
-            Log::save("Sync.SyncBase64 message: " . $jsonSyncPackage);
             
             $jsonServerPackage = $this->sync($jsonSyncPackage);
             $gzipSyncPackage = gzencode($jsonServerPackage);
@@ -91,7 +89,7 @@ class Sync extends Webservice {
 			// Enforce foreign key policy
 			$this->foreignKeyPolicy($syncResolver->PendingClientActions);
 			$this->foreignKeyPolicy($syncResolver->PendingServerActions);
-	
+            
 			//var_dump($syncResolver->PendingClientActions);
 			//var_dump($syncResolver->PendingServerActions);
             //exit;

@@ -33,6 +33,7 @@ public class Preferences {
 	public final static String LAST_MEMOBASE_ID = "LAST_MEMOBASE_ID";
 	public final static String WORDOFTHEDAY_TIME = "WORDOFTHEDAY_TIME";
 	public final static String LST_LANGUAGE_ACCENT = "LST_LANGUAGE_ACCENT";
+	public final static String BTN_SYNC_FIX  = "BTN_SYNC_FIX";
 
 	private SharedPreferences m_sharedPreferences;
 	private Context m_context;

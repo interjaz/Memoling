@@ -26,7 +26,7 @@ class MemoController extends Controller {
 	
     public function update() {
         $model = new Memo();
-        $model->decode($_POST['model']);
+        $model->decode(urldecode ($_POST['model']));
         $clientId = $this->getClientId();
         
         try {
@@ -39,7 +39,7 @@ class MemoController extends Controller {
     
     public function insert() {
         $model = new Memo();
-        $model->decode($_POST['model']);
+        $model->decode(urldecode ($_POST['model']));
         $clientId = $this->getClientId();
         
         try {

@@ -1,5 +1,8 @@
 package app.memoling.android.helper;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -316,5 +319,34 @@ public class Helper {
 		} else {
 			return Character.toUpperCase(first) + s.substring(1);
 		}
+	}
+	
+	public static void copyFile(InputStream input, OutputStream output) throws IOException {
+		byte[] buffer = new byte[1024];
+		int length;
+		while ((length = input.read(buffer)) > 0) {
+			output.write(buffer, 0, length);
+		}
+		output.flush();
+		output.close();
+		input.close();
+	}
+	
+	public static String trim(String str, int length, String appendix) {
+		if(str == null) {
+			return null;
+		}
+		
+		if(str.length() < length) {
+			return str;
+		}
+		
+		str = str.substring(0, length);
+		
+		if(appendix != null) {
+			str = str + appendix;
+		}
+		
+		return str;
 	}
 }

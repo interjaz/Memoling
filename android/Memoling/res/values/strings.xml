@@ -8,8 +8,8 @@
 		If you spot a bug, please write a post on application fb site. Thanks!\n
 		\n
 		Changes v.1.10.0\n
-		1. Synchronization (beta) - Data can now be edited online too\n
-		2. Anki import/export\n
+		1. Synchronization (beta) - Data can now be edited/viewed online too\n
+		2. Anki import (alpha)\n
 		3. Some improvements and tweaks\n
 		Changes v.1.9.2\n
 		1. Bug fixes\n
@@ -301,6 +301,8 @@
     <string name="preferences_btnSync_summary">Enabled: %s</string>
     <string name="preferences_btnSync_summary_yes">YES</string>
     <string name="preferences_btnSync_summary_no">NO</string>
+    <string name="preferences_btnSyncFix_title">Fix Sychronization</string>
+    <string name="preferences_btnSyncFix_summary">DANGEROUSE! Deletes local data and downloads latest snapshot from the server.</string>
     <string name="preferences_btnRateMemoling_title">Rate!</string>
     <string name="preferences_btnRateMemoling_summary">Rate Memoling</string>
     <string name="preferences_btnGoToMemoling_title">Application Website</string>
@@ -459,6 +461,10 @@
     <string name="sync_stateClientError">Error: Client Error</string>
     <string name="sync_stateServerError">Error: Server Error</string>
     <string name="sync_stateProcessingError">Error: Processing error</string>
+    <string name="sync_syncDisabledError">Error: Sync Disabled</string>
+    <string name="sync_fixStepBackup">Created backup: %s</string>
+    <string name="sync_fixStpDeletion">Deleted all data</string>
+    <string name="sync_fixStepSync">Starting clean sync</string>
     
     <!-- Anki Importer -->
     <string name="ankiImporter_ctxmenu_languagesSelectionTitle">Language recognition</string>
@@ -473,5 +479,7 @@
     <string name="ankiImporter_importInBackground">Importing in background</string>
     <string name="ankiImporter_importCompleted">Import completed</string>
     
+    <!-- Other -->
+    <string name="spinthread_inProgress">Please wait</string>
     
 </resources>

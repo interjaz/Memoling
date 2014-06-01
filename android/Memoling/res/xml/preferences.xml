@@ -7,6 +7,11 @@
         android:title="@string/preferences_btnSync_title" />
     
     <Preference
+        android:key="BTN_SYNC_FIX"
+        android:summary="@string/preferences_btnSyncFix_summary"
+        android:title="@string/preferences_btnSyncFix_title" />
+    
+    <Preference
         android:key="BTN_CLEAR_FACEBOOK"
         android:summary="@string/preferences_btnClearFacebook_summary"
         android:title="@string/preferences_btnClearFacebook_title" />

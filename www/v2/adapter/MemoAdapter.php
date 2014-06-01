@@ -225,8 +225,9 @@ class MemoAdapter extends DbAdapter implements SyncAdapter {
 	
 	private static function insertDbSync($dbTran, $memo, $syncAction) {
 		$dbTran->beginTransaction();
-		
+        
 		if($memo->WordA != null && $memo->WordB != null) {
+            
 			WordAdapter::insertDb($dbTran, $memo->WordA, $syncAction->SyncClientId);
 			WordAdapter::insertDb($dbTran, $memo->WordB, $syncAction->SyncClientId);
 			$memo->WordAId = $memo->WordA->WordId;
@@ -255,7 +256,7 @@ class MemoAdapter extends DbAdapter implements SyncAdapter {
 		
 		if(!$stm->execute()) {
 			$dbTran->rollBack();
-			throw new SqlException("Failed to create new Memo", $dbTran);
+			throw new SqlException("Failed to create new Memo:", $stm);
 		}
 
 		SyncActionAdapter::insertAction($dbTran, $syncAction);

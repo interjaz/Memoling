@@ -1,6 +1,7 @@
 package app.memoling.android.db;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import app.memoling.android.Config;
 import app.memoling.android.helper.AppLog;
+import app.memoling.android.helper.Helper;
 
 public class SqliteProvider {
 
@@ -67,14 +69,7 @@ public class SqliteProvider {
 	private void copyDatabaseFromAssets() throws IOException {
 		InputStream input = m_context.getAssets().open(m_databaseName + ".sqlite");
 		OutputStream output = new FileOutputStream(getDatabasePath());
-		byte[] buffer = new byte[1024];
-		int length;
-		while ((length = input.read(buffer)) > 0) {
-			output.write(buffer, 0, length);
-		}
-		output.flush();
-		output.close();
-		input.close();
+		Helper.copyFile(input, output);
 	}
 
 	public synchronized void close() {
@@ -92,6 +87,22 @@ public class SqliteProvider {
 
 	public Context getContext() {
 		return m_context;
+	}
+	
+	public String createBackup() throws IOException {
+		String inputPath = getDatabasePath();
+		String outputPath = inputPath + ".bak";
+		File outputFile = new File(outputPath); 
+		
+		if(outputFile.exists()) {
+			outputFile.delete();
+		}
+		
+		InputStream input = new FileInputStream(getDatabasePath());
+		OutputStream output = new FileOutputStream(outputPath);
+		Helper.copyFile(input, output);
+		
+		return outputPath;
 	}
 
 	public synchronized SQLiteDatabase getDatabase() {
