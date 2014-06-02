@@ -4,10 +4,16 @@
     <string name="memolist_whatsNewContent">		
 		No ads for now.\n
 		If you like application please rate the app.\n
+		\n
+		NOW ALSO CHECK OUR WEBSITE WHERE YOU CAN SYNC/EDIT YOUR EXPRESSIONS!\n
 		\n 
 		If you spot a bug, please write a post on application fb site. Thanks!\n
 		\n
 		Changes v.1.10.0\n
+		1. Improved synchronization\n
+		2. Improved Anki import\n
+		3. Other fixes\n
+		Changes v.1.10.0 (beta)\n
 		1. Synchronization (beta) - Data can now be edited/viewed online too\n
 		2. Anki import (alpha)\n
 		3. Some improvements and tweaks\n
@@ -174,7 +180,6 @@
     <string-array name="memobase_exportList">
         <item>Memoling file (default)</item>
         <item>CSV file (more readable)</item>
-        <item>Anki file</item>
         <item>Evernote</item>
     </string-array>
     <string-array name="memobase_importList">

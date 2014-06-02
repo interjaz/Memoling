@@ -7,7 +7,7 @@ public class Config {
 	//
 	// Environment
 	//	
-	public final static boolean Debug = true;
+	public final static boolean Debug = false;
 	public final static String AppPath = Environment.getExternalStorageDirectory() + "/memoling";
 	
 	public final static String DatabaseName = "TranslateMemo";

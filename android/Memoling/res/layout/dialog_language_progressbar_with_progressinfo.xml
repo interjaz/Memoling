@@ -16,10 +16,10 @@
         <TextView
             android:id="@+id/ankiImport_progressInfo"
             style="@style/Theme.Darktheme.TextView.Dark"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="10dp"
@@ -28,14 +28,21 @@
         <TextView
             android:id="@+id/ankiImport_deckOfDecks"
             style="@style/Theme.Darktheme.TextView.Dark"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="10dp"
     		android:textSize="16sp" />
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
 
     </LinearLayout>
 

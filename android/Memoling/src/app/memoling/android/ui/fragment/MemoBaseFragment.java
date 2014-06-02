@@ -224,19 +224,16 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 				case MemolingFile:
 					intent = new Intent(Intent.ACTION_GET_CONTENT);
 					intent.setType("file/*");
-//					getActivity().startActivityForResult(intent, RequestMemolingFile);
 					getActivity().startActivityForResult(Intent.createChooser(intent, "Open file:"), RequestMemolingFile);
 					break;
 				case CsvFile:
 					intent = new Intent(Intent.ACTION_GET_CONTENT);
 					intent.setType("file/*");
-//					getActivity().startActivityForResult(intent, RequestCsvFile);
 					getActivity().startActivityForResult(Intent.createChooser(intent, "Open file:"), RequestCsvFile);
 					break;
 				case AnkiFile:
 					intent = new Intent(Intent.ACTION_GET_CONTENT);
 					intent.setType("file/*");
-//					getActivity().startActivityForResult(intent, RequestAnkiFile);
 					getActivity().startActivityForResult(Intent.createChooser(intent, "Open file:"), RequestAnkiFile);
 					break;
 				case Evernote:
@@ -303,14 +300,16 @@ public class MemoBaseFragment extends FacebookFragment implements IPublishedMemo
 
 					break;
 				case AnkiFile:
-					result = Export.exportAnki(context, new String[] { m_memoBaseId });
-					if (result == null) {
-						result = context.getString(R.string.memobase_exportFailure);
-					} else {
-						result = context.getString(R.string.memobase_exportSuccess) + result;
-					}
-
-					break;
+					// TODO: Implement this one at some point.
+					// There is no brake, since option is not shown at the moment
+//					result = Export.exportAnki(context, new String[] { m_memoBaseId });
+//					if (result == null) {
+//						result = context.getString(R.string.memobase_exportFailure);
+//					} else {
+//						result = context.getString(R.string.memobase_exportSuccess) + result;
+//					}
+//
+//					break;
 				case Evernote:
 
 					if (!Helper.apkInstalled(context, "com.evernote")) {

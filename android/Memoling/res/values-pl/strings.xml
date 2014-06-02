@@ -4,12 +4,18 @@
     <string name="memolist_whatsNewContent">
 		Wyłączono tymaczasowo reklamy/\n
 		Jeśli Ci się podoba aplikacja, oceń ją.\n
+		\m
+		NA NASZEJ STRONIE MOŻESZ TERAZ EDYTOWAĆ ZSCYNCHRONIZOWANE WYRAŻENIA!\n
 		\n
 		Jeżeli zauważyłeś/aś błąd, proszę napisz o nim na fb aplikacji. Dzięki!\n
 		\n
 		Zmainy v.1.10.0\n
+		1. Poprawiono synchronizacje\n
+		2. Poprawiono anki import]n
+		3. Inne poprawki\n
+		Zmainy v.1.10.0 (beta)\n
 		1. Synchronizacja (beta) - dane mogą być edytowane teraz także online\n
-		2. Anik import/eksport\n
+		2. Anik import\n
 		3. Inne poprawki\n
 		Zmainy v.1.9.2\n
 		1. Usunięto kilka błędów\n
@@ -176,7 +182,6 @@
     <string-array name="memobase_exportList">
         <item>Plik Memoling (domyślne)</item>
         <item>Plik CSV (bardziej czytelny)</item>
-        <item>Plik Anki</item>
         <item>Evernote</item>
     </string-array>
     <string-array name="memobase_importList">
@@ -467,6 +472,10 @@
     <string name="sync_stateClientError">Błąd: Błąd klienta</string>
     <string name="sync_stateServerError">Błąd: Bład serwera</string>
     <string name="sync_stateProcessingError">Błąd: Bład przetwarzania</string>
+    <string name="sync_syncDisabledError">Błąd: Sync wyłączony</string>
+    <string name="sync_fixStepBackup">Tworzenie kopi zapasowej: %s</string>
+    <string name="sync_fixStpDeletion">Usunięto wszystkie dane</string>
+    <string name="sync_fixStepSync">Rozpoczynam sync z czystego stanu</string>
     
       <!-- Anki Importer -->
     <string name="ankiImporter_ctxmenu_languagesSelectionTitle">Rozpoznanie języka</string>
@@ -480,5 +489,10 @@
     <string name="ankiImporter_progressInfo_loadingDeck">Importowanie talii:</string>
     <string name="ankiImporter_importInBackground">Importowanie w tle</string>
     <string name="ankiImporter_importCompleted">Import zakończony</string>
+    <string name="ankiImporter_importFailed">Import zakończony niepowodzeniem</string>
+    <string name="ankiImporter_languageSwapInfo">Naciśnij przycisk by zamienić języki:</string>
+    
+    <!-- Other -->
+    <string name="spinthread_inProgress">Proszę czekać</string>
     
 </resources>
