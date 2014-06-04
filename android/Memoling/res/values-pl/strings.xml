@@ -2,33 +2,33 @@
 <resources>
 
     <string name="memolist_whatsNewContent">
-		Wyłączono tymaczasowo reklamy/\n
-		Jeśli Ci się podoba aplikacja, oceń ją.\n
+		Wyłączono tymczasowo reklamy/\n
+		Jeśli aplikacja Ci się podoba, oceń ją.\n
 		\m
-		NA NASZEJ STRONIE MOŻESZ TERAZ EDYTOWAĆ ZSCYNCHRONIZOWANE WYRAŻENIA!\n
+		NA NASZEJ STRONIE MOŻESZ TERAZ EDYTOWAĆ ZSYNCHRONIZOWANE WYRAŻENIA!\n
 		\n
 		Jeżeli zauważyłeś/aś błąd, proszę napisz o nim na fb aplikacji. Dzięki!\n
 		\n
-		Zmainy v.1.10.0\n
+		Zmiany v.1.10.0\n
 		1. Poprawiono synchronizacje\n
-		2. Poprawiono anki import]n
+		2. Poprawiono anki import\n
 		3. Inne poprawki\n
-		Zmainy v.1.10.0 (beta)\n
+		Zmiany v.1.10.0 (beta)\n
 		1. Synchronizacja (beta) - dane mogą być edytowane teraz także online\n
-		2. Anik import\n
+		2. Anki import\n
 		3. Inne poprawki\n
-		Zmainy v.1.9.2\n
+		Zmiany v.1.9.2\n
 		1. Usunięto kilka błędów\n
-		Zmainy v.1.9.1\n
+		Zmiany v.1.9.1\n
 		1. Poprawiono grywalność gier\n
-		Zmainy v.1.9.0\n
+		Zmiany v.1.9.0\n
 		1. Usunięto kilka błędów\n
 		2. Dodano Audio Powtórka\n
-		Zmainy v.1.8.3\n
+		Zmiany v.1.8.3\n
 		1. Usunięto kilka błędów\n
-		Zmainy v.1.8.2\n
+		Zmiany v.1.8.2\n
 		1. Poprawiono mechanizm pobierania wiktionary - znowu\n
-		2. Usunięto wilokrotne powiadomienia o treningu\n
+		2. Usunięto wielokrotne powiadomienia o treningu\n
 		3. Biblioteki znowu mogą być ściągane\n
 		4. Znowu można wyszukiwać wielowyrazowe wyrażenia\n
      </string>
