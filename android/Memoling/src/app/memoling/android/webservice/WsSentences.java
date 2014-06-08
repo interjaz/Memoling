@@ -36,10 +36,16 @@ public class WsSentences {
 
 				@Override
 				public void onHttpRequestTaskComplete(String response) {
+					
+					if(response == null) {
+						onComplete.getComplete(null);
+						return;
+					}
+					
 					try {
+						List<MemoSentence> sentences = new ArrayList<MemoSentence>();
 						JSONArray array = new JSONArray(response);
 
-						List<MemoSentence> sentences = new ArrayList<MemoSentence>();
 						for (int i = 0; i < array.length(); i++) {
 							MemoSentence sentence = CanonicalConverter.parseMemoSentence(array.getJSONObject(i));
 							sentences.add(sentence);
@@ -49,6 +55,9 @@ public class WsSentences {
 
 					} catch (JSONException ex) {
 						AppLog.e("WsSentence", "get", ex);
+						onComplete.getComplete(null);
+					} catch(Exception ex) {
+						AppLog.e("WsSentence", "get - uknown", ex);
 						onComplete.getComplete(null);
 					}
 				}

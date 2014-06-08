@@ -32,6 +32,12 @@ public class WsWiktionary {
 
 				@Override
 				public void onHttpRequestTaskComplete(String response) {
+
+					if(response == null) {
+						onComplete.getComplete(null);
+						return;
+					}
+					
 					try {
 						JSONArray array = new JSONArray(response);
 

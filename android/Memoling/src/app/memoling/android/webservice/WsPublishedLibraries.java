@@ -39,6 +39,11 @@ public class WsPublishedLibraries {
 
 				@Override
 				public void onHttpRequestTaskComplete(String response) {
+					if(response == null) {
+						onComplete.onIndexComplete(null);
+						return;
+					}
+					
 					try {
 						JSONArray array = new JSONArray(response);
 
@@ -84,6 +89,11 @@ public class WsPublishedLibraries {
 
 				@Override
 				public void onHttpRequestTaskComplete(String response) {
+					if(response == null) {
+						onComplete.onSearchComplete(null);
+						return;
+					}
+					
 					try {
 						JSONArray array = new JSONArray(response);
 
@@ -125,6 +135,11 @@ public class WsPublishedLibraries {
 
 				@Override
 				public void onHttpRequestTaskComplete(String response) {
+					if(response == null) {
+						onComplete.onPreviewComplete(null);
+						return;
+					}
+					
 					try {
 						JSONObject json = new JSONObject(response);
 
@@ -164,6 +179,11 @@ public class WsPublishedLibraries {
 
 				@Override
 				public void onHttpRequestTaskComplete(String response) {
+					if(response == null) {
+						onComplete.onDownloadComplete(null);
+						return;
+					}
+					
 					try {
 						JSONObject json = new JSONObject(response);
 
@@ -236,6 +256,11 @@ public class WsPublishedLibraries {
 
 				@Override
 				public void onHttpRequestTaskComplete(String response) {
+					if(response == null) {
+						onComplete.onUploadMemoShareComplete(false, null);
+						return;
+					}
+					
 					if (response.equals("null")) {
 						onComplete.onUploadMemoShareComplete(false, null);
 					} else {

@@ -97,6 +97,29 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/wordotheday_layTo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/wordoftheday_lblLanguageTo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/wordoftheday_lblLanguageTo"
+                        android:textSize="20sp" />
+
+                    <app.memoling.android.ui.control.LanguageSpinner
+                        android:id="@+id/wordofthelist_spLanguageTo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:light_theme="true"
+                        tools:listitem="@layout/adapter_textdropdown" />
+                </LinearLayout>
+                
+                <LinearLayout
                     android:id="@+id/wordotheday_layFrom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" 
@@ -132,28 +155,6 @@
                         tools:listitem="@layout/adapter_textdropdown" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/wordotheday_layTo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:id="@+id/wordoftheday_lblLanguageTo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:text="@string/wordoftheday_lblLanguageTo"
-                        android:textSize="20sp" />
-
-                    <app.memoling.android.ui.control.LanguageSpinner
-                        android:id="@+id/wordofthelist_spLanguageTo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:light_theme="true"
-                        tools:listitem="@layout/adapter_textdropdown" />
-                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/wordotheday_layTest"

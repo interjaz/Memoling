@@ -9,6 +9,8 @@
 		\n 
 		If you spot a bug, please write a post on application fb site. Thanks!\n
 		\n
+		Changes v.1.10.1\n
+		1. Bug fixes\n
 		Changes v.1.10.0\n
 		1. Improved synchronization\n
 		2. Improved Anki import\n
@@ -351,6 +353,8 @@
         At the end of setting up notification you can test it to see whether it meets you needs.	</string>
     <string name="wordoftheday_sourceLibrary">Library</string>
     <string name="wordoftheday_sourceOnline">Online</string>
+    <string name="wordoftheday_errorNoNetwork">No internet connection</string>
+    <string name="wordoftheday_errorToNotSelected">Please select langauge for translation</string>
 
     <string name="wordoftheday_widget_title">Memoling Word of the Day</string>
     <string name="wordofthedaywidgetconfiguration_title">Configure Widget</string>

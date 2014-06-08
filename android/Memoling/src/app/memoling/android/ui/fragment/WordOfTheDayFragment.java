@@ -15,6 +15,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -22,6 +23,7 @@ import app.memoling.android.R;
 import app.memoling.android.adapter.WordOfTheDayAdapter;
 import app.memoling.android.entity.Language;
 import app.memoling.android.entity.WordOfTheDay;
+import app.memoling.android.helper.Helper;
 import app.memoling.android.ui.ApplicationFragment;
 import app.memoling.android.ui.ResourceManager;
 import app.memoling.android.ui.adapter.ModifiableComplexTextAdapter;
@@ -33,6 +35,7 @@ import app.memoling.android.wordoftheday.DispatcherService;
 import app.memoling.android.wordoftheday.WordOfTheDayMode;
 import app.memoling.android.wordoftheday.provider.Provider;
 import app.memoling.android.wordoftheday.provider.ProviderAdapter;
+import app.memoling.android.wordoftheday.provider.Provider.ResourceType;
 
 import com.actionbarsherlock.view.MenuItem;
 
@@ -248,15 +251,26 @@ public class WordOfTheDayFragment extends ApplicationFragment {
 		@Override
 		public void onClick(View v) {
 
+			WordOfTheDayView sourceView =  m_spSourceAdapter.getItem(m_spSource.getSelectedItemPosition());
+			
+			if(sourceView.getProvider().getResourceType() != ResourceType.DB && !Helper.hasInternetAccess(getActivity())) {
+				Toast.makeText(getActivity(), getString(R.string.wordoftheday_errorNoNetwork), Toast.LENGTH_SHORT).show();
+				return;
+			}
+			
 			Language to = m_spLanguageTo.getSelectedLanguage().getLanguage();
 			Language from = null;
 			if (m_chbLanguageFrom.isChecked()) {
 				from = m_spLanguageFrom.getSelectedLanguage().getLanguage();
 			}
+			
+			if(to == Language.Unsupported) {
+				Toast.makeText(getActivity(), getString(R.string.wordoftheday_errorToNotSelected), Toast.LENGTH_SHORT).show();
+				return;
+			}
 
 			DispatcherService.dispatch(getActivity(), m_spModeAdapter.getItem(m_spMode.getSelectedItemPosition())
-					.getMode(), random, m_memoBaseId, m_spSourceAdapter.getItem(m_spSource.getSelectedItemPosition())
-					.getProvider().getId(), from, to);
+					.getMode(), random, m_memoBaseId,sourceView.getProvider().getId(), from, to);
 
 			m_btnTest.setEnabled(false);
 			m_btnTest.postDelayed(new Runnable() {

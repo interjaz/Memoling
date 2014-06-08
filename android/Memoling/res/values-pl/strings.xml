@@ -9,6 +9,8 @@
 		\n
 		Jeżeli zauważyłeś/aś błąd, proszę napisz o nim na fb aplikacji. Dzięki!\n
 		\n
+		Zmiany v.1.10.1\n
+		1. Usunięto kilka błędów\n
 		Zmiany v.1.10.0\n
 		1. Poprawiono synchronizacje\n
 		2. Poprawiono anki import\n
@@ -356,6 +358,8 @@
      </string>
     <string name="wordoftheday_sourceOnline">Online</string>
     <string name="wordoftheday_sourceLibrary">Biblioteka</string>
+    <string name="wordoftheday_errorNoNetwork">Brak dostępu do internetu</string>
+    <string name="wordoftheday_errorToNotSelected">Proszę wybrać język tłumaczenia</string>
 
     <string name="wordoftheday_widget_title">Memoling - Słówko dnia</string>
     <string name="wordofthedaywidgetconfiguration_title">Konfiguracja Widget-u</string>

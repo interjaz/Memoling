@@ -205,6 +205,10 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 	private static List<Word> parseJson(String response) {
 		List<Word> words = new ArrayList<Word>();
 
+		if(response == null) {
+			return words;
+		}
+		
 		try {
 			JSONArray translations = new JSONObject(response).getJSONArray(Translations);
 
@@ -228,6 +232,8 @@ public class BingTranslator implements IHttpRequestTaskComplete {
 
 		} catch (JSONException ex) {
 			AppLog.e("BingTranslator", "prepareJson", ex);
+		} catch(Exception ex) {
+			AppLog.e("BingTranslator", "prepareJson - unknown", ex);
 		}
 
 		return words;
