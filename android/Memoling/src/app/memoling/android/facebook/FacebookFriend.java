@@ -6,7 +6,7 @@ import org.json.JSONObject;
 public class FacebookFriend {
 	private String m_id;
 	private String m_name;
-	private String m_picSqure;
+	private String m_picSquare;
 
 	public String getId() {
 		return m_id;
@@ -24,12 +24,12 @@ public class FacebookFriend {
 		m_name = name;
 	}
 
-	public String getPicSqure() {
-		return m_picSqure;
+	public String getPicSquare() {
+		return m_picSquare;
 	}
 
-	public void setPicSqure(String picSqure) {
-		m_picSqure = picSqure;
+	public void setPicSquare(String picSquare) {
+		m_picSquare = picSquare;
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class FacebookFriend {
 
 		json.put("uid", m_id);
 		json.put("name", m_name);
-		json.put("pic_square", m_picSqure);
+		json.put("pic_square", m_picSquare);
 
 		return json.toString();
 	}
@@ -52,7 +52,7 @@ public class FacebookFriend {
 
 		m_id = json.getString("uid");
 		m_name = json.getString("name");
-		m_picSqure = json.optString("pic_square");
+		m_picSquare = json.optString("pic_square");
 
 		return this;
 	}
