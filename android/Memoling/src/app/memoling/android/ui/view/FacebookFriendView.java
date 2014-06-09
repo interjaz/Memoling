@@ -41,7 +41,7 @@ public class FacebookFriendView implements IInject {
 				}
 
 				try {
-					URL url = new URL(m_friend.getPicSqure());
+					URL url = new URL(m_friend.getPicSquare());
 					HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 					connection.setDoInput(true);
 					connection.connect();

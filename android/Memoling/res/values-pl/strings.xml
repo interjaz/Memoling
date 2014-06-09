@@ -45,7 +45,7 @@
     <string name="memolist_ctxmenu_activate">Aktywuj</string>
     <string name="memolist_ctxmenu_delete">Usuń</string>
     <string name="memolist_ctxmenu_deleteTitle">Uwaga!</string>
-    <string name="memolist_ctxmenu_deleteQuestion">Na pewno? Raz usunięte memo, nie może zostać przywrócone. Zalecana deaktywacja.</string>
+    <string name="memolist_ctxmenu_deleteQuestion">Na pewno? Raz usunięte memo, nie może zostać przywrócone. Zalecana jest deaktywacja.</string>
     <string name="memolist_ctxmenu_deleteYes">Tak, na pewno.</string>
     <string name="memolist_missingWords">Fraza nie może być pusta</string>
     <string name="memolist_goToLibraries">Biblioteka</string>
