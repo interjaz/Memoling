@@ -115,6 +115,7 @@
         </activity>
         <activity
             android:name="app.memoling.android.ui.activity.SyncActivity"
+            android:screenOrientation="portrait"
             android:label="@string/sync_title" 
             android:theme="@style/Theme.Darktheme.WidgetConfiguration" >
         </activity>

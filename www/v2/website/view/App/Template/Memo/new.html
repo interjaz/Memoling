@@ -1,25 +1,32 @@
 <h2 class="to">New</h2>
 		<hr />
 		
-		<label>
-			From:
-			<input ng-model="Model.Memo.wordA.word" />
-		</label>
-		
+
+        <angucomplete id="wordA"
+          placeholder="From"
+          pause="400"
+          selectedobject="wordA"
+          url="{{wordListFromUrl}}"
+          titlefield="Word"
+          inputclass="form-control form-control-small"/>
+
         <label>
             Language:
-         <select ng-model="Model.Memo.wordA.languageIso639" ng-options="k as v.name for ( k , v ) in Model.Languages">
+         <select ng-model="Model.Memo.wordA.languageIso639" ng-options="k as v.name for ( k , v ) in Model.Languages" ng-change="updateWordListFromUrl()">
             </select>
         </label>
         
-		<label>
-			To:
-			<input ng-model="Model.Memo.wordB.word" />
-		</label>
-		
+        <angucomplete id="wordB"
+          placeholder="To"
+          pause="400"
+          selectedobject="wordB"
+          url="{{wordListToUrl}}"
+          titlefield="Word"
+          inputclass="form-control form-control-small"/>
+
         <label>
             Language:
-           <select ng-model="Model.Memo.wordB.languageIso639" ng-options="k as v.name for ( k , v ) in Model.Languages">
+           <select ng-model="Model.Memo.wordB.languageIso639" ng-options="k as v.name for ( k , v ) in Model.Languages" ng-change="updateWordListToUrl()">
             </select>
         </label>
 		
@@ -36,4 +43,4 @@
 			</label>
 		</div>
         
-        <div class="saveBtn" ng-click="onSaveNew(Model.Memo)" href="#">Save</div>
+        <div class="saveBtn" ng-click="onSaveNew(Model.Memo, wordA.title, wordB.title)" href="#">Save</div>

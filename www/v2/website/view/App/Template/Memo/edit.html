@@ -1,16 +1,25 @@
 <h2 class="to">Edit</h2>
 <hr />
 
-<label>
-    From:
-    <input ng-model="Model.Memo.wordA.word" />
-</label>
 
-<label>
-    To:
-    <input ng-model="Model.Memo.wordB.word" />
-</label>
+    <angucomplete id="wordA"
+      placeholder="From"
+      pause="400"
+      selectedobject="wordA"
+      initialvalue="{{Model.Memo.wordA.word}}"
+      url="{{wordListFromUrl}}"
+      titlefield="Word"
+      inputclass="form-control form-control-small"/>
 
+
+    <angucomplete id="wordB"
+      placeholder="To"
+      pause="400"
+      initialvalue="{{Model.Memo.wordB.word}}"
+      selectedobject="wordB"
+      url="{{wordListToUrl}}"
+      titlefield="Word"
+      inputclass="form-control form-control-small"/>
 
 <div class="top">
 
@@ -33,6 +42,6 @@
     </label>
 </div>
 
-<div class="saveBtn" ng-click="onSaveEdit(Model.Memo)">
+<div class="saveBtn" ng-click="onSaveEdit(Model.Memo, wordA.title, wordB.title)">
     Save
 </div>

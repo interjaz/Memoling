@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngRoute', 'app.directive', 'app.service'])
+var app = angular.module('app', ['ngRoute', 'app.directive', 'app.service', 'angucomplete'])
 var TemplateBase = "website/view/App/Template/";
 
 
@@ -12,6 +12,7 @@ function setFacebookUserId(facebookUserId) {
         window.location.replace("?#/logout")
     }
 }
+
 
 var viewModel = app.factory("viewModel", function($location, languageList) {
     return {
@@ -278,6 +279,21 @@ var memoBaseCtrl = app.controller("MemoBaseCtrl", function($scope, $http, $locat
 var memoCtrl = app.controller("MemoCtrl", function($scope, $http, $location,viewModel) {
 
     $scope.Model = viewModel;
+        
+    $scope.buildWordListUrl = function(language) {
+        return "http://memoling.com/index.php?controller=WordList&action=get&lang=" + language + "&word="
+    };
+    
+    $scope.wordListFromUrl = $scope.buildWordListUrl("EN");
+    $scope.wordListToUrl = $scope.buildWordListUrl("EN");
+    
+    $scope.updateWordListFromUrl = function() {
+        $scope.wordListFromUrl = $scope.buildWordListUrl($scope.Model.Memo.wordA.languageIso639);
+    };
+    
+    $scope.updateWordListToUrl = function() {
+        $scope.wordListFromUrl = $scope.buildWordListUrl($scope.Model.Memo.wordB.languageIso639);
+    };
     
     $scope.onNew = function() {
         viewModel.Action = "new";
@@ -287,7 +303,8 @@ var memoCtrl = app.controller("MemoCtrl", function($scope, $http, $location,view
     };
         
     $scope.onEdit = function() {
-        viewModel.Action = "edit"; $location.search({"memoBaseId":viewModel.MemoBaseId,"memoId":viewModel.MemoId,"action":"edit"});
+        viewModel.Action = "edit";
+        $location.search({"memoBaseId":viewModel.MemoBaseId,"memoId":viewModel.MemoId,"action":"edit"});
     };
     
     $scope.onBack = function() {
@@ -298,7 +315,10 @@ var memoCtrl = app.controller("MemoCtrl", function($scope, $http, $location,view
         $location.search({"memoBaseId":viewModel.MemoBaseId,"action":"details"});    
     };
     
-    $scope.onSaveEdit = function(memo) {
+    $scope.onSaveEdit = function(memo, wordA, wordB) {
+        memo.wordA.word = wordA;
+        memo.wordB.word = wordB;
+        
         $http({
             method: 'POST',
             url: 'index.php?controller=Memo&action=update',
@@ -316,8 +336,10 @@ var memoCtrl = app.controller("MemoCtrl", function($scope, $http, $location,view
         });
     };
     
-   $scope.onSaveNew = function(memo) {
+   $scope.onSaveNew = function(memo, wordA, wordB) {
        memo.memoBaseId = viewModel.MemoBaseId;
+       memo.wordA.word = wordA;
+       memo.wordB.word = wordB;
        
         $http({
             method: 'POST',
