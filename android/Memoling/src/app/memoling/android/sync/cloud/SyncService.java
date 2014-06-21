@@ -209,8 +209,7 @@ public class SyncService extends Service {
 
 						@Override
 						public void run() {
-							m_syncActionAdapter.buildInitialSync();
-							
+							m_syncActionAdapter.buildInitialSync();							
 							generatePackage();
 						}
 						

@@ -8,6 +8,8 @@
 		
 		<link rel="shortcut icon" href="<?php echo Content::img("favicon.ico"); ?>" />
 		
+		<link rel="stylesheet" type="text/css" href="<?php echo Content::css("angucomplete.css"); ?>" />
+        
 		<link rel="stylesheet" type="text/css" href="<?php echo Content::css("master.css"); ?>" />
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300|Oxygen|Open+Sans+Condensed:300&subset=cyrillic-ext,greek-ext,vietnamese,latin-ext,cyrillic,latin,greek' rel='stylesheet' type='text/css'>
 		
@@ -17,6 +19,8 @@
 		<script type="text/javascript" src="http://code.angularjs.org/1.2.15/angular.min.js"></script>
 		<script type="text/javascript" src="http://code.angularjs.org/1.2.15/angular-route.min.js"></script>
 		
+        <script type="text/javascript" src="<?php echo Content::js("angucomplete.js"); ?>"></script>
+        
 		<script type="text/javascript" src="<?php echo Content::js("app.angular.js"); ?>"></script>
 		<script type="text/javascript" src="<?php echo Content::js("app.service.angular.js"); ?>"></script>
 		<script type="text/javascript" src="<?php echo Content::js("app.directive.angular.js"); ?>"></script>
