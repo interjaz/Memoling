@@ -349,7 +349,7 @@ public class MemoBaseAdapter extends SqliteAdapter implements ISyncAdapter {
 		
 		try {
 
-			ArrayList<Memo> memos = MemoAdapter.getAll(db, memoBaseId);
+			List<Memo> memos = MemoAdapter.getAll(db, memoBaseId);
 			
 			for(Memo memo : memos) {
 				MemoAdapter.delete(db, memo.getMemoId(), null);
@@ -378,7 +378,7 @@ public class MemoBaseAdapter extends SqliteAdapter implements ISyncAdapter {
 				String oldMemoBaseId = memoBase.getMemoBaseId();
 				String newMemoBaseId = UUID.randomUUID().toString();
 				
-				ArrayList<Memo> memos = MemoAdapter.getAll(db, oldMemoBaseId);
+				List<Memo> memos = MemoAdapter.getAll(db, oldMemoBaseId);
 				for(Memo memo : memos) {
 					String oldMemoId = memo.getMemoId();
 					String newMemoId = UUID.randomUUID().toString();

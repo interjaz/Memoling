@@ -223,7 +223,7 @@ public class Memo implements ISyncEntity {
 	}
 	
 	public static List<Memo> deserializeList(JSONArray memos) throws JSONException {
-		ArrayList<Memo> array = new ArrayList<Memo>();
+		List<Memo> array = new ArrayList<Memo>();
 		
 		if(memos == null) {
 			return array;

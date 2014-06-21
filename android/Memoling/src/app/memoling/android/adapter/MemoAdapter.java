@@ -189,9 +189,9 @@ public class MemoAdapter extends SqliteAdapter implements ISyncAdapter {
 		return null;
 	}
 	
-	public static ArrayList<Memo> getAll(SQLiteDatabase db, String memoBaseId) {
+	public static List<Memo> getAll(SQLiteDatabase db, String memoBaseId) {
 		String sql = "SELECT * FROM Memos WHERE MemoBaseId = ?";
-		ArrayList<Memo> memos = new ArrayList<Memo>();
+		List<Memo> memos = new ArrayList<Memo>();
 		Cursor cursor = null;
 		
 		try {
@@ -341,8 +341,8 @@ public class MemoAdapter extends SqliteAdapter implements ISyncAdapter {
 		SQLiteDatabase db = null;
 		Cursor cursor = null;
 
-		float unknownToKnwonRatio = 0.8f;
-		int unknown = Math.max((int) (unknownToKnwonRatio * size), 1);
+		float unknownToKnownRatio = 0.8f;
+		int unknown = Math.max((int) (unknownToKnownRatio * size), 1);
 		int known = size - unknown;
 
 		try {
