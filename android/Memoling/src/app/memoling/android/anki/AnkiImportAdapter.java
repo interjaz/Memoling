@@ -63,7 +63,7 @@ public class AnkiImportAdapter extends AnkiDb {
 				ankiCollection.setConfiguration(DatabaseHelper.getString(cursor, "C_conf"));
 				ankiCollection.setModels(DatabaseHelper.getString(cursor, "C_models"));
 				ankiCollection.setDecks(DatabaseHelper.getString(cursor, "C_decks"));
-				ankiCollection.setDefaultConfiguration(DatabaseHelper.getString(cursor, "C_dconf"));
+				ankiCollection.setDeckConfiguration(DatabaseHelper.getString(cursor, "C_dconf"));
 				ankiCollection.setTags(DatabaseHelper.getString(cursor, "C_tags"));
 				ankiCollections.add(ankiCollection);
 			}

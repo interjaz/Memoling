@@ -76,6 +76,12 @@ public class SqliteUpdater {
 						database.setVersion(6);
 						version = 6;
 					}
+					
+					if(version == 6) {
+						update67(database);
+						database.setVersion(7);
+						version = 7;
+					}
 
 					database.setTransactionSuccessful();
 				} catch (Exception ex) {
@@ -168,5 +174,19 @@ public class SqliteUpdater {
 		
 		database.execSQL(updateSyncActions);
 		database.execSQL(updateSyncClients);
+	}
+	
+	private static void update67(SQLiteDatabase database) {
+		String updateMemoReviewLogs = "CREATE  TABLE \"MemoReviewLogs\" (" +
+				"\"MemoReviewLogId\" VARCHAR NOT NULL PRIMARY KEY, " +
+				"\"MemoId\" VARCHAR NOT NULL, " +
+				"\"ResponseResult\" INTEGER NOT NULL, " +
+				"\"NewInterval\" INTEGER NOT NULL, " +
+				"\"OldInterval\" INTEGER NOT NULL, " +
+				"\"DifficultyFactor\" INTEGER NOT NULL, " +
+				"\"ResponseTime\" INTEGER NOT NULL, " +
+				"\"Type\" INTEGER NOT NULL)";
+		
+		database.execSQL(updateMemoReviewLogs);
 	}
 }

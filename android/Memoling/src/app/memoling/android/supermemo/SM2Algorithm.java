@@ -52,7 +52,8 @@ public class SM2Algorithm {
 	
 	// number of reviews displayed for a day - specific for every deck
 	private int numberOfReviewsPerDay = 100;
-	
-	
 	// ------------------
+	
+	
+	
 }

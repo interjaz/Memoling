@@ -46,7 +46,7 @@ public class AnkiCollection {
 	private String m_decks;
 	
 	// database column: dconf
-	private String m_defaultConfiguration;
+	private String m_deckConfiguration;
 	
 	// database column: tags
 	private String m_tags;
@@ -139,12 +139,12 @@ public class AnkiCollection {
 		this.m_decks = m_decks;
 	}
 
-	public String getDefaultConfiguration() {
-		return m_defaultConfiguration;
+	public String getDeckConfiguration() {
+		return m_deckConfiguration;
 	}
 
-	public void setDefaultConfiguration(String m_defaultConfiguration) {
-		this.m_defaultConfiguration = m_defaultConfiguration;
+	public void setDeckConfiguration(String m_deckConfiguration) {
+		this.m_deckConfiguration = m_deckConfiguration;
 	}
 
 	public String getTags() {
@@ -191,5 +191,25 @@ public class AnkiCollection {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static List<AnkiDeckConfiguration> getDeckConfigurationDescription(String deckConfiguration) {
+		List<AnkiDeckConfiguration> ankiDeckConfigurationList = new ArrayList<AnkiDeckConfiguration>();
+		
+		try {
+			JSONObject ankiDeckConfigurations = new JSONObject(deckConfiguration);
+			JSONArray ankiDeckConfigurationNames = ankiDeckConfigurations.names();
+			
+			for (int i = 0; i < ankiDeckConfigurationNames.length(); i++) {
+				JSONObject newObject = ankiDeckConfigurations.getJSONObject(ankiDeckConfigurationNames.getString(i));
+				AnkiDeckConfiguration ankiDeckConfiguration = new AnkiDeckConfiguration().deserialize(newObject);
+				ankiDeckConfigurationList.add(ankiDeckConfiguration);
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return ankiDeckConfigurationList;
 	}
 }

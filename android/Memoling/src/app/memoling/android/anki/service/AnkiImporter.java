@@ -32,6 +32,7 @@ import app.memoling.android.anki.entity.AnkiCard;
 import app.memoling.android.anki.entity.AnkiCollection;
 import app.memoling.android.anki.entity.AnkiConfiguration;
 import app.memoling.android.anki.entity.AnkiDeck;
+import app.memoling.android.anki.entity.AnkiDeckConfiguration;
 import app.memoling.android.anki.entity.AnkiMessage;
 import app.memoling.android.anki.entity.AnkiNote;
 import app.memoling.android.db.DatabaseHelper.Order;
@@ -64,7 +65,8 @@ public class AnkiImporter {
 	private boolean importSuccessful = false;
 	
 	private AnkiConfiguration ankiConfiguration;
-	private AnkiConfiguration ankiDefaultConfiguration;
+//	private AnkiConfiguration ankiDeckConfiguration;
+	private List<AnkiDeckConfiguration> ankiDecksConfiguration;
 	private List<AnkiDeck> ankiDecks;
 	private List<MemoBase> memoBases;
 	private List<AnkiNote> ankiNotes;
@@ -197,7 +199,7 @@ public class AnkiImporter {
 			ankiDecks = AnkiCollection.getDecksDescription(ankiCollections.get(0).getDecks());
 								
 			// parse 'dconf' column
-			ankiDefaultConfiguration = AnkiCollection.getConfigurationDescription(ankiCollections.get(0).getDefaultConfiguration());
+			ankiDecksConfiguration = AnkiCollection.getDeckConfigurationDescription(ankiCollections.get(0).getDeckConfiguration());
 			
 			// parse 'tags' column
 		}
