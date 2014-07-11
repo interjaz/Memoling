@@ -27,7 +27,7 @@ import app.memoling.android.adapter.MemoAdapter.Sort;
 import app.memoling.android.adapter.MemoBaseAdapter;
 import app.memoling.android.adapter.SyncClientAdapter;
 import app.memoling.android.anki.AnkiIOEngine;
-import app.memoling.android.anki.AnkiImportAdapter;
+import app.memoling.android.anki.adapter.AnkiImportAdapter;
 import app.memoling.android.anki.entity.AnkiCard;
 import app.memoling.android.anki.entity.AnkiCollection;
 import app.memoling.android.anki.entity.AnkiConfiguration;

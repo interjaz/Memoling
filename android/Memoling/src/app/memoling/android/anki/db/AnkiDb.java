@@ -1,4 +1,4 @@
-package app.memoling.android.anki;
+package app.memoling.android.anki.db;
 
 import java.io.File;
 

@@ -77,11 +77,11 @@ public class SqliteUpdater {
 						version = 6;
 					}
 					
-					if(version == 6) {
-						update67(database);
-						database.setVersion(7);
-						version = 7;
-					}
+//					if(version == 6) {
+//						update67(database);
+//						database.setVersion(7);
+//						version = 7;
+//					}
 
 					database.setTransactionSuccessful();
 				} catch (Exception ex) {
@@ -187,6 +187,24 @@ public class SqliteUpdater {
 				"\"ResponseTime\" INTEGER NOT NULL, " +
 				"\"Type\" INTEGER NOT NULL)";
 		
+		String updateMemoLearningInfos = "CREATE  TABLE \"MemoLearningInfos\" (" +
+				"\"MemoLearningInfosId\" VARCHAR NOT NULL PRIMARY KEY, " +
+				"\"MemoId\" VARCHAR NOT NULL, " +
+				"\"Order\" INTEGER NOT NULL, " +
+				"\"Type\" INTEGER NOT NULL, " +
+				"\"Queue\" INTEGER NOT NULL, " +
+				"\"Due\" INTEGER NOT NULL, " +
+				"\"Interval\" INTEGER NOT NULL, " +	
+				"\"Difficulty\" INTEGER NOT NULL, " +
+				"\"NumberAllAnswers\" INTEGER NOT NULL, " +
+				"\"NumberWrongAnswers\" INTEGER NOT NULL, " +
+				"\"Left\" INTEGER NOT NULL, " +
+				"\"Odue\" INTEGER NOT NULL, " +			
+				"\"Odid\" INTEGER NOT NULL, " +
+				"\"Flags\" INTEGER NOT NULL, " +
+				"\"Data\" TEXT NOT NULL)";
+		
 		database.execSQL(updateMemoReviewLogs);
+		database.execSQL(updateMemoLearningInfos);
 	}
 }

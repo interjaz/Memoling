@@ -1,4 +1,4 @@
-package app.memoling.android.supermemo;
+package app.memoling.android.supermemo.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,7 @@ import app.memoling.android.adapter.SyncActionAdapter;
 import app.memoling.android.db.DatabaseHelper;
 import app.memoling.android.db.SqliteAdapter;
 import app.memoling.android.entity.SyncAction;
+import app.memoling.android.supermemo.entity.MemoLearningInfo;
 import app.memoling.android.sync.cloud.ISyncAdapter;
 import app.memoling.android.sync.cloud.ISyncEntity;
 

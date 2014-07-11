@@ -1,4 +1,4 @@
-package app.memoling.android.anki;
+package app.memoling.android.anki.adapter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import app.memoling.android.adapter.MemoAdapter.Sort;
+import app.memoling.android.anki.db.AnkiDb;
 import app.memoling.android.anki.entity.AnkiCard;
 import app.memoling.android.anki.entity.AnkiCollection;
 import app.memoling.android.anki.entity.AnkiGrave;

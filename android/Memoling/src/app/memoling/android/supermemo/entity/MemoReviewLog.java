@@ -1,4 +1,4 @@
-package app.memoling.android.supermemo;
+package app.memoling.android.supermemo.entity;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package app.memoling.android.supermemo;
 
-public class SM2Algorithm {
+public class SuperMemoEngine {
 
 	enum SortType { 
 		RANDOM_NEW_CARD,
