@@ -122,7 +122,7 @@ public class MemoReviewLogAdapter extends SqliteAdapter implements ISyncAdapter 
 		
 		String query = "SELECT "
 				+ "	M.MemoReviewLogId M_MemoReviewLogId, M.MemoId M_MemoId, M.ResponseResult M_ResponseResult, M.NewInterval M_NewInterval, M.OldInterval M_OldInterval, M.DifficultyFactor M_DifficultyFactor, M.ResponseTime M_ResponseTime, M.Type M_Type, "
-				+ "FROM Memos AS M " + "WHERE M.MemoReviewLogId = ?";
+				+ "FROM MemoReviewLogs AS M " + "WHERE M.MemoReviewLogId = ?";
 
 		Cursor cursor = null;
 		try {

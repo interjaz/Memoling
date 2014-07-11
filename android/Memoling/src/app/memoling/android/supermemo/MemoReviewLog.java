@@ -13,10 +13,15 @@ import app.memoling.android.sync.cloud.ISyncEntity;
 public class MemoReviewLog implements ISyncEntity {
 
 	// Database columns
-	// primary key - memoReviewLogId
+	
+	// primary key: memoReviewLogId
 	private String memoReviewLogId;
-	// external key - memoId
+	
+	// database column: cid
+	// external key: memoId
 	private String memoId;
+	
+	// database column: ease
 	//	5 - perfect response
 	//	4 - correct response after a hesitation
 	//	3 - correct response recalled with serious difficulty
@@ -24,14 +29,24 @@ public class MemoReviewLog implements ISyncEntity {
 	//	1 - incorrect response; the correct one remembered
 	//	0 - complete blackout.
 	private int responseResult;
+	
+	// database column: ivl
 	// new interval
 	private int newInterval;
+	
+	// database column: lastIvl
 	// old interval taken into computation of new interval
 	private int oldInterval;
+	
+	// database column: factor
 	// factor of difficulty
 	private int difficultyFactor;
+	
+	// database column: time
 	// amount of time user was thinking about the answer
 	private int responseTime;
+	
+	// database column: type
 	// type of card that was reviewed
 	// 0 - not learned
 	// 1 - repeated

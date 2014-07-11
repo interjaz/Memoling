@@ -658,7 +658,7 @@ public class AnkiImporter {
 			// 1. take advantage of separation in the original field
 			String[] translations = tmpAnkiNote.getFlds().split(new String(specialSign));		
 			
-			// 2. strip html tags and trip white spaces
+			// 2. strip html tags and trim white spaces
 			for (int i = 0; i < translations.length; i++) {
 				translations[i] = stripHtml(translations[i]).trim();
 			}

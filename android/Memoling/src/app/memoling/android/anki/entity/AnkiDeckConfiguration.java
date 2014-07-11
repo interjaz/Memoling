@@ -46,6 +46,43 @@ public class AnkiDeckConfiguration {
 	// JSON field : mod
 	private Date lastModification;
 	
+	public String serialize() throws JSONException {
+		JSONObject json = new JSONObject();
+	
+		json.put("name", name);
+		json.put("replayq", replayq);
+		json.put("lapseOptions", lapseOptions.serialize());
+		json.put("reviewOptions", reviewOptions.serialize());
+		json.put("timer", timer);
+		json.put("dynamic", dynamic);
+		json.put("maxTaken", maxTaken);
+		json.put("universalSerialNumber", universalSerialNumber);
+		json.put("newOptions", newOptions.serialize());
+		json.put("autoplay", autoplay);
+		json.put("id", id.getTime());
+		json.put("lastModification", lastModification.getTime());
+		
+		return json.toString();
+	}		
+	
+	public AnkiDeckConfiguration deserialize(JSONObject json) throws JSONException {
+		
+		name = json.getString("name");
+		replayq = json.getBoolean("replayq");
+		lapseOptions = new AnkiLapseOptions().deserialize(json.getJSONObject("lapseOptions"));
+		reviewOptions = new AnkiReviewOptions().deserialize(json.getJSONObject("reviewOptions"));
+		timer = json.getInt("timer");
+		dynamic = json.getBoolean("dynamic");
+		maxTaken = json.getInt("maxTaken");
+		universalSerialNumber = json.getInt("universalSerialNumber");
+		newOptions = new AnkiNewOptions().deserialize(json.getJSONObject("newOptions"));		
+		autoplay = json.getBoolean("autoplay");		
+		id = new Date(json.getLong("id"));
+		lastModification = new Date(json.getLong("lastModification"));
+		
+		return this;
+	}
+
 	private class AnkiLapseOptions {
 		// JSON fields
 		
@@ -103,13 +140,47 @@ public class AnkiDeckConfiguration {
 		public void setMult(double mult) {
 			this.mult = mult;
 		}
-	}
-			
-	public AnkiDeckConfiguration deserialize(JSONObject newObject) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		
+		public String serialize() throws JSONException {
+			JSONObject json = new JSONObject();
 
+			json.put("leechFails", leechFails);
+			json.put("minInterval", minInterval);
+			json.put("leechAction", leechAction);
+			
+			if(delays != null) {
+				JSONArray array = new JSONArray();
+				for(int i : delays) {
+					array.put(delays[i]);
+				}
+				json.put("delays", array);
+			}
+			
+			json.put("mult", mult);
+			
+			return json.toString();
+		}
+		
+		public AnkiLapseOptions deserialize(JSONObject json) throws JSONException {
+			
+			leechFails = json.getInt("perDay");
+			minInterval = json.getInt("minInterval");
+			leechAction = json.getInt("leechAction");
+			
+			if(json.has("delays")) {
+				JSONArray array = json.getJSONArray("delays");
+				delays = new int[array.length()];
+				for(int i=0;i<array.length();i++) {
+					delays[i] = array.getInt(i);
+				}
+			}
+			
+			mult = json.getDouble("mult");
+			
+			return this;
+		}
+	}
+	
 	private class AnkiReviewOptions {
 		// JSON fields
 		
