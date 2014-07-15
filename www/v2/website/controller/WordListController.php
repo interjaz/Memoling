@@ -6,10 +6,24 @@ class WordListController extends Controller {
         $word = $_GET['word'];
         $language = $_GET['lang'];
         
-        $adapter = new WordListAdapter();
-        $result = $adapter->getStartingWith($word, $language, 10);
+        $words = explode(' ', $word);
+        $lastWord = end($words);
         
-		echo JsonBuilder::arrayToJson($result);
+        
+        $adapter = new WordListAdapter();
+        $results = $adapter->getStartingWith($lastWord, $language, 10);
+        
+        $wordBase = "";
+        
+        if(sizeof($words) > 0 ) {
+            $wordBase = implode(' ', array_slice($words, 0, sizeof($words)-1)) . ' ';
+        }
+        
+        for($i=0;$i<sizeof($results);$i++) {
+            $results[$i]->Word = $wordBase . $results[$i]->Word;
+        }
+        
+		echo JsonBuilder::arrayToJson($results);
     }
     
 }
