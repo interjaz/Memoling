@@ -1,15 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="memolist_whatsNewContent">
-		Wyłączono tymczasowo reklamy/\n
-		Jeśli aplikacja Ci się podoba, oceń ją.\n
-		\m
-		NA NASZEJ STRONIE MOŻESZ TERAZ EDYTOWAĆ ZSYNCHRONIZOWANE WYRAŻENIA!\n
-		\n
-		Jeżeli zauważyłeś/aś błąd, proszę napisz o nim na fb aplikacji. Dzięki!\n
-		\n
-		Zmiany v.1.10.1\n
+    <string name="memolist_aboutContent"><![CDATA[		
+        <html>
+            <head>
+				<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+                <style type="text/css">
+                	html {
+                		margin: 0px;
+                		padding: 0px;
+                	}
+                    body {
+                    	color: #eee;
+                    	background: #222222;
+                    	font-size: 10pt;
+                		margin: 0px;
+                		padding: 0px;
+                    }
+                    a {
+                    	color: #0099cc;
+                    }
+                </style>
+            </head>
+        	<body>
+			Wyłączono tymczasowo reklamny. Jeśli podoba Ci się aplikacja <a target="_blank" href="https://play.google.com/store/apps/details?id=app.memoling.android">wystaw&nbsp;ocenę</a>.<br/><br/>
+			Teraz także zobacz <a target="_blank" href="http://memoling.com">memoling.com</a> gdzie możesz synronizować / edytować wyrażenia!<br/><br/>
+			Jeśli znajdziesz jakiś błąd, proszę zgłoś go, albo opisz go na naszej stronie na <a target="_blank" href="https://www.facebook.com/pages/Memoling/144784992381757">facebooku</a>. Dzięki!
+			</body>
+		</html>]]>
+	</string>
+    <string name="memolist_aboutChanges">
+		Zmiany v.1.11.0\n
+		1. Usunięto kilka błędów\n
+		2. Poprawiono grę Znajdź słowo\n
+		3. Zmieniono wygląd strony wyrażeń\n
+		4. Dodano sortowanie\n
+        Zmiany v.1.10.1\n
 		1. Usunięto kilka błędów\n
 		Zmiany v.1.10.0\n
 		1. Poprawiono synchronizacje\n
@@ -33,7 +59,7 @@
 		2. Usunięto wielokrotne powiadomienia o treningu\n
 		3. Biblioteki znowu mogą być ściągane\n
 		4. Znowu można wyszukiwać wielowyrazowe wyrażenia\n
-     </string>
+	</string>
     
     <!-- MemoList Fragment -->
     <string name="memolist_btnSave">Zapisz</string>
@@ -58,10 +84,11 @@
     <string name="memolist_whatsNewOk">OK</string>
     <string name="memolist_updateCrash">Błąd podczas uaktualniania bazy!</string>
     <string name="memolist_wordOfTheDay">Słówko dnia</string>
-	<string name="memolist_games">Gry językowe</string>
+    <string name="memolist_games">Gry językowe</string>
     <string name="memolist_repeatAll">Powtórz wszystkie</string>
-	<string name="memolist_sentencesTraining">Trening z użyciem zdań</string>
-	<string name="memolist_audioTraining">Trening audio</string>
+    <string name="memolist_sentencesTraining">Trening z użyciem zdań</string>
+    <string name="memolist_audioTraining">Trening audio</string>
+    <string name="memolist_audioReplay">Audio Powtórka</string>
     <string name="memolist_details">Szczegóły</string>
     <string name="memolist_openScheduler">Ustaw trening</string>
     <string name="memolist_voiceSearch">Szukanie głosowe</string>
@@ -74,14 +101,20 @@
     <string name="memolist_wiktionary_lblRealSize">Rozmiar ostateczny</string>
     <string name="memolist_wiktionary_downloadStarted">Rozpoczęto ściąganie</string>
     <string name="memolist_wiktionary_getError">Problem z połączeniem</string>
+    <string name="memolist_wiktionary_back">Cofnij</string>
     <string name="memolist_hangman">Szubienica</string>
     <string name="memolist_crossword">Krzyżówka</string>
     <string name="memolist_findword">Znajdź słowo</string>
-    <string name="memolist_wiktionary_back">Cofnij</string>
-    <string name="memolist_audioReplay">Audio Powtórka</string>
     <string name="memolist_wordExists">Słowo już jest w bibliotece</string>
     <string name="memolist_manualSync">Synchronizuj</string>
     <string name="memolist_syncDisabled">Sync Wyłączona</string>
+    <string name="memolist_sort">Sortuj</string>
+    <string name="memolist_sortby">Sortuj wyrażenia według</string>
+    <string-array name="memolist_sort_array">
+        <item>Daty utworzenia</item>
+        <item>Alfabetycznie</item>
+    </string-array>
+    <string name="memolist_about">O aplikacji</string>
 
     <!-- MemoBaseList Fragment -->
     <string name="memobaselist_title">Biblioteki</string>
@@ -111,30 +144,34 @@
     <string name="memo_lblLastReviewed">Ostatnio powtórzono:</string>
     <string name="memo_lblDisplayed">Wyświetlono:</string>
     <string name="memo_lblCorrectAnswered">Poprawnie odpowiedziano:</string>
-    <string name="memo_lblWordA">Pierwsze wyrażenie:</string>
-    <string name="memo_lblLangA">Język:</string>
-    <string name="memo_lblWordB">Drugie wyrażenie:</string>
-    <string name="memo_lblLangB">Język:</string>
-    <string name="memo_first">Pierwsze</string>
-    <string name="memo_second">Drugie</string>
+    <string name="memo_first">PIERWSZE</string>
+    <string name="memo_lblWordA">PIERWSZE</string>
+    <string name="memo_second">DRUGIE</string>
+    <string name="memo_lblWordB">DRUGIE</string>
     <string name="memo_lblActive">Aktywne</string>
+    <string name="memo_details">SZCZEGÓŁY</string>
     <string name="memo_copied">Skopiowano</string>
-    <string name="memo_details">Szczegóły</string>
     <string name="memo_selectTranslationTitle">Wybierz tłumaczenie</string>
     <string name="memo_selectTranslationProgress">Szukam tłumaczeń</string>
-    <string name="memo_abbrThesaurus">Th</string>
-    <string name="memo_abbrDictionary">Sł</string>
-	<string name="memo_description">Opis</string>
+    <string name="memo_thesaurus">Thesaurus</string>
+    <string name="memo_dictionary">Słownik</string>
+    <string name="memo_copy">Skopiuj</string>
+    <string name="memo_play">Odtwórz</string>
+    <string name="memo_refresh">Przetłumacz ponownie</string>
+    <string name="memo_description">TWÓJ OPIS</string>
     <string name="memo_sentences">Zdania</string>
-    <string name="memo_synonyms">Synonimy</string>
+    <string name="memo_synonyms">SYNONIMY</string>
     <string name="memo_sentencesDownloading">Pobieram &#8230;</string>
     <string name="memo_sentencesSearching">Szukam &#8230;</string>
     <string name="memo_notFound">Nie znaleziono</string>
-    <string name="memo_wikitonaryNotInstalled">Nieznaleziono słownika offline</string>
-	<string name="memo_sharefacebook">Share over Facebook</string>
-	<string name="memo_share">Udostępnij link</string>
-	<string name="memo_backToList">Powrót do listy</string>
-	
+    <string name="memo_wikitonaryNotInstalled">Słownik offline nieznaleziony</string>
+    <string name="memo_sharefacebook">Udostępnij przez Facebook</string>
+    <string name="memo_share">Udostępnij</string>
+    <string name="memo_backToList">Powrót do listy</string>
+    <string name="memo_definitionWiki">DEFINICJE (Wiktionary)</string>
+    <string name="memo_definitionQuizlet">DEFINICJE (Powered by Quizlet.com)</string>
+    <string name="memo_sentencesTatoeba">ZDANIA (Tatoeba)</string>
+    <string name="memo_sentencesQuizlet">ZDANIA (Powered by Quizlet.com)</string>
 	
 	<!-- Common share -->
 	<string name="share_message">%1$s udotępnił(-a) tobie wyrażenie %2$s . Otwórz link aby zobaczyć szczegóły: %3$s</string>
@@ -214,7 +251,7 @@
     <string name="review_voiceInput">Użyj głosu</string>
     <string name="review_submit">Potwierdź</string>
     <string name="review_lblCorrect">Poprawna</string>
-    <string name="review_lblIncorrect">Błąd. Odpowiedź:\n%s</string>
+    <string name="review_lblIncorrect">(%1$s)\n%2$s</string>
     <string name="review_lblLanguage">Język</string>
     <string name="review_noMemos">Nie znaleziono mem</string>
 	<string name="review_sentencesNotFound">Zdania nie znalezione</string>
@@ -378,10 +415,15 @@
     <string name="games_score">Wynik</string>
     <string name="games_source">Źródło</string>
     <string name="games_hint">PODPOWIEDZ</string>
+    <string name="games_showWords">POKAŻ SŁÓWKA</string>
+    <string name="games_words">Słówka</string>
+    <string name="games_ok">OK</string>
+    <string name="games_found">Znaleziono:</string>
+    <string name="games_notFound">Nie znaleziono:</string>
     <string name="crossword_enterWord">Wprowadź słowo</string>
     <string name="crossword_horizontal">Poziomo</string>
     <string name="crossword_vertical">Pionowo</string>
-    <string name="crossword_submit">Zatwierdz</string>
+    <string name="crossword_submit">Zatwierdź</string>
     
     <string-array name="games_source">
         <item>Obecna bibiloteka</item>

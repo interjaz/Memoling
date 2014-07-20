@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collection;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -348,5 +349,17 @@ public class Helper {
 		}
 		
 		return str;
+	}
+	
+	public static <T> int indexOf(Collection<T> list, T item) {
+		int i=0;
+		for(T it : list) {
+			if(it == item) {
+				return i;
+			}
+			i++;
+		}
+		
+		return -1;
 	}
 }

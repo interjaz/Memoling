@@ -12,14 +12,7 @@
     
     <!-- MemoList Fragment -->
     <string translatable="false" name="memolist_swap">⇄</string>
-    
-    <!-- Memo Fragment -->
-    <string translatable="false" name="memo_definitionsMemoling">Memoling</string>
-    <string translatable="false" name="memo_definitionsQuizlet">Powered by Quizlet.com</string>
-    <string translatable="false" name="memo_definitionsWiktionary">Wiktionary</string>
-    <string translatable="false" name="memo_sentencesTatoeba">Tatoeba.org</string>
-    <string translatable="false" name="memo_sentencesQuizlet">Powered by Quizlet.com</string>
-    
+   
    	
    	<string-array translatable="false" name="preferences_languageAccent_values">
    	    <item>0</item>

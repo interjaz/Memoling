@@ -26,12 +26,19 @@ import app.memoling.android.quizlet.QuizletProvider.IQuizletGetDefinitions;
 import app.memoling.android.ui.FacebookFragment;
 import app.memoling.android.ui.adapter.DrawerAdapter;
 import app.memoling.android.ui.view.DrawerView;
+import app.memoling.android.ui.view.DrawerView.OnClickListener;
 import app.memoling.android.webservice.WsSentences.IGetComplete;
 
 import com.actionbarsherlock.view.MenuItem;
 
 public class MemoFragment extends FacebookFragment {
 
+	public final static int DrawerActionRefresh = 0;
+	public final static int DrawerActionThesaurus = 1;
+	public final static int DrawerActionDictionary = 2;
+	public final static int DrawerActionCopy = 3;
+	public final static int DrawerActionAudio = 4;
+	
 	private final static int TabSize = 3;
 
 	public final static String MemoId = "MemoId";
@@ -56,6 +63,7 @@ public class MemoFragment extends FacebookFragment {
 	private boolean m_originalActive;
 
 	private ShareHelper m_shareHelper;
+	private DrawerAdapter m_drawer;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View contentView = super.onCreateView(inflater, container, savedInstanceState,
@@ -69,6 +77,7 @@ public class MemoFragment extends FacebookFragment {
 		m_pager.setOffscreenPageLimit(TabSize - 1);
 		m_pager.setAdapter(m_adapter);
 		m_pager.setClickable(true);
+		m_pager.setOnPageChangeListener(new PagerEventHandler());
 
 		m_shareHelper = new ShareHelper(this, false);
 
@@ -264,6 +273,28 @@ public class MemoFragment extends FacebookFragment {
 		boolean onBackPressed();
 
 		int getPosition();
+		
+		void updateDrawer();
+		void onDrawerItemSelected(int drawerAction);
+	}
+	
+	public class PagerEventHandler implements ViewPager.OnPageChangeListener {
+
+		@Override
+		public void onPageScrollStateChanged(int arg0) {
+		}
+
+		@Override
+		public void onPageScrolled(int arg0, float arg1, int arg2) {
+		}
+
+		@Override
+		public void onPageSelected(int position) {
+			if(m_adapter.getCacheSize() > 0) {
+				((IMemoPagerFragment)m_adapter.getCachedItem(position)).updateDrawer();
+			}
+		}
+		
 	}
 
 	@Override
@@ -292,11 +323,64 @@ public class MemoFragment extends FacebookFragment {
 
 		super.onDestroyView();
 	}
-
+	
 	@Override
 	protected void onPopulateDrawer(DrawerAdapter drawer) {
-		drawer.addGroup(new DrawerView(R.drawable.ic_back, R.string.memo_backToList));
-		m_shareHelper.onPopulateDrawerMemo(drawer);
+		m_drawer = drawer;
+		updateDrawer(true, true, true, true, true);
+	}
+	
+	public void updateDrawer(boolean refresh, boolean thesaurus, boolean dictionary, boolean copy, boolean audio) {
+		m_drawer.clear();
+		
+		m_drawer.addGroup(new DrawerView(R.drawable.ic_back, R.string.memo_backToList));
+		
+		if(refresh) {
+			m_drawer.addGroup(new DrawerView(R.drawable.ic_menu_refresh, R.string.memo_refresh, new OnClickListener() {
+				@Override
+				public void onClick(DrawerView view) {
+					drawerItemSelected(DrawerActionRefresh);
+				}				
+			}));
+		}
+		
+		if(thesaurus) {
+			m_drawer.addGroup(new DrawerView(R.drawable.ic_thesaurus, R.string.memo_thesaurus, new OnClickListener() {
+				@Override
+				public void onClick(DrawerView view) {
+					drawerItemSelected(DrawerActionThesaurus);
+				}				
+			}));
+		}
+		
+		if(dictionary) {
+			m_drawer.addGroup(new DrawerView(R.drawable.ic_dictionary, R.string.memo_dictionary, new OnClickListener() {
+				@Override
+				public void onClick(DrawerView view) {
+					drawerItemSelected(DrawerActionDictionary);
+				}				
+			}));
+		}
+		
+		if(copy) {
+			m_drawer.addGroup(new DrawerView(R.drawable.ic_voice, R.string.memo_play, new OnClickListener() {
+				@Override
+				public void onClick(DrawerView view) {
+					drawerItemSelected(DrawerActionAudio);
+				}				
+			}));
+		}
+		
+		if(copy) {
+			m_drawer.addGroup(new DrawerView(R.drawable.ic_menu_copy_holo_dark, R.string.memo_copy, new OnClickListener() {
+				@Override
+				public void onClick(DrawerView view) {
+					drawerItemSelected(DrawerActionCopy);
+				}				
+			}));
+		}
+		
+		m_shareHelper.onPopulateDrawerMemo(m_drawer);
 	}
 
 	@Override
@@ -304,5 +388,11 @@ public class MemoFragment extends FacebookFragment {
 		super.onActivityResult(requestCode, resultCode, data);
 		// Does not matter which fragment is used, TextToSpeechHelper is handling data
 		m_adapter.getCachedItem(0).onActivityResult(requestCode, resultCode, data);
+	}
+	
+	private void drawerItemSelected(int drawerAction) {
+		if(m_adapter.getCacheSize() > 0) {
+			((IMemoPagerFragment)m_adapter.getCachedItem(m_pager.getCurrentItem())).onDrawerItemSelected(drawerAction);
+		}
 	}
 }

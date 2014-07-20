@@ -63,6 +63,8 @@ public abstract class GamesMatrixGame extends ApplicationFragment implements OnT
 	private BitmapDrawable m_bkg;
 	private int m_width;
 	private int m_height;
+	
+	private Language m_language;
 
 	protected abstract int getLayout();
 	
@@ -77,7 +79,11 @@ public abstract class GamesMatrixGame extends ApplicationFragment implements OnT
 	protected boolean getAllowDiagonal() {
 		return false;
 	}
-
+	
+	public Language getLanguage() {
+		return m_language;
+	}
+	
 	//
 	// Fragment
 	//
@@ -317,6 +323,10 @@ public abstract class GamesMatrixGame extends ApplicationFragment implements OnT
 	protected boolean isLoading() {
 		return m_showProgress;
 	}
+	
+	protected void setLoading(boolean inProgress) {
+		m_showProgress = inProgress;
+	}
 
 	protected void newGame() {
 
@@ -357,29 +367,31 @@ public abstract class GamesMatrixGame extends ApplicationFragment implements OnT
 		case 0:
 		default:
 			// EN
-			words = wordAdapter.getRandom(Language.EN, count, min, max);
+			m_language = Language.EN;
 			break;
 		case 1:
 			// ES
-			words = wordAdapter.getRandom(Language.ES, count, min, max);
+			m_language = Language.ES;
 			break;
 		case 2:
 			// DE
-			words = wordAdapter.getRandom(Language.DE, count, min, max);
+			m_language = Language.DE;
 			break;
 		case 3:
 			// FR
-			words = wordAdapter.getRandom(Language.FR, count, min, max);
+			m_language = Language.FR;
 			break;
 		case 4:
 			// IT
-			words = wordAdapter.getRandom(Language.IT, count, min, max);
+			m_language = Language.IT;
 			break;
 		case 5:
 			// PL
-			words = wordAdapter.getRandom(Language.PL, count, min, max);
+			m_language = Language.PL;
 			break;
 		}
+		
+		words = wordAdapter.getRandom(m_language, count, min, max);
 
 		return words;
 	}

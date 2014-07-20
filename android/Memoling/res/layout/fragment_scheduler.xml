@@ -51,13 +51,13 @@
                         android:text="12"
                         android:textSize="96sp" />
 
-                    <app.memoling.android.ui.control.fit_view.TextViewFitView
+                    <TextView
                         android:id="@+id/scheduler_lblColon"
                         android:layout_width="10dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:text=":"
-                        android:textSize="98sp" />
+                        android:textSize="40sp" />
 
                     <EditText
                         android:id="@+id/scheduler_txtMinutes"

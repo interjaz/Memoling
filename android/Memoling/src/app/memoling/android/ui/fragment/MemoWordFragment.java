@@ -2,8 +2,8 @@ package app.memoling.android.ui.fragment;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.List;
+import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -16,24 +16,21 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.TabHost;
-import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
@@ -72,15 +69,15 @@ public class MemoWordFragment extends Fragment implements
 	private WebView m_vwDescriptionWiktionary;
 	private TextView m_lblSentencesTatoeba;
 	private TextView m_lblSentencesQuizlet;
-	private ImageButton m_btnSearchWord;
-	private ImageButton m_btnCopyWord;
-	private ImageButton m_btnSpeech;
-	private Button m_btnThesaurusWord;
-	private Button m_btnDictionaryWord;
-	private LinearLayout m_laySynonyms;
 	private TextView m_txtSynonyms;
 	private FrameLayout m_layWebSearch;
 	private WebView m_webSearch;
+
+	private RelativeLayout m_laySynonyms;
+	private RelativeLayout m_layDefinitionQuizlet;
+	private RelativeLayout m_layDefinitionWiki;
+	private RelativeLayout m_laySentencesTatoeba;
+	private RelativeLayout m_laySentencesQuizlet;
 
 	protected Memo m_memo;
 	private Runnable m_memoDelayedRunnable;
@@ -88,7 +85,7 @@ public class MemoWordFragment extends Fragment implements
 	private Runnable m_quizletDefinitionsRunnable;
 
 	private boolean m_isWordA;
-
+	
 	private TextToSpeechHelper m_textToSpeechHelper;
 
 	@SuppressLint("SetJavaScriptEnabled")
@@ -107,39 +104,32 @@ public class MemoWordFragment extends Fragment implements
 
 		m_txtLanguage = (TextView) contentView.findViewById(R.id.memo_txtLang);
 
-		m_btnSearchWord = (ImageButton) contentView
-				.findViewById(R.id.memo_btnSearchWord);
-		m_btnSearchWord.setOnClickListener(new BtnSearchWordAEventHandler());
 
 		m_txtWord = (EditText) contentView.findViewById(R.id.memo_txtWord);
 		m_txtWord.setOnEditorActionListener(this);
 		m_txtWord.setTypeface(thinFont);
 		m_txtWord.addTextChangedListener(new TxtWordAEventHandler());
 
-		m_btnCopyWord = (ImageButton) contentView
-				.findViewById(R.id.memo_btnCopyWord);
-		m_btnCopyWord.setOnClickListener(new BtnCopyWordEventHandler());
-
-		m_btnSpeech = (ImageButton) contentView
-				.findViewById(R.id.memo_btnSpeech);
-		m_btnSpeech.setOnClickListener(new BtnSpeechEventHandler());
-
 		m_txtDescriptionMemoling = (EditText) contentView
 				.findViewById(R.id.memo_txtDescriptionMemoling);
 		m_txtDescriptionMemoling
 				.addTextChangedListener(new TxtDescriptionEventHandler());
 
+		m_layDefinitionQuizlet = (RelativeLayout) contentView.findViewById(R.id.memo_layDefinitionQuzilet);
 		m_lblDescriptionQuizlet = (TextView) contentView
 				.findViewById(R.id.memo_lblDescriptionQuizlet);
+		m_layDefinitionWiki = (RelativeLayout) contentView.findViewById(R.id.memo_layDefinitionWiki);
 		m_vwDescriptionWiktionary = (WebView) contentView
 				.findViewById(R.id.memo_vwDefinitionWiktionary);
 
+		m_laySentencesTatoeba = (RelativeLayout) contentView.findViewById(R.id.memo_laySentenceTatoeba);
 		m_lblSentencesTatoeba = (TextView) contentView
 				.findViewById(R.id.memo_lblSentencesTatoeba);
+		m_laySentencesQuizlet = (RelativeLayout) contentView.findViewById(R.id.memo_laySentenceQuizlet);
 		m_lblSentencesQuizlet = (TextView) contentView
 				.findViewById(R.id.memo_lblSentencesQuizlet);
 
-		m_laySynonyms = (LinearLayout) contentView
+		m_laySynonyms = (RelativeLayout) contentView
 				.findViewById(R.id.memo_laySynonyms);
 		m_txtSynonyms = (TextView) contentView
 				.findViewById(R.id.memo_txtSynonyms);
@@ -155,54 +145,13 @@ public class MemoWordFragment extends Fragment implements
 			}
 		});
 
-		m_btnThesaurusWord = (Button) contentView
-				.findViewById(R.id.memo_btnThesaurusWord);
-		m_btnThesaurusWord.setOnClickListener(new BtnThesaurusEventHandler());
-		m_btnDictionaryWord = (Button) contentView
-				.findViewById(R.id.memo_btnDictionaryWord);
-		m_btnDictionaryWord.setOnClickListener(new BtnDictionaryEventHandler());
-
-		TabHost tabHost = null;
-		int fontSize = Helper.dipToPixels(getActivity(), 8);
-		int minHeight = Helper.dipToPixels(getActivity(), 40);
-		int color = 0xFFFFFFFF;
-		Typeface typeface = thinFont;
-
-		// Definition tabs
-		tabHost = (TabHost) contentView.findViewById(R.id.memo_tabDefinitions);
-		tabHost.setup();
-
-		createTab(tabHost, "TAB0", R.string.memo_definitionsMemoling,
-				R.id.memo_tabDefinitionMemoling, typeface, fontSize, color,
-				minHeight);
-
-		createTab(tabHost, "TAB1", R.string.memo_definitionsQuizlet,
-				R.id.memo_tabDefinitionQuizlet, typeface, fontSize, color,
-				minHeight);
-
-		createTab(tabHost, "TAB2", R.string.memo_definitionsWiktionary,
-				R.id.memo_tabDefinitionWiktionary, typeface, fontSize, color,
-				minHeight);
-
-		// Sentence tabs
-		tabHost = (TabHost) contentView.findViewById(R.id.memo_tabSentences);
-		tabHost.setup();
-
-		createTab(tabHost, "TAB0", R.string.memo_sentencesTatoeba,
-				R.id.memo_tabSentencesTatoeba, typeface, fontSize, color,
-				minHeight);
-
-		createTab(tabHost, "TAB1", R.string.memo_sentencesQuizlet,
-				R.id.memo_tabSentencesQuizlet, typeface, fontSize, color,
-				minHeight);
-
-		resources.setFont(m_btnThesaurusWord, thinFont);
-		resources.setFont(m_btnDictionaryWord, thinFont);
-
-		resources.setFont(contentView, R.id.memo_lblLang, thinFont);
 		resources.setFont(contentView, R.id.textView1, thinFont);
 		resources.setFont(contentView, R.id.textView2, thinFont);
 		resources.setFont(contentView, R.id.textView3, thinFont);
+		resources.setFont(contentView, R.id.textView4, thinFont);
+		resources.setFont(contentView, R.id.textView5, thinFont);
+		resources.setFont(contentView, R.id.textView6, thinFont);
+
 		resources.setFont(contentView, R.id.memo_txtDescriptionMemoling,
 				thinFont);
 		resources.setFont(contentView, R.id.memo_lblDescriptionQuizlet,
@@ -213,25 +162,18 @@ public class MemoWordFragment extends Fragment implements
 
 		resources.setFont(contentView, R.id.memo_lblWord, thinFont);
 		resources.setFont(contentView, R.id.memo_txtWord, thinFont);
-		resources.setFont(contentView, R.id.memo_lblLang, thinFont);
 		resources.setFont(contentView, R.id.memo_txtLang, thinFont);
 
 		if (m_isWordA) {
-			m_btnSearchWord.setVisibility(View.VISIBLE);
 			((TextView) contentView.findViewById(R.id.memo_lblWord))
 					.setText(R.string.memo_lblWordA);
-			((TextView) contentView.findViewById(R.id.memo_lblLang))
-					.setText(R.string.memo_lblLangA);
 		} else {
-			m_btnSearchWord.setVisibility(View.GONE);
 			((TextView) contentView.findViewById(R.id.memo_lblWord))
 					.setText(R.string.memo_lblWordB);
-			((TextView) contentView.findViewById(R.id.memo_lblLang))
-					.setText(R.string.memo_lblLangB);
 		}
 
 		m_textToSpeechHelper = new TextToSpeechHelper(getActivity());
-
+		
 		return contentView;
 	}
 
@@ -256,79 +198,44 @@ public class MemoWordFragment extends Fragment implements
 		return true;
 	}
 
-	private void createTab(TabHost tabHost, String tag, int title, int content,
-			Typeface typeface, int titleTextSize, int titleTextColor,
-			int minHeight) {
-		TabSpec tabSpec = tabHost.newTabSpec(tag);
-		TextView textTab = new TextView(getActivity());
-		textTab.setText(getString(title));
-		textTab.setTextSize(titleTextSize);
-		textTab.setTextColor(titleTextColor);
-		textTab.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-		textTab.setTypeface(typeface);
-		textTab.setMinHeight(minHeight);
-		textTab.setBackgroundResource(R.drawable.theme_dark_button);
-		tabSpec.setIndicator(textTab);
-		tabSpec.setContent(content);
-		tabHost.addTab(tabSpec);
+	private void searchWord() {
+		Word from = new Word(m_txtWord.getText().toString().trim());
+		Language fromLang = m_memo.getWordA().getLanguage();
+		Language toLang = m_memo.getWordB().getLanguage();
+		Toast.makeText(getActivity(),
+				R.string.memo_selectTranslationProgress, Toast.LENGTH_SHORT)
+				.show();
+		new Translator(getActivity(), from, fromLang, toLang, null,
+				MemoWordFragment.this);
+	
 	}
 
-	private class BtnSearchWordAEventHandler implements OnClickListener {
-		@Override
-		public void onClick(View v) {
-			Word from = new Word(m_txtWord.getText().toString().trim());
-			Language fromLang = m_memo.getWordA().getLanguage();
-			Language toLang = m_memo.getWordB().getLanguage();
-			Toast.makeText(getActivity(),
-					R.string.memo_selectTranslationProgress, Toast.LENGTH_SHORT)
-					.show();
-			new Translator(getActivity(), from, fromLang, toLang, null,
-					MemoWordFragment.this);
-		}
+	private void copyWord() {
+		Helper.copyToClipboard(getActivity(), m_txtWord.getText()
+				.toString());
+		Toast.makeText(getActivity(), R.string.memo_copied,
+				Toast.LENGTH_SHORT).show();
 	}
 
-	private class BtnCopyWordEventHandler implements OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			Helper.copyToClipboard(getActivity(), m_txtWord.getText()
-					.toString());
-			Toast.makeText(getActivity(), R.string.memo_copied,
-					Toast.LENGTH_SHORT).show();
-		}
+	private void playWord() {
+		m_textToSpeechHelper.readText(getWord().getWord(), getWord()
+				.getLanguage());
 	}
 
-	private class BtnSpeechEventHandler implements OnClickListener {
+	private void openThesaurus() {
+		String searchUrl = String.format(ThesaurusAdapter.get(getWord()
+				.getLanguage()), m_txtWord.getText().toString());
 
-		@Override
-		public void onClick(View v) {
-			m_textToSpeechHelper.readText(getWord().getWord(), getWord()
-					.getLanguage());
-		}
+		m_layWebSearch.setVisibility(View.VISIBLE);
+		m_webSearch.loadUrl(searchUrl);
 	}
 
-	private class BtnThesaurusEventHandler implements OnClickListener {
+	private void openDictionary() {
+		String searchUrl = String.format(DictionaryAdapter.get(getWord()
+				.getLanguage()), m_txtWord.getText().toString());
 
-		@Override
-		public void onClick(View v) {
-			String searchUrl = String.format(ThesaurusAdapter.get(getWord()
-					.getLanguage()), m_txtWord.getText().toString());
-
-			m_layWebSearch.setVisibility(View.VISIBLE);
-			m_webSearch.loadUrl(searchUrl);
-		}
-	}
-
-	private class BtnDictionaryEventHandler implements OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			String searchUrl = String.format(DictionaryAdapter.get(getWord()
-					.getLanguage()), m_txtWord.getText().toString());
-
-			m_layWebSearch.setVisibility(View.VISIBLE);
-			m_webSearch.loadUrl(searchUrl);
-		}
+		m_layWebSearch.setVisibility(View.VISIBLE);
+		m_webSearch.loadUrl(searchUrl);
 	}
 
 	@Override
@@ -400,17 +307,8 @@ public class MemoWordFragment extends Fragment implements
 				m_txtWord.setText(getWord().getWord());
 				m_txtWord.clearFocus();
 
-				m_btnThesaurusWord.setEnabled(ThesaurusAdapter
-						.isSupported(getWord().getLanguage()));
-				m_btnDictionaryWord.setEnabled(ThesaurusAdapter
-						.isSupported(getWord().getLanguage()));
 				m_txtLanguage.setText(getWord().getLanguage().getName(
 						getActivity()));
-
-				m_btnThesaurusWord.setEnabled(ThesaurusAdapter
-						.isSupported(getWord().getLanguage()));
-				m_btnDictionaryWord.setEnabled(ThesaurusAdapter
-						.isSupported(getWord().getLanguage()));
 
 				setMemoWiktionary();
 
@@ -427,10 +325,7 @@ public class MemoWordFragment extends Fragment implements
 	private void setMemoWiktionary() {
 
 		if (!WiktionaryDb.isAvailable()) {
-			m_vwDescriptionWiktionary.loadData(
-					getString(R.string.memo_wikitonaryNotInstalled),
-					"text/html", "utf-8");
-			return;
+			fadeOut(m_layDefinitionWiki);
 		}
 
 		new WorkerThread<Void, Void, Void>() {
@@ -467,17 +362,16 @@ public class MemoWordFragment extends Fragment implements
 
 			@Override
 			protected void onPostExecute(Void result) {
-
-				if (m_txtSynonyms == null || m_laySynonyms == null) {
+				
+				if (m_txtSynonyms == null || m_laySynonyms == null || getActivity() == null) {
 					// Closed before onPostExecute has been called
 					return;
 				}
 
 				if (m_synonyms != null) {
 					m_txtSynonyms.setText(m_synonyms);
-					m_laySynonyms.setVisibility(View.VISIBLE);
 				} else {
-					m_laySynonyms.setVisibility(View.GONE);
+					fadeOut(m_laySynonyms);
 				}
 			}
 
@@ -534,12 +428,13 @@ public class MemoWordFragment extends Fragment implements
 					wikiDefBuilder.append(definition.getHtmlDefinition());
 				}
 
-				if (wikiDefBuilder.length() == 0) {
-					wikiDefBuilder.append(getString(R.string.memo_notFound));
+				if (m_vwDescriptionWiktionary == null || getActivity() == null) {
+					// Closed before onPostExecute has been called
+					return;
 				}
 
-				if (m_vwDescriptionWiktionary == null) {
-					// Closed before onPostExecute has been called
+				if (m_wikiDefinitions.size() == 0 && m_meanings.size() == 0) {
+					fadeOut(m_layDefinitionWiki);
 					return;
 				}
 
@@ -562,8 +457,12 @@ public class MemoWordFragment extends Fragment implements
 			@Override
 			public void run() {
 
+				if(getActivity() == null) {
+					return;
+				}
+				
 				if (memoSentences == null || memoSentences.size() == 0) {
-					m_lblSentencesTatoeba.setText(R.string.memo_notFound);
+					fadeOut(m_laySentencesTatoeba);
 					return;
 				}
 
@@ -593,9 +492,14 @@ public class MemoWordFragment extends Fragment implements
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
+				
+				if(getActivity() == null) {
+					return;
+				}
+				
 				if (definitions == null || definitions.size() == 0) {
-					m_lblDescriptionQuizlet.setText(R.string.memo_notFound);
-					m_lblSentencesQuizlet.setText(R.string.memo_notFound);
+					fadeOut(m_layDefinitionQuizlet);
+					fadeOut(m_laySentencesQuizlet);
 					return;
 				}
 
@@ -621,7 +525,7 @@ public class MemoWordFragment extends Fragment implements
 				m_lblDescriptionQuizlet.setText(sbDesc.toString());
 
 				if (sbSent.length() == 0) {
-					m_lblSentencesQuizlet.setText(R.string.memo_notFound);
+					fadeOut(m_laySentencesQuizlet);
 				} else {
 					m_lblSentencesQuizlet.setText(Html.fromHtml(sbSent
 							.toString()));
@@ -712,6 +616,61 @@ public class MemoWordFragment extends Fragment implements
 		if (m_textToSpeechHelper != null) {
 			m_textToSpeechHelper.shutdown();
 		}
+	}
+	
+	public void fadeOut(final View view) {
+
+		AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.0f);
+		fadeOut.setStartOffset(250);
+		fadeOut.setDuration(1000);
+		fadeOut.reset();
+		view.setAnimation(fadeOut);
+		fadeOut.start();
+		fadeOut.setAnimationListener(new AnimationListener() {
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				view.setVisibility(View.GONE);
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+			
+		});
+	}
+	
+	public void updateDrawer() {
+		MemoFragment parent = (MemoFragment)getParentFragment();
+		
+		boolean thesaurus = ThesaurusAdapter
+				.isSupported(getWord().getLanguage());
+
+		boolean dictionary = ThesaurusAdapter
+				.isSupported(getWord().getLanguage());
+
+		parent.updateDrawer(m_isWordA, thesaurus, dictionary, true, true);
+	}
+
+	@Override
+	public void onDrawerItemSelected(int drawerAction) {
+
+		if(drawerAction == MemoFragment.DrawerActionAudio) {
+			playWord();
+		} else if(drawerAction == MemoFragment.DrawerActionCopy) {
+			copyWord();
+		} else if(drawerAction == MemoFragment.DrawerActionDictionary) {
+			openDictionary();
+		} else if(drawerAction == MemoFragment.DrawerActionRefresh) {
+			searchWord();
+		} else if(drawerAction == MemoFragment.DrawerActionThesaurus) {
+			openThesaurus();
+		}
+		
 	}
 
 }

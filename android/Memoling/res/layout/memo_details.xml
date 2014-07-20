@@ -9,115 +9,134 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-    android:background="@color/content_background"
-    android:padding="5dp"
-        tools:context=".WordActivity" >
+        android:layout_marginTop="15dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp" >
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:textSize="20sp"
-            android:text="@string/memo_lblCreated" />
+            android:background="@color/content_background"
+            android:padding="10dp"
+            tools:context=".WordActivity" >
 
-        <TextView
-            android:id="@+id/memo_lblCreated"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@id/textView3"
-            android:textSize="20sp"
-            android:text="memo_lblCreated" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/memo_lblCreated"
+                android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/downloadlink_lblDefinitionALabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/textView3"
-            android:layout_below="@id/textView3"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:textSize="20sp"
-            android:layout_toLeftOf="@+id/memo_lblLastReviewed"
-            android:text="@string/memo_lblLastReviewed" />
+            <TextView
+                android:id="@+id/memo_lblCreated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/textView3"
+                android:text="memo_lblCreated"
+                android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/memo_lblLastReviewed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@id/downloadlink_lblDefinitionALabel"
-            android:textSize="20sp"
-            android:text="memo_lblLastReviewed" />
+            <TextView
+                android:id="@+id/downloadlink_lblDefinitionALabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/textView3"
+                android:layout_below="@id/textView3"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_toLeftOf="@+id/memo_lblLastReviewed"
+                android:text="@string/memo_lblLastReviewed"
+                android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/memo_lblDisplayed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/downloadlink_lblDefinitionALabel"
-            android:layout_marginTop="5dp"
-            android:textSize="20sp"
-            android:text="memo_lblDisplayed" />
+            <TextView
+                android:id="@+id/memo_lblLastReviewed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/downloadlink_lblDefinitionALabel"
+                android:text="memo_lblLastReviewed"
+                android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/downloadlink_lblDefinitionALabel"
-            android:layout_alignTop="@id/memo_lblDisplayed"
-            android:layout_toLeftOf="@id/memo_lblDisplayed"
-            android:textSize="20sp"
-            android:text="@string/memo_lblDisplayed" />
+            <TextView
+                android:id="@+id/memo_lblDisplayed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/downloadlink_lblDefinitionALabel"
+                android:layout_marginTop="5dp"
+                android:text="memo_lblDisplayed"
+                android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/memo_lblCorrectAnswered"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/textView5"
-            android:layout_marginTop="5dp"
-            android:textSize="20sp"
-            android:text="memo_lblCorrectAnswered" />
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/downloadlink_lblDefinitionALabel"
+                android:layout_alignTop="@id/memo_lblDisplayed"
+                android:layout_toLeftOf="@id/memo_lblDisplayed"
+                android:text="@string/memo_lblDisplayed"
+                android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/textView5"
-            android:layout_alignTop="@id/memo_lblCorrectAnswered"
-            android:layout_marginRight="10dp"
-            android:textSize="20sp"
-            android:layout_toLeftOf="@id/memo_lblCorrectAnswered"
-            android:text="@string/memo_lblCorrectAnswered" />
+            <TextView
+                android:id="@+id/memo_lblCorrectAnswered"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/textView5"
+                android:layout_marginTop="5dp"
+                android:text="memo_lblCorrectAnswered"
+                android:textSize="15sp" />
 
-        <CheckBox
-            android:id="@+id/memo_chbEnabled"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textView6"
-            android:layout_below="@+id/textView6"
-            android:layout_marginTop="10dp"
-            android:text="@string/memo_lblActive" />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/textView5"
+                android:layout_alignTop="@id/memo_lblCorrectAnswered"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@id/memo_lblCorrectAnswered"
+                android:text="@string/memo_lblCorrectAnswered"
+                android:textSize="15sp" />
 
-    <FrameLayout
-        android:id="@+id/memo_layWebSearch"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="20dp"
-        android:background="#222222"
-        android:visibility="gone" >
+            <CheckBox
+                android:id="@+id/memo_chbEnabled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView6"
+                android:layout_below="@+id/textView6"
+                android:layout_marginTop="10dp"
+                android:text="@string/memo_lblActive" />
+        </RelativeLayout>
 
-        <WebView
-            android:id="@+id/memo_webSearch"
+        <FrameLayout
+            android:id="@+id/memo_layWebSearch"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="5dp" />
-    </FrameLayout>
+            android:layout_margin="20dp"
+            android:background="#222222"
+            android:visibility="gone" >
+
+            <WebView
+                android:id="@+id/memo_webSearch"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp" />
+        </FrameLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6sp"
+        android:background="@color/content_background_dark"
+        android:padding="3dp"
+        android:text="@string/memo_details"
+        android:textColor="#EEEEEE"
+        android:textSize="12sp" />
 
 </RelativeLayout>

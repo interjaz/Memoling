@@ -114,7 +114,7 @@
             android:gravity="center"
             android:text="@string/review_lblCorrect"
             android:textColor="#FFFFFFFF"
-            android:textSize="32sp" />
+            android:textSize="22sp" />
 
         <LinearLayout
             android:id="@+id/review_layNegativeOptions"
@@ -137,6 +137,8 @@
                 android:layout_weight="1"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
                 android:layout_marginRight="5dp"
                 android:text="@string/review_btnDeactivate" />
 
@@ -148,28 +150,33 @@
                 android:layout_weight="1"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:layout_marginRight="5dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
                 android:text="@string/review_btnEdit" />
-            
+                
+            </LinearLayout>
+
             <Button
                 android:id="@+id/review_btnCorrect"
                 style="@style/Theme.Darktheme.Button.Dark"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:text="@string/review_btnCorrect" />
-                
-            </LinearLayout>
            
             <Button
                 android:id="@+id/review_btnIncorrect"
                 style="@style/Theme.Darktheme.Button.Dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:layout_marginTop="5dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
+                android:paddingBottom="10dp"
                 android:text="@string/review_btnIncorrect" />
 
         </LinearLayout>

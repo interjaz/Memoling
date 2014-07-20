@@ -49,14 +49,12 @@ public class AboutFragment extends ApplicationFragment {
 		resources.setFont(contentView, R.id.textView3, thinFont);
 		resources.setFont(contentView, R.id.downloadlink_lblDefinitionALabel, thinFont);
 		resources.setFont(contentView, R.id.textView5, thinFont);
-		resources.setFont(contentView, R.id.about_lblUselessFactsContent, thinFont);
 		resources.setFont(contentView, R.id.about_lblVersion, thinFont);
 
 		m_lblVersion = (TextView) contentView.findViewById(R.id.about_lblVersion);
 		m_lblVersion.setText(String.format(getString(R.string.about_version),
 				Helper.getPackage(getActivity()).versionName));
 
-		m_lblUselessFacts = (TextView) contentView.findViewById(R.id.about_lblUselessFactsContent);
 		m_lblUselessFacts.setText(String.format(getString(R.string.about_uselessFactsContent), LinesOfCode,
 				m_activityVisited, m_toiletInjuries));
 

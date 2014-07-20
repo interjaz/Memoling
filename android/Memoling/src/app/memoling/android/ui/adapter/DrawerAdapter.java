@@ -113,6 +113,15 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
 		}
 	}
 
+	public int removeGroup(DrawerView drawerView) {
+		synchronized (m_lock) {			
+			m_groupData.remove(drawerView);
+			notifyDataSetChanged();
+
+			return m_groupData.size() - 1;
+		}
+	}
+
 	public int addChild(int groupPosition, DrawerView drawerView) {
 		synchronized (m_lock) {
 			List<DrawerView> group = m_childData.get(groupPosition);
@@ -120,6 +129,14 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
 			notifyDataSetChanged();
 
 			return group.size() - 1;
+		}
+	}
+	
+	public void removeChild(int groupPosition, DrawerView drawerView) {
+		synchronized (m_lock) {
+			List<DrawerView> child = m_childData.get(groupPosition);
+			child.remove(drawerView);
+			notifyDataSetChanged();
 		}
 	}
 

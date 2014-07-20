@@ -46,14 +46,17 @@ public class MemoView implements IInject {
 		String wordA = m_memo.getWordA().getWord();
 		String wordB = m_memo.getWordB().getWord();
 
-		int extraLength = maxLength - wordA.length();
-		extraLength = extraLength > 0 ? extraLength : 0;
+		int extraALength = maxLength - wordB.length();
+		extraALength = extraALength > 0 ? extraALength : 0;
+		
+		int extraBLength = maxLength - wordA.length();
+		extraBLength = extraBLength > 0 ? extraBLength : 0;
 
 		setProgressWeight(holder.m_progressBar, correct);
 		setProgressWeight(holder.m_progressReminder, incorrect);
 		
-		holder.m_original.setText(Helper.trim(wordA, maxLength, "..."));
-		holder.m_translate.setText(Helper.trim(wordB, maxLength + extraLength, "..."));
+		holder.m_original.setText(Helper.trim(wordA, maxLength + extraALength, "..."));
+		holder.m_translate.setText(Helper.trim(wordB, maxLength + extraBLength, "..."));
 		holder.m_languageA.setText(m_memo.getWordA().getLanguage().getCode());
 		holder.m_languageB.setText(m_memo.getWordB().getLanguage().getCode());
 		

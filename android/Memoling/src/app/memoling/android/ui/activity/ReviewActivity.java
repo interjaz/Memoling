@@ -187,12 +187,12 @@ public class ReviewActivity extends AdActivity {
 		m_resources.setFont(R.id.textView1, m_resources.getLightFont());
 
 		// Set Animations
-		m_fadeIn = new AlphaAnimation(0.0f, 1.0f);
+		m_fadeIn = new AlphaAnimation(0.0f, 0.9f);
 		m_fadeIn.setDuration(1000);
-		m_fadeInAnswer = new AlphaAnimation(0.0f, 1.0f);
+		m_fadeInAnswer = new AlphaAnimation(0.0f, 0.9f);
 		m_fadeInAnswer.setDuration(1000);
 		m_fadeInAnswer.setAnimationListener(new FadeInAnswerEventHandler());
-		m_fadeOutAnswer = new AlphaAnimation(1.0f, 0.0f);
+		m_fadeOutAnswer = new AlphaAnimation(0.9f, 0.0f);
 		m_fadeOutAnswer.setDuration(1000);
 		m_fadeOutAnswer.setAnimationListener(new FadeOutAnswerEventHandler());
 
@@ -619,8 +619,14 @@ public class ReviewActivity extends AdActivity {
 		if (m_answerCorrect) {
 			m_lblResult.setText(R.string.review_lblCorrect);
 			m_layNegativeOptions.setVisibility(View.GONE);
+		} else {String word;
+		if(m_toGuessItem == 0) {
+			word = m_memo.getWordB().getWord();
 		} else {
-			String strResult = String.format(getString(R.string.review_lblIncorrect), correct);
+			word = m_memo.getWordA().getWord();
+		}
+		
+		String strResult = String.format(getString(R.string.review_lblIncorrect), word, correct);
 			m_lblResult.setText(strResult);
 			m_layNegativeOptions.setVisibility(View.VISIBLE);
 		}

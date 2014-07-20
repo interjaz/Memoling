@@ -14,6 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import app.memoling.android.R;
+import app.memoling.android.adapter.ThesaurusAdapter;
 import app.memoling.android.entity.Memo;
 import app.memoling.android.entity.MemoSentence;
 import app.memoling.android.entity.QuizletDefinition;
@@ -55,6 +56,7 @@ public class MemoDetailsFragment extends Fragment implements IMemoPagerFragment 
 		m_lblCorrectAnswered = (TextView) contentView.findViewById(R.id.memo_lblCorrectAnswered);
 		m_lblCorrectAnswered.setTypeface(thinFont);
 
+		resources.setFont(contentView, R.id.textView1, thinFont);
 		resources.setFont(contentView, R.id.textView3, thinFont);
 		resources.setFont(contentView, R.id.downloadlink_lblDefinitionALabel, thinFont);
 		resources.setFont(contentView, R.id.textView5, thinFont);
@@ -93,7 +95,13 @@ public class MemoDetailsFragment extends Fragment implements IMemoPagerFragment 
 						+ m_memo.getCorrectAnsweredWordB()));
 				m_lblDisplayed.setText(Integer.valueOf(m_memo.getDisplayed()).toString());
 				m_lblCreated.setText(DateHelper.toUiDate(m_memo.getCreated()));
-				m_lblLastReviewed.setText(DateHelper.toUiDate(m_memo.getLastReviewed()));
+				
+				if(m_memo.getLastReviewed().getTime() != 0) {
+					m_lblLastReviewed.setText(DateHelper.toUiDate(m_memo.getLastReviewed()));
+				} else 
+				{
+					m_lblLastReviewed.setText("-");
+				}
 
 				m_chbEnabled.setChecked(m_memo.getActive());
 			};
@@ -127,5 +135,16 @@ public class MemoDetailsFragment extends Fragment implements IMemoPagerFragment 
 	@Override
 	public void setQuizlet(List<QuizletDefinition> definitions) {	
 		// No implementation	
+	}
+
+	@Override
+	public void updateDrawer() {
+		MemoFragment parent = (MemoFragment)getParentFragment();
+		parent.updateDrawer(false, false, false, false, false);
+	}
+
+	@Override
+	public void onDrawerItemSelected(int drawerAction) {
+		
 	}
 }

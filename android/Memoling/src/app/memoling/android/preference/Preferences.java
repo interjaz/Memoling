@@ -34,6 +34,7 @@ public class Preferences {
 	public final static String WORDOFTHEDAY_TIME = "WORDOFTHEDAY_TIME";
 	public final static String LST_LANGUAGE_ACCENT = "LST_LANGUAGE_ACCENT";
 	public final static String BTN_SYNC_FIX  = "BTN_SYNC_FIX";
+	public final static String SORT_PREFERENCES = "SORT_PREFERENCES";
 
 	private SharedPreferences m_sharedPreferences;
 	private Context m_context;
@@ -55,6 +56,10 @@ public class Preferences {
 		return m_sharedPreferences.getBoolean(key, defValue);
 	}
 
+	private int get(String key, int defValue) {
+		return m_sharedPreferences.getInt(key, defValue);
+	}
+	
 	private void set(String key, String value) {
 		Editor editor = m_sharedPreferences.edit();
 		editor.putString(key, value);
@@ -64,6 +69,12 @@ public class Preferences {
 	private void set(String key, boolean value) {
 		Editor editor = m_sharedPreferences.edit();
 		editor.putBoolean(key, value);
+		editor.commit();
+	}
+	
+	private void set(String key, int value) {
+		Editor editor = m_sharedPreferences.edit();
+		editor.putInt(key, value);
 		editor.commit();
 	}
 
@@ -227,5 +238,17 @@ public class Preferences {
 	public boolean getSyncEnabled() {
 		return get(BTN_SYNC, false);
 	}
-
+	
+	public Integer getSortPreferences() {
+		int sort = get(SORT_PREFERENCES, -1);
+		if(sort == -1) {
+			return null;
+		}
+		
+		return Integer.valueOf(sort);
+	}
+	
+	public void setSortPreferences(Integer sort) {
+		set(SORT_PREFERENCES, sort.intValue());
+	}
 }

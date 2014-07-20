@@ -30,15 +30,6 @@
                 android:textColor="#AAAAAA"
                 android:textSize="16sp" />
             
-            <TextView
-                android:id="@+id/sync_txtProgress"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:padding="5dp"
-				android:gravity="right"
-                android:textColor="#AAAAAA"
-                android:textSize="14sp" />
             
 
             <ProgressBar

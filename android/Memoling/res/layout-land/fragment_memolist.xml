@@ -151,47 +151,4 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/memolist_layWhatsNew"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_margin="10dp"
-        android:background="#EE000000"
-        android:orientation="vertical"
-        android:padding="10dp"
-        android:visibility="gone" >
-
-        <TextView
-            android:id="@+id/memolist_lblWhatsNewTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="15dp"
-            android:text="@string/memolist_whatsNewTitle"
-            android:textSize="20sp" />
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="30dp"
-            android:layout_weight="1" >
-
-            <TextView
-                android:id="@+id/memolist_lblWhatsNewContent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/memolist_whatsNewContent" />
-        </ScrollView>
-
-        <Button
-            android:id="@+id/memolist_btnWhatsNew"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
-            android:paddingLeft="45dp"
-            android:paddingRight="45dp"
-            android:text="@string/memolist_whatsNewOk"
-            android:textSize="15sp" />
-    </LinearLayout>
-
 </RelativeLayout>

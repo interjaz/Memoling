@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebView;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -30,10 +32,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import app.memoling.android.R;
 import app.memoling.android.adapter.MemoAdapter;
+import app.memoling.android.adapter.MemoAdapter.Sort;
 import app.memoling.android.adapter.MemoBaseAdapter;
 import app.memoling.android.adapter.SyncClientAdapter;
 import app.memoling.android.audio.AudioReplayService;
@@ -113,11 +117,6 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 	private List<MemoView> m_memosViews;
 	private String m_memoBaseId;
 
-	private LinearLayout m_layWhatsNew;
-	private TextView m_lblWhatsNewTitle;
-	private TextView m_lblWhatsNewContent;
-	private Button m_btnWhatsNew;
-	
 	private TextView m_lblTextWarning;
 
 	private String m_saveErrorMessage;
@@ -215,16 +214,6 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 		
 		// Word finder
 		m_wordsFinder = new WordsFinder(getActivity());
-
-		// What's new
-		m_layWhatsNew = (LinearLayout) contentView.findViewById(R.id.memolist_layWhatsNew);
-		m_lblWhatsNewTitle = (TextView) contentView.findViewById(R.id.memolist_lblWhatsNewTitle);
-		resources.setFont(m_lblWhatsNewTitle, thinFont);
-		m_lblWhatsNewContent = (TextView) contentView.findViewById(R.id.memolist_lblWhatsNewContent);
-		resources.setFont(m_lblWhatsNewContent, thinFont);
-		m_btnWhatsNew = (Button) contentView.findViewById(R.id.memolist_btnWhatsNew);
-		m_btnWhatsNew.setOnClickListener(new BtnWhatsNewEventHandler());
-		resources.setFont(m_btnWhatsNew, thinFont);
 
 		m_fragmentState = (m_fragmentState == null) ? new FragmentState().fromBundle(savedInstanceState)
 				: m_fragmentState;
@@ -514,21 +503,6 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 		}
 		
 	}
-	
-	private class BtnWhatsNewEventHandler implements OnClickListener {
-
-		@Override
-		public void onClick(View arg0) {
-			m_layWhatsNew.setVisibility(View.GONE);
-			if (SqliteUpdater.updateSuccessfully()) {
-				Helper.setFirstStartSuccessful(getActivity());
-			} else {
-				Toast.makeText(getActivity(), R.string.memolist_updateCrash, Toast.LENGTH_LONG).show();
-			}
-			onStartContinue(getArguments());
-		}
-
-	}
 
 	private class BtnLanguageSwap implements OnClickListener {
 
@@ -766,11 +740,9 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 	//
 
 	private void updateApp() {
-		PackageInfo pkg = Helper.getPackage(getActivity());
-		String title = String.format(getString(R.string.memolist_whatsNewTitle), pkg.versionName);
-		m_lblWhatsNewTitle.setText(title);
-		m_layWhatsNew.setVisibility(View.VISIBLE);
+		showAbout();
 		SqliteUpdater.update(getActivity());
+		Helper.setFirstStartSuccessful(getActivity());
 	}
 
 	private void onStartContinue(Bundle data) {
@@ -813,8 +785,14 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 					m_spLanguageFrom.loadData(getActivity());
 					m_spLanguageTo.loadData(getActivity());
 
+					Sort sort = Sort.CreatedDate;
+					Integer ordSort = getPreferences().getSortPreferences();
+					if(ordSort != null) {
+						sort = sort.values()[ordSort];
+					}
+					
 					m_memoAdapter = new MemoAdapter(getActivity());
-					m_memos = m_memoAdapter.getAllDeep(m_memoBaseId, MemoAdapter.Sort.CreatedDate, Order.ASC);
+					m_memos = m_memoAdapter.getAllDeep(m_memoBaseId, sort, Order.ASC);
 
 					updateSupportProgress(0.7f);
 
@@ -1026,6 +1004,62 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 		getActivity().startActivityForResult(intent, VoiceInputRequestCode);
 	}
 
+	private void showSort() {
+		new AlertDialog.Builder(getActivity())
+			.setTitle(R.string.memolist_sort)
+			.setItems(getActivity().getResources().getStringArray(R.array.memolist_sort_array), new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					
+					Sort sort;
+					
+					if(which == 0) {
+						sort = Sort.CreatedDate;
+					} else {
+						sort = Sort.WordA;
+					}
+					
+					getPreferences().setSortPreferences(sort.ordinal());
+					bindData();
+					dialog.dismiss();
+				}
+			})
+			.create().show();
+	}
+	
+	private void showAbout() {
+		try{
+			Typeface thinFont = getResourceManager().getLightFont();
+			
+			LayoutInflater inflater = getActivity().getLayoutInflater();
+			RelativeLayout aboutView = (RelativeLayout)inflater.inflate(R.layout.fragment_about, null);
+			
+			TextView lblVersion = (TextView)((RelativeLayout)aboutView).findViewById(R.id.about_lblVersion);
+			String strVersion = lblVersion.getText().toString();
+			PackageInfo pInfo  = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
+			strVersion = String.format(strVersion, pInfo.versionName);
+			lblVersion.setText(strVersion);
+			lblVersion.setTypeface(thinFont);
+			
+			WebView wvContent = (WebView)((RelativeLayout)aboutView).findViewById(R.id.about_vwContent);
+			wvContent.loadData(getString(R.string.memolist_aboutContent), "text/html; charset=UTF-8", null);
+			
+			((TextView)((RelativeLayout)aboutView).findViewById(R.id.textView1)).setTypeface(thinFont);
+			((TextView)((RelativeLayout)aboutView).findViewById(R.id.textView2)).setTypeface(thinFont);
+			((TextView)((RelativeLayout)aboutView).findViewById(R.id.textView3)).setTypeface(thinFont);
+			((TextView)((RelativeLayout)aboutView).findViewById(R.id.textView4)).setTypeface(thinFont);
+			
+			new AlertDialog.Builder(getActivity())
+				.setView(aboutView)
+				.setNeutralButton(getString(R.string.memolist_whatsNewOk), null)
+				.create().show();
+	
+		} catch (NameNotFoundException e) {
+			AppLog.w("MemoListFragment", "showAbout", e);
+		}
+	}
+	
 	//
 	// Internal classes
 	//
@@ -1097,6 +1131,14 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 					@Override
 					public void onClick(DrawerView v) {
 						openDetails();
+					}
+				}));
+		
+		drawer.addGroup(new DrawerView(R.drawable.ic_sort, R.string.memolist_sort,
+				new DrawerView.OnClickListener() {
+					@Override
+					public void onClick(DrawerView v) {
+						showSort();
 					}
 				}));
 
@@ -1246,6 +1288,15 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 						startActivity(intent);
 					}
 				}));
+		
+
+		drawer.addGroup(new DrawerView(R.drawable.ic_menu_info_details, R.string.memolist_about,
+				new DrawerView.OnClickListener() {
+					@Override
+					public void onClick(DrawerView v) {
+						showAbout();
+					}
+				}));
 
 	}
 
@@ -1254,7 +1305,6 @@ public class MemoListFragment extends FacebookFragment implements ITranslatorCom
 		// If it is first open after install / update
 		if (Helper.isFirstStart(this.getActivity())) {
 			updateApp();
-			return;
 		}
 
 		Intent intent = getActivity().getIntent();

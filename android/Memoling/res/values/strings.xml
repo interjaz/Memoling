@@ -1,14 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <string name="memolist_whatsNewContent">		
-		No ads for now.\n
-		If you like application please rate the app.\n
-		\n
-		NOW ALSO CHECK OUR WEBSITE WHERE YOU CAN SYNC/EDIT YOUR EXPRESSIONS!\n
-		\n 
-		If you spot a bug, please write a post on application fb site. Thanks!\n
-		\n
+    <string name="memolist_aboutContent"><![CDATA[		
+        <html>
+            <head>
+				<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+                <style type="text/css">
+                	html {
+                		margin: 0px;
+                		padding: 0px;
+                	}
+                    body {
+                    	color: #eee;
+                    	background: #222222;
+                    	font-size: 10pt;
+                		margin: 0px;
+                		padding: 0px;
+                    }
+                    a {
+                    	color: #0099cc;
+                    }
+                </style>
+            </head>
+        	<body>
+			No ads for now. If you like application please <a target="_blank" href="https://play.google.com/store/apps/details?id=app.memoling.android">rate&nbsp;the&nbsp;app.</a><br/><br/>
+			Now also check <a target="_blank" href="http://memoling.com">memoling.com</a> where you can sync/edit your expressions!<br/><br/>
+			If you spot a bug, please write a post on application <a target="_blank" href="https://www.facebook.com/pages/Memoling/144784992381757">fb&nbsp;site</a>. Thanks!
+			</body>
+		</html>]]>	</string>
+    <string name="memolist_aboutChanges">		
+		Changes v.1.11.0\n
+		1. Bug fixes\n
+		2. Changed expression detail page\n
+		3. Improved Find Word game\n
+		4. Added sorting\n
 		Changes v.1.10.1\n
 		1. Bug fixes\n
 		Changes v.1.10.0\n
@@ -32,7 +57,8 @@
 		1. Fixed wiktionary - again\n
 		2. Fixed multiple training notifications\n
 		3. Fixed library download issue\n
-		4. Complex expression searching works again\n	</string>
+		4. Complex expression searching works again\n
+	</string>
 
     <!-- MemoList Fragment -->
     <string name="memolist_btnSave">Save</string>
@@ -81,6 +107,13 @@
     <string name="memolist_wordExists">Such word already exist in the library</string>
     <string name="memolist_manualSync">Synchronize</string>
     <string name="memolist_syncDisabled">Sync Disabled</string>
+    <string name="memolist_sort">Sort</string>
+    <string name="memolist_sortby">Sort expressions by</string>
+    <string-array name="memolist_sort_array">
+        <item>Creation date</item>
+        <item>Alphabetically</item>
+    </string-array>
+    <string name="memolist_about">About</string>
 
     <!-- MemoBaseList Fragment -->
     <string name="memobaselist_title">Libraries</string>
@@ -110,22 +143,23 @@
     <string name="memo_lblLastReviewed">Last reviewed:</string>
     <string name="memo_lblDisplayed">Displayed:</string>
     <string name="memo_lblCorrectAnswered">Correctly answered:</string>
-    <string name="memo_first">First</string>
-    <string name="memo_lblWordA">First part:</string>
-    <string name="memo_lblLangA">First part language:</string>
-    <string name="memo_second">Second</string>
-    <string name="memo_lblWordB">Second part:</string>
-    <string name="memo_lblLangB">Second part language:</string>
+    <string name="memo_first">FIRST</string>
+    <string name="memo_lblWordA">FIRST</string>
+    <string name="memo_second">SECOND</string>
+    <string name="memo_lblWordB">SECOND</string>
     <string name="memo_lblActive">Active</string>
-    <string name="memo_details">Details</string>
+    <string name="memo_details">DETAILS</string>
     <string name="memo_copied">Copied</string>
     <string name="memo_selectTranslationTitle">Select translation</string>
     <string name="memo_selectTranslationProgress">Looking for translations</string>
-    <string name="memo_abbrThesaurus">Th</string>
-    <string name="memo_abbrDictionary">Dc</string>
-    <string name="memo_description">Description</string>
+    <string name="memo_thesaurus">Thesaurus</string>
+    <string name="memo_dictionary">Dictionary</string>
+    <string name="memo_copy">Copy</string>
+    <string name="memo_play">Play (audio)</string>
+    <string name="memo_refresh">Translate again</string>
+    <string name="memo_description">YOUR DESCRIPTION</string>
     <string name="memo_sentences">Sentences</string>
-    <string name="memo_synonyms">Synonyms</string>
+    <string name="memo_synonyms">SYNONYMS</string>
     <string name="memo_sentencesDownloading">Downloading &#8230;</string>
     <string name="memo_sentencesSearching">Searching &#8230;</string>
     <string name="memo_notFound">Not found</string>
@@ -133,6 +167,10 @@
     <string name="memo_sharefacebook">Share via Facebook</string>
     <string name="memo_share">Share via Application</string>
     <string name="memo_backToList">Back to List</string>
+    <string name="memo_definitionWiki">DEFINITION (Wiktionary)</string>
+    <string name="memo_definitionQuizlet">DEFINITION (Powered by Quizlet.com)</string>
+    <string name="memo_sentencesTatoeba">SENTENCES (Tatoeba)</string>
+    <string name="memo_sentencesQuizlet">SENTENCES (Powered by Quizlet.com)</string>
 
     <!-- Common share -->
     <string name="share_message">%1$s would like to share a %2$s expression with you. Click the link for more details: %3$s</string>
@@ -212,7 +250,7 @@
     <string name="review_voiceInput">Use Voice</string>
     <string name="review_submit">Submit</string>
     <string name="review_lblCorrect">Correct</string>
-    <string name="review_lblIncorrect">Incorrect. Answer:\n%s</string>
+    <string name="review_lblIncorrect">(%1$s)\n%2$s</string>
     <string name="review_lblLanguage">Language</string>
     <string name="review_noMemos">No memos found</string>
     <string name="review_sentencesNotFound">Sentences not found</string>
@@ -373,10 +411,16 @@
     <string name="games_score">Score</string>
     <string name="games_source">Source</string>
     <string name="games_hint">HINT</string>
+    <string name="games_showWords">SHOW WORDS</string>
+    <string name="games_words">Words</string>
+    <string name="games_ok">OK</string>
+    <string name="games_found">Found:</string>
+    <string name="games_notFound">Not Found:</string>
     <string name="crossword_enterWord">Enter word</string>
     <string name="crossword_horizontal">Horizontal</string>
     <string name="crossword_vertical">Vertical</string>
     <string name="crossword_submit">Submit</string>
+    
 
     <string-array name="games_source">
         <item>Current Library</item>
