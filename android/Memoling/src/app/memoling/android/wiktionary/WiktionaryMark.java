@@ -64,7 +64,7 @@ public class WiktionaryMark {
 		for(String line : str.split("\n")) {
 			String modified = line;
 			
-			if(line.length() < level+1) {
+			if(line.length() <= level+1) {
 				continue;
 			}
 			

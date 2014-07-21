@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -324,10 +325,6 @@ public class MemoWordFragment extends Fragment implements
 
 	private void setMemoWiktionary() {
 
-		if (!WiktionaryDb.isAvailable()) {
-			fadeOut(m_layDefinitionWiki);
-		}
-
 		new WorkerThread<Void, Void, Void>() {
 
 			private String m_synonyms;
@@ -371,7 +368,7 @@ public class MemoWordFragment extends Fragment implements
 				if (m_synonyms != null) {
 					m_txtSynonyms.setText(m_synonyms);
 				} else {
-					fadeOut(m_laySynonyms);
+					m_txtSynonyms.setText(R.string.memo_notFound);
 				}
 			}
 
@@ -411,7 +408,7 @@ public class MemoWordFragment extends Fragment implements
 			@Override
 			protected void onPostExecute(Void result) {
 				StringBuilder wikiDefBuilder = new StringBuilder();
-				String styles = "<style type=\"text/css\">@font-face { font-family: 'light-font'; src: url('Roboto-Light.ttf');} body { font-size: 0.8em; font-family: 'light-font';  }</style>\n";
+				String styles = "<style type=\"text/css\">@font-face { font-family: 'light-font'; src: url('Roboto-Light.ttf');} html, body { margin: 0px; padding: 0px; } html { padding-top: 10px; } body { font-size: 0.8em; font-family: 'light-font'; }</style>\n";
 				wikiDefBuilder.append(styles);
 
 				if (m_meanings.size() > 0) {
@@ -434,8 +431,7 @@ public class MemoWordFragment extends Fragment implements
 				}
 
 				if (m_wikiDefinitions.size() == 0 && m_meanings.size() == 0) {
-					fadeOut(m_layDefinitionWiki);
-					return;
+					wikiDefBuilder.append(getString(R.string.memo_notFound));
 				}
 
 				m_vwDescriptionWiktionary.loadDataWithBaseURL(
@@ -462,7 +458,7 @@ public class MemoWordFragment extends Fragment implements
 				}
 				
 				if (memoSentences == null || memoSentences.size() == 0) {
-					fadeOut(m_laySentencesTatoeba);
+					m_lblSentencesTatoeba.setText(R.string.memo_notFound);
 					return;
 				}
 
@@ -497,12 +493,12 @@ public class MemoWordFragment extends Fragment implements
 					return;
 				}
 				
-				if (definitions == null || definitions.size() == 0) {
-					fadeOut(m_layDefinitionQuizlet);
-					fadeOut(m_laySentencesQuizlet);
+				if(definitions == null) {
+					m_lblDescriptionQuizlet.setText(R.string.memo_notFound);
+					m_lblSentencesQuizlet.setText(R.string.memo_notFound);
 					return;
 				}
-
+				
 				StringBuilder sbDesc = new StringBuilder();
 				StringBuilder sbSent = new StringBuilder();
 
@@ -522,10 +518,14 @@ public class MemoWordFragment extends Fragment implements
 					}
 				}
 
-				m_lblDescriptionQuizlet.setText(sbDesc.toString());
+				if(sbDesc.length() == 0) {
+					m_lblDescriptionQuizlet.setText(R.string.memo_notFound);
+				} else {
+					m_lblDescriptionQuizlet.setText(sbDesc.toString());
+				}
 
 				if (sbSent.length() == 0) {
-					fadeOut(m_laySentencesQuizlet);
+					m_lblSentencesQuizlet.setText(R.string.memo_notFound);
 				} else {
 					m_lblSentencesQuizlet.setText(Html.fromHtml(sbSent
 							.toString()));
@@ -616,32 +616,6 @@ public class MemoWordFragment extends Fragment implements
 		if (m_textToSpeechHelper != null) {
 			m_textToSpeechHelper.shutdown();
 		}
-	}
-	
-	public void fadeOut(final View view) {
-
-		AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.0f);
-		fadeOut.setStartOffset(250);
-		fadeOut.setDuration(1000);
-		fadeOut.reset();
-		view.setAnimation(fadeOut);
-		fadeOut.start();
-		fadeOut.setAnimationListener(new AnimationListener() {
-
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				view.setVisibility(View.GONE);
-			}
-
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-			}
-
-			@Override
-			public void onAnimationStart(Animation animation) {
-			}
-			
-		});
 	}
 	
 	public void updateDrawer() {
